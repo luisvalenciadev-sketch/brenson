@@ -59,6 +59,10 @@
           class="card__inner {% if settings.card_style == 'standard' %}color-{{ settings.card_color_scheme }} gradient{% endif %}{% if card_product.featured_media or settings.card_style == 'standard' %} ratio{% endif %}"
           style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
         >
+          {%- comment -%} Brenson: badges de catálogo (Módulo 02) {%- endcomment -%}
+          {%- if card_product.metafields.brenson.badge.value != blank -%}
+            <div class="brenson-card__badges">{% render 'brenson-badge', product: card_product, type: 'catalogo', size: 'sm' %}</div>
+          {%- endif -%}
           {%- if card_product.featured_media -%}
             <div class="card__media{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}">
               <div class="media media--transparent media--hover-effect">
@@ -170,6 +174,25 @@
 
               <span class="caption-large light">{{ block.settings.description | escape }}</span>
 
+              {%- comment -%} Brenson: categoría + 3 specs clave (decisión G7) {%- endcomment -%}
+              {%- assign bmf = card_product.metafields.brenson -%}
+              {%- if bmf.categoria.value != blank -%}
+                <div class="brenson-card__category">{{ bmf.categoria.value | replace: 'bicicleta', 'Bicicleta eléctrica' | replace: 'ciclomotor', 'Ciclomotor eléctrico' | replace: 'motocarro', 'Motocarro eléctrico' | replace: 'cuadriciclo', 'Cuadriciclo eléctrico' }}</div>
+              {%- endif -%}
+              {%- if bmf.autonomia_km.value or bmf.velocidad_max_kmh.value or bmf.capacidad_carga_kg.value -%}
+                <ul class="brenson-specs" role="list" aria-label="Especificaciones clave">
+                  {%- if bmf.autonomia_km.value -%}
+                    <li class="brenson-specs__item"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="16" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M21 10v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="m11 9-2 3h3l-2 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span class="brenson-specs__value">{{ bmf.autonomia_km.value }} km</span>{{ 'brenson.autonomia' | t }}</li>
+                  {%- endif -%}
+                  {%- if bmf.velocidad_max_kmh.value -%}
+                    <li class="brenson-specs__item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a8 8 0 1 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m12 14 3.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="brenson-specs__value">{{ bmf.velocidad_max_kmh.value }} km/h</span>{{ 'brenson.velocidad' | t }}</li>
+                  {%- endif -%}
+                  {%- if bmf.capacidad_carga_kg.value -%}
+                    <li class="brenson-specs__item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16 8 8h8l4 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 19h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="brenson-specs__value">{{ bmf.capacidad_carga_kg.value }} kg</span>{{ 'brenson.carga' | t }}</li>
+                  {%- endif -%}
+                </ul>
+              {%- endif -%}
+
               {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
                 {% liquid
                   assign rating_decimal = 0
@@ -206,7 +229,13 @@
                 </p>
               {%- endif -%}
 
-              {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+              {%- comment -%} Brenson: cuota protagonista en vez del precio estándar de Dawn (decisión C8) {%- endcomment -%}
+              {%- if card_product.metafields.brenson.categoria.value != blank -%}
+                {% render 'brenson-price', product: card_product, layout: 'card' %}
+                {% render 'brenson-badge', product: card_product, type: 'certificado', size: 'sm' %}
+              {%- else -%}
+                {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+              {%- endif -%}
               {%- if card_product.quantity_price_breaks_configured? -%}
                 {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
                   {% liquid

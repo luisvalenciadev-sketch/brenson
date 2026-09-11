@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Crear cuenta / Iniciar sesión | BRENSON Colombia</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {},
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          spacing: {},
+          fontFamily: {
+            headline: ["Montserrat"],
+            display: ["Montserrat"],
+            body: ["Montserrat"],
+            label: ["Montserrat"]
+          },
+          fontSize: {}
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="bg-neutral-50 text-neutral-900 font-body antialiased min-h-screen flex flex-col selection:bg-red-600 selection:text-white">
+<!-- TOP APP BAR / HEADER -->
+<header class="bg-white dark:bg-black docked full-width top-0 sticky z-50 shadow-sm border-b border-neutral-200 dark:border-neutral-800">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<!-- Brand & Left cluster -->
+<div class="flex items-center gap-10">
+<a class="font-headline font-extrabold text-2xl tracking-tighter text-black dark:text-white flex items-center gap-1 transition-all duration-150 active:scale-95" href="#">
+<span>BRENSON</span>
+<span class="w-2 h-2 rounded-full bg-red-600 mb-2 inline-block"></span>
+</a>
+<!-- Desktop Navigation Links -->
+<nav class="hidden md:flex items-center gap-7 font-headline font-semibold text-sm tracking-tight">
+<a class="text-neutral-800 dark:text-neutral-200 font-medium hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200" href="#">Vehículos</a>
+<a class="text-neutral-800 dark:text-neutral-200 font-medium hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200" href="#">Financiación</a>
+<a class="text-neutral-800 dark:text-neutral-200 font-medium hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200 flex items-center gap-1.5" href="#">
+            Brenson Empresas
+            <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-neutral-900 text-white dark:bg-white dark:text-black">B2B</span>
+</a>
+<a class="text-neutral-800 dark:text-neutral-200 font-medium hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200" href="#">Garantía</a>
+<a class="text-neutral-800 dark:text-neutral-200 font-medium hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200" href="#">Blog</a>
+<a class="text-neutral-800 dark:text-neutral-200 font-medium hover:text-red-600 dark:hover:text-red-500 transition-colors duration-200" href="#">Contacto</a>
+</nav>
+</div>
+<!-- Right cluster actions & search -->
+<div class="flex items-center gap-4">
+<!-- Search bar -->
+<div class="hidden lg:flex items-center relative">
+<span class="absolute left-3.5 text-neutral-400 pointer-events-none flex items-center">
+<span class="material-symbols-outlined text-[18px]">search</span>
+</span>
+<input class="pl-9 pr-4 py-2 bg-neutral-100 dark:bg-neutral-900 border-none rounded-full text-xs font-medium w-52 focus:w-64 focus:ring-2 focus:ring-red-600 transition-all text-neutral-800 dark:text-neutral-100 placeholder-neutral-400" placeholder="Buscar modelo o chasis..." type="text"/>
+</div>
+<!-- Trailing Icon Action: electric_bolt -->
+<a class="w-10 h-10 rounded-full flex items-center justify-center text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-150 active:scale-95" href="#" title="Movilidad Eléctrica">
+<span class="material-symbols-outlined">electric_bolt</span>
+</a>
+<!-- Trailing Icon Action / Secondary Action: Mi Cuenta (Active) -->
+<a class="flex items-center gap-1.5 px-3.5 py-2 rounded-full font-headline text-sm transition-all duration-150 text-red-600 dark:text-red-500 font-bold border-b-2 border-red-600 pb-1" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="hidden sm:inline">Mi Cuenta</span>
+</a>
+<!-- Trailing Primary Action: Cotizar -->
+<a class="bg-red-600 hover:bg-red-700 text-white font-headline font-bold text-sm px-5 py-2.5 rounded-full shadow-sm hover:shadow transition-all duration-150 active:scale-95 flex items-center gap-1.5" href="#">
+<span>Cotizar</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</header>
+<!-- BREADCRUMB & CONTEXT -->
+<nav aria-label="Breadcrumb" class="bg-neutral-100/70 border-b border-neutral-200/80 py-3 px-6">
+<div class="max-w-[1100px] mx-auto flex items-center justify-between text-xs font-medium text-neutral-500">
+<ol class="flex items-center space-x-2">
+<li>
+<a class="hover:text-neutral-900 transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[15px]">home</span>
+<span>Inicio</span>
+</a>
+</li>
+<li><span class="text-neutral-400">/</span></li>
+<li aria-current="page" class="text-neutral-900 font-semibold">Mi Cuenta / Acceso</li>
+</ol>
+<div class="hidden sm:flex items-center gap-2 text-neutral-600">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-semibold">
+<span class="material-symbols-outlined text-[13px] text-emerald-600 font-bold">verified_user</span>
+          Portal Seguro SSL 256-bit
+        </span>
+</div>
+</div>
+</nav>
+<!-- MAIN CANVAS -->
+<main class="flex-grow py-10 px-4 sm:px-6">
+<div class="max-w-[1100px] mx-auto">
+<!-- Top Title Badge -->
+<div class="text-center mb-8">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-200/80 text-neutral-800 text-xs font-semibold tracking-wide uppercase font-headline">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+          Acceso a Clientes · Brenson Colombia
+        </span>
+<h1 class="text-2xl sm:text-3xl font-headline font-extrabold text-neutral-900 tracking-tight mt-2">
+          Gestiona tu movilidad eléctrica
+        </h1>
+<p class="text-neutral-600 text-sm mt-1 max-w-lg mx-auto">
+          Adquiere tu vehículo, haz seguimiento a tu despacho y accede al historial técnico de tus baterías.
+        </p>
+</div>
+<!-- 2-COLUMN MAIN AUTHENTICATION GRID -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- LEFT COLUMN: CREAR CUENTA (7 cols) -->
+<section class="lg:col-span-7 bg-white rounded-2xl border border-neutral-200 shadow-sm p-7 sm:p-9 flex flex-col justify-between">
+<div>
+<!-- Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-neutral-100">
+<div>
+<h2 class="font-headline font-extrabold text-2xl text-neutral-950 tracking-tight">Crear cuenta</h2>
+<p class="text-xs text-neutral-500 font-normal mt-1 leading-relaxed">
+                  Regístrate para comprar tu vehículo eléctrico, gestionar tu garantía y acceder a financiación directa.
+                </p>
+</div>
+<!-- Segmented Control: Persona / Empresa -->
+<div class="inline-flex p-1 bg-neutral-100 rounded-xl border border-neutral-200/80 self-start sm:self-center shrink-0">
+<button class="px-4 py-1.5 rounded-lg text-xs font-headline font-bold bg-neutral-950 text-white shadow-sm transition-all duration-150" type="button">
+                  Persona
+                </button>
+<a class="px-3.5 py-1.5 rounded-lg text-xs font-headline font-medium text-neutral-600 hover:text-neutral-950 flex items-center gap-1 transition-all duration-150" href="#portal-empresas">
+<span>Empresa</span>
+<span class="bg-red-100 text-red-700 text-[10px] font-bold px-1.5 py-0.2 rounded">B2B</span>
+</a>
+</div>
+</div>
+<!-- Form -->
+<form class="mt-6 space-y-4" onsubmit="event.preventDefault();">
+<!-- Nombres y Apellidos -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-headline font-semibold text-neutral-800 mb-1.5">Nombre <span class="text-red-600">*</span></label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-neutral-300 text-sm font-body text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 transition" placeholder="Ej. Carlos" required="" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-headline font-semibold text-neutral-800 mb-1.5">Apellido <span class="text-red-600">*</span></label>
+<input class="w-full px-3.5 py-2.5 rounded-lg border border-neutral-300 text-sm font-body text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 transition" placeholder="Ej. Rodríguez" required="" type="text"/>
+</div>
+</div>
+<!-- Correo electrónico -->
+<div>
+<label class="block text-xs font-headline font-semibold text-neutral-800 mb-1.5">Correo electrónico <span class="text-red-600">*</span></label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 rounded-lg border border-neutral-300 text-sm font-body text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 transition" placeholder="tu.correo@ejemplo.com" required="" type="email"/>
+</div>
+</div>
+<!-- Contraseña con toggle -->
+<div>
+<label class="block text-xs font-headline font-semibold text-neutral-800 mb-1.5">Contraseña <span class="text-red-600">*</span></label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</span>
+<input class="w-full pl-10 pr-10 py-2.5 rounded-lg border border-neutral-300 text-sm font-body text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 transition" id="signup-password" placeholder="Mínimo 8 caracteres" required="" type="password"/>
+<button class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-400 hover:text-neutral-700 transition" onclick="const p = document.getElementById('signup-password'); const i = this.querySelector('span'); if(p.type === 'password'){ p.type = 'text'; i.textContent = 'visibility_off'; } else { p.type = 'password'; i.textContent = 'visibility'; }" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+<p class="text-[11px] text-neutral-500 mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                  Usa al menos 8 caracteres combinando números y letras.
+                </p>
+</div>
+<!-- Ciudad de residencia y Uso previsto -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-headline font-semibold text-neutral-800 mb-1.5">Ciudad de residencia <span class="text-red-600">*</span></label>
+<select class="w-full px-3.5 py-2.5 rounded-lg border border-neutral-300 text-sm font-body text-neutral-900 bg-white focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 transition">
+<option value="">Selecciona tu ciudad</option>
+<option selected="" value="bogota">Bogotá D.C.</option>
+<option value="medellin">Medellín (Antioquia)</option>
+<option value="barranquilla">Barranquilla (Atlántico)</option>
+<option value="cali">Cali (Valle del Cauca)</option>
+<option value="bucaramanga">Bucaramanga (Santander)</option>
+<option value="cartagena">Cartagena (Bolívar)</option>
+<option value="santa_marta">Santa Marta (Magdalena)</option>
+<option value="pereira">Pereira (Eje Cafetero)</option>
+<option value="otra">Otra ciudad en Colombia</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-headline font-semibold text-neutral-800 mb-1.5">Uso previsto del vehículo</label>
+<select class="w-full px-3.5 py-2.5 rounded-lg border border-neutral-300 text-sm font-body text-neutral-900 bg-white focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 transition">
+<option selected="" value="personal">Personal / Urbano</option>
+<option value="comercial">Comercial / Independiente</option>
+<option value="reparto">Logística y Reparto</option>
+<option value="turismo">Flota Turística / Hotelera</option>
+</select>
+</div>
+</div>
+<!-- Checkboxes legales -->
+<div class="pt-2 space-y-3">
+<label class="flex items-start gap-2.5 cursor-pointer select-none group">
+<input class="mt-0.5 rounded border-neutral-300 text-red-600 focus:ring-red-500 w-4 h-4" required="" type="checkbox"/>
+<span class="text-xs text-neutral-600 leading-snug group-hover:text-neutral-900 transition">
+                    Acepto la <a class="underline text-neutral-900 hover:text-red-600 font-semibold" href="#">política de tratamiento de datos</a> (Ley 1581 de 2012 y regulación colombiana).
+                  </span>
+</label>
+<label class="flex items-start gap-2.5 cursor-pointer select-none group">
+<input checked="" class="mt-0.5 rounded border-neutral-300 text-red-600 focus:ring-red-500 w-4 h-4" type="checkbox"/>
+<span class="text-xs text-neutral-600 leading-snug group-hover:text-neutral-900 transition">
+                    Quiero recibir novedades, lanzamientos y ofertas exclusivas de cuotas bajas de Brenson.
+                  </span>
+</label>
+</div>
+<!-- Submit Button -->
+<button class="w-full mt-2 bg-red-600 hover:bg-red-700 text-white font-headline font-bold text-sm tracking-wide py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-150 active:scale-[0.99] flex items-center justify-center gap-2" type="submit">
+<span>Crear cuenta</span>
+<span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+</button>
+</form>
+</div>
+<!-- Bottom Notice: Corporativo B2B -->
+<div class="mt-8 pt-5 border-t border-neutral-200" id="portal-empresas">
+<div class="p-4 bg-neutral-100 rounded-xl border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex items-start gap-3">
+<span class="p-2 rounded-lg bg-white border border-neutral-300 text-neutral-900 shrink-0">
+<span class="material-symbols-outlined text-[20px]">corporate_fare</span>
+</span>
+<div>
+<h3 class="text-xs font-headline font-bold text-neutral-900">¿Compras para tu empresa o requieres factura con NIT?</h3>
+<p class="text-[11px] text-neutral-600 mt-0.5 leading-relaxed">
+                    Accede a precios preferenciales por volumen (descuentos del 8% al 18%) y asesor corporativo asignado.
+                  </p>
+</div>
+</div>
+<a class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-neutral-950 hover:bg-neutral-800 text-white font-headline font-bold text-xs tracking-tight transition-all duration-150" href="#">
+<span>Brenson Empresas</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- RIGHT COLUMN: INICIAR SESIÓN (5 cols) - Tarjeta Carbón de Alto Impacto -->
+<section class="lg:col-span-5 bg-neutral-900 text-white rounded-2xl border border-neutral-800 shadow-xl p-7 sm:p-9 flex flex-col justify-between relative overflow-hidden">
+<!-- Subtle decorative glow -->
+<div class="absolute -right-16 -top-16 w-56 h-56 bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
+<div>
+<!-- Header -->
+<div class="pb-6 border-b border-neutral-800">
+<div class="flex items-center justify-between">
+<h2 class="font-headline font-extrabold text-2xl text-white tracking-tight">Iniciar sesión</h2>
+<span class="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-400">
+<span class="material-symbols-outlined text-[18px]">lock_open</span>
+</span>
+</div>
+<p class="text-xs text-neutral-400 font-normal mt-1 leading-relaxed">
+                Ingresa a tu cuenta personal para ver tus compras, cuotas y garantías.
+              </p>
+</div>
+<!-- Login Form -->
+<form class="mt-6 space-y-4" onsubmit="event.preventDefault();">
+<div>
+<label class="block text-xs font-headline font-semibold text-neutral-300 mb-1.5">Correo electrónico</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-500">
+<span class="material-symbols-outlined text-[18px]">alternate_email</span>
+</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 rounded-lg bg-neutral-950 border border-neutral-700 text-sm font-body text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" placeholder="tu.correo@ejemplo.com" required="" type="email"/>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-xs font-headline font-semibold text-neutral-300">Contraseña</label>
+<a class="text-xs font-headline text-red-500 hover:text-red-400 font-medium transition-colors underline-offset-2 hover:underline" href="#">
+                    ¿Olvidaste tu contraseña?
+                  </a>
+</div>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-500">
+<span class="material-symbols-outlined text-[18px]">key</span>
+</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 rounded-lg bg-neutral-950 border border-neutral-700 text-sm font-body text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<button class="w-full mt-3 bg-white hover:bg-neutral-100 text-neutral-950 font-headline font-bold text-sm tracking-wide py-3.5 px-6 rounded-xl shadow-md transition-all duration-150 active:scale-[0.99] flex items-center justify-center gap-2" type="submit">
+<span>Ingresar</span>
+<span class="material-symbols-outlined text-[18px] font-bold">arrow_forward</span>
+</button>
+</form>
+<div class="relative my-7">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-neutral-800"></div></div>
+<div class="relative flex justify-center text-xs uppercase tracking-wider">
+<span class="bg-neutral-900 px-3 text-neutral-500 font-semibold font-headline">Portal Cliente Seguro</span>
+</div>
+</div>
+<!-- Beneficios de la cuenta Brenson -->
+<div class="bg-neutral-950/80 rounded-xl p-5 border border-neutral-800/90 space-y-3.5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-400 text-[18px]">verified</span>
+<h3 class="text-xs font-headline font-bold tracking-tight text-neutral-200">
+                  Todo lo que puedes hacer desde tu cuenta:
+                </h3>
+</div>
+<ul class="space-y-2.5 text-xs text-neutral-400">
+<li class="flex items-start gap-2.5">
+<span class="w-4 h-4 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[12px] font-bold">check</span>
+</span>
+<span>Seguimiento de pedidos y estado de despacho en tiempo real.</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="w-4 h-4 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[12px] font-bold">check</span>
+</span>
+<span>Estado de garantía por unidad vinculada a tu número de chasis / serie.</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="w-4 h-4 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[12px] font-bold">check</span>
+</span>
+<span>Facturación electrónica DIAN descargable en PDF y XML.</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="w-4 h-4 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[12px] font-bold">check</span>
+</span>
+<span>Historial de cotizaciones y solicitudes de financiación previas con aliados.</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Quick contact banner in dark card -->
+<div class="mt-6 pt-4 border-t border-neutral-800 flex items-center justify-between text-xs text-neutral-400">
+<span>¿Requieres asistencia directa?</span>
+<a class="text-emerald-400 hover:text-emerald-300 font-semibold inline-flex items-center gap-1" href="https://wa.me/573000000000" target="_blank">
+<span>WhatsApp Soporte</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+</section>
+</div>
+<!-- TRUST BAR (BARRA DE CONFIANZA HORIZONTAL EN CONTENEDOR 1100px) -->
+<section class="mt-12 bg-white rounded-2xl border border-neutral-200 p-6 sm:p-7 shadow-sm">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-neutral-200">
+<!-- Trust Item 1 -->
+<div class="flex items-start gap-3.5 pt-4 sm:pt-0 sm:px-3 first:pt-0 first:pl-0">
+<div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200">
+<span class="material-symbols-outlined text-[22px]">verified</span>
+</div>
+<div>
+<h4 class="text-xs font-headline font-bold text-neutral-900">Certificado Brenson</h4>
+<p class="text-[11px] text-neutral-600 mt-1 leading-snug">
+                Inspección técnica rigurosa de 12 puntos clave antes de cada entrega.
+              </p>
+</div>
+</div>
+<!-- Trust Item 2 -->
+<div class="flex items-start gap-3.5 pt-4 sm:pt-0 sm:px-3">
+<div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-200">
+<span class="material-symbols-outlined text-[22px]">shield</span>
+</div>
+<div>
+<h4 class="text-xs font-headline font-bold text-neutral-900">Garantía hasta 24 meses</h4>
+<p class="text-[11px] text-neutral-600 mt-1 leading-snug">
+                Cobertura directa en motor, controlador central y paquete de batería.
+              </p>
+</div>
+</div>
+<!-- Trust Item 3 -->
+<div class="flex items-start gap-3.5 pt-4 sm:pt-0 sm:px-3">
+<div class="w-10 h-10 rounded-xl bg-neutral-100 text-neutral-800 flex items-center justify-center shrink-0 border border-neutral-300">
+<span class="material-symbols-outlined text-[22px]">local_shipping</span>
+</div>
+<div>
+<h4 class="text-xs font-headline font-bold text-neutral-900">Envíos a toda Colombia</h4>
+<p class="text-[11px] text-neutral-600 mt-1 leading-snug">
+                Entrega puerta a puerta 100% asegurada en ciudades principales y secundarias.
+              </p>
+</div>
+</div>
+<!-- Trust Item 4 -->
+<div class="flex items-start gap-3.5 pt-4 sm:pt-0 sm:px-3 last:pr-0">
+<div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 border border-amber-200">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+</div>
+<div>
+<h4 class="text-xs font-headline font-bold text-neutral-900">Financiación con aliado</h4>
+<p class="text-[11px] text-neutral-600 mt-1 leading-snug">
+                Aprobación digital inmediata con Bancolombia, Sufi y Addi sin salir de casa.
+              </p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- INSTITUTIONAL FOOTER -->
+<footer class="bg-neutral-950 dark:bg-black docked full-width bottom border-t border-neutral-900 dark:border-neutral-900">
+<div class="max-w-7xl mx-auto px-6 py-12 flex flex-col gap-8">
+<!-- Top row footer -->
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-neutral-900">
+<div class="flex items-center gap-3">
+<span class="font-headline font-black text-xl text-white tracking-tight">BRENSON</span>
+<span class="text-xs font-mono text-neutral-500 bg-neutral-900 px-2 py-1 rounded">NIT 901.482.319-1</span>
+</div>
+<div class="flex flex-wrap items-center gap-6 text-xs text-neutral-400">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-red-600 text-[16px]">pin_drop</span>
+            Sede Principal: Cra. 43A # 18 Sur, Medellín
+          </span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-red-600 text-[16px]">call</span>
+            Línea Nacional: (604) 444 8219
+          </span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-red-600 text-[16px]">mail</span>
+            contacto@brenson.co
+          </span>
+</div>
+</div>
+<!-- Links row -->
+<div class="flex flex-wrap items-center justify-between gap-4 font-body text-xs text-neutral-400 dark:text-neutral-400 font-normal">
+<div class="flex flex-wrap gap-x-6 gap-y-2">
+<a class="hover:text-white transition-colors duration-150" href="#">Términos y Condiciones</a>
+<a class="hover:text-white transition-colors duration-150" href="#">Política de Privacidad</a>
+<a class="hover:text-white transition-colors duration-150" href="#">Certificado Brenson</a>
+<a class="hover:text-white transition-colors duration-150" href="#">Garantía de Batería</a>
+<a class="hover:text-white transition-colors duration-150" href="#">Superintendencia de Industria y Comercio</a>
+<a class="hover:text-white transition-colors duration-150" href="#">Canal Ético</a>
+</div>
+<div>
+<p class="text-neutral-400">© 2024 Brenson S.A.S. NIT 901.482.319-1. Todos los derechos reservados. Colombia.</p>
+</div>
+</div>
+</div>
+</footer>
+<!-- WHATSAPP FLOATING ACTION BUTTON (Baja fricción / Soporte) -->
+<div class="fixed bottom-6 right-6 z-50 flex items-center group">
+<div class="mr-3 px-3.5 py-1.5 rounded-full bg-neutral-900 text-white text-xs font-headline font-semibold shadow-lg border border-neutral-700 hidden sm:flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+<span>¿Dudas con tu registro? Escríbenos</span>
+</div>
+<a aria-label="Hablar con un asesor por WhatsApp" class="w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200" href="https://wa.me/573000000000" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[30px] font-bold">chat</span>
+</a>
+</div>
+</body></html>

@@ -1,0 +1,83 @@
+{%- comment -%}
+  brenson-case-studies — Módulo 01/06. Casos de uso desde metaobject brenson_caso_uso (S8).
+  Solo entradas verificadas en producción; en modo simulación se muestran todas con marca [MOCK].
+{%- endcomment -%}
+{%- liquid
+  assign sim = settings.brenson_modo_simulacion
+  assign casos = shop.metaobjects.brenson_caso_uso.values
+-%}
+{%- capture items -%}
+  {%- for c in casos limit: section.settings.limit -%}
+    {%- if c.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
+    <li class="brenson-case">
+      <div class="brenson-case__media">
+        {%- if c.imagen.value -%}
+          {{ c.imagen.value | image_url: width: 900 | image_tag: loading: 'lazy', alt: c.titulo.value }}
+        {%- else -%}
+          <div class="brenson-case__ph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div>
+        {%- endif -%}
+        {%- unless c.verificado.value -%}<span class="brenson-status brenson-status--pending brenson-case__mock">[MOCK]</span>{%- endunless -%}
+      </div>
+      <div class="brenson-case__body">
+        <span class="brenson-eyebrow">{{ c.cliente.value }}</span>
+        <h3 class="brenson-case__title">{{ c.titulo.value }}</h3>
+        <p class="brenson-muted">{{ c.resumen.value }}</p>
+        {%- if c.metricas.value -%}
+          <ul class="brenson-case__metrics" role="list">
+            {%- if c.metricas.value.unidades -%}<li><strong>{{ c.metricas.value.unidades }}</strong><span>unidades</span></li>{%- endif -%}
+            {%- if c.metricas.value.km_mes -%}<li><strong>{{ c.metricas.value.km_mes | divided_by: 1000.0 | round: 1 }}k</strong><span>km / mes</span></li>{%- endif -%}
+            {%- if c.metricas.value.ahorro_combustible_pct -%}<li><strong style="color: var(--brenson-certificado)">{{ c.metricas.value.ahorro_combustible_pct }} %</strong><span>ahorro en combustible</span></li>{%- endif -%}
+          </ul>
+        {%- endif -%}
+        {%- if c.vehiculos.value -%}
+          <div class="brenson-case__vehicles">
+            {%- for v in c.vehiculos.value -%}<a class="brenson-badge brenson-badge--gris brenson-badge--sm" href="{{ v.url }}">{{ v.title }}</a>{%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </li>
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if items != blank -%}
+<section class="brenson-section brenson-case-studies">
+  <div class="brenson-container">
+    <header class="brenson-section__head brenson-section__head--center">
+      <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+      {%- if section.settings.subtitle != blank -%}<p class="brenson-subheading">{{ section.settings.subtitle }}</p>{%- endif -%}
+    </header>
+    <ul class="brenson-grid brenson-grid--2" role="list">{{ items }}</ul>
+  </div>
+</section>
+<style>
+  .brenson-case { display: grid; grid-template-columns: 1fr; border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-xl); overflow: hidden; background: #fff; }
+  @media (min-width: 750px) { .brenson-case { grid-template-columns: 40% 1fr; } }
+  .brenson-case__media { position: relative; background: var(--brenson-gris-claro); min-height: 220px; }
+  .brenson-case__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .brenson-case__ph { height: 100%; display: grid; place-items: center; color: var(--brenson-gris-borde); }
+  .brenson-case__ph svg { width: 40%; }
+  .brenson-case__mock { position: absolute; top: .75rem; left: .75rem; }
+  .brenson-case__body { padding: var(--brenson-space-6); display: flex; flex-direction: column; gap: var(--brenson-space-3); }
+  .brenson-case__title { margin: 0; font-size: var(--brenson-text-xl); font-weight: 700; line-height: 1.2; }
+  .brenson-case__metrics { list-style: none; padding: 0; margin: var(--brenson-space-2) 0 0; display: flex; gap: var(--brenson-space-6); }
+  .brenson-case__metrics li { display: flex; flex-direction: column; }
+  .brenson-case__metrics strong { font-size: var(--brenson-text-2xl); font-weight: 800; line-height: 1; }
+  .brenson-case__metrics span { font-size: var(--brenson-text-xs); color: var(--brenson-gris); text-transform: uppercase; letter-spacing: .04em; }
+  .brenson-case__vehicles { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .brenson-case__vehicles a { text-decoration: none; }
+</style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brenson · Casos de uso",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Impacto en operación real" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Rentabilidad y sostenibilidad comprobadas en Colombia" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo" },
+    { "type": "range", "id": "limit", "min": 1, "max": 4, "step": 1, "label": "Máximo de casos", "default": 2 }
+  ],
+  "presets": [ { "name": "Brenson · Casos de uso" } ]
+}
+{% endschema %}

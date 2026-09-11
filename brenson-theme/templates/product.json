@@ -3,101 +3,96 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": {
-          "type": "text",
-          "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
-        "title": {
-          "type": "title"
-        },
-        "price": {
-          "type": "price"
-        },
-        "variant_picker": {
-          "type": "variant_picker",
-          "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
-          }
-        },
-        "quantity_selector": {
-          "type": "quantity_selector"
-        },
-        "buy_buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
-          }
-        },
-        "description": {
-          "type": "description"
-        },
-        "share": {
-          "type": "share",
-          "settings": {
-            "share_label": "Share"
-          }
-        }
+        "certificado": { "type": "brenson_certificado" },
+        "title": { "type": "title" },
+        "subtitle": { "type": "text", "settings": { "text": "{{ product.metafields.brenson.descripcion_corta }}", "text_style": "body" } },
+        "specs_clave": { "type": "brenson_specs_clave" },
+        "variant_picker": { "type": "variant_picker", "settings": { "picker_type": "button", "swatch_shape": "circle" } },
+        "precio_cuota": { "type": "brenson_precio" },
+        "cta_whatsapp": { "type": "brenson_cta_whatsapp" },
+        "cta_cotizar": { "type": "brenson_cta_cotizar" },
+        "buy_buttons": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": false, "show_gift_card_recipient": false } },
+        "micro_garantias": { "type": "brenson_micro_garantias" },
+        "description": { "type": "description" }
       },
-      "block_order": [
-        "vendor",
-        "title",
-        "price",
-        "variant_picker",
-        "quantity_selector",
-        "buy_buttons",
-        "description",
-        "share"
-      ],
+      "block_order": ["certificado", "title", "subtitle", "specs_clave", "variant_picker", "precio_cuota", "cta_whatsapp", "cta_cotizar", "buy_buttons", "micro_garantias", "description"],
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
         "media_position": "left",
-        "gallery_layout": "stacked",
+        "gallery_layout": "thumbnail_slider",
         "media_size": "large",
         "constrain_to_viewport": true,
         "media_fit": "contain",
         "image_zoom": "lightbox",
-        "mobile_thumbnails": "hide",
-        "hide_variants": true,
-        "enable_video_looping": false,
-        "padding_top": 36,
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": true,
+        "padding_top": 24,
         "padding_bottom": 12
       }
     },
-    "disclosures": {
-      "type": "disclosures",
+    "simulador": {
+      "type": "brenson-simulator",
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 0
+        "eyebrow": "Calculadora financiera",
+        "title": "Simula tu cuota",
+        "subtitle": "Elige cuota inicial y plazo. La cuota se calcula con la tasa de referencia de nuestro aliado financiero.",
+        "cta_label": "Solicitar financiamiento",
+        "dark": false
       }
     },
-    "related-products": {
+    "certificacion": {
+      "type": "brenson-product-certification",
+      "settings": {
+        "eyebrow": "Inspección técnica certificada",
+        "title": "Sello de confianza Brenson: 12 puntos de inspección",
+        "text": "Cada vehículo pasa por 12 puntos de inspección técnica y prueba de ruta antes de ser entregado. Cero sorpresas, 100 % de confiabilidad."
+      }
+    },
+    "specs": {
+      "type": "brenson-product-specs",
+      "settings": { "eyebrow": "Ficha técnica", "title": "Especificaciones técnicas" }
+    },
+    "garantia": {
+      "type": "brenson-product-warranty",
+      "settings": { "eyebrow": "Respaldo postventa directo", "title": "Garantía Brenson: transparente y sin letra chica", "show_shipping": true }
+    },
+    "faq": {
+      "type": "brenson-faq",
+      "settings": { "eyebrow": "Resolvemos tus dudas", "title": "Preguntas frecuentes", "categoria": "todas", "limit": 6, "show_cta": true }
+    },
+    "lead": {
+      "type": "brenson-lead-form",
+      "settings": {
+        "tipo": "cotizacion",
+        "eyebrow": "Solicita tu cotización",
+        "title": "Un asesor te responde hoy",
+        "text": "Déjanos tus datos y te enviamos la cotización de este vehículo con opciones de financiación.",
+        "cta_label": "Solicitar cotización",
+        "show_test_drive": true,
+        "alt": true
+      }
+    },
+    "related": {
       "type": "related-products",
       "settings": {
-        "heading": "You may also like",
+        "heading": "Otros modelos de la gama Brenson",
         "heading_size": "h2",
-        "products_to_show": 4,
-        "columns_desktop": 4,
+        "products_to_show": 3,
+        "columns_desktop": 3,
         "color_scheme": "scheme-1",
-        "image_ratio": "square",
+        "image_ratio": "adapt",
         "image_shape": "default",
-        "show_secondary_image": true,
+        "show_secondary_image": false,
         "show_vendor": false,
         "show_rating": false,
-        "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 28
+        "columns_mobile": "1",
+        "padding_top": 48,
+        "padding_bottom": 48
       }
-    }
+    },
+    "sticky": { "type": "brenson-sticky-cta", "settings": {} }
   },
-  "order": [
-    "main",
-    "disclosures",
-    "related-products"
-  ]
+  "order": ["main", "simulador", "certificacion", "specs", "garantia", "faq", "lead", "related", "sticky"]
 }

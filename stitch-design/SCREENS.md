@@ -11,3 +11,7 @@ Proyecto Stitch: `projects/6680964782534882674` · Design system: `assets/747192
 | — | Duplicado homepage (descartar) | 59bbd419f5024c74bb07d6ff0d43b00a | — |
 
 Pendientes: financiación, login/registro, cotizador de flota, landing Empresas (sin sesión), versiones mobile.
+| 05 | Crear cuenta / Iniciar sesión desktop | 0f26288a660c4391bd41a8525c09d13a | 05-cuenta |
+| 06 | Financiación desktop | 1dcc5b3ecdd341ed89af1382c5d604a0 | 06-financiacion |
+| 07 | Landing Brenson Empresas (sin sesión) desktop | 6ac54fa072494fd0adaea1bda145de31 | 07-empresas-landing |
+| 08 | Cotizador de flota desktop | a4499e23e63c41079f8e637a052b8a15 | 08-cotizador |
