@@ -1,0 +1,44 @@
+{%- comment -%}
+  brenson-quick-view — Módulo 02. Contenido de la vista rápida (decisión G11).
+  Se carga vía Section Rendering API: GET /products/{handle}?section_id=brenson-quick-view
+  El modal <dialog> vive en snippets/brenson-quick-view-modal.liquid (layout) y el JS en assets/brenson-quick-view.js.
+  Esta sección NO se agrega a templates: solo se renderiza por API. Por eso no tiene presets.
+{%- endcomment -%}
+{%- if product -%}
+{%- assign mf = product.metafields.brenson -%}
+<div class="brenson-qv" data-brenson-qv-content>
+  <div class="brenson-qv__media">
+    {%- for img in product.images limit: 4 -%}
+      {{ img | image_url: width: 900 | image_tag: loading: 'lazy', alt: img.alt | default: product.title, class: 'brenson-qv__img', sizes: '(min-width: 750px) 50vw, 100vw' }}
+    {%- endfor -%}
+  </div>
+  <div class="brenson-qv__body">
+    <div style="display:flex; gap:.5rem; flex-wrap:wrap; align-items:center">
+      {%- render 'brenson-badge', product: product, type: 'catalogo', size: 'sm' -%}
+      {%- render 'brenson-badge', product: product, type: 'certificado', size: 'sm' -%}
+    </div>
+    <h2 class="brenson-qv__title">{{ product.title }}</h2>
+    {%- if mf.descripcion_corta.value -%}<p class="brenson-muted" style="margin:0">{{ mf.descripcion_corta.value }}</p>{%- endif -%}
+    {%- if mf.autonomia_km.value or mf.velocidad_max_kmh.value or mf.capacidad_carga_kg.value -%}
+      <ul class="brenson-specs" role="list">
+        {%- if mf.autonomia_km.value -%}<li class="brenson-specs__item"><span class="brenson-specs__value">{{ mf.autonomia_km.value }} km</span>{{ 'brenson.autonomia' | t }}</li>{%- endif -%}
+        {%- if mf.velocidad_max_kmh.value -%}<li class="brenson-specs__item"><span class="brenson-specs__value">{{ mf.velocidad_max_kmh.value }} km/h</span>{{ 'brenson.velocidad' | t }}</li>{%- endif -%}
+        {%- if mf.capacidad_carga_kg.value -%}<li class="brenson-specs__item"><span class="brenson-specs__value">{{ mf.capacidad_carga_kg.value }} kg</span>{{ 'brenson.carga' | t }}</li>{%- endif -%}
+      </ul>
+    {%- endif -%}
+    {%- render 'brenson-price', product: product, layout: 'full', show_link: false -%}
+    <div style="display:grid; gap:.5rem">
+      <a class="brenson-btn brenson-btn--carbon brenson-btn--block" href="{{ product.url }}">Ver ficha completa</a>
+      <a class="brenson-btn brenson-btn--whatsapp brenson-btn--block" href="{% render 'brenson-whatsapp-link', context: 'product', product: product %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="quick_view" data-brenson-product="{{ product.handle }}">Hablar con un asesor</a>
+    </div>
+    <ul class="brenson-pb__micro" style="margin:0; border-top:0; padding-top:0">
+      <li><span>Garantía {{ mf.garantia_meses.value | default: 12 }} meses vehículo · {{ mf.garantia_bateria_meses.value | default: 12 }} meses batería</span></li>
+      <li><span>Envíos a toda Colombia · {% if mf.requiere_licencia.value %}Requiere licencia{% else %}No requiere licencia{% endif %}</span></li>
+    </ul>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{ "name": "Brenson · Vista rápida (API)", "tag": "div", "settings": [ { "type": "paragraph", "content": "Solo se renderiza por Section Rendering API desde el catálogo. No agregar a plantillas." } ] }
+{% endschema %}

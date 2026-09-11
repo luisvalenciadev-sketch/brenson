@@ -64,7 +64,11 @@ async function products() {
       mf('specs_adicionales', v.specs_adicionales, 'json'), mf('garantia_meses', String(v.garantia_meses), 'number_integer'), mf('garantia_bateria_meses', String(v.garantia_bateria_meses), 'number_integer'),
       mf('certificado', String(v.certificado), 'boolean'), mf('badge', v.badge, 'single_line_text_field'), mf('financiable', String(v.financiable), 'boolean'),
       mf('b2b_disponible', String(v.b2b_disponible), 'boolean'), mf('b2b_minimo_unidades', String(v.b2b_minimo_unidades), 'number_integer'), mf('exclusivo_flota', String(v.exclusivo_flota), 'boolean'),
-      mf('descripcion_corta', v.descripcion_corta, 'single_line_text_field')
+      mf('descripcion_corta', v.descripcion_corta, 'single_line_text_field'),
+      // Tramos para facetas nativas (decisión filtros: tramos). Derivados de los valores numéricos.
+      mf('autonomia_tramo', v.autonomia_km <= 50 ? 'Hasta 50 km' : v.autonomia_km <= 80 ? '50 a 80 km' : 'Más de 80 km', 'single_line_text_field'),
+      mf('velocidad_tramo', v.velocidad_max_kmh <= 25 ? 'Hasta 25 km/h (sin licencia)' : v.velocidad_max_kmh <= 50 ? '25 a 50 km/h' : 'Más de 50 km/h', 'single_line_text_field'),
+      mf('carga_tramo', v.capacidad_carga_kg <= 150 ? 'Hasta 150 kg' : v.capacidad_carga_kg <= 400 ? '150 a 400 kg' : 'Más de 400 kg', 'single_line_text_field')
     ];
     const ex = DRY ? null : (await gql(`query($h: String!) { productByHandle(handle: $h) { id } }`, { h: v.handle })).productByHandle;
     if (ex) { console.log(`= producto ${v.handle} (actualizo metafields)`); if (!DRY) { const d = await gql(`mutation($i: ProductInput!) { productUpdate(input: $i) { userErrors { field message } } }`, { i: { id: ex.id, metafields } }); userErrors(d.productUpdate, v.handle); } if (['mas_vendido'].includes(v.badge)) destacados.push(ex.id); continue; }

@@ -40,6 +40,17 @@
       <p style="width:100%; margin:0; color: rgba(255,255,255,.7); font-size: var(--brenson-text-sm)">Seleccione los vehículos y cantidades. El descuento de su tier se aplica automáticamente. Los valores son con IVA incluido.</p>
     </header>
 
+    {%- comment -%} Historial del cliente para "duplicar" (?duplicar=COT-…) sin backend: JSON con los ítems de sus cotizaciones {%- endcomment -%}
+    {%- assign cid = customer.id | append: '' -%}
+    <script type="application/json" data-q-history>[
+      {%- assign first = true -%}
+      {%- for q in shop.metaobjects.brenson_cotizacion_b2b.values -%}
+        {%- assign qcid = q.cliente.value.id | append: '' -%}
+        {%- if qcid != cid -%}{%- continue -%}{%- endif -%}
+        {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
+        { "numero": {{ q.numero.value | json }}, "items": {{ q.items.value | json }}, "observaciones": {{ q.observaciones.value | json }} }
+      {%- endfor -%}
+    ]</script>
     <brenson-quoter class="brenson-quoter" data-discount="{{ b2b_descuento }}" data-tier="{{ b2b_tier.nombre.value }}" data-next-min="{{ next_tier.minimo_unidades.value | default: 0 }}" data-next-pct="{{ next_tier.descuento_pct.value | default: 0 }}" data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" data-empresa="{{ b2b_empresa | escape }}" data-validez="{{ validez }}">
       <div class="brenson-b2b-stack">
         <div class="brenson-b2b-card" style="flex-direction:row; flex-wrap:wrap; gap:.5rem; align-items:center">

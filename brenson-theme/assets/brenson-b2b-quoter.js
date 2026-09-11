@@ -20,7 +20,39 @@
       var search = this.querySelector('[data-q-search]');
       if (search) search.addEventListener('input', () => this.filter());
       this.restore();
+      this.applyUrlParams();
       this.render();
+    }
+
+    /** ?add=handle → agrega el mínimo del producto · ?duplicar=COT-2026-0001 → carga los ítems de esa cotización */
+    applyUrlParams() {
+      var params = new URLSearchParams(location.search);
+      var add = params.get('add');
+      if (add) {
+        var it = this.items.find((i) => i.handle === add);
+        if (it && it.qty === 0) { it.qty = it.min; it.row.querySelector('[data-q-qty]').value = it.qty; it.row.scrollIntoView({ block: 'center' }); }
+      }
+      var dup = params.get('duplicar');
+      if (dup) {
+        try {
+          var hist = JSON.parse((document.querySelector('[data-q-history]') || {}).textContent || '[]');
+          var q = hist.find((h) => h.numero === dup);
+          if (q) {
+            this.items.forEach((i) => { i.qty = 0; i.row.querySelector('[data-q-qty]').value = 0; });
+            (q.items || []).forEach((line) => {
+              var it = this.items.find((i) => i.handle === (line.handle || line.producto));
+              if (!it) return;
+              it.qty = Math.max(line.cantidad || 0, it.min);
+              it.row.querySelector('[data-q-qty]').value = it.qty;
+              if (line.variant_id) { it.sel.value = String(line.variant_id); }
+              else if (line.variante || line.variant) { Array.from(it.sel.options).forEach((o) => { if (o.textContent.indexOf(line.variante || line.variant) === 0) it.sel.value = o.value; }); }
+            });
+            var notes = this.querySelector('[data-q-notes]'); if (notes && q.observaciones) notes.value = q.observaciones;
+            var st = this.querySelector('[data-q-status]'); if (st) st.textContent = 'Duplicado de ' + dup;
+          }
+        } catch (e) { console.warn('[brenson] duplicar', e); }
+      }
+      if (add || dup) history.replaceState(null, '', location.pathname);
     }
 
     initRow(row) {

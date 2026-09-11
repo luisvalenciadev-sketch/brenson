@@ -5,9 +5,12 @@
     "definitions": [
       { "key": "categoria", "name": "Categoría", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"bicicleta\",\"ciclomotor\",\"motocarro\",\"cuadriciclo\"]" }], "filterable": true },
       { "key": "uso", "name": "Uso recomendado", "type": "list.single_line_text_field", "validations": [{ "name": "choices", "value": "[\"personal\",\"comercial\",\"logistica\"]" }], "filterable": true },
-      { "key": "autonomia_km", "name": "Autonomía (km)", "type": "number_integer", "filterable": true },
-      { "key": "velocidad_max_kmh", "name": "Velocidad máxima (km/h)", "type": "number_integer", "filterable": true },
-      { "key": "capacidad_carga_kg", "name": "Capacidad de carga (kg)", "type": "number_integer", "filterable": true },
+      { "key": "autonomia_km", "name": "Autonomía (km)", "type": "number_integer" },
+      { "key": "velocidad_max_kmh", "name": "Velocidad máxima (km/h)", "type": "number_integer" },
+      { "key": "capacidad_carga_kg", "name": "Capacidad de carga (kg)", "type": "number_integer" },
+      { "key": "autonomia_tramo", "name": "Autonomía (tramo para filtro)", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"Hasta 50 km\",\"50 a 80 km\",\"Más de 80 km\"]" }], "filterable": true, "_nota": "Decisión filtros: tramos nativos (Search & Discovery no ofrece rango numérico salvo precio). Lo deriva import-mocks desde autonomia_km." },
+      { "key": "velocidad_tramo", "name": "Velocidad (tramo para filtro)", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"Hasta 25 km/h (sin licencia)\",\"25 a 50 km/h\",\"Más de 50 km/h\"]" }], "filterable": true },
+      { "key": "carga_tramo", "name": "Capacidad de carga (tramo para filtro)", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"Hasta 150 kg\",\"150 a 400 kg\",\"Más de 400 kg\"]" }], "filterable": true },
       { "key": "potencia_motor_w", "name": "Potencia del motor (W)", "type": "number_integer" },
       { "key": "bateria_tipo", "name": "Tipo de batería", "type": "single_line_text_field" },
       { "key": "bateria_capacidad", "name": "Capacidad de batería", "type": "single_line_text_field" },
@@ -187,7 +190,7 @@
   ],
   "facetas_search_discovery": [
     "price", "availability",
-    "brenson.categoria", "brenson.uso", "brenson.autonomia_km", "brenson.velocidad_max_kmh",
-    "brenson.capacidad_carga_kg", "brenson.financiable", "brenson.requiere_licencia"
+    "brenson.categoria", "brenson.uso", "brenson.autonomia_tramo", "brenson.velocidad_tramo",
+    "brenson.carga_tramo", "brenson.financiable", "brenson.requiere_licencia"
   ]
 }
