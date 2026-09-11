@@ -1,0 +1,84 @@
+{%- comment -%}
+  brenson-price
+  Bloque de precio con la cuota mensual protagonista (decisión C8, Módulo 05).
+  Calcula en Liquid la cuota "desde" con sistema francés para que exista sin JS:
+    cuota = P * i / (1 - (1+i)^-n)  ==  P * i * f / (f - 1), con f = (1+i)^n
+
+  Parámetros:
+    product        : objeto product (requerido)
+    variant        : variante (opcional; por defecto selected_or_first_available_variant)
+    layout         : 'card' (compacto para grid) | 'full' (ficha, con enlace a simulador). Default 'card'
+    show_link      : true/false, muestra "Simular otra cuota" (default true en 'full')
+
+  Fuentes de parámetros (S3): metaobject brenson_parametros_financiacion (entrada única).
+  Fallback si el metaobject no existe aún: 1,9 % mensual, 36 meses, 10 % inicial.
+{%- endcomment -%}
+{%- liquid
+  assign v = variant | default: product.selected_or_first_available_variant
+  assign layout_mode = layout | default: 'card'
+  assign params = shop.metaobjects.brenson_parametros_financiacion.values | first
+
+  assign tasa_pct = 1.9
+  assign plazo = 36
+  assign inicial_pct = 10
+  if params
+    if params.tasa_mensual.value
+      assign tasa_pct = params.tasa_mensual.value | times: 1.0
+    endif
+    if params.plazo_default.value
+      assign plazo = params.plazo_default.value | times: 1
+    endif
+    if params.inicial_default.value
+      assign inicial_pct = params.inicial_default.value | times: 1
+    endif
+  endif
+
+  assign financiable = true
+  if product.metafields.brenson.financiable.value == false
+    assign financiable = false
+  endif
+
+  assign price_cents = v.price | default: product.price
+  assign price = price_cents | divided_by: 100.0
+
+  if product.metafields.brenson.cuota_desde_override.value
+    assign cuota = product.metafields.brenson.cuota_desde_override.value.amount | times: 1.0
+  else
+    assign inicial = price | times: inicial_pct | divided_by: 100.0
+    assign principal = price | minus: inicial
+    assign i = tasa_pct | divided_by: 100.0
+    assign one_plus_i = i | plus: 1.0
+    assign f = 1.0
+    for n in (1..plazo)
+      assign f = f | times: one_plus_i
+    endfor
+    assign f_minus_1 = f | minus: 1.0
+    assign cuota = principal | times: i | times: f | divided_by: f_minus_1
+  endif
+
+  assign cuota_cents = cuota | round | times: 100
+  assign cuota_money = cuota_cents | money_without_trailing_zeros
+  assign precio_money = price_cents | money_without_trailing_zeros
+-%}
+<div class="brenson-price brenson-price--{{ layout_mode }}" data-brenson-price data-price="{{ price_cents }}" data-tasa="{{ tasa_pct }}" data-plazo="{{ plazo }}" data-inicial="{{ inicial_pct }}">
+  {%- if financiable -%}
+    <span class="brenson-price__label">{{ 'brenson.cuota_desde' | t }}</span>
+    <span class="brenson-price__cuota brenson-num">
+      <span data-brenson-cuota>{{ cuota_money }}</span><small>{{ 'brenson.por_mes' | t }}</small>
+    </span>
+    {%- if layout_mode == 'full' -%}
+      <span class="brenson-price__terms" data-brenson-terms>{{ plazo }} meses · {{ inicial_pct }} % de cuota inicial</span>
+    {%- endif -%}
+    <span class="brenson-price__contado brenson-num">
+      {{ 'brenson.precio_contado' | t }} <strong>{{ precio_money }}</strong>
+      <span class="brenson-price__iva">· {{ 'brenson.iva_incluido' | t }}</span>
+    </span>
+    {%- if layout_mode == 'full' and show_link != false -%}
+      <a class="brenson-price__link link" href="#brenson-simulator" data-brenson-open-simulator>{{ 'brenson.simular_cuota' | t }}</a>
+    {%- endif -%}
+  {%- else -%}
+    <span class="brenson-price__label">{{ 'brenson.precio_contado' | t }}</span>
+    <span class="brenson-price__cuota brenson-num">{{ precio_money }}</span>
+    <span class="brenson-price__iva">{{ 'brenson.iva_incluido' | t }}</span>
+  {%- endif -%}
+</div>

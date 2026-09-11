@@ -1,0 +1,159 @@
+{%- comment -%}
+  brenson-simulator — Módulo 05. Simulador financiero.
+  Modos:
+    - En ficha de producto (product.json): usa el precio de la variante seleccionada; escucha 'variant:change' de Dawn.
+    - En página /pages/financiacion: selector de vehículo (colección configurable) + precio libre.
+  Parámetros desde metaobject brenson_parametros_financiacion (S3), con fallback.
+  Fórmula (sistema francés): cuota = P·i / (1 − (1+i)^−n), P = precio − inicial.
+  CTA "Solicitar financiamiento" → formulario de lead con datos de simulación (decisión C6).
+{%- endcomment -%}
+{%- liquid
+  assign params = shop.metaobjects.brenson_parametros_financiacion.values | first
+  assign tasa = 1.9
+  assign plazos = '12,24,36,48' | split: ','
+  assign iniciales = '0,10,20,30' | split: ','
+  assign plazo_default = 36
+  assign inicial_default = 10
+  assign disclaimer = 'Cuota mensual estimada con fines informativos. Sujeta a estudio y aprobación crediticia por parte de la entidad financiera aliada. No incluye matrícula, SOAT, estudio de crédito ni seguros. No constituye una oferta comercial. [BORRADOR: pendiente revisión legal]'
+  assign aliado = 'Aliado Financiero [BORRADOR]'
+  assign costos = 'Matrícula y trámites de tránsito,SOAT,Estudio de crédito y seguro del crédito' | split: ','
+  if params
+    if params.tasa_mensual.value
+      assign tasa = params.tasa_mensual.value
+    endif
+    if params.plazos.value
+      assign plazos = params.plazos.value
+    endif
+    if params.iniciales_pct.value
+      assign iniciales = params.iniciales_pct.value
+    endif
+    if params.plazo_default.value
+      assign plazo_default = params.plazo_default.value
+    endif
+    if params.inicial_default.value
+      assign inicial_default = params.inicial_default.value
+    endif
+    if params.disclaimer.value
+      assign disclaimer = params.disclaimer.value
+    endif
+    if params.aliado_nombre.value
+      assign aliado = params.aliado_nombre.value
+    endif
+    if params.costos_no_incluidos.value
+      assign costos = params.costos_no_incluidos.value
+    endif
+  endif
+
+  assign is_product = false
+  if request.page_type == 'product' and product
+    assign is_product = true
+    assign financiable = true
+    if product.metafields.brenson.financiable.value == false
+      assign financiable = false
+    endif
+  endif
+-%}
+{%- if is_product and financiable == false -%}
+  {%- comment -%} Producto no financiable: no se muestra el simulador (decisión C7) {%- endcomment -%}
+{%- else -%}
+<section id="brenson-simulator" class="brenson-section {% if section.settings.dark %}brenson-section--dark{% else %}brenson-section--alt{% endif %}" data-brenson-simulator-section>
+  <div class="brenson-container">
+    <header class="brenson-section__head">
+      <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+      {%- if section.settings.subtitle != blank -%}<p class="brenson-subheading">{{ section.settings.subtitle }}</p>{%- endif -%}
+    </header>
+
+    <brenson-simulator
+      class="brenson-simulator"
+      data-tasa="{{ tasa }}"
+      data-plazo="{{ plazo_default }}"
+      data-inicial="{{ inicial_default }}"
+      {% if is_product %}data-price="{{ product.selected_or_first_available_variant.price }}" data-product-title="{{ product.title | escape }}" data-product-handle="{{ product.handle }}"{% endif %}
+      data-currency="COP"
+    >
+      <div class="brenson-simulator__controls">
+        {%- unless is_product -%}
+          <div class="brenson-simulator__field">
+            <label for="sim-vehiculo">Vehículo</label>
+            <select id="sim-vehiculo" data-sim-vehicle class="brenson-field">
+              <option value="">Elige un vehículo o escribe un precio</option>
+              {%- if section.settings.collection != blank -%}
+                {%- for p in section.settings.collection.products limit: 50 -%}
+                  {%- unless p.metafields.brenson.financiable.value == false -%}
+                    <option value="{{ p.price_min }}" data-handle="{{ p.handle }}">{{ p.title }} · {{ p.price_min | money_without_trailing_zeros }}</option>
+                  {%- endunless -%}
+                {%- endfor -%}
+              {%- endif -%}
+            </select>
+          </div>
+          <div class="brenson-simulator__field">
+            <label for="sim-precio">Precio del vehículo (COP)</label>
+            <input id="sim-precio" type="text" inputmode="numeric" data-sim-price-input placeholder="7.990.000" autocomplete="off">
+          </div>
+        {%- endunless -%}
+
+        <fieldset class="brenson-simulator__field">
+          <legend class="brenson-simulator__legend">Cuota inicial</legend>
+          <div class="brenson-chips" role="group" data-sim-iniciales>
+            {%- for pct in iniciales -%}
+              {%- assign pct_n = pct | strip | times: 1 -%}
+              <button type="button" class="brenson-chip" data-sim-inicial="{{ pct_n }}" aria-pressed="{% if pct_n == inicial_default %}true{% else %}false{% endif %}">{{ pct_n }} %</button>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+
+        <fieldset class="brenson-simulator__field">
+          <legend class="brenson-simulator__legend">Plazo</legend>
+          <div class="brenson-tabs" role="tablist" data-sim-plazos>
+            {%- for m in plazos -%}
+              {%- assign m_n = m | strip | times: 1 -%}
+              <button type="button" role="tab" class="brenson-tab" data-sim-plazo="{{ m_n }}" aria-selected="{% if m_n == plazo_default %}true{% else %}false{% endif %}">{{ m_n }} meses</button>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+
+        {%- if costos.size > 0 -%}
+          <p class="brenson-simulator__disclaimer">No incluye: {{ costos | join: ' · ' }}.</p>
+        {%- endif -%}
+      </div>
+
+      <div class="brenson-simulator__result" aria-live="polite">
+        <span class="brenson-simulator__result-label">Tu cuota mensual estimada</span>
+        <div class="brenson-simulator__cuota brenson-num"><span data-sim-cuota>—</span> <small>/mes</small></div>
+        <div class="brenson-simulator__rows">
+          <div><span>Vehículo</span><strong data-sim-vehicle-name>{% if is_product %}{{ product.title }}{% else %}—{% endif %}</strong></div>
+          <div><span>Precio</span><strong class="brenson-num" data-sim-price-out>—</strong></div>
+          <div><span>Cuota inicial</span><strong class="brenson-num" data-sim-inicial-out>—</strong></div>
+          <div><span>Monto a financiar</span><strong class="brenson-num" data-sim-principal>—</strong></div>
+          <div><span>Tasa de referencia</span><strong>{{ tasa }} % mensual</strong></div>
+          <div><span>Aliado</span><strong>{{ aliado }}</strong></div>
+        </div>
+        <button type="button" class="brenson-btn brenson-btn--primary brenson-btn--lg brenson-btn--block" data-sim-cta data-brenson-track="simulator_cta">
+          {{ section.settings.cta_label }}
+        </button>
+        <p class="brenson-simulator__disclaimer">{{ disclaimer }}</p>
+      </div>
+    </brenson-simulator>
+  </div>
+</section>
+<script src="{{ 'brenson-simulator.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brenson · Simulador financiero",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Financiación" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Simula tu cuota en segundos" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo", "default": "La cuota mensual se calcula con la tasa de referencia de nuestro aliado financiero." },
+    { "type": "text", "id": "cta_label", "label": "Texto del botón", "default": "Solicitar financiamiento" },
+    { "type": "collection", "id": "collection", "label": "Colección de vehículos (solo en página Financiación)" },
+    { "type": "checkbox", "id": "dark", "label": "Fondo oscuro", "default": false },
+    { "type": "paragraph", "content": "Tasa, plazos, iniciales, aliado y disclaimer se editan en Contenido → Metaobjects → Parámetros de financiación." }
+  ],
+  "presets": [ { "name": "Brenson · Simulador financiero" } ],
+  "enabled_on": { "templates": ["product", "page", "index"] }
+}
+{% endschema %}

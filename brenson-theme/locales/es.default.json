@@ -221,6 +221,10 @@
     }
   },
   "templates": {
+    "404": {
+      "title": "Página no encontrada",
+      "subtext": "404"
+    },
     "search": {
       "no_results": "No se encontraron resultados para “{{ terms }}” Revisa la ortografía o usa una palabra o frase diferente.",
       "results_with_count": {
@@ -269,10 +273,6 @@
         "error_heading": "Por favor, ajusta lo siguiente:",
         "title": "Formulario de contacto"
       }
-    },
-    "404": {
-      "title": "Página no encontrada",
-      "subtext": "404"
     }
   },
   "sections": {
@@ -506,7 +506,8 @@
       "subtotal": "Subtotal",
       "total_duties": "Aranceles",
       "total_refunded": "Reembolsado"
-    }
+    },
+    "account_fallback": "Cuenta"
   },
   "gift_cards": {
     "issued": {
@@ -539,5 +540,25 @@
       "expanded": "Formulario del destinatario de la tarjeta de regalo expandido",
       "collapsed": "Formulario del destinatario de tarjeta de regalo contraído"
     }
+  },
+  "brenson": {
+    "whatsapp_cta": "Hablar con un asesor",
+    "cuota_desde": "Cuota estimada desde",
+    "por_mes": "/mes",
+    "precio_contado": "Precio contado",
+    "iva_incluido": "IVA incluido",
+    "simular_cuota": "Simular otra cuota",
+    "certificado": "Certificado Brenson",
+    "puntos_inspeccion": "{{ count }} puntos de inspección",
+    "badge_mas_vendido": "Más vendido",
+    "badge_nuevo": "Nuevo",
+    "badge_financiacion": "Financiación",
+    "badge_flota": "Flota",
+    "autonomia": "Autonomía",
+    "velocidad": "Velocidad máx.",
+    "carga": "Carga",
+    "modo_simulacion_aviso": "Sitio en construcción: datos de demostración.",
+    "fuera_horario": "Fuera de horario",
+    "en_linea": "En línea"
   }
 }

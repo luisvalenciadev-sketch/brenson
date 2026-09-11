@@ -1466,5 +1466,59 @@
         "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
       }
     ]
+  },
+  {
+    "name": "Brenson · Contacto y WhatsApp",
+    "settings": [
+      { "type": "paragraph", "content": "Datos de contacto usados por el botón flotante, la sticky bar y los formularios. El número va en formato internacional sin espacios ni signo +." },
+      { "type": "text", "id": "brenson_whatsapp", "label": "WhatsApp principal", "default": "573164820543", "info": "Confirmado como número oficial (decisión E1)." },
+      { "type": "text", "id": "brenson_whatsapp_label", "label": "Texto del botón", "default": "Hablar con un asesor" },
+      { "type": "textarea", "id": "brenson_whatsapp_msg_default", "label": "Mensaje por defecto", "default": "Hola Brenson, quiero más información sobre sus vehículos eléctricos." },
+      { "type": "textarea", "id": "brenson_whatsapp_msg_product", "label": "Mensaje desde ficha", "default": "Hola Brenson, me interesa el {modelo}. ¿Me dan más información?", "info": "Usa {modelo} para insertar el nombre del vehículo." },
+      { "type": "textarea", "id": "brenson_whatsapp_msg_empresas", "label": "Mensaje desde Empresas", "default": "Buen día, represento a una empresa y quisiera información sobre flotas eléctricas Brenson." },
+      { "type": "text", "id": "brenson_email_ventas", "label": "Correo de ventas", "default": "ventas@brenson.co" },
+      { "type": "text", "id": "brenson_email_empresas", "label": "Correo de empresas", "default": "empresas@brenson.co" },
+      { "type": "header", "content": "Horario de atención" },
+      { "type": "text", "id": "brenson_horario_semana", "label": "Lunes a viernes", "default": "08:00-18:00", "info": "Formato HH:MM-HH:MM, hora de Colombia." },
+      { "type": "text", "id": "brenson_horario_sabado", "label": "Sábado", "default": "09:00-13:00", "info": "Vacío si no hay atención." },
+      { "type": "text", "id": "brenson_horario_domingo", "label": "Domingo", "default": "" },
+      { "type": "text", "id": "brenson_fuera_horario_msg", "label": "Mensaje fuera de horario", "default": "Estamos fuera de horario. Escríbenos y te respondemos al inicio de la próxima jornada." }
+    ]
+  },
+  {
+    "name": "Brenson · Confianza y envíos",
+    "settings": [
+      { "type": "checkbox", "id": "brenson_show_certificado", "label": "Mostrar sello Certificado Brenson", "default": true, "info": "Desactivar hasta que el proceso de certificación esté operando (riesgo R-D3)." },
+      { "type": "text", "id": "brenson_certificado_puntos", "label": "Puntos de inspección", "default": "12" },
+      { "type": "text", "id": "brenson_garantia_texto", "label": "Texto corto de garantía", "default": "Garantía hasta 24 meses" },
+      { "type": "header", "content": "Tiempos de entrega por región (decisión B18b)" },
+      { "type": "text", "id": "brenson_envio_caribe", "label": "Región Caribe", "default": "3 a 5 días hábiles" },
+      { "type": "text", "id": "brenson_envio_andina", "label": "Región Andina", "default": "5 a 8 días hábiles" },
+      { "type": "text", "id": "brenson_envio_cafetero", "label": "Eje Cafetero y Santanderes", "default": "5 a 8 días hábiles" },
+      { "type": "text", "id": "brenson_envio_pacifico", "label": "Pacífico y Llanos", "default": "8 a 12 días hábiles" },
+      { "type": "text", "id": "brenson_envio_otros", "label": "Amazonía e insular", "default": "Cotización especial" },
+      { "type": "header", "content": "Prueba de manejo (decisión I6)" },
+      { "type": "textarea", "id": "brenson_sede_direccion", "label": "Dirección de la sede", "default": "Barranquilla, Colombia [BORRADOR]" },
+      { "type": "text", "id": "brenson_prueba_ciudades", "label": "Ciudades con prueba a domicilio", "default": "Barranquilla, Santa Marta, Cartagena", "info": "Separadas por coma." }
+    ]
+  },
+  {
+    "name": "Brenson · Empresas (B2B)",
+    "settings": [
+      { "type": "paragraph", "content": "El acceso al portal se controla con el tag de cliente 'cliente-corporativo'. Los tiers y descuentos viven en el metaobject brenson_tier_b2b." },
+      { "type": "text", "id": "brenson_b2b_tag", "label": "Tag de acceso aprobado", "default": "cliente-corporativo" },
+      { "type": "text", "id": "brenson_b2b_tag_pendiente", "label": "Tag de solicitud pendiente", "default": "b2b-pendiente" },
+      { "type": "text", "id": "brenson_b2b_nombre", "label": "Nombre público del portal", "default": "Brenson Empresas" },
+      { "type": "collection", "id": "brenson_b2b_collection", "label": "Colección del catálogo corporativo" },
+      { "type": "text", "id": "brenson_b2b_validez_dias", "label": "Validez de cotización (días)", "default": "15" },
+      { "type": "url", "id": "brenson_services_url", "label": "URL de brenson-services", "info": "Backend de leads, cotizaciones PDF y carga de documentos. Vacío = modo simulación (los formularios muestran éxito sin enviar)." }
+    ]
+  },
+  {
+    "name": "Brenson · Desarrollo",
+    "settings": [
+      { "type": "checkbox", "id": "brenson_modo_simulacion", "label": "Modo simulación", "default": true, "info": "Muestra el aviso 'datos de demostración' y el contenido marcado como no verificado. APAGAR antes del lanzamiento (ver docs/ESTRATEGIA_SIMULACION.md)." },
+      { "type": "text", "id": "brenson_gtm_id", "label": "ID de Google Tag Manager", "default": "", "info": "GTM-XXXXXXX. Vacío = no se carga." }
+    ]
   }
 ]

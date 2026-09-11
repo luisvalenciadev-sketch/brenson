@@ -1,0 +1,41 @@
+{%- comment -%}
+  brenson-whatsapp-link
+  Construye la URL wa.me con mensaje precargado según el contexto (Módulo 10, decisiones E1/E2/H2).
+
+  Parámetros:
+    context  : 'default' | 'product' | 'empresas' | 'servicio' | 'garantias'  (default: 'default')
+    product  : objeto product (requerido si context == 'product')
+    extra    : texto adicional opcional que se anexa al mensaje (ej. cuota simulada)
+    number   : sobrescribe el número (por defecto settings.brenson_whatsapp)
+
+  Salida: solo la URL (sin etiqueta). Uso: <a href="{% render 'brenson-whatsapp-link', context: 'product', product: product %}">
+{%- endcomment -%}
+{%- liquid
+  assign wa_number = number | default: settings.brenson_whatsapp | default: '573164820543'
+  assign wa_number = wa_number | replace: '+', '' | replace: ' ', '' | replace: '-', ''
+  assign ctx = context | default: 'default'
+
+  case ctx
+    when 'product'
+      assign msg = settings.brenson_whatsapp_msg_product | default: 'Hola Brenson, me interesa el {modelo}. ¿Me dan más información?'
+      assign msg = msg | replace: '{modelo}', product.title
+    when 'empresas'
+      assign msg = settings.brenson_whatsapp_msg_empresas | default: 'Buen día, represento a una empresa y quisiera información sobre flotas eléctricas Brenson.'
+    when 'servicio'
+      assign msg = 'Hola Brenson, necesito soporte de servicio técnico.'
+    when 'garantias'
+      assign msg = 'Hola Brenson, quiero hacer una consulta sobre mi garantía.'
+    else
+      assign msg = settings.brenson_whatsapp_msg_default | default: 'Hola Brenson, quiero más información sobre sus vehículos eléctricos.'
+  endcase
+
+  if extra != blank
+    assign msg = msg | append: ' ' | append: extra
+  endif
+
+  if request.page_type == 'product' and ctx == 'product'
+    assign msg = msg | append: ' ' | append: shop.url | append: product.url
+  endif
+
+  assign msg_encoded = msg | url_encode | replace: '+', '%20'
+-%}https://wa.me/{{ wa_number }}?text={{ msg_encoded }}

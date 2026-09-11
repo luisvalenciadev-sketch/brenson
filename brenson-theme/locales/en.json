@@ -217,6 +217,10 @@
     }
   },
   "templates": {
+    "404": {
+      "title": "Page not found",
+      "subtext": "404"
+    },
     "search": {
       "no_results": "No results found for “{{ terms }}”. Check the spelling or use a different word or phrase.",
       "page": "Page",
@@ -260,10 +264,6 @@
         "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
         "error_heading": "Please adjust the following:"
       }
-    },
-    "404": {
-      "title": "Page not found",
-      "subtext": "404"
     }
   },
   "sections": {
@@ -274,7 +274,6 @@
       "announcement": "Announcement",
       "announcement_bar": "Announcement bar"
     },
-
     "header": {
       "announcement": "Announcement",
       "menu": "Menu",
@@ -495,7 +494,8 @@
       "password": "Password",
       "password_confirm": "Confirm password",
       "submit": "Reset password"
-    }
+    },
+    "account_fallback": "Account"
   },
   "gift_cards": {
     "issued": {
@@ -528,5 +528,25 @@
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
     }
+  },
+  "brenson": {
+    "whatsapp_cta": "Hablar con un asesor",
+    "cuota_desde": "Cuota estimada desde",
+    "por_mes": "/mes",
+    "precio_contado": "Precio contado",
+    "iva_incluido": "IVA incluido",
+    "simular_cuota": "Simular otra cuota",
+    "certificado": "Certificado Brenson",
+    "puntos_inspeccion": "{{ count }} puntos de inspección",
+    "badge_mas_vendido": "Más vendido",
+    "badge_nuevo": "Nuevo",
+    "badge_financiacion": "Financiación",
+    "badge_flota": "Flota",
+    "autonomia": "Autonomía",
+    "velocidad": "Velocidad máx.",
+    "carga": "Carga",
+    "modo_simulacion_aviso": "Sitio en construcción: datos de demostración.",
+    "fuera_horario": "Fuera de horario",
+    "en_linea": "En línea"
   }
 }

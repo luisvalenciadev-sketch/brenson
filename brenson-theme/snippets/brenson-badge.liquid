@@ -1,0 +1,42 @@
+{%- comment -%}
+  brenson-badge
+  Badges de catálogo (Módulo 02, decisión G12) y sello Certificado Brenson (Módulo 06).
+
+  Parámetros:
+    product     : objeto product
+    type        : 'catalogo' (lee product.metafields.brenson.badge) | 'certificado' (sello verde)
+    size        : 'sm' | 'md' (default 'md')
+    expandable  : true para que el sello certificado abra el checklist (solo en ficha)
+{%- endcomment -%}
+{%- liquid
+  assign badge_type = type | default: 'catalogo'
+  assign badge_size = size | default: 'md'
+-%}
+{%- if badge_type == 'certificado' -%}
+  {%- if settings.brenson_show_certificado and product.metafields.brenson.certificado.value != false -%}
+    {%- assign puntos = settings.brenson_certificado_puntos | default: 12 -%}
+    {%- if expandable -%}
+      <button type="button" class="brenson-badge brenson-badge--certificado brenson-badge--{{ badge_size }}" data-brenson-open-certificacion aria-expanded="false" aria-controls="brenson-certificacion">
+    {%- else -%}
+      <span class="brenson-badge brenson-badge--certificado brenson-badge--{{ badge_size }}">
+    {%- endif -%}
+      <svg class="brenson-badge__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m13 7-4 6h3l-1 4 4-6h-3l1-4Z" fill="currentColor"/></svg>
+      <span>{{ 'brenson.certificado' | t }}</span>
+      {%- if badge_size == 'md' -%}
+        <span class="brenson-badge__sub">· {{ 'brenson.puntos_inspeccion' | t: count: puntos }}</span>
+      {%- endif -%}
+    {%- if expandable -%}</button>{%- else -%}</span>{%- endif -%}
+  {%- endif -%}
+{%- else -%}
+  {%- assign b = product.metafields.brenson.badge.value -%}
+  {%- if b != blank -%}
+    {%- case b -%}
+      {%- when 'mas_vendido' -%}{%- assign label = 'brenson.badge_mas_vendido' | t -%}{%- assign mod = 'rojo' -%}
+      {%- when 'nuevo' -%}{%- assign label = 'brenson.badge_nuevo' | t -%}{%- assign mod = 'carbon' -%}
+      {%- when 'financiacion' -%}{%- assign label = 'brenson.badge_financiacion' | t -%}{%- assign mod = 'verde' -%}
+      {%- when 'flota' -%}{%- assign label = 'brenson.badge_flota' | t -%}{%- assign mod = 'carbon' -%}
+      {%- else -%}{%- assign label = b -%}{%- assign mod = 'gris' -%}
+    {%- endcase -%}
+    <span class="brenson-badge brenson-badge--{{ mod }} brenson-badge--{{ badge_size }}">{{ label }}</span>
+  {%- endif -%}
+{%- endif -%}

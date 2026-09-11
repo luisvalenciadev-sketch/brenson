@@ -1,0 +1,88 @@
+{%- comment -%}
+  brenson-category-grid — Módulo 01. Grid de categorías (colecciones) con imagen, nombre, descripción corta y precio "desde".
+  El precio "desde" se calcula con el producto más barato de la colección. Imagen: metafield brenson.imagen_hero o imagen de la colección.
+  Simulación S2: si no hay imagen, placeholder con silueta.
+{%- endcomment -%}
+<section class="brenson-section brenson-category-grid">
+  <div class="brenson-container">
+    <header class="brenson-section__head brenson-section__head--center">
+      {%- if section.settings.eyebrow != blank -%}<span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+      {%- if section.settings.subtitle != blank -%}<p class="brenson-subheading">{{ section.settings.subtitle }}</p>{%- endif -%}
+    </header>
+
+    <ul class="brenson-grid brenson-grid--4" role="list">
+      {%- for block in section.blocks -%}
+        {%- assign col = block.settings.collection -%}
+        {%- if col == blank -%}{%- continue -%}{%- endif -%}
+        {%- liquid
+          assign img = col.metafields.brenson.imagen_hero.value | default: col.image | default: col.products.first.featured_image
+          assign min_price = nil
+          for p in col.products limit: 50
+            if min_price == nil or p.price_min < min_price
+              assign min_price = p.price_min
+            endif
+          endfor
+        -%}
+        <li class="brenson-card brenson-category-card" {{ block.shopify_attributes }}>
+          <div class="brenson-card__media">
+            {%- if img -%}
+              {{ img | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw', widths: '360, 540, 720, 900', alt: col.title }}
+            {%- else -%}
+              <div class="brenson-category-card__ph" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="m13 2-8 12h6l-1 8 8-12h-6l1-8Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.tag != blank -%}
+              <div class="brenson-card__badges"><span class="brenson-badge brenson-badge--carbon brenson-badge--sm">{{ block.settings.tag }}</span></div>
+            {%- endif -%}
+          </div>
+          <div class="brenson-card__body">
+            <h3 class="brenson-card__title"><a href="{{ col.url }}">{{ block.settings.label | default: col.title }}</a></h3>
+            <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0;">{{ block.settings.text | default: col.description | strip_html | truncate: 90 }}</p>
+            <div class="brenson-card__footer">
+              {%- if min_price -%}
+                <span class="brenson-num" style="font-size: var(--brenson-text-sm);">Desde <strong>{{ min_price | money_without_trailing_zeros }}</strong></span>
+              {%- endif -%}
+              <span class="brenson-btn brenson-btn--outline brenson-btn--sm">Explorar categoría</span>
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .brenson-category-card__ph { width: 100%; height: 100%; display: grid; place-items: center; color: var(--brenson-gris-borde); }
+  .brenson-category-card__ph svg { width: 30%; height: 30%; }
+</style>
+
+{% schema %}
+{
+  "name": "Brenson · Grid de categorías",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Portafolio" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Elige tu vehículo ideal" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo", "default": "Diseñados para la topografía y el clima colombiano, con el menor costo por kilómetro del mercado." }
+  ],
+  "blocks": [
+    {
+      "type": "categoria",
+      "name": "Categoría",
+      "limit": 8,
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Colección" },
+        { "type": "text", "id": "label", "label": "Nombre (opcional)" },
+        { "type": "text", "id": "text", "label": "Descripción corta (opcional)" },
+        { "type": "text", "id": "tag", "label": "Etiqueta (ej. Urbano y plegable)" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Brenson · Grid de categorías", "blocks": [ { "type": "categoria" }, { "type": "categoria" }, { "type": "categoria" }, { "type": "categoria" } ] }
+  ]
+}
+{% endschema %}

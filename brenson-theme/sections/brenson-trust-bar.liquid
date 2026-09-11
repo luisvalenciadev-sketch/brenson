@@ -1,0 +1,65 @@
+{%- comment -%}
+  brenson-trust-bar — Módulo 06. Barra de confianza con 4 ítems editables (bloques).
+  Los textos de garantía y certificación se toman de settings Brenson para mantener consistencia.
+{%- endcomment -%}
+<section class="brenson-section brenson-section--alt brenson-trust-bar" style="padding-block: {{ section.settings.padding }}px;">
+  <div class="brenson-container">
+    <ul class="brenson-trust" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign title = block.settings.title
+          assign text = block.settings.text
+          if block.type == 'certificado'
+            assign title = 'brenson.certificado' | t
+            assign text = 'brenson.puntos_inspeccion' | t: count: settings.brenson_certificado_puntos
+            assign text = text | append: ' antes de la entrega'
+          elsif block.type == 'garantia'
+            assign title = settings.brenson_garantia_texto
+          endif
+        -%}
+        {%- if block.type == 'certificado' and settings.brenson_show_certificado == false -%}{%- continue -%}{%- endif -%}
+        <li class="brenson-trust__item" {{ block.shopify_attributes }}>
+          <span class="brenson-trust__icon" aria-hidden="true">
+            {%- case block.type -%}
+              {%- when 'certificado' -%}
+                <svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m13 7-4 6h3l-1 4 4-6h-3l1-4Z" fill="currentColor"/></svg>
+              {%- when 'garantia' -%}
+                <svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              {%- when 'envios' -%}
+                <svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+              {%- when 'financiacion' -%}
+                <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 9h.01M18 15h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {%- endcase -%}
+          </span>
+          <div>
+            <p class="brenson-trust__title">{{ title }}</p>
+            {%- if text != blank -%}<p class="brenson-trust__text">{{ text }}</p>{%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brenson · Barra de confianza",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "range", "id": "padding", "min": 8, "max": 64, "step": 4, "unit": "px", "label": "Espaciado vertical", "default": 24 }
+  ],
+  "blocks": [
+    { "type": "certificado", "name": "Certificado Brenson", "limit": 1, "settings": [ { "type": "paragraph", "content": "Texto tomado de Ajustes del tema → Brenson · Confianza." } ] },
+    { "type": "garantia", "name": "Garantía", "limit": 1, "settings": [ { "type": "text", "id": "text", "label": "Detalle", "default": "Respaldo directo de Brenson en Colombia" } ] },
+    { "type": "envios", "name": "Envíos", "limit": 1, "settings": [ { "type": "text", "id": "title", "label": "Título", "default": "Envíos a toda Colombia" }, { "type": "text", "id": "text", "label": "Detalle", "default": "Tiempos estimados por región en cada ficha" } ] },
+    { "type": "financiacion", "name": "Financiación", "limit": 1, "settings": [ { "type": "text", "id": "title", "label": "Título", "default": "Financiación con aliado" }, { "type": "text", "id": "text", "label": "Detalle", "default": "Simula tu cuota y solicita el estudio en línea" } ] },
+    { "type": "custom", "name": "Personalizado", "settings": [ { "type": "text", "id": "title", "label": "Título" }, { "type": "text", "id": "text", "label": "Detalle" } ] }
+  ],
+  "presets": [
+    { "name": "Brenson · Barra de confianza", "blocks": [ { "type": "certificado" }, { "type": "garantia" }, { "type": "envios" }, { "type": "financiacion" } ] }
+  ]
+}
+{% endschema %}
