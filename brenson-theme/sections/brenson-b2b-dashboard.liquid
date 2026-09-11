@@ -1,0 +1,210 @@
+{%- comment -%}
+  brenson-b2b-dashboard — Módulo 08. Dashboard del cliente corporativo aprobado (pantalla Stitch 04, decisión I3).
+  Solo se renderiza con b2b_state == 'aprobado'. Datos:
+    - Tier / asesor: metafields del cliente (brenson_b2b.*)
+    - Cotizaciones: metaobject brenson_cotizacion_b2b filtrado por cliente (S15)
+    - Unidades: metaobject brenson_unidad filtrado por cliente (S14)
+  Nota: Liquid no puede filtrar metaobjects por referencia server-side de forma nativa; se recorren y se
+  comparan por customer.id. Con <100 entradas es aceptable. Al escalar, brenson-services expone /me/quotes y /me/units.
+{%- endcomment -%}
+{%- include 'brenson-b2b-guard' -%}
+{%- if b2b_state == 'aprobado' -%}
+{%- liquid
+  assign tiers = shop.metaobjects.brenson_tier_b2b.values
+  assign cid = customer.id | append: ''
+
+  assign my_quotes = ''
+  assign quotes_activas = 0
+  for q in shop.metaobjects.brenson_cotizacion_b2b.values
+    assign qcid = q.cliente.value.id | append: ''
+    if qcid == cid
+      assign my_quotes = my_quotes | append: q.system.handle | append: ','
+      if q.estado.value == 'enviada' or q.estado.value == 'borrador'
+        assign quotes_activas = quotes_activas | plus: 1
+      endif
+    endif
+  endfor
+  assign my_quote_handles = my_quotes | split: ','
+
+  assign units_total = 0
+  assign units_activas = 0
+  assign units_reclamo = 0
+  for u in shop.metaobjects.brenson_unidad.values
+    assign ucid = u.cliente.value.id | append: ''
+    if ucid == cid
+      assign units_total = units_total | plus: 1
+      if u.estado.value == 'activa'
+        assign units_activas = units_activas | plus: 1
+      elsif u.estado.value == 'en_reclamo'
+        assign units_reclamo = units_reclamo | plus: 1
+      endif
+    endif
+  endfor
+
+  assign next_tier = nil
+  for t in tiers
+    if t.descuento_pct.value > b2b_descuento
+      assign next_tier = t
+      break
+    endif
+  endfor
+-%}
+<section class="brenson-section brenson-b2b-dashboard">
+  <div class="brenson-container">
+
+    <div class="brenson-b2b-welcome">
+      <h1>Bienvenido{% if customer.first_name %}, {{ customer.first_name }}{% endif %}</h1>
+      <span class="brenson-status brenson-status--ok">Cuenta aprobada</span>
+      <div class="brenson-b2b-welcome__meta">
+        <span>{{ b2b_empresa }}</span>
+        {%- if customer.metafields.brenson_b2b.nit.value -%}<span>· NIT {{ customer.metafields.brenson_b2b.nit.value }}</span>{%- endif -%}
+        {%- if b2b_tier -%}<span class="brenson-badge brenson-badge--sm" style="background: rgba(255,255,255,.12); color:#fff">Tier {{ b2b_tier.nombre.value }} · {{ b2b_descuento | round }} % de descuento</span>{%- endif -%}
+        <a class="brenson-btn brenson-btn--primary brenson-btn--sm" style="margin-left:auto" href="/pages/cotizador">Cotizar nueva flota</a>
+      </div>
+    </div>
+
+    <ul class="brenson-b2b-kpis" role="list">
+      <li class="brenson-b2b-card"><span class="brenson-kpi__label">Descuento vigente</span><span class="brenson-kpi__value brenson-num">{{ b2b_descuento | round }} %</span>{%- if next_tier -%}<span class="brenson-kpi__note">Próximo tier: {{ next_tier.descuento_pct.value | round }} % desde {{ next_tier.minimo_unidades.value }} unidades</span>{%- else -%}<span class="brenson-kpi__note">Tier máximo alcanzado</span>{%- endif -%}</li>
+      <li class="brenson-b2b-card"><span class="brenson-kpi__label">Unidades en operación</span><span class="brenson-kpi__value brenson-num">{{ units_total }}</span><span class="brenson-kpi__note">Registradas con número de serie</span></li>
+      <li class="brenson-b2b-card"><span class="brenson-kpi__label">Cotizaciones activas</span><span class="brenson-kpi__value brenson-num">{{ quotes_activas }}</span><span class="brenson-kpi__note">Validez {{ settings.brenson_b2b_validez_dias | default: 15 }} días</span></li>
+      <li class="brenson-b2b-card"><span class="brenson-kpi__label">Garantías activas</span><span class="brenson-kpi__value brenson-num">{{ units_activas }}</span>{%- if units_reclamo > 0 -%}<span class="brenson-kpi__note" style="color:#92400e">{{ units_reclamo }} en reclamo</span>{%- else -%}<span class="brenson-kpi__note">Sin reclamos abiertos</span>{%- endif -%}</li>
+    </ul>
+
+    <div class="brenson-b2b-cols">
+      <div class="brenson-b2b-stack">
+        {%- comment -%} Asesor {%- endcomment -%}
+        <div class="brenson-b2b-card">
+          <span class="brenson-kpi__label">Acompañamiento corporativo</span>
+          <h2 style="margin:0; font-size: var(--brenson-text-xl)">Su asesor dedicado</h2>
+          {%- if b2b_asesor -%}
+            <div class="brenson-advisor">
+              {%- if b2b_asesor.foto.value -%}{{ b2b_asesor.foto.value | image_url: width: 128 | image_tag: class: 'brenson-advisor__avatar', alt: b2b_asesor.nombre.value }}{%- else -%}<span class="brenson-advisor__avatar" aria-hidden="true">{{ b2b_asesor.nombre.value | slice: 0 }}</span>{%- endif -%}
+              <div>
+                <strong>{{ b2b_asesor.nombre.value }}</strong><br>
+                <span class="brenson-muted" style="font-size: var(--brenson-text-sm)">{{ b2b_asesor.cargo.value }}{% if b2b_asesor.horario.value %} · {{ b2b_asesor.horario.value }}{% endif %}</span>
+              </div>
+              <div class="brenson-advisor__actions">
+                <a class="brenson-btn brenson-btn--whatsapp brenson-btn--sm" href="https://wa.me/{{ b2b_asesor.whatsapp.value }}?text={{ 'Buen día, le escribo desde el portal Brenson Empresas.' | url_encode }}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="b2b_advisor">Escribir por WhatsApp</a>
+                {%- if b2b_asesor.email.value -%}<a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="mailto:{{ b2b_asesor.email.value }}">Enviar correo</a>{%- endif -%}
+              </div>
+            </div>
+          {%- else -%}
+            <p class="brenson-muted">Le asignaremos un asesor en las próximas horas. Mientras tanto escríbanos a <a class="link" href="mailto:{{ settings.brenson_email_empresas }}">{{ settings.brenson_email_empresas }}</a>.</p>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Cotizaciones {%- endcomment -%}
+        <div class="brenson-b2b-card" id="cotizaciones">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap">
+            <h2 style="margin:0; font-size: var(--brenson-text-xl)">Mis cotizaciones</h2>
+            <a class="brenson-btn brenson-btn--primary brenson-btn--sm" href="/pages/cotizador">Nueva cotización</a>
+          </div>
+          {%- if my_quote_handles.size > 0 and my_quote_handles.first != blank -%}
+            <div class="brenson-table-wrap">
+              <table class="brenson-table">
+                <thead><tr><th>Código</th><th>Fecha</th><th>Unidades</th><th>Total</th><th>Estado</th><th></th></tr></thead>
+                <tbody>
+                  {%- for q in shop.metaobjects.brenson_cotizacion_b2b.values -%}
+                    {%- assign qcid = q.cliente.value.id | append: '' -%}
+                    {%- if qcid != cid -%}{%- continue -%}{%- endif -%}
+                    {%- assign units = 0 -%}{%- for it in q.items.value -%}{%- assign units = units | plus: it.cantidad -%}{%- endfor -%}
+                    <tr>
+                      <td><code>{{ q.numero.value }}</code></td>
+                      <td>{{ q.creada_en.value | date: '%d %b %Y' }}</td>
+                      <td>{{ units }}</td>
+                      <td class="brenson-num"><strong>{% if q.total.value %}{{ q.total.value.amount | times: 100 | money_without_trailing_zeros }}{% else %}—{% endif %}</strong></td>
+                      <td>{%- case q.estado.value -%}{%- when 'enviada' -%}<span class="brenson-status brenson-status--ok">Enviada</span>{%- when 'aceptada' -%}<span class="brenson-status brenson-status--ok">Aceptada</span>{%- when 'borrador' -%}<span class="brenson-status brenson-status--pending">Borrador</span>{%- else -%}<span class="brenson-status brenson-status--muted">{{ q.estado.value | capitalize }}</span>{%- endcase -%}</td>
+                      <td style="text-align:right; white-space:nowrap">{%- if q.pdf_url.value -%}<a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ q.pdf_url.value }}" target="_blank" rel="noopener">PDF</a>{%- endif -%} <a class="brenson-btn brenson-btn--sm" href="/pages/cotizador?duplicar={{ q.numero.value }}">Duplicar</a></td>
+                    </tr>
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+          {%- else -%}
+            <p class="brenson-muted">Aún no tiene cotizaciones. Genere la primera en menos de dos minutos.</p>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Unidades {%- endcomment -%}
+        <div class="brenson-b2b-card" id="unidades">
+          <h2 style="margin:0; font-size: var(--brenson-text-xl)">Mis unidades en flota</h2>
+          <p class="brenson-muted" style="margin:0; font-size: var(--brenson-text-sm)">Control de serie, vigencia de garantía y estado operativo.</p>
+          {%- if units_total > 0 -%}
+            <div class="brenson-table-wrap">
+              <table class="brenson-table">
+                <thead><tr><th>Serie / chasis</th><th>Vehículo</th><th>Pedido</th><th>Entrega</th><th>Garantía vehículo</th><th>Garantía batería</th><th>Estado</th></tr></thead>
+                <tbody>
+                  {%- for u in shop.metaobjects.brenson_unidad.values -%}
+                    {%- assign ucid = u.cliente.value.id | append: '' -%}
+                    {%- if ucid != cid -%}{%- continue -%}{%- endif -%}
+                    <tr>
+                      <td><code>{{ u.serie.value }}</code></td>
+                      <td>{%- if u.producto.value -%}<a class="link" href="{{ u.producto.value.url }}">{{ u.producto.value.title }}</a>{%- endif -%}</td>
+                      <td>{{ u.pedido.value }}</td>
+                      <td>{{ u.fecha_entrega.value | date: '%d %b %Y' }}</td>
+                      <td>{% if u.fin_garantia.value %}hasta {{ u.fin_garantia.value | date: '%d %b %Y' }}{% endif %}</td>
+                      <td>{% if u.fin_garantia_bateria.value %}hasta {{ u.fin_garantia_bateria.value | date: '%d %b %Y' }}{% endif %}</td>
+                      <td>{%- case u.estado.value -%}{%- when 'activa' -%}<span class="brenson-status brenson-status--ok">Activa</span>{%- when 'en_reclamo' -%}<span class="brenson-status brenson-status--pending">En reclamo</span>{%- else -%}<span class="brenson-status brenson-status--muted">Vencida</span>{%- endcase -%}</td>
+                    </tr>
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+          {%- else -%}
+            <p class="brenson-muted">Cuando reciba sus vehículos, cada unidad aparecerá aquí con su número de serie y garantía.</p>
+          {%- endif -%}
+          <a class="brenson-btn brenson-btn--outline brenson-btn--sm" style="align-self:flex-start" href="{% render 'brenson-whatsapp-link', context: 'garantias' %}" target="_blank" rel="noopener">Reportar un caso de garantía</a>
+        </div>
+      </div>
+
+      <div class="brenson-b2b-stack">
+        <div class="brenson-b2b-card">
+          <span class="brenson-kpi__label">Acciones rápidas</span>
+          <div class="brenson-quick-actions">
+            <a class="brenson-btn brenson-btn--primary" href="/pages/cotizador">Nueva cotización de flota</a>
+            {%- if settings.brenson_b2b_collection != blank -%}<a class="brenson-btn brenson-btn--outline" href="{{ settings.brenson_b2b_collection.url }}">Ver catálogo corporativo</a>{%- endif -%}
+            <a class="brenson-btn brenson-btn--outline" href="{{ routes.account_url }}">Ver pedidos</a>
+          </div>
+        </div>
+        <div class="brenson-b2b-card">
+          <span class="brenson-kpi__label">Fichas y documentos</span>
+          <ul class="brenson-doc-list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'documento' and block.settings.file != blank -%}
+                <li {{ block.shopify_attributes }}><a href="{{ block.settings.file | file_url }}" target="_blank" rel="noopener"><span>{{ block.settings.title }}</span><span class="brenson-muted">PDF</span></a></li>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if settings.brenson_services_url != blank -%}
+              <li><a href="{{ settings.brenson_services_url }}/catalogo-flota.pdf" target="_blank" rel="noopener"><span>Catálogo de flota {{ 'now' | date: '%Y' }}</span><span class="brenson-muted">PDF</span></a></li>
+            {%- endif -%}
+          </ul>
+          {%- if section.blocks.size == 0 -%}<p class="brenson-muted" style="font-size: var(--brenson-text-sm)">Agregue documentos desde el editor del tema.</p>{%- endif -%}
+        </div>
+        {%- if tiers.size > 0 -%}
+          <div class="brenson-b2b-card">
+            <span class="brenson-kpi__label">Beneficios por volumen</span>
+            {%- for t in tiers -%}
+              <div style="display:flex; justify-content:space-between; gap:1rem; padding:.5rem 0; border-top:1px solid var(--brenson-gris-borde); font-size: var(--brenson-text-sm); {% if b2b_tier and t.system.handle == b2b_tier.system.handle %}font-weight:700; color: var(--brenson-rojo){% endif %}">
+                <span>{{ t.nombre.value }} · {{ t.minimo_unidades.value }}+</span><span class="brenson-num">{{ t.descuento_pct.value | round }} %</span>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brenson · Empresas: dashboard",
+  "tag": "div",
+  "settings": [ { "type": "paragraph", "content": "Visible solo para clientes con acceso aprobado. Datos desde metafields del cliente y metaobjects de cotizaciones y unidades." } ],
+  "blocks": [
+    { "type": "documento", "name": "Documento descargable", "settings": [ { "type": "text", "id": "title", "label": "Título", "default": "Catálogo de flota" }, { "type": "file", "id": "file", "label": "Archivo PDF" } ] }
+  ],
+  "presets": [ { "name": "Brenson · Empresas: dashboard" } ],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

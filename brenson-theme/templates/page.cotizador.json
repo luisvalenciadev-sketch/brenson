@@ -1,0 +1,7 @@
+{
+  "layout": "theme.empresas",
+  "sections": {
+    "quoter": { "type": "brenson-b2b-quoter", "settings": {} }
+  },
+  "order": ["quoter"]
+}

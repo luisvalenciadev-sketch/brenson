@@ -1,0 +1,59 @@
+{%- comment -%}
+  brenson-b2b-guard — Módulo 07/08/18. Determina el estado de acceso al portal Empresas (decisión I2).
+  Evaluación SERVER-SIDE en Liquid: el HTML del portal solo se emite cuando el estado es 'aprobado'.
+
+  Estados resultantes en la variable `b2b_state`:
+    'anon'       : sin sesión
+    'pendiente'  : sesión con tag b2b-pendiente (o estado_b2b = pendiente)
+    'aprobado'   : sesión con tag cliente-corporativo
+    'rechazado'  : estado_b2b = rechazado | suspendido
+    'personal'   : sesión de cliente B2C sin solicitud B2B
+
+  Uso: {% render 'brenson-b2b-guard' %} no funciona para exportar variables (render aísla el scope),
+  por eso este snippet se INCLUYE con {% include 'brenson-b2b-guard' %} en las secciones del portal.
+  theme-check-disable ConvertIncludeToRender
+{%- endcomment -%}
+{%- liquid
+  assign b2b_tag = settings.brenson_b2b_tag | default: 'cliente-corporativo'
+  assign b2b_tag_pend = settings.brenson_b2b_tag_pendiente | default: 'b2b-pendiente'
+  assign b2b_state = 'anon'
+  assign b2b_tier = nil
+  assign b2b_asesor = nil
+  assign b2b_empresa = nil
+
+  if customer
+    assign estado_mf = customer.metafields.brenson_b2b.estado_b2b.value
+    if estado_mf == 'rechazado' or estado_mf == 'suspendido'
+      assign b2b_state = 'rechazado'
+    elsif customer.tags contains b2b_tag
+      assign b2b_state = 'aprobado'
+    elsif customer.tags contains b2b_tag_pend or estado_mf == 'pendiente'
+      assign b2b_state = 'pendiente'
+    elsif customer.note contains 'B2B {'
+      comment
+        Registro corporativo recién creado: la nota lleva el JSON de empresa y Shopify Flow
+        aún no ha asignado el tag b2b-pendiente (tarda segundos). Se trata como pendiente.
+      endcomment
+      assign b2b_state = 'pendiente'
+    else
+      assign b2b_state = 'personal'
+    endif
+
+    assign b2b_tier = customer.metafields.brenson_b2b.tier.value
+    assign b2b_asesor = customer.metafields.brenson_b2b.asesor.value
+    assign b2b_empresa = customer.metafields.brenson_b2b.razon_social.value | default: customer.name
+    if b2b_asesor == blank
+      for a in shop.metaobjects.brenson_asesor.values
+        if a.canal.value == 'b2b'
+          assign b2b_asesor = a
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  assign b2b_descuento = 0
+  if b2b_tier
+    assign b2b_descuento = b2b_tier.descuento_pct.value | default: 0
+  endif
+-%}

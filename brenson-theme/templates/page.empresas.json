@@ -1,0 +1,24 @@
+{
+  "layout": "theme.empresas",
+  "sections": {
+    "gate": {
+      "type": "brenson-b2b-gate",
+      "settings": {
+        "eyebrow": "Portal corporativo B2B · Colombia",
+        "title": "Flotas eléctricas para su empresa, con precios por volumen y respaldo Brenson",
+        "text": "Acceda a precios corporativos desde 10 unidades, cotizaciones en PDF al instante y un asesor dedicado para su operación."
+      }
+    },
+    "dashboard": {
+      "type": "brenson-b2b-dashboard",
+      "blocks": {
+        "doc1": { "type": "documento", "settings": { "title": "Catálogo de flota 2026" } },
+        "doc2": { "type": "documento", "settings": { "title": "Condiciones comerciales B2B" } },
+        "doc3": { "type": "documento", "settings": { "title": "Plan de mantenimiento preventivo" } }
+      },
+      "block_order": ["doc1", "doc2", "doc3"],
+      "settings": {}
+    }
+  },
+  "order": ["gate", "dashboard"]
+}

@@ -1,0 +1,56 @@
+{%- comment -%}
+  brenson-b2b-header — Header del portal Empresas (layout theme.empresas.liquid). Tono formal.
+  Navegación visible solo con acceso aprobado. Sin sesión: enlaces públicos + login/solicitar.
+{%- endcomment -%}
+{%- include 'brenson-b2b-guard' -%}
+<header class="brenson-b2b-header">
+  <div class="brenson-container brenson-b2b-header__inner">
+    <a class="brenson-b2b-header__logo" href="/pages/empresas">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 240 | image_tag: alt: shop.name, loading: 'eager', style: 'filter: invert(1) brightness(2)' }}
+      {%- else -%}
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="m13 7-4 6h3l-1 4 4-6h-3l1-4Z" fill="#ee0000"/></svg>
+        <span>BRENSON</span>
+      {%- endif -%}
+      <span class="brenson-badge brenson-badge--sm">Empresas</span>
+    </a>
+
+    {%- if b2b_state == 'aprobado' -%}
+      <nav class="brenson-b2b-nav" aria-label="Portal Empresas">
+        <a href="/pages/empresas" {% if template.suffix == 'empresas' %}aria-current="page"{% endif %}>Inicio</a>
+        {%- if settings.brenson_b2b_collection != blank -%}<a href="{{ settings.brenson_b2b_collection.url }}" {% if request.page_type == 'collection' %}aria-current="page"{% endif %}>Catálogo corporativo</a>{%- endif -%}
+        <a href="/pages/cotizador" {% if template.suffix == 'cotizador' %}aria-current="page"{% endif %}>Cotizador</a>
+        <a href="/pages/empresas#cotizaciones">Mis cotizaciones</a>
+        <a href="/pages/empresas#unidades">Mis unidades</a>
+        <a href="{{ routes.account_url }}">Pedidos</a>
+      </nav>
+      <div class="brenson-b2b-header__user">
+        <span class="brenson-b2b-header__avatar" aria-hidden="true">{{ b2b_empresa | slice: 0 }}</span>
+        <div>
+          <strong>{{ b2b_empresa | truncate: 28 }}</strong>
+          {%- if customer.metafields.brenson_b2b.nit.value -%}NIT {{ customer.metafields.brenson_b2b.nit.value }}{%- endif -%}
+        </div>
+        <a class="brenson-btn brenson-btn--sm" style="color: rgba(255,255,255,.8)" href="{{ routes.account_logout_url }}">Cerrar sesión</a>
+      </div>
+    {%- else -%}
+      <nav class="brenson-b2b-nav" aria-label="Brenson Empresas">
+        <a href="/pages/empresas#beneficios">Beneficios</a>
+        <a href="/pages/empresas#flotas">Flotas</a>
+        <a href="/pages/empresas#como-funciona">Cómo funciona</a>
+        <a href="{{ routes.root_url }}">Sitio principal</a>
+      </nav>
+      <div class="brenson-b2b-header__user">
+        {%- if customer -%}
+          <a class="brenson-btn brenson-btn--sm" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{{ routes.account_url }}">Mi cuenta</a>
+        {%- else -%}
+          <a class="brenson-btn brenson-btn--outline brenson-btn--sm" style="color:#fff; border-color: rgba(255,255,255,.4)" href="#b2b-login">Iniciar sesión</a>
+        {%- endif -%}
+        <a class="brenson-btn brenson-btn--primary brenson-btn--sm" href="/pages/empresas-acceso">Solicitar acceso</a>
+      </div>
+    {%- endif -%}
+  </div>
+</header>
+
+{% schema %}
+{ "name": "Brenson · Empresas: header", "tag": "div", "settings": [ { "type": "paragraph", "content": "Header del portal corporativo. Se usa en el layout theme.empresas." } ] }
+{% endschema %}

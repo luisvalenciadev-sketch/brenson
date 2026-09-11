@@ -1,0 +1,7 @@
+{
+  "layout": "theme.empresas",
+  "sections": {
+    "request": { "type": "brenson-b2b-request-access", "settings": {} }
+  },
+  "order": ["request"]
+}

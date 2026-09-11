@@ -1,0 +1,147 @@
+{%- comment -%}
+  brenson-b2b-quoter — Módulo 08. Cotizador de flota (pantalla Stitch 08, decisión I4).
+  - Solo con acceso aprobado (guard). Sin acceso → redirige a /pages/empresas.
+  - Lista de vehículos de la colección corporativa con precio público, precio con tier (display) y mínimo de unidades.
+  - Cálculo client-side SOLO para mostrar. El total oficial lo recalcula brenson-services en POST /quote con Admin API
+    y la Shopify Function aplica el descuento real en checkout (R-A3).
+  - Sin backend (modo simulación): "Generar PDF" descarga un resumen HTML imprimible y muestra éxito.
+  - Datos para JS en <script type="application/json">. Vanilla JS (Alpine se descartó: el componente es pequeño).
+{%- endcomment -%}
+{%- include 'brenson-b2b-guard' -%}
+{%- if b2b_state != 'aprobado' -%}
+  <section class="brenson-section"><div class="brenson-container">
+    <div class="brenson-b2b-card brenson-b2b-card--center">
+      <h1 class="brenson-heading">El cotizador es exclusivo para empresas aprobadas</h1>
+      <p class="brenson-subheading">Inicie sesión con su cuenta corporativa o solicite acceso.</p>
+      <div style="display:flex; gap:.75rem; flex-wrap:wrap; justify-content:center">
+        <a class="brenson-btn brenson-btn--carbon" href="/pages/empresas#b2b-login">Iniciar sesión</a>
+        <a class="brenson-btn brenson-btn--primary" href="/pages/empresas-acceso">Solicitar acceso</a>
+      </div>
+    </div>
+  </div></section>
+{%- else -%}
+{%- liquid
+  assign col = settings.brenson_b2b_collection
+  assign tiers = shop.metaobjects.brenson_tier_b2b.values
+  assign validez = settings.brenson_b2b_validez_dias | default: 15
+  assign next_tier = nil
+  for t in tiers
+    if t.descuento_pct.value > b2b_descuento
+      assign next_tier = t
+      break
+    endif
+  endfor
+-%}
+<section class="brenson-section brenson-b2b-quoter-section">
+  <div class="brenson-container">
+    <header style="display:flex; flex-wrap:wrap; align-items:center; gap: var(--brenson-space-3); margin-bottom: var(--brenson-space-6)">
+      <h1 style="margin:0; font-size: clamp(1.6rem, 3vw, 2.25rem)">Nueva cotización de flota</h1>
+      {%- if b2b_tier -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Tier {{ b2b_tier.nombre.value }} · {{ b2b_descuento | round }} %</span>{%- endif -%}
+      <p style="width:100%; margin:0; color: rgba(255,255,255,.7); font-size: var(--brenson-text-sm)">Seleccione los vehículos y cantidades. El descuento de su tier se aplica automáticamente. Los valores son con IVA incluido.</p>
+    </header>
+
+    <brenson-quoter class="brenson-quoter" data-discount="{{ b2b_descuento }}" data-tier="{{ b2b_tier.nombre.value }}" data-next-min="{{ next_tier.minimo_unidades.value | default: 0 }}" data-next-pct="{{ next_tier.descuento_pct.value | default: 0 }}" data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" data-empresa="{{ b2b_empresa | escape }}" data-validez="{{ validez }}">
+      <div class="brenson-b2b-stack">
+        <div class="brenson-b2b-card" style="flex-direction:row; flex-wrap:wrap; gap:.5rem; align-items:center">
+          <input type="search" placeholder="Buscar por modelo…" data-q-search style="flex:1; min-width: 12rem; min-height:2.75rem; padding:0 1rem; border:1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-pill); font-family:inherit">
+          <div class="brenson-chips" data-q-filters>
+            <button type="button" class="brenson-chip is-active" data-q-cat="">Todos</button>
+            <button type="button" class="brenson-chip" data-q-cat="ciclomotor">Ciclomotores</button>
+            <button type="button" class="brenson-chip" data-q-cat="bicicleta">Bicicletas</button>
+            <button type="button" class="brenson-chip" data-q-cat="motocarro">Motocarros</button>
+            <button type="button" class="brenson-chip" data-q-cat="cuadriciclo">Cuadriciclos</button>
+          </div>
+        </div>
+
+        {%- if col != blank -%}
+          {%- for p in col.products -%}
+            {%- assign pm = p.metafields.brenson -%}
+            {%- assign minq = pm.b2b_minimo_unidades.value | default: 1 -%}
+            {%- assign row_disc = b2b_descuento -%}
+            {%- if pm.b2b_precio_tier.value and b2b_tier and pm.b2b_precio_tier.value[b2b_tier.codigo.value] -%}{%- assign row_disc = pm.b2b_precio_tier.value[b2b_tier.codigo.value] -%}{%- endif -%}
+            <article class="brenson-b2b-card brenson-quoter__row" data-q-item data-handle="{{ p.handle }}" data-title="{{ p.title | escape }}" data-cat="{{ pm.categoria.value }}" data-min="{{ minq }}" data-discount="{{ row_disc }}">
+              {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 192 | image_tag: loading: 'lazy', alt: p.title }}{%- else -%}<div style="width:96px; aspect-ratio:1; background: var(--brenson-gris-claro); border-radius: var(--brenson-radius)"></div>{%- endif -%}
+              <div>
+                <div style="display:flex; gap:.5rem; align-items:center; flex-wrap:wrap">
+                  <h2 style="margin:0; font-size: var(--brenson-text-lg)">{{ p.title }}</h2>
+                  {%- if pm.exclusivo_flota.value -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Exclusivo flota</span>{%- endif -%}
+                  {%- render 'brenson-badge', product: p, type: 'certificado', size: 'sm' -%}
+                </div>
+                <p class="brenson-muted" style="margin:.25rem 0; font-size: var(--brenson-text-sm)">{{ pm.autonomia_km.value }} km · {{ pm.velocidad_max_kmh.value }} km/h · {{ pm.capacidad_carga_kg.value }} kg</p>
+                <label style="font-size: var(--brenson-text-xs); color: var(--brenson-gris)">Configuración
+                  <select data-q-variant style="margin-left:.35rem; min-height:2.25rem; padding:0 .5rem; border:1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius); font-family:inherit; font-size: var(--brenson-text-sm)">
+                    {%- for v in p.variants -%}<option value="{{ v.id }}" data-price="{{ v.price }}" data-sku="{{ v.sku }}">{{ v.title | replace: 'Default Title', 'Estándar' }} · {{ v.price | money_without_trailing_zeros }}</option>{%- endfor -%}
+                  </select>
+                </label>
+                <p style="margin:.35rem 0 0; font-size: var(--brenson-text-xs); color: var(--brenson-gris)">Mín. {{ minq }} unidades</p>
+              </div>
+              <div style="text-align:right; display:grid; gap:.35rem; justify-items:end">
+                <span class="brenson-quoter__price-public brenson-num" data-q-public></span>
+                <span class="brenson-quoter__price-b2b brenson-num" data-q-b2b></span>
+                <span style="font-size: var(--brenson-text-xs); color: var(--brenson-certificado); font-weight:700">{{ row_disc | round }} % aplicado</span>
+                <div class="brenson-qty">
+                  <button type="button" data-q-dec aria-label="Quitar">−</button>
+                  <input type="number" min="0" step="1" value="0" data-q-qty inputmode="numeric" aria-label="Cantidad de {{ p.title | escape }}">
+                  <button type="button" data-q-inc aria-label="Agregar">+</button>
+                </div>
+                <span style="font-size: var(--brenson-text-xs); color: var(--brenson-gris)" data-q-subtotal>No agregado</span>
+              </div>
+            </article>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="brenson-b2b-card"><p class="brenson-muted">Configure la colección corporativa en Ajustes del tema → Brenson · Empresas.</p></div>
+        {%- endif -%}
+
+        <div class="brenson-b2b-card">
+          <h2 style="margin:0; font-size: var(--brenson-text-lg)">Parámetros y notas de entrega</h2>
+          <div class="brenson-form__row brenson-form__row--2">
+            <div class="brenson-field"><label for="q-obs">Observaciones para el asesor</label><textarea id="q-obs" rows="3" data-q-notes placeholder="Ej. Entrega escalonada en dos lotes, matriculación en Barranquilla."></textarea></div>
+            <fieldset class="brenson-field">
+              <legend style="font-weight:600; font-size: var(--brenson-text-sm); margin-bottom:.35rem">Validez de la propuesta</legend>
+              <div class="brenson-chips">
+                <button type="button" class="brenson-chip is-active" data-q-validez="{{ validez }}">{{ validez }} días</button>
+                <button type="button" class="brenson-chip" data-q-validez="30">30 días</button>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+
+      <aside class="brenson-b2b-card brenson-quoter__summary" aria-live="polite">
+        <div style="display:flex; justify-content:space-between; align-items:center"><h2 style="margin:0; font-size: var(--brenson-text-lg)">Resumen de cotización</h2><span class="brenson-status brenson-status--pending" data-q-status>Borrador</span></div>
+        <div class="brenson-quoter__lines" data-q-lines><p class="brenson-muted">Agregue vehículos para ver el resumen.</p></div>
+        <div class="brenson-quoter__lines" style="border-top:1px solid var(--brenson-gris-borde); padding-top:.75rem">
+          <div><span>Subtotal precio público</span><strong class="brenson-num" data-q-sub-public>—</strong></div>
+          <div style="color: var(--brenson-certificado)"><span>Descuento tier {{ b2b_tier.nombre.value }} ({{ b2b_descuento | round }} %)</span><strong class="brenson-num" data-q-discount>—</strong></div>
+          <div><span>Unidades</span><strong data-q-units>0</strong></div>
+        </div>
+        <div><span class="brenson-kpi__label">Total de la propuesta</span><div class="brenson-quoter__total brenson-num" data-q-total>—</div><span class="brenson-kpi__note">IVA incluido · sujeto a confirmación de disponibilidad</span></div>
+        {%- if next_tier -%}
+          <div style="background: var(--brenson-carbon); color:#fff; border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-4); display:grid; gap:.5rem">
+            <div style="display:flex; justify-content:space-between; font-size: var(--brenson-text-sm)"><span>Meta: {{ next_tier.nombre.value }}</span><strong style="color:#ff6b6b">{{ next_tier.descuento_pct.value | round }} %</strong></div>
+            <div class="brenson-progress"><span data-q-progress style="width:0%"></span></div>
+            <span style="font-size: var(--brenson-text-xs); color: rgba(255,255,255,.7)" data-q-progress-text>0 / {{ next_tier.minimo_unidades.value }} unidades</span>
+          </div>
+        {%- endif -%}
+        <button type="button" class="brenson-btn brenson-btn--primary brenson-btn--lg brenson-btn--block" data-q-pdf disabled>Generar cotización PDF</button>
+        <button type="button" class="brenson-btn brenson-btn--outline brenson-btn--block" data-q-draft disabled>Guardar borrador</button>
+        <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin:0">Recibirá el PDF en su correo{% if b2b_asesor %} y su asesor <strong>{{ b2b_asesor.nombre.value }}</strong> será notificado{% endif %}.</p>
+        <div><span class="brenson-kpi__label">Modalidades de pago</span><div class="brenson-chips" style="margin-top:.35rem">{% for m in section.settings.pagos %}{% endfor %}<span class="brenson-badge brenson-badge--gris brenson-badge--sm">Transferencia / PSE</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Crédito 30/60 días</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Leasing con aliado</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Tarjeta en línea</span></div></div>
+        <p class="brenson-form__success" data-q-success hidden role="status">Cotización generada. Revise su correo.</p>
+        <p class="brenson-form__error" data-q-error hidden role="alert">No pudimos generar la cotización. Intente de nuevo o contacte a su asesor.</p>
+      </aside>
+    </brenson-quoter>
+  </div>
+</section>
+<script src="{{ 'brenson-b2b-quoter.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brenson · Empresas: cotizador",
+  "tag": "div",
+  "settings": [ { "type": "paragraph", "content": "Cotizador de flota. Usa la colección corporativa y el tier del cliente. El total oficial lo calcula brenson-services." } ],
+  "presets": [ { "name": "Brenson · Empresas: cotizador" } ],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

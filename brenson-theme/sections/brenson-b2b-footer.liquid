@@ -1,0 +1,20 @@
+{%- comment -%} brenson-b2b-footer — Footer compacto del portal Empresas {%- endcomment -%}
+<footer class="brenson-b2b-footer">
+  <div class="brenson-container brenson-b2b-footer__inner">
+    <div>
+      <strong style="color:#fff">BRENSON · Empresas</strong> · División corporativa y flotas
+      <br>© {{ 'now' | date: '%Y' }} {{ shop.name }}{% if shop.metafields.brenson.nit_brenson.value %} · NIT {{ shop.metafields.brenson.nit_brenson.value }}{% endif %}
+    </div>
+    <div>
+      <a href="mailto:{{ settings.brenson_email_empresas }}">{{ settings.brenson_email_empresas }}</a> ·
+      <a href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">WhatsApp Empresas +{{ settings.brenson_whatsapp | slice: 0, 2 }} {{ settings.brenson_whatsapp | slice: 2, 3 }} {{ settings.brenson_whatsapp | slice: 5, 3 }} {{ settings.brenson_whatsapp | slice: 8, 4 }}</a>
+    </div>
+    <div>
+      <a href="/policies/terms-of-service">Términos del portal</a> · <a href="/policies/privacy-policy">Tratamiento de datos</a> · <a href="/pages/garantia">Garantía</a>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{ "name": "Brenson · Empresas: footer", "tag": "div", "settings": [] }
+{% endschema %}

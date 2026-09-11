@@ -1,0 +1,156 @@
+{%- comment -%}
+  brenson-b2b-gate — Módulo 08. Puerta de acceso del portal Empresas con los 4 estados (decisión I2).
+  Renderiza:
+    anon      → landing pública + login compacto + CTA solicitar acceso (pantalla Stitch 07)
+    personal  → aviso "su cuenta es personal" + CTA convertir en corporativa
+    pendiente → "estamos validando su empresa" + asesor
+    rechazado → mensaje + contacto
+    aprobado  → nada (las secciones del dashboard se renderizan a continuación)
+  Tono formal (usted).
+{%- endcomment -%}
+{%- include 'brenson-b2b-guard' -%}
+{%- assign tiers = shop.metaobjects.brenson_tier_b2b.values -%}
+
+{%- if b2b_state != 'aprobado' -%}
+<section class="brenson-section brenson-b2b-gate" data-b2b-state="{{ b2b_state }}">
+  <div class="brenson-container">
+
+    {%- case b2b_state -%}
+    {%- when 'pendiente' -%}
+      <div class="brenson-b2b-card brenson-b2b-card--center">
+        <span class="brenson-status brenson-status--pending">Solicitud en validación</span>
+        <h1 class="brenson-heading">Estamos validando su empresa</h1>
+        <p class="brenson-subheading">Recibimos la solicitud de <strong>{{ b2b_empresa }}</strong>. Nuestro equipo la revisa en un plazo de 24 horas hábiles y le notificará por correo cuando el acceso esté activo.</p>
+        {%- if b2b_asesor -%}
+          <p class="brenson-muted">Si desea adelantar la conversación, su contacto es <strong>{{ b2b_asesor.nombre.value }}</strong>.</p>
+          <a class="brenson-btn brenson-btn--whatsapp" href="https://wa.me/{{ b2b_asesor.whatsapp.value }}?text={{ 'Buen día, tengo una solicitud de acceso corporativo pendiente en Brenson Empresas.' | url_encode }}" target="_blank" rel="noopener">Escribir a {{ b2b_asesor.nombre.value | split: ' ' | first }}</a>
+        {%- endif -%}
+        <a class="link" href="{{ routes.account_logout_url }}">Cerrar sesión</a>
+      </div>
+
+    {%- when 'rechazado' -%}
+      <div class="brenson-b2b-card brenson-b2b-card--center">
+        <span class="brenson-status brenson-status--error">Acceso no habilitado</span>
+        <h1 class="brenson-heading">Su cuenta corporativa no está activa</h1>
+        <p class="brenson-subheading">No pudimos habilitar el acceso a precios de flota con la información recibida. Con gusto revisamos su caso con un ejecutivo.</p>
+        <a class="brenson-btn brenson-btn--whatsapp" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">Hablar con un ejecutivo</a>
+        <a class="link" href="{{ routes.account_logout_url }}">Cerrar sesión</a>
+      </div>
+
+    {%- when 'personal' -%}
+      <div class="brenson-b2b-card brenson-b2b-card--center">
+        <span class="brenson-status brenson-status--muted">Cuenta personal</span>
+        <h1 class="brenson-heading">Su cuenta actual es personal</h1>
+        <p class="brenson-subheading">Para acceder a precios por volumen y al cotizador de flota, registre los datos de su empresa. Validamos NIT y cámara de comercio en 24 horas hábiles.</p>
+        <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="/pages/empresas-acceso">Registrar mi empresa</a>
+        <a class="link" href="{{ routes.account_url }}">Volver a mi cuenta</a>
+      </div>
+
+    {%- else -%}
+      {%- comment -%} anon: landing pública {%- endcomment -%}
+      <div class="brenson-b2b-hero">
+        <div>
+          <span class="brenson-eyebrow" style="color:#ff6b6b">{{ section.settings.eyebrow }}</span>
+          <h1 class="brenson-heading" style="font-size: clamp(2rem, 4vw, 3.25rem)">{{ section.settings.title }}</h1>
+          <p class="brenson-subheading" style="color: rgba(255,255,255,.8)">{{ section.settings.text }}</p>
+          <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap;">
+            <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="/pages/empresas-acceso">Solicitar acceso corporativo</a>
+            <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="#b2b-login">Ya tengo cuenta</a>
+          </div>
+        </div>
+        <div class="brenson-b2b-card" id="b2b-login">
+          <h2 style="font-size: var(--brenson-text-lg); margin:0 0 .25rem">Ingreso al portal de flotas</h2>
+          <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0 0 1rem">Consulte sus cotizaciones y precios de flota vigentes.</p>
+          {%- form 'customer_login', class: 'brenson-form', return_to: '/pages/empresas' -%}
+            {%- if form.errors -%}<p class="brenson-form__error">{{ form.errors | default_errors }}</p>{%- endif -%}
+            <div class="brenson-field"><label for="b2b-email">Correo corporativo</label><input id="b2b-email" type="email" name="customer[email]" autocomplete="email" required></div>
+            <div class="brenson-field"><label for="b2b-pass">Contraseña</label><input id="b2b-pass" type="password" name="customer[password]" autocomplete="current-password" required></div>
+            <button class="brenson-btn brenson-btn--carbon brenson-btn--block" type="submit">Ingresar</button>
+            <p style="text-align:center; font-size: var(--brenson-text-sm); margin:0"><a class="link" href="{{ routes.account_recover_url }}">¿Olvidó su contraseña?</a></p>
+            <hr style="border:0; border-top:1px solid var(--brenson-gris-borde); margin: .5rem 0">
+            <p style="text-align:center; font-size: var(--brenson-text-sm); margin:0"><a class="link" href="/pages/empresas-acceso">Registrar mi empresa</a></p>
+          {%- endform -%}
+        </div>
+      </div>
+
+      {%- comment -%} Tiers {%- endcomment -%}
+      <div class="brenson-b2b-block">
+        <header class="brenson-section__head brenson-section__head--center">
+          <span class="brenson-eyebrow" style="color:#ff6b6b">Escala de descuentos</span>
+          <h2 class="brenson-heading">Beneficios y tarifas por volumen de flota</h2>
+        </header>
+        <ul class="brenson-grid brenson-grid--3" role="list">
+          {%- for t in tiers -%}
+            <li class="brenson-b2b-card brenson-tier {% if forloop.index == 2 %}brenson-tier--featured{% endif %}">
+              {%- if forloop.index == 2 -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm brenson-tier__tag">Más elegido</span>{%- endif -%}
+              <span class="brenson-eyebrow">Tier {{ forloop.index }} · {{ t.minimo_unidades.value }}+ unidades</span>
+              <h3 style="margin:0; font-size: var(--brenson-text-xl)">{{ t.nombre.value }}</h3>
+              <div class="brenson-tier__pct brenson-num">{{ t.descuento_pct.value | round }} %<small> de descuento</small></div>
+              <p class="brenson-muted" style="font-size: var(--brenson-text-sm)">{{ t.descripcion.value }}</p>
+              <ul class="brenson-checklist" style="grid-template-columns:1fr">
+                {%- for b in t.beneficios.value -%}<li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ b }}</li>{%- endfor -%}
+              </ul>
+              <a class="brenson-btn {% if forloop.index == 2 %}brenson-btn--primary{% else %}brenson-btn--outline{% endif %} brenson-btn--block" href="/pages/empresas-acceso">Solicitar propuesta</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      {%- comment -%} Vehículos para flota (sin precio) {%- endcomment -%}
+      {%- assign fleet = settings.brenson_b2b_collection -%}
+      {%- if fleet != blank and fleet.products.size > 0 -%}
+        <div class="brenson-b2b-block">
+          <header class="brenson-section__head">
+            <span class="brenson-eyebrow" style="color:#ff6b6b">Catálogo corporativo</span>
+            <h2 class="brenson-heading">Vehículos optimizados para operación de flota</h2>
+          </header>
+          <ul class="brenson-grid brenson-grid--4" role="list">
+            {%- for p in fleet.products limit: 4 -%}
+              {%- assign pm = p.metafields.brenson -%}
+              <li class="brenson-b2b-card" style="padding:0; overflow:hidden">
+                <div class="brenson-card__media">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: p.title }}{%- endif -%}
+                  <div class="brenson-card__badges">{%- if pm.exclusivo_flota.value -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Exclusivo flota</span>{%- elsif pm.b2b_minimo_unidades.value -%}<span class="brenson-badge brenson-badge--carbon brenson-badge--sm">Desde {{ pm.b2b_minimo_unidades.value }} unidades</span>{%- endif -%}</div>
+                </div>
+                <div class="brenson-card__body">
+                  <h3 class="brenson-card__title">{{ p.title }}</h3>
+                  <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ pm.autonomia_km.value }} km · {{ pm.capacidad_carga_kg.value }} kg</p>
+                  <p style="display:flex; gap:.4rem; align-items:center; font-size: var(--brenson-text-xs); color: var(--brenson-gris); margin:0"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V7a4 4 0 0 1 8 0v4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Precio corporativo al iniciar sesión</p>
+                </div>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Cómo funciona {%- endcomment -%}
+      <div class="brenson-b2b-block">
+        <header class="brenson-section__head brenson-section__head--center">
+          <span class="brenson-eyebrow" style="color:#ff6b6b">Transparencia y celeridad</span>
+          <h2 class="brenson-heading">Proceso de habilitación para empresas</h2>
+        </header>
+        <ol class="brenson-grid brenson-grid--4 brenson-steps" role="list">
+          <li class="brenson-b2b-card"><span class="brenson-steps__n">01</span><h3>Registre su empresa</h3><p>Diligencie el formulario con NIT y adjunte cámara de comercio o RUT.</p></li>
+          <li class="brenson-b2b-card"><span class="brenson-steps__n">02</span><h3>Validación en 24 h hábiles</h3><p>Nuestro equipo verifica la información y asigna su tier y asesor.</p></li>
+          <li class="brenson-b2b-card"><span class="brenson-steps__n">03</span><h3>Acceso a precios de flota</h3><p>Ingrese al portal, explore el catálogo con su descuento y cotice en PDF.</p></li>
+          <li class="brenson-b2b-card"><span class="brenson-steps__n">04</span><h3>Coordinación integral</h3><p>Su asesor gestiona entrega, capacitación y garantías por unidad.</p></li>
+        </ol>
+      </div>
+    {%- endcase -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brenson · Empresas: acceso",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Portal corporativo B2B · Colombia" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Flotas eléctricas para su empresa, con precios por volumen y respaldo Brenson" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Acceda a precios corporativos desde 10 unidades, cotizaciones en PDF al instante y un asesor dedicado para su operación." },
+    { "type": "paragraph", "content": "Evalúa el estado del cliente (sin sesión, personal, pendiente, aprobado, rechazado). Cuando está aprobado no muestra nada y deja paso al dashboard." }
+  ],
+  "presets": [ { "name": "Brenson · Empresas: acceso" } ],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

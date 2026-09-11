@@ -1,0 +1,135 @@
+{%- comment -%}
+  brenson-b2b-request-access — Módulo 07. Registro corporativo (decisión D4) en dos pasos:
+    Paso 1: crear cuenta Shopify (form customer_register) con datos de empresa en customer[note] y tag b2b-pendiente.
+    Paso 2 (post-registro, con sesión): subir cámara de comercio / RUT a brenson-services (/upload → R2). Ver Anexo A.2.
+  Si el cliente ya tiene sesión personal, salta al paso 2 y envía la solicitud de conversión.
+  Shopify Flow: Customer created con tag b2b-pendiente → notifica a Brenson + webhook (Fase 3).
+  Validación de NIT: dígito de verificación DIAN calculado en JS (brenson-register.js).
+{%- endcomment -%}
+{%- include 'brenson-b2b-guard' -%}
+<section class="brenson-section brenson-b2b-request">
+  <div class="brenson-container" style="max-width: 980px">
+    {%- if b2b_state == 'aprobado' -%}
+      <div class="brenson-b2b-card brenson-b2b-card--center">
+        <span class="brenson-status brenson-status--ok">Cuenta aprobada</span>
+        <h1 class="brenson-heading">Su empresa ya tiene acceso</h1>
+        <a class="brenson-btn brenson-btn--primary" href="/pages/empresas">Ir al portal</a>
+      </div>
+    {%- elsif b2b_state == 'pendiente' -%}
+      <div class="brenson-b2b-card brenson-b2b-card--center">
+        <span class="brenson-status brenson-status--pending">Solicitud en validación</span>
+        <h1 class="brenson-heading">Ya recibimos su solicitud</h1>
+        <p class="brenson-subheading">Si aún no ha adjuntado la cámara de comercio o el RUT, puede hacerlo aquí.</p>
+        {%- render 'brenson-b2b-upload' -%}
+      </div>
+    {%- else -%}
+      <div class="brenson-b2b-card">
+        <span class="brenson-eyebrow">Habilitación B2B</span>
+        <h1 class="brenson-heading">Solicite acceso corporativo a precios de flota</h1>
+        <p class="brenson-subheading">Diligencie la información de su empresa. Validamos NIT y documento en 24 horas hábiles y le asignamos tier y asesor.</p>
+
+        {%- if b2b_state == 'personal' -%}
+          {%- comment -%} Cliente B2C logueado: conversión a corporativo (sin crear cuenta) {%- endcomment -%}
+          <form class="brenson-form" data-brenson-b2b-convert data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
+            <p class="brenson-form__hint brenson-muted" style="font-size: var(--brenson-text-sm)">Sesión iniciada como <strong>{{ customer.email }}</strong>. Convertiremos esta cuenta en corporativa.</p>
+        {%- else -%}
+          {%- form 'customer', class: 'brenson-form', id: 'BrensonB2BRegister', data-brenson-b2b-register: '', data-endpoint: settings.brenson_services_url, return_to: '/pages/empresas-acceso' -%}
+            {%- if form.errors -%}<p class="brenson-form__error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+            {%- comment -%}
+              Shopify ignora customer[tags] desde el storefront. El tag b2b-pendiente lo asigna Shopify Flow
+              al detectar la nota que empieza por "B2B {" (Fase 3, Flow #1). Mientras tanto el guard trata
+              la nota como estado pendiente.
+            {%- endcomment -%}
+            <input type="hidden" name="customer[note]" data-b2b-note value="">
+        {%- endif -%}
+
+            <div class="brenson-form__row brenson-form__row--2">
+              <div class="brenson-field"><label for="b2b-razon">Razón social *</label><input id="b2b-razon" type="text" data-b2b="razon_social" required placeholder="Ej. Transportes del Caribe S.A.S."></div>
+              <div class="brenson-field">
+                <label for="b2b-nit">NIT con dígito de verificación *</label>
+                <div style="display:grid; grid-template-columns: 1fr 4rem; gap:.5rem">
+                  <input id="b2b-nit" type="text" inputmode="numeric" data-b2b="nit" required placeholder="900123456" pattern="\d{9,10}">
+                  <input id="b2b-dv" type="text" inputmode="numeric" data-b2b="dv" required placeholder="DV" maxlength="1" aria-label="Dígito de verificación">
+                </div>
+                <p class="brenson-field__hint" data-b2b-nit-hint>Se valida el dígito de verificación.</p>
+              </div>
+            </div>
+            <div class="brenson-form__row brenson-form__row--2">
+              <div class="brenson-field"><label for="b2b-nombre">Nombre del contacto *</label><input id="b2b-nombre" type="text" {% if b2b_state == 'anon' %}name="customer[first_name]"{% endif %} data-b2b="nombre" required autocomplete="given-name"></div>
+              <div class="brenson-field"><label for="b2b-apellido">Apellido *</label><input id="b2b-apellido" type="text" {% if b2b_state == 'anon' %}name="customer[last_name]"{% endif %} data-b2b="apellido" required autocomplete="family-name"></div>
+            </div>
+            <div class="brenson-form__row brenson-form__row--2">
+              <div class="brenson-field"><label for="b2b-cargo">Cargo *</label><input id="b2b-cargo" type="text" data-b2b="cargo" required placeholder="Ej. Gerente de operaciones"></div>
+              <div class="brenson-field"><label for="b2b-whatsapp">WhatsApp o celular directo *</label><input id="b2b-whatsapp" type="tel" data-b2b="whatsapp" required inputmode="tel" placeholder="300 123 4567"></div>
+            </div>
+            {%- if b2b_state == 'anon' -%}
+              <div class="brenson-form__row brenson-form__row--2">
+                <div class="brenson-field"><label for="b2b-email">Correo corporativo *</label><input id="b2b-email" type="email" name="customer[email]" data-b2b="email" required autocomplete="email" placeholder="compras@suempresa.com.co"></div>
+                <div class="brenson-field"><label for="b2b-pass">Contraseña *</label><input id="b2b-pass" type="password" name="customer[password]" required minlength="8" autocomplete="new-password"><p class="brenson-field__hint">Mínimo 8 caracteres.</p></div>
+              </div>
+            {%- endif -%}
+            <div class="brenson-form__row brenson-form__row--2">
+              <div class="brenson-field">
+                <label for="b2b-sector">Sector económico *</label>
+                <select id="b2b-sector" data-b2b="sector" required>
+                  <option value="">Seleccione</option>
+                  <option value="logistica">Logística y transporte</option>
+                  <option value="turismo">Turismo y hotelería</option>
+                  <option value="delivery">Delivery y mensajería</option>
+                  <option value="gobierno">Gobierno e instituciones</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+              <div class="brenson-field"><label for="b2b-ciudad">Ciudad principal de operación *</label><input id="b2b-ciudad" type="text" data-b2b="ciudad" required autocomplete="address-level2"></div>
+            </div>
+            <fieldset class="brenson-field">
+              <legend style="font-weight:600; font-size: var(--brenson-text-sm); margin-bottom:.35rem">Volumen estimado de flota a electrificar *</legend>
+              <div class="brenson-chips" role="radiogroup">
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="10" data-b2b-radio="flota_estimada" required style="margin-right:.4rem">10 a 20 unidades</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="20" data-b2b-radio="flota_estimada" style="margin-right:.4rem">21 a 50 unidades</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="50" data-b2b-radio="flota_estimada" style="margin-right:.4rem">Más de 50 unidades</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="5" data-b2b-radio="flota_estimada" style="margin-right:.4rem">Menos de 10</label>
+              </div>
+            </fieldset>
+
+            {%- if b2b_state == 'anon' -%}
+              <div class="brenson-field" style="padding: var(--brenson-space-4); border: 1px dashed var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); background: var(--brenson-gris-claro)">
+                <strong style="font-size: var(--brenson-text-sm)">Cámara de comercio o RUT</strong>
+                <p class="brenson-field__hint">Por seguridad, el documento se adjunta en el siguiente paso, después de crear la cuenta. PDF o imagen, máximo 5 MB.</p>
+              </div>
+            {%- else -%}
+              {%- render 'brenson-b2b-upload', inline: true -%}
+            {%- endif -%}
+
+            <div class="brenson-field">
+              <label style="display:flex; gap:.5rem; align-items:flex-start; font-weight:400; font-size: var(--brenson-text-xs)">
+                <input type="checkbox" data-b2b="acepta" required style="width:auto; min-height:auto; margin-top:.15rem">
+                <span>Autorizo el tratamiento de los datos de la empresa y del contacto de acuerdo con la <a class="link" href="/policies/privacy-policy">política de tratamiento de datos</a> de Brenson S.A.S. (Ley 1581 de 2012).</span>
+              </label>
+            </div>
+            <div data-turnstile-slot></div>
+            <button type="submit" class="brenson-btn brenson-btn--primary brenson-btn--lg brenson-btn--block" data-b2b-submit>Enviar solicitud de acceso corporativo</button>
+            <p class="brenson-muted" style="text-align:center; font-size: var(--brenson-text-xs); margin:0">Respondemos en menos de 24 horas hábiles con sus credenciales activas o una propuesta técnica personalizada.</p>
+            <p class="brenson-form__success" data-b2b-success hidden role="status">Solicitud enviada. Le confirmaremos la activación por correo.</p>
+            <p class="brenson-form__error" data-b2b-error hidden role="alert">No pudimos enviar la solicitud. Escríbanos por WhatsApp o intente de nuevo.</p>
+
+        {%- if b2b_state == 'personal' -%}
+          </form>
+        {%- else -%}
+          {%- endform -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<script src="{{ 'brenson-register.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Brenson · Empresas: solicitud de acceso",
+  "tag": "div",
+  "settings": [ { "type": "paragraph", "content": "Registro corporativo en dos pasos (cuenta + documento). El tag pendiente y la nota con datos de empresa se guardan en el cliente para que Shopify Flow notifique a Brenson." } ],
+  "presets": [ { "name": "Brenson · Empresas: solicitud de acceso" } ],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+{%- comment -%}
+  brenson-b2b-upload — Paso 2 del registro corporativo: subir cámara de comercio / RUT.
+  POST {brenson_services_url}/upload (multipart) con customer id + email → R2 → metafield brenson_b2b.documento_url.
+  Modo simulación (sin URL): muestra éxito local (S10/S16).
+  Parámetro inline: true cuando va dentro de otro formulario (usa un <div> en vez de <form>).
+{%- endcomment -%}
+{%- assign tag = 'form' -%}{%- if inline -%}{%- assign tag = 'div' -%}{%- endif -%}
+<{{ tag }} class="brenson-field brenson-upload" data-brenson-b2b-upload data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" style="padding: var(--brenson-space-4); border: 1px dashed var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); background: var(--brenson-gris-claro)">
+  <label for="b2b-doc" style="font-weight:600">Cámara de comercio o RUT (PDF o imagen, máx. 5 MB)</label>
+  <div style="display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; margin-top:.5rem">
+    <select data-upload-type aria-label="Tipo de documento" style="max-width: 14rem">
+      <option value="camara_comercio">Cámara de comercio</option>
+      <option value="rut">RUT</option>
+    </select>
+    <input id="b2b-doc" type="file" accept=".pdf,image/*" data-upload-file style="min-height:auto; padding:.5rem; flex:1">
+    <button type="button" class="brenson-btn brenson-btn--carbon brenson-btn--sm" data-upload-submit>Adjuntar</button>
+  </div>
+  <p class="brenson-field__hint">Solo lo ve el equipo de habilitación de Brenson. Se elimina 90 días después de la decisión.</p>
+  <p class="brenson-form__success" data-upload-success hidden role="status">Documento recibido.</p>
+  <p class="brenson-form__error" data-upload-error hidden role="alert">No pudimos subir el archivo. Verifique el tamaño (máx. 5 MB) e intente de nuevo.</p>
+</{{ tag }}>

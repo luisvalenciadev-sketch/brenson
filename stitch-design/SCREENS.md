@@ -15,3 +15,5 @@ Pendientes: financiación, login/registro, cotizador de flota, landing Empresas 
 | 06 | Financiación desktop | 1dcc5b3ecdd341ed89af1382c5d604a0 | 06-financiacion |
 | 07 | Landing Brenson Empresas (sin sesión) desktop | 6ac54fa072494fd0adaea1bda145de31 | 07-empresas-landing |
 | 08 | Cotizador de flota desktop | a4499e23e63c41079f8e637a052b8a15 | 08-cotizador |
+| 09 | Homepage mobile | a868266b92fe476ea5c34e65e71b8182 | 09-home-mobile |
+| 10 | Ficha City 1500 mobile | 5d8e295945eb42408e669bfa04dd88b5 | 10-ficha-mobile |
