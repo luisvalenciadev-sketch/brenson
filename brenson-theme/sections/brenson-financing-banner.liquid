@@ -1,0 +1,57 @@
+{%- comment -%}
+  brenson-financing-banner — Módulo 01/05. Banner de financiación en el home con mini simulador
+  del producto de referencia. La cifra se calcula (nunca se escribe a mano).
+{%- endcomment -%}
+{%- liquid
+  assign ref = section.settings.product
+  if ref == blank and section.settings.collection != blank
+    assign ref = section.settings.collection.products.first
+  endif
+-%}
+<section class="brenson-section brenson-section--dark brenson-financing-banner">
+  <div class="brenson-container">
+    <div class="brenson-financing-banner__grid">
+      <div>
+        <span class="brenson-eyebrow" style="color:#ff6b6b">{{ section.settings.eyebrow }}</span>
+        <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+        <p class="brenson-subheading" style="color:rgba(255,255,255,.8)">{{ section.settings.text }}</p>
+        <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap; align-items:center;">
+          <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="{{ section.settings.cta_url | default: '/pages/financiacion' }}">{{ section.settings.cta_label }}</a>
+          {%- if section.settings.note != blank -%}<span style="font-size: var(--brenson-text-sm); color: rgba(255,255,255,.7)">{{ section.settings.note }}</span>{%- endif -%}
+        </div>
+      </div>
+      {%- if ref -%}
+        <div class="brenson-simulator__result">
+          <span class="brenson-simulator__result-label">Vehículo de referencia</span>
+          <strong style="font-size: var(--brenson-text-lg)">{{ ref.title }}</strong>
+          {%- render 'brenson-price', product: ref, layout: 'full', show_link: false -%}
+          <a class="brenson-btn brenson-btn--carbon brenson-btn--block" href="{{ ref.url }}#brenson-simulator">Simular con este vehículo</a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+  .brenson-financing-banner__grid { display: grid; gap: var(--brenson-space-8); align-items: center; }
+  @media (min-width: 990px) { .brenson-financing-banner__grid { grid-template-columns: 1.3fr 1fr; } }
+  .brenson-financing-banner .brenson-price__contado, .brenson-financing-banner .brenson-price__terms { color: var(--brenson-gris); }
+</style>
+
+{% schema %}
+{
+  "name": "Brenson · Banner financiación",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Financiación" },
+    { "type": "text", "id": "title", "label": "Título", "default": "La cuota vende, el precio total asusta. Simula la tuya en segundos." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Trabajamos con un aliado financiero para que tengas respuesta rápida sin moverte de casa." },
+    { "type": "text", "id": "cta_label", "label": "Botón", "default": "Simular mi cuota" },
+    { "type": "url", "id": "cta_url", "label": "Enlace del botón" },
+    { "type": "text", "id": "note", "label": "Nota", "default": "Tasa de referencia editable desde el admin" },
+    { "type": "product", "id": "product", "label": "Vehículo de referencia" },
+    { "type": "collection", "id": "collection", "label": "O primera unidad de esta colección" }
+  ],
+  "presets": [ { "name": "Brenson · Banner financiación" } ]
+}
+{% endschema %}

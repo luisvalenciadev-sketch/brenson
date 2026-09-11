@@ -1,0 +1,73 @@
+{%- comment -%}
+  brenson-faq — Módulo 04/13. Preguntas frecuentes desde metaobjects brenson_faq (S19) con JSON-LD FAQPage.
+  Fuentes por prioridad: product.metafields.brenson.faq → collection.metafields.brenson.faq → filtro por categoría (setting) → todas.
+{%- endcomment -%}
+{%- liquid
+  assign faqs = nil
+  if request.page_type == 'product' and product.metafields.brenson.faq.value
+    assign faqs = product.metafields.brenson.faq.value
+  elsif request.page_type == 'collection' and collection.metafields.brenson.faq.value
+    assign faqs = collection.metafields.brenson.faq.value
+  else
+    assign faqs = shop.metaobjects.brenson_faq.values
+  endif
+  assign limit = section.settings.limit | default: 6
+-%}
+{%- if faqs and faqs.size > 0 -%}
+<section class="brenson-section brenson-faq">
+  <div class="brenson-container" style="max-width: 900px">
+    <header class="brenson-section__head brenson-section__head--center">
+      <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+    </header>
+    <div class="brenson-accordion">
+      {%- assign shown = 0 -%}
+      {%- for faq in faqs -%}
+        {%- if section.settings.categoria != blank and section.settings.categoria != 'todas' and faq.categoria.value != section.settings.categoria -%}{%- continue -%}{%- endif -%}
+        {%- if shown >= limit -%}{%- break -%}{%- endif -%}
+        {%- assign shown = shown | plus: 1 -%}
+        <details {% if forloop.first %}open{% endif %}>
+          <summary>{{ faq.pregunta.value }}</summary>
+          <div class="brenson-accordion__body">{{ faq.respuesta.value | metafield_tag }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.show_cta -%}
+      <p style="text-align:center; margin-top: var(--brenson-space-6)">
+        <a class="brenson-btn brenson-btn--whatsapp" href="{% render 'brenson-whatsapp-link' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="faq">¿Otra pregunta? Escríbenos</a>
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- assign n = 0 -%}
+    {%- for faq in faqs -%}
+      {%- if section.settings.categoria != blank and section.settings.categoria != 'todas' and faq.categoria.value != section.settings.categoria -%}{%- continue -%}{%- endif -%}
+      {%- if n >= limit -%}{%- break -%}{%- endif -%}
+      {%- if n > 0 -%},{%- endif -%}
+      {%- assign n = n | plus: 1 -%}
+      { "@type": "Question", "name": {{ faq.pregunta.value | json }}, "acceptedAnswer": { "@type": "Answer", "text": {{ faq.respuesta.value | metafield_tag | strip_html | json }} } }
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brenson · Preguntas frecuentes",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Resolvemos tus dudas" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Preguntas frecuentes" },
+    { "type": "select", "id": "categoria", "label": "Categoría de FAQ", "default": "todas", "options": [ { "value": "todas", "label": "Todas" }, { "value": "general", "label": "General / normativa" }, { "value": "bateria", "label": "Batería y carga" }, { "value": "garantia", "label": "Garantía" }, { "value": "servicio", "label": "Servicio técnico" }, { "value": "compra", "label": "Compra y financiación" } ] },
+    { "type": "range", "id": "limit", "min": 3, "max": 12, "step": 1, "label": "Máximo de preguntas", "default": 6 },
+    { "type": "checkbox", "id": "show_cta", "label": "Mostrar CTA WhatsApp", "default": true }
+  ],
+  "presets": [ { "name": "Brenson · Preguntas frecuentes" } ]
+}
+{% endschema %}

@@ -1,0 +1,76 @@
+{%- comment -%}
+  brenson-product-certification — Módulo 06. Sello Certificado Brenson con checklist.
+  Checklist desde metaobject brenson_certificacion (S5) referenciado por el producto o el primero disponible.
+  Se oculta si settings.brenson_show_certificado es false (riesgo R-D3) o si el producto no está certificado.
+{%- endcomment -%}
+{%- liquid
+  assign cert = product.metafields.brenson.certificacion.value
+  if cert == blank
+    assign cert = shop.metaobjects.brenson_certificacion.values | first
+  endif
+  assign show = settings.brenson_show_certificado
+  if product.metafields.brenson.certificado.value == false
+    assign show = false
+  endif
+  assign checklist = nil
+  assign puntos = settings.brenson_certificado_puntos
+  assign descripcion = section.settings.text
+  if cert
+    assign checklist = cert.checklist.value
+    if cert.puntos_inspeccion.value
+      assign puntos = cert.puntos_inspeccion.value
+    endif
+    if cert.descripcion.value != blank
+      assign descripcion = cert.descripcion.value
+    endif
+  endif
+  unless checklist
+    assign checklist = 'Diagnóstico de batería: capacidad, celdas y BMS|Prueba de motor y controlador bajo carga|Calibración de acelerador y frenos regenerativos|Revisión y ajuste de frenos|Torque de tornillería estructural|Presión y estado de llantas|Luces, señalización y bocina|Suspensión y dirección|Cargador y conector verificados|Prueba de ruta de 5 km|Actualización de firmware|Limpieza, protección y entrega documentada' | split: '|'
+  endunless
+-%}
+{%- if show -%}
+<section id="brenson-certificacion" class="brenson-section brenson-section--alt brenson-certification">
+  <div class="brenson-container">
+    <div class="brenson-certification__grid">
+      <div class="brenson-certification__seal">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m13 7-4 6h3l-1 4 4-6h-3l1-4Z" fill="currentColor"/></svg>
+        <strong>{{ 'brenson.certificado' | t }}</strong>
+        <span>{{ 'brenson.puntos_inspeccion' | t: count: puntos }}</span>
+      </div>
+      <div>
+        <span class="brenson-eyebrow" style="color: var(--brenson-certificado)">{{ section.settings.eyebrow }}</span>
+        <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+        <p class="brenson-subheading">{{ descripcion }}</p>
+        <ul class="brenson-checklist">
+          {%- for item in checklist -%}
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ item }}</li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .brenson-certification__grid { display: grid; gap: var(--brenson-space-8); align-items: start; }
+  @media (min-width: 990px) { .brenson-certification__grid { grid-template-columns: 260px 1fr; } }
+  .brenson-certification__seal { display: flex; flex-direction: column; align-items: center; text-align: center; gap: .35rem; padding: var(--brenson-space-8) var(--brenson-space-6); background: #fff; border: 2px solid var(--brenson-certificado); border-radius: var(--brenson-radius-xl); color: var(--brenson-certificado); }
+  .brenson-certification__seal svg { width: 5rem; height: 5rem; }
+  .brenson-certification__seal strong { font-size: var(--brenson-text-lg); color: var(--brenson-carbon); }
+  .brenson-certification__seal span { font-size: var(--brenson-text-sm); color: var(--brenson-gris); }
+</style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brenson · Certificación",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Confianza" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Cada vehículo pasa por nuestra inspección antes de entregarse" },
+    { "type": "textarea", "id": "text", "label": "Texto (si el metaobject no tiene descripción)", "default": "Revisamos batería, motor, frenos, estructura y hacemos una prueba de ruta. Entregamos el vehículo con su reporte de inspección." },
+    { "type": "paragraph", "content": "El checklist viene del metaobject Certificación. Desactivar el sello desde Ajustes → Brenson · Confianza hasta que el proceso esté operando." }
+  ],
+  "presets": [ { "name": "Brenson · Certificación" } ],
+  "enabled_on": { "templates": ["product", "page", "index"] }
+}
+{% endschema %}

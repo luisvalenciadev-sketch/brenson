@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Brenson City 1500 | Ciclomotor Eléctrico Urbano Certificado</title>
+<!-- Google Fonts: Montserrat -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brenson: {
+              red: "#EE0000",
+              dark: "#050709",
+              carbon: "#111827",
+              card: "#1F2937",
+              light: "#F4F4F4",
+              cert: "#1F8A4C",
+              certLight: "#ECFDF5",
+              whatsapp: "#25D366",
+              amber: "#F59E0B"
+            }
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {},
+          fontFamily: {
+            headline: ["Montserrat", "sans-serif"],
+            display: ["Montserrat", "sans-serif"],
+            body: ["Montserrat", "sans-serif"],
+            label: ["Montserrat", "sans-serif"]
+          },
+          fontSize: {}
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+      vertical-align: middle;
+    }
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body class="bg-white text-neutral-900 font-body antialiased selection:bg-[#EE0000] selection:text-white">
+<!-- ==================== TOP NAV BAR (SHARED COMPONENT) ==================== -->
+<header class="sticky top-0 z-40 bg-white dark:bg-black shadow-sm border-b border-neutral-200 dark:border-neutral-800 transition-colors">
+<div class="flex justify-between items-center w-full px-6 lg:px-12 py-3.5 max-w-7xl mx-auto">
+<!-- Brand & Search cluster -->
+<div class="flex items-center space-x-6">
+<a class="font-display font-extrabold text-2xl tracking-tighter text-black dark:text-white flex items-center gap-1.5" href="#">
+<span class="w-3 h-6 bg-[#EE0000] rounded-sm inline-block"></span>
+          BRENSON
+        </a>
+<!-- Search Bar (on_left) -->
+<div class="hidden lg:flex items-center bg-neutral-100 dark:bg-neutral-900 rounded-full px-3.5 py-1.5 border border-neutral-200 dark:border-neutral-700 w-64 focus-within:ring-2 focus-within:ring-[#EE0000] transition-all">
+<span class="material-symbols-outlined text-neutral-400 text-lg mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-0 text-xs w-full focus:outline-none focus:ring-0 text-neutral-800 dark:text-neutral-200 placeholder-neutral-400" placeholder="Buscar modelo o espec..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center space-x-7 font-display font-semibold text-sm tracking-tight">
+<a class="border-b-2 border-black dark:border-white text-black dark:text-white font-bold pb-1" href="#">Vehículos</a>
+<a class="text-neutral-600 dark:text-neutral-400 font-medium hover:text-black dark:hover:text-white hover:text-black dark:hover:text-white transition-colors duration-150" href="#">Brenson Empresas</a>
+<a class="text-neutral-600 dark:text-neutral-400 font-medium hover:text-black dark:hover:text-white hover:text-black dark:hover:text-white transition-colors duration-150" href="#certificacion">Certificación</a>
+<a class="text-neutral-600 dark:text-neutral-400 font-medium hover:text-black dark:hover:text-white hover:text-black dark:hover:text-white transition-colors duration-150" href="#financiacion">Financiación</a>
+<a class="text-neutral-600 dark:text-neutral-400 font-medium hover:text-black dark:hover:text-white hover:text-black dark:hover:text-white transition-colors duration-150" href="#garantia">Garantía</a>
+</nav>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center space-x-3">
+<!-- Icons -->
+<button class="p-2 text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white active:scale-95 transition-transform duration-100" title="Soporte y Asistencia">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+</button>
+<button class="relative p-2 text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white active:scale-95 transition-transform duration-100" title="Bolsa de Compras">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+<span class="absolute top-1 right-1 bg-[#EE0000] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+</button>
+<!-- Secondary CTA: Cotizar Flota -->
+<a class="hidden sm:inline-flex text-xs font-semibold text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700 px-3.5 py-2 rounded-lg hover:border-black active:scale-95 transition-all" href="#">
+          Cotizar Flota
+        </a>
+<!-- Primary CTA: Hablar con un asesor -->
+<a class="inline-flex items-center gap-1.5 bg-[#25D366] text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm hover:brightness-105 active:scale-95 transition-all" href="https://wa.me/573000000000" target="_blank">
+<span class="material-symbols-outlined text-sm" data-icon="chat">chat</span>
+<span>Hablar con un asesor</span>
+</a>
+</div>
+</div>
+</header>
+<!-- ==================== BREADCRUMB ==================== -->
+<div class="bg-neutral-50 border-b border-neutral-200/80">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 py-2.5">
+<nav class="flex items-center space-x-2 text-xs text-neutral-500 font-medium">
+<a class="hover:text-black transition-colors" href="#">Inicio</a>
+<span class="text-neutral-400">/</span>
+<a class="hover:text-black transition-colors" href="#">Vehículos</a>
+<span class="text-neutral-400">/</span>
+<a class="hover:text-black transition-colors" href="#">Ciclomotores</a>
+<span class="text-neutral-400">/</span>
+<span class="text-neutral-900 font-semibold">Brenson City 1500</span>
+</nav>
+</div>
+</div>
+<!-- ==================== MAIN PRODUCT HERO (TWO-COLUMN) ==================== -->
+<main class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-16">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+<!-- LEFT COLUMN: MEDIA & GALLERY (60% / 7 cols) -->
+<div class="lg:col-span-7 flex flex-col space-y-4">
+<!-- Main Image Container -->
+<div class="relative bg-neutral-100 rounded-2xl overflow-hidden border border-neutral-200/90 shadow-sm aspect-[4/3] flex items-center justify-center group">
+<!-- Floating Badge -->
+<div class="absolute top-4 left-4 z-10 flex items-center gap-1.5 bg-neutral-900/90 backdrop-blur text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-md">
+<span>🔥</span>
+<span>Más vendido en Colombia</span>
+</div>
+<!-- Zoom hint -->
+<div class="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur rounded-full p-2 text-neutral-700 shadow-sm hover:bg-white cursor-pointer transition">
+<span class="material-symbols-outlined text-sm" data-icon="zoom_in">zoom_in</span>
+</div>
+<!-- Main Hero Image -->
+<img alt="Ciclomotor eléctrico Brenson City 1500 en color rojo brillante con baúl integrado y diseño ergonómico para ciudad" class="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105" id="hero-main-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw"/>
+<!-- Floating 360 preview icon on corner -->
+<div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur border border-neutral-200 text-neutral-800 text-[11px] font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-xs text-[#EE0000]" data-icon="360">360</span>
+<span>Vista de estudio HD</span>
+</div>
+</div>
+<!-- 6 Thumbnails Strip -->
+<div class="grid grid-cols-6 gap-2.5">
+<!-- Thumb 1 (Active) -->
+<button class="thumb-btn border-2 border-[#EE0000] rounded-xl overflow-hidden aspect-square bg-neutral-100 focus:outline-none transition-all shadow-sm" onclick="changeThumb(0, 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw')">
+<img alt="Vista frontal Brenson City 1500" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw"/>
+</button>
+<!-- Thumb 2 -->
+<button class="thumb-btn border-2 border-neutral-200 hover:border-neutral-400 rounded-xl overflow-hidden aspect-square bg-neutral-100 focus:outline-none transition-all" onclick="changeThumb(1, 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw')">
+<img alt="Vista lateral con baúl Brenson City 1500" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw"/>
+</button>
+<!-- Thumb 3 -->
+<button class="thumb-btn border-2 border-neutral-200 hover:border-neutral-400 rounded-xl overflow-hidden aspect-square bg-neutral-100 focus:outline-none transition-all" onclick="changeThumb(2, 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw')">
+<img alt="Batería de litio LiFePO4 extraíble" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw"/>
+</button>
+<!-- Thumb 4 -->
+<button class="thumb-btn border-2 border-neutral-200 hover:border-neutral-400 rounded-xl overflow-hidden aspect-square bg-neutral-100 focus:outline-none transition-all" onclick="changeThumb(3, 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw')">
+<img alt="Tablero digital LED velocímetro" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw"/>
+</button>
+<!-- Thumb 5 -->
+<button class="thumb-btn border-2 border-neutral-200 hover:border-neutral-400 rounded-xl overflow-hidden aspect-square bg-neutral-100 focus:outline-none transition-all" onclick="changeThumb(4, 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw')">
+<img alt="Baúl trasero integrado 28L" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw"/>
+</button>
+<!-- Thumb 6: Interactive Video Tour 360 -->
+<button class="relative rounded-xl overflow-hidden aspect-square bg-neutral-900 border-2 border-neutral-800 hover:border-[#EE0000] focus:outline-none transition-all flex flex-col items-center justify-center text-white p-1 group">
+<img alt="Video tour 360" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Tu71v9Fkj6BuOGU8bHAK1IVRXFkEvARv4NkJpp3Mxor7bNZEEZiqWzjl-n2aDkL6WKOhuKwaewRYMl2U7yy5HkphronKHpAS_CrfR_SkKjgVmDjZLVoVyOAiSaF9F9C4G6TKInxSvm8y48VnaRikr4UIqyQRLLcTLKPZGEd4KBP7Hh5RUoCNG-2Ca0kxwkuvx4W--ucFAAVNEdPvEb3WaH1xpYOW0Z1u2Y_vZVHQ73qXM_4aRTu0tEf_-zO6AX7_8ukSW0gcRQw"/>
+<div class="w-7 h-7 rounded-full bg-[#EE0000] flex items-center justify-center mb-1 z-10 shadow-md">
+<span class="material-symbols-outlined text-sm" data-icon="play_arrow">play_arrow</span>
+</div>
+<span class="text-[9px] font-bold z-10 leading-tight text-center">Tour 360°</span>
+</button>
+</div>
+<!-- Trust bar under gallery (Desktop) -->
+<div class="mt-6 pt-6 border-t border-neutral-200 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-neutral-700">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#1F8A4C] text-lg" data-icon="verified">verified</span>
+<span class="font-medium">Certificado Brenson 12 pts</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-neutral-800 text-lg" data-icon="shield">shield</span>
+<span class="font-medium">Garantía hasta 24 meses</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-neutral-800 text-lg" data-icon="local_shipping">local_shipping</span>
+<span class="font-medium">Envíos a toda Colombia</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-neutral-800 text-lg" data-icon="account_balance">account_balance</span>
+<span class="font-medium">Aliados Bancolombia / Addi</span>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: STICKY PURCHASE BOX (40% / 5 cols) -->
+<div class="lg:col-span-5 flex flex-col lg:sticky lg:top-24 space-y-5">
+<!-- Header & Certification Tag -->
+<div>
+<!-- Badge Certificado Brenson -->
+<div class="inline-flex items-center gap-2 bg-[#ECFDF5] border border-[#1F8A4C]/30 text-[#1F8A4C] px-3.5 py-1.5 rounded-full text-xs font-bold mb-3 shadow-xs">
+<span class="material-symbols-outlined text-base" data-icon="verified_user">verified_user</span>
+<span>Certificado Brenson · 12 puntos de inspección técnica</span>
+</div>
+<h1 class="font-headline font-extrabold text-3xl lg:text-4xl tracking-tight text-neutral-900 leading-tight">
+            Brenson City 1500
+          </h1>
+<p class="text-neutral-600 text-sm mt-2 leading-relaxed font-normal">
+            Ciclomotor eléctrico para la ciudad. Silencioso, económico y con baúl integrado de 28L para tu día a día en Colombia.
+          </p>
+</div>
+<!-- 3 Key Specs Pills -->
+<div class="grid grid-cols-3 gap-2.5 py-1">
+<div class="bg-neutral-100 rounded-xl p-2.5 text-center border border-neutral-200/80">
+<div class="flex items-center justify-center gap-1 text-[#EE0000] font-bold text-xs">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+<span>Autonomía</span>
+</div>
+<p class="font-display font-extrabold text-sm text-neutral-900 mt-0.5 tabular-nums">65 km</p>
+</div>
+<div class="bg-neutral-100 rounded-xl p-2.5 text-center border border-neutral-200/80">
+<div class="flex items-center justify-center gap-1 text-neutral-800 font-bold text-xs">
+<span class="material-symbols-outlined text-sm" data-icon="speed">speed</span>
+<span>Velocidad</span>
+</div>
+<p class="font-display font-extrabold text-sm text-neutral-900 mt-0.5 tabular-nums">50 km/h</p>
+</div>
+<div class="bg-neutral-100 rounded-xl p-2.5 text-center border border-neutral-200/80">
+<div class="flex items-center justify-center gap-1 text-neutral-800 font-bold text-xs">
+<span class="material-symbols-outlined text-sm" data-icon="scale">scale</span>
+<span>Capacidad</span>
+</div>
+<p class="font-display font-extrabold text-sm text-neutral-900 mt-0.5 tabular-nums">150 kg</p>
+</div>
+</div>
+<!-- Color Selector -->
+<div class="border-t border-neutral-200 pt-4">
+<div class="flex items-center justify-between mb-2.5">
+<span class="text-xs font-semibold text-neutral-700">Color seleccionado:</span>
+<span class="text-xs font-bold text-neutral-900" id="color-label">Rojo Brenson (Metálico)</span>
+</div>
+<div class="flex items-center space-x-3.5">
+<!-- Swatch 1: Red -->
+<button class="color-swatch ring-2 ring-offset-2 ring-[#EE0000] w-7 h-7 rounded-full bg-[#EE0000] shadow-sm transition-all focus:outline-none" onclick="selectColor('Rojo Brenson (Metálico)', this)" title="Rojo Brenson"></button>
+<!-- Swatch 2: Matte Black -->
+<button class="color-swatch ring-0 hover:ring-2 hover:ring-offset-2 hover:ring-neutral-400 w-7 h-7 rounded-full bg-[#1A1A1A] shadow-sm transition-all focus:outline-none" onclick="selectColor('Negro Mate Urbano', this)" title="Negro Mate"></button>
+<!-- Swatch 3: Metallic Blue -->
+<button class="color-swatch ring-0 hover:ring-2 hover:ring-offset-2 hover:ring-neutral-400 w-7 h-7 rounded-full bg-[#1E3A8A] shadow-sm transition-all focus:outline-none" onclick="selectColor('Azul Eléctrico Metálico', this)" title="Azul Eléctrico"></button>
+</div>
+</div>
+<!-- Protagonist Price Block -->
+<div class="bg-neutral-50 rounded-2xl p-5 border border-neutral-200/90 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Cuota estimada desde</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-extrabold bg-[#EE0000]/10 text-[#EE0000]">
+              Tasa Preferencial
+            </span>
+</div>
+<div>
+<div class="flex items-baseline gap-1.5">
+<span class="font-display font-extrabold text-3xl sm:text-4xl text-neutral-900 tabular-nums tracking-tight">
+                $ 289.000
+              </span>
+<span class="text-base font-bold text-neutral-600">/mes</span>
+</div>
+<p class="text-xs text-neutral-600 mt-1 font-medium">
+              36 meses · 10 % de cuota inicial ($ 799.000)
+            </p>
+</div>
+<div class="pt-2 border-t border-neutral-200/80 flex items-center justify-between">
+<div>
+<p class="text-xs text-neutral-500">Precio contado:</p>
+<p class="text-sm font-bold text-neutral-900 tabular-nums">
+                $ 7.990.000 <span class="text-[11px] font-normal text-neutral-500">· IVA incluido</span>
+</p>
+</div>
+<a class="text-xs font-bold text-[#EE0000] hover:underline flex items-center gap-0.5" href="#financiacion">
+<span>Simular otra cuota</span>
+<span class="material-symbols-outlined text-xs" data-icon="arrow_downward">arrow_downward</span>
+</a>
+</div>
+</div>
+<!-- Conversion CTAs -->
+<div class="space-y-2.5 pt-1">
+<!-- Primary CTA: WhatsApp -->
+<a class="w-full bg-[#25D366] hover:bg-[#20ba5a] text-white py-3.5 px-5 rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2.5 transition active:scale-[0.99]" href="https://wa.me/573000000000?text=Hola%20Brenson,%20quiero%20información%20y%20asesoría%20sobre%20el%20ciclomotor%20City%201500" target="_blank">
+<span class="material-symbols-outlined text-xl" data-icon="chat">chat</span>
+<span>Hablar con un asesor por WhatsApp</span>
+<span class="text-[11px] font-normal bg-black/15 px-2 py-0.5 rounded-full">&lt; 3 min</span>
+</a>
+<!-- Secondary CTA: Cotización Formal -->
+<button class="w-full bg-white hover:bg-neutral-50 text-[#EE0000] border-2 border-[#EE0000] py-3 px-5 rounded-xl font-bold text-sm transition active:scale-[0.99] flex items-center justify-center gap-2" onclick="document.getElementById('financiacion').scrollIntoView({behavior: 'smooth'})">
+<span class="material-symbols-outlined text-base" data-icon="request_quote">request_quote</span>
+<span>Solicitar cotización formal</span>
+</button>
+<!-- Tertiary CTA: Comprar en línea -->
+<div class="text-center pt-1">
+<a class="text-xs text-neutral-500 hover:text-neutral-900 underline font-medium inline-flex items-center gap-1" href="#">
+<span>O comprar en línea con tarjeta crédito o PSE</span>
+<span class="material-symbols-outlined text-xs" data-icon="lock">lock</span>
+</a>
+</div>
+</div>
+<!-- Micro-guarantees block -->
+<div class="border-t border-neutral-200 pt-3.5 space-y-2 text-xs text-neutral-600">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[#1F8A4C] text-base" data-icon="verified_user">verified_user</span>
+<span><strong>Garantía oficial Brenson:</strong> 12 meses vehículo · 24 meses batería</span>
+</div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-neutral-700 text-base" data-icon="local_shipping">local_shipping</span>
+<span><strong>Envíos asegurados:</strong> Cobertura nacional a puerta de casa</span>
+</div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-neutral-700 text-base" data-icon="two_wheeler">two_wheeler</span>
+<span><strong>Test Drive gratis:</strong> Agenda tu prueba de manejo en talleres Brenson</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- ==================== SECCIÓN: SIMULA TU CUOTA ==================== -->
+<section class="bg-[#F8FAFC] border-y border-neutral-200 py-16" id="financiacion">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<!-- Header -->
+<div class="max-w-2xl mb-10">
+<div class="inline-flex items-center gap-2 text-[#EE0000] text-xs font-extrabold uppercase tracking-widest mb-2">
+<span class="material-symbols-outlined text-sm" data-icon="calculate">calculate</span>
+<span>Calculadora Financiera</span>
+</div>
+<h2 class="font-headline font-extrabold text-2xl lg:text-3xl text-neutral-900">
+          Financiación a tu medida
+        </h2>
+<p class="text-neutral-600 text-sm mt-1.5">
+          Calcula tu plan de pagos mensual en segundos con aliados Bancolombia, Sufi y Addi. Sin papeleos interminables.
+        </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+<!-- Controls (Left 7 cols) -->
+<div class="lg:col-span-7 bg-white p-7 rounded-2xl border border-neutral-200 shadow-sm flex flex-col justify-between space-y-6">
+<!-- Cuota Inicial Selector (Chips) -->
+<div>
+<label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-3">
+              1. Selecciona tu cuota inicial
+            </label>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="down-payment-chips">
+<button class="down-chip border border-neutral-300 hover:border-neutral-800 p-3 rounded-xl text-left transition focus:outline-none" onclick="setDownPayment(0, '$ 0', 362000, this)">
+<span class="block text-xs font-extrabold text-neutral-900">0 %</span>
+<span class="text-[11px] text-neutral-500">$ 0 COP</span>
+</button>
+<button class="down-chip border-2 border-black bg-neutral-900 text-white p-3 rounded-xl text-left transition focus:outline-none" onclick="setDownPayment(10, '$ 799.000', 289000, this)">
+<span class="block text-xs font-extrabold">10 %</span>
+<span class="text-[11px] text-neutral-300">$ 799.000</span>
+</button>
+<button class="down-chip border border-neutral-300 hover:border-neutral-800 p-3 rounded-xl text-left transition focus:outline-none" onclick="setDownPayment(20, '$ 1.598.000', 256000, this)">
+<span class="block text-xs font-extrabold text-neutral-900">20 %</span>
+<span class="text-[11px] text-neutral-500">$ 1.598.000</span>
+</button>
+<button class="down-chip border border-neutral-300 hover:border-neutral-800 p-3 rounded-xl text-left transition focus:outline-none" onclick="setDownPayment(30, '$ 2.397.000', 224000, this)">
+<span class="block text-xs font-extrabold text-neutral-900">30 %</span>
+<span class="text-[11px] text-neutral-500">$ 2.397.000</span>
+</button>
+</div>
+</div>
+<!-- Plazo Selector (Tabs) -->
+<div>
+<label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-3">
+              2. Escoge el plazo mensual
+            </label>
+<div class="grid grid-cols-4 gap-2 bg-neutral-100 p-1.5 rounded-xl border border-neutral-200">
+<button class="term-tab py-2 text-center rounded-lg text-xs font-semibold text-neutral-600 hover:text-neutral-900 focus:outline-none" onclick="setTerm(12, 1.28, this)">12 meses</button>
+<button class="term-tab py-2 text-center rounded-lg text-xs font-semibold text-neutral-600 hover:text-neutral-900 focus:outline-none" onclick="setTerm(24, 1.12, this)">24 meses</button>
+<button class="term-tab py-2 text-center rounded-lg text-xs font-bold bg-white text-neutral-900 shadow-sm focus:outline-none" onclick="setTerm(36, 1.0, this)">36 meses</button>
+<button class="term-tab py-2 text-center rounded-lg text-xs font-semibold text-neutral-600 hover:text-neutral-900 focus:outline-none" onclick="setTerm(48, 0.88, this)">48 meses</button>
+</div>
+</div>
+<!-- Allied Entities Trust -->
+<div class="pt-4 border-t border-neutral-200 flex flex-wrap items-center justify-between text-xs text-neutral-500 gap-2">
+<span>Aliados habilitados para aprobación en línea:</span>
+<div class="flex items-center gap-3 font-bold text-neutral-700">
+<span>Bancolombia</span> · <span>Sufi</span> · <span>Addi</span> · <span>Vanti Listo</span>
+</div>
+</div>
+</div>
+<!-- Result Card (Right 5 cols) -->
+<div class="lg:col-span-5 bg-white p-7 rounded-2xl border-2 border-neutral-900 shadow-lg flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-neutral-200">
+<span class="text-xs font-bold uppercase text-neutral-500">Tu plan estimado</span>
+<span class="text-xs bg-[#ECFDF5] text-[#1F8A4C] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="check_circle">check_circle</span>
+                Pre-aprobación en 5 min
+              </span>
+</div>
+<!-- Big Price Result -->
+<div class="my-6">
+<span class="text-xs text-neutral-500">Pagas únicamente:</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display font-extrabold text-4xl lg:text-5xl text-neutral-900 tabular-nums tracking-tight" id="calculated-quota">
+                  $ 289.000
+                </span>
+<span class="text-base font-bold text-neutral-600">/mes</span>
+</div>
+</div>
+<!-- Detailed Breakdown -->
+<div class="bg-neutral-50 rounded-xl p-4 space-y-2 text-xs border border-neutral-200/80 mb-6">
+<div class="flex justify-between">
+<span class="text-neutral-500">Monto a financiar:</span>
+<span class="font-bold text-neutral-900 tabular-nums" id="loan-amount">$ 7.191.000 COP</span>
+</div>
+<div class="flex justify-between">
+<span class="text-neutral-500">Cuota inicial seleccionada:</span>
+<span class="font-bold text-neutral-900 tabular-nums" id="down-payment-label">$ 799.000 (10%)</span>
+</div>
+<div class="flex justify-between">
+<span class="text-neutral-500">Tasa de referencia:</span>
+<span class="font-bold text-neutral-900">1,9 % M.V. (Sujeta a perfil)</span>
+</div>
+<div class="flex justify-between">
+<span class="text-neutral-500">Seguro de vida y desempleo:</span>
+<span class="font-bold text-[#1F8A4C]">Incluido en cuota</span>
+</div>
+</div>
+</div>
+<div>
+<button class="w-full bg-[#EE0000] hover:bg-[#d60000] text-white py-3.5 px-6 rounded-xl font-bold text-sm shadow-md transition active:scale-[0.99] flex items-center justify-center gap-2">
+<span>Solicitar financiamiento inmediato</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<p class="text-[11px] text-neutral-400 mt-2.5 text-center leading-relaxed">
+              *Cuota estimada sujeta a aprobación crediticia. No incluye gastos de matrícula, SOAT ni estudio de crédito según ordenanza municipal.
+            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECCIÓN: CERTIFICACIÓN BRENSON (12 PUNTOS) ==================== -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-16" id="certificacion">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-neutral-200">
+<div>
+<div class="inline-flex items-center gap-2 bg-[#ECFDF5] text-[#1F8A4C] px-3 py-1 rounded-full text-xs font-bold mb-3 border border-[#1F8A4C]/20">
+<span class="material-symbols-outlined text-sm" data-icon="shield">shield</span>
+<span>Inspección Técnica Certificada</span>
+</div>
+<h2 class="font-headline font-extrabold text-2xl lg:text-3xl text-neutral-900">
+          Sello de Confianza Brenson: 12 Puntos de Inspección
+        </h2>
+<p class="text-neutral-600 text-sm mt-1.5 max-w-2xl">
+          Cada vehículo pasa por 12 rigurosos puntos de inspección técnica y prueba de ruta antes de ser entregado a tu puerta. Cero sorpresas, 100% de confiabilidad.
+        </p>
+</div>
+<div class="mt-4 md:mt-0 flex items-center gap-2 text-xs font-bold text-[#1F8A4C] bg-white border border-[#1F8A4C] px-4 py-2 rounded-xl">
+<span class="material-symbols-outlined text-base" data-icon="verified">verified</span>
+<span>Aprobado por Ingenieros Brenson</span>
+</div>
+</div>
+<!-- 12 Inspection Points Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Point 1 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          01
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Diagnóstico digital de celdas</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Escaneo computarizado de balance de voltaje y salud química del paquete LiFePO4.</p>
+</div>
+</div>
+<!-- Point 2 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          02
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Prueba de motor bajo carga dinámica</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Test de rendimiento con torque máximo en banco de pruebas simulando pendiente.</p>
+</div>
+</div>
+<!-- Point 3 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          03
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Ajuste y purga de frenos</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Verificación milimétrica de mordazas, nivel de líquido hidráulico DOT 4 y pastillas.</p>
+</div>
+</div>
+<!-- Point 4 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          04
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Torque calibrado de chasis</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Apriete certificado con torquímetro en horquillas, tijera y ejes principales.</p>
+</div>
+</div>
+<!-- Point 5 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          05
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Presión y balanceo de llantas</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Revisión de banda de rodamiento antipinchazo y calibración exacta a 32 PSI.</p>
+</div>
+</div>
+<!-- Point 6 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          06
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Sistema lumínico LED y bocina</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Prueba de luxes de farola principal, stop de freno y direccionales de alta visibilidad.</p>
+</div>
+</div>
+<!-- Point 7 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          07
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Calibración de suspensión</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Ajuste de amortiguadores telescópicos dobles para asfalto urbano e irregularidades.</p>
+</div>
+</div>
+<!-- Point 8 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          08
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Test del cargador rápido</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Comprobación térmica del cargador original inteligente y corte automático al 100%.</p>
+</div>
+</div>
+<!-- Point 9 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          09
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Prueba de ruta real de 5 km</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Rodada en circuito urbano para validar maniobrabilidad, frenado en seco y confort.</p>
+</div>
+</div>
+<!-- Point 10 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          10
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Actualización de firmware</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Sincronización del módulo ECU y reseteo de odómetro para entrega de km 0 verificado.</p>
+</div>
+</div>
+<!-- Point 11 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          11
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Acelerador y modos Eco / Sport</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Respuesta de aceleración progresiva y limitador de velocidad crucero comprobados.</p>
+</div>
+</div>
+<!-- Point 12 -->
+<div class="bg-neutral-50 hover:bg-neutral-100/80 p-4 rounded-xl border border-neutral-200/90 transition flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] text-[#1F8A4C] flex items-center justify-center shrink-0 font-bold text-xs">
+          12
+        </div>
+<div>
+<h3 class="font-bold text-xs text-neutral-900">Entrega técnica con checklist físico</h3>
+<p class="text-[12px] text-neutral-600 mt-0.5">Certificado impreso con firma de taller autorizada y número de serie registrado.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECCIÓN: ESPECIFICACIONES TÉCNICAS ==================== -->
+<section class="bg-neutral-50 border-y border-neutral-200 py-16">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<!-- Top header + PDF Button -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+<div>
+<h2 class="font-headline font-extrabold text-2xl lg:text-3xl text-neutral-900">
+            Especificaciones Técnicas
+          </h2>
+<p class="text-neutral-600 text-sm mt-1">Ficha técnica detallada según homologación colombiana.</p>
+</div>
+<button class="inline-flex items-center gap-2 border border-neutral-300 hover:border-black bg-white px-4 py-2.5 rounded-xl text-xs font-bold text-neutral-800 transition active:scale-95 shadow-xs shrink-0">
+<span class="material-symbols-outlined text-base text-[#EE0000]" data-icon="download">download</span>
+<span>Descargar ficha técnica en PDF</span>
+</button>
+</div>
+<!-- Spec Cards Grid (2x2) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Card 1: Rendimiento -->
+<div class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm">
+<div class="flex items-center gap-2 pb-3 mb-4 border-b border-neutral-100 text-neutral-900 font-bold text-sm">
+<span class="material-symbols-outlined text-[#EE0000]" data-icon="bolt">bolt</span>
+<span>Rendimiento y Potencia</span>
+</div>
+<dl class="space-y-3 text-xs">
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Autonomía estimada</dt>
+<dd class="font-bold text-neutral-900">Hasta 65 km en modo Eco</dd>
+</div>
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Velocidad máxima</dt>
+<dd class="font-bold text-neutral-900">50 km/h (Limitación electrónica)</dd>
+</div>
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Potencia motor hub</dt>
+<dd class="font-bold text-neutral-900">1.500 W nominales (Pico 2.200 W)</dd>
+</div>
+<div class="flex justify-between py-1">
+<dt class="text-neutral-500">Capacidad de pasajeros</dt>
+<dd class="font-bold text-neutral-900">2 personas con posapiés plegables</dd>
+</div>
+</dl>
+</div>
+<!-- Card 2: Batería y Carga -->
+<div class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm">
+<div class="flex items-center gap-2 pb-3 mb-4 border-b border-neutral-100 text-neutral-900 font-bold text-sm">
+<span class="material-symbols-outlined text-[#1F8A4C]" data-icon="battery_charging_full">battery_charging_full</span>
+<span>Batería y Sistema de Carga</span>
+</div>
+<dl class="space-y-3 text-xs">
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Tipo de batería</dt>
+<dd class="font-bold text-neutral-900">Litio LiFePO4 extraíble con asa</dd>
+</div>
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Voltaje y Capacidad</dt>
+<dd class="font-bold text-neutral-900">60V 32Ah (1.920 Wh)</dd>
+</div>
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Tiempo de carga 0-100%</dt>
+<dd class="font-bold text-neutral-900">6 horas en toma doméstica normal de 110V</dd>
+</div>
+<div class="flex justify-between py-1">
+<dt class="text-neutral-500">Vida útil estimada</dt>
+<dd class="font-bold text-neutral-900">&gt; 2.000 ciclos completos de recarga</dd>
+</div>
+</dl>
+</div>
+<!-- Card 3: Dimensiones y Chasis -->
+<div class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm">
+<div class="flex items-center gap-2 pb-3 mb-4 border-b border-neutral-100 text-neutral-900 font-bold text-sm">
+<span class="material-symbols-outlined text-neutral-800" data-icon="straighten">straighten</span>
+<span>Dimensiones, Peso y Frenos</span>
+</div>
+<dl class="space-y-3 text-xs">
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Peso neto total</dt>
+<dd class="font-bold text-neutral-900">78 kg (con batería instalada)</dd>
+</div>
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Carga máxima homologada</dt>
+<dd class="font-bold text-neutral-900">150 kg</dd>
+</div>
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Baúl trasero de fábrica</dt>
+<dd class="font-bold text-[#EE0000]">28 Litros integrado con llave de seguridad</dd>
+</div>
+<div class="flex justify-between py-1">
+<dt class="text-neutral-500">Frenos delantero / trasero</dt>
+<dd class="font-bold text-neutral-900">Disco hidráulico / Tambor asistido CBS</dd>
+</div>
+</dl>
+</div>
+<!-- Card 4: Normativa Colombia -->
+<div class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm">
+<div class="flex items-center gap-2 pb-3 mb-4 border-b border-neutral-100 text-neutral-900 font-bold text-sm">
+<span class="material-symbols-outlined text-[#F59E0B]" data-icon="gavel">gavel</span>
+<span>Normativa y Regulación Colombia</span>
+</div>
+<dl class="space-y-3 text-xs">
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Licencia de conducción</dt>
+<dd class="font-bold text-neutral-900">Requiere categoría A1 o A2</dd>
+</div>
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Seguro Obligatorio (SOAT)</dt>
+<dd class="font-bold text-neutral-900">Sí (Tarifa diferencial ciclomotor eléctrico)</dd>
+</div>
+<div class="flex justify-between py-1 border-b border-neutral-100">
+<dt class="text-neutral-500">Matrícula y placa</dt>
+<dd class="font-bold text-neutral-900">Registro RUNT oficial con placa</dd>
+</div>
+<div class="flex justify-between py-1">
+<dt class="text-neutral-500">Pico y Placa ambiental</dt>
+<dd class="font-bold text-[#1F8A4C]">Totalmente exento en toda Colombia</dd>
+</div>
+</dl>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECCIÓN: GARANTÍA BRENSON ==================== -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-16" id="garantia">
+<div class="max-w-3xl mb-10">
+<div class="inline-flex items-center gap-2 text-xs font-bold text-[#1F8A4C] uppercase tracking-wider mb-2">
+<span class="material-symbols-outlined text-sm" data-icon="security">security</span>
+<span>Respaldo Postventa Directo</span>
+</div>
+<h2 class="font-headline font-extrabold text-2xl lg:text-3xl text-neutral-900">
+        Garantía Brenson: Transparente y sin letra chica
+      </h2>
+<p class="text-neutral-600 text-sm mt-1.5">
+        Respaldamos cada kilómetro de tu viaje con el soporte de nuestra red oficial de talleres y repuestos originales disponibles de inmediato en Colombia.
+      </p>
+</div>
+<!-- Accordion / Structured cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-6">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-xl bg-neutral-900 text-white flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+</div>
+<div>
+<h3 class="font-bold text-sm text-neutral-900">Garantía Vehículo: 12 Meses</h3>
+<p class="text-xs text-neutral-500">Cobertura integral de fábrica</p>
+</div>
+</div>
+<p class="text-xs text-neutral-700 leading-relaxed">
+          Cubre estructura completa de chasis, motor eléctrico tipo Hub en rueda trasera, módulo controlador computarizado (ECU), cableado principal e iluminación LED.
+        </p>
+</div>
+<div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-6">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-xl bg-[#1F8A4C] text-white flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="battery_saver">battery_saver</span>
+</div>
+<div>
+<h3 class="font-bold text-sm text-neutral-900">Garantía Batería: 24 Meses</h3>
+<p class="text-xs text-neutral-500">Protección química LiFePO4</p>
+</div>
+</div>
+<p class="text-xs text-neutral-700 leading-relaxed">
+          Cobertura total por degradación anómala superior al 25% de capacidad nominal o fallas internas en cualquiera de las celdas y sistema de gestión de carga BMS.
+        </p>
+</div>
+<!-- What is covered -->
+<div class="bg-white border border-neutral-200 rounded-2xl p-6 shadow-xs">
+<div class="flex items-center gap-2 mb-3 text-[#1F8A4C] font-bold text-sm">
+<span class="material-symbols-outlined text-base" data-icon="check_circle">check_circle</span>
+<span>¿Qué cubre tu garantía?</span>
+</div>
+<ul class="space-y-2 text-xs text-neutral-600">
+<li class="flex items-start gap-2">
+<span class="text-[#1F8A4C] font-bold">✓</span>
+<span>Defectos de fábrica en manufactura, ensamble y soldaduras de cuadro.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-[#1F8A4C] font-bold">✓</span>
+<span>Fallas en componentes electrónicos, cargador rápido original y pantalla LCD.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-[#1F8A4C] font-bold">✓</span>
+<span>Mano de obra calificada sin costo en todos los talleres de la red Brenson.</span>
+</li>
+</ul>
+</div>
+<!-- What is NOT covered -->
+<div class="bg-white border border-neutral-200 rounded-2xl p-6 shadow-xs">
+<div class="flex items-center gap-2 mb-3 text-neutral-800 font-bold text-sm">
+<span class="material-symbols-outlined text-base text-[#EE0000]" data-icon="cancel">cancel</span>
+<span>¿Qué no cubre la garantía?</span>
+</div>
+<ul class="space-y-2 text-xs text-neutral-600">
+<li class="flex items-start gap-2">
+<span class="text-[#EE0000] font-bold">✕</span>
+<span>Desgaste normal por fricción: pastillas de freno, llantas y bombillos de cortesía.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-[#EE0000] font-bold">✕</span>
+<span>Modificaciones no autorizadas al controlador de velocidad o cables cortados.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-[#EE0000] font-bold">✕</span>
+<span>Daños por inmersión profunda en inundaciones severas o siniestros viales.</span>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- ==================== SECCIÓN: LOGÍSTICA DE ENTREGA EN COLOMBIA ==================== -->
+<section class="bg-[#F8FAFC] border-y border-neutral-200 py-16">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="max-w-2xl mb-10">
+<div class="inline-flex items-center gap-2 text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">
+<span class="material-symbols-outlined text-sm text-[#EE0000]" data-icon="local_shipping">local_shipping</span>
+<span>Cobertura Nacional 100% Asegurada</span>
+</div>
+<h2 class="font-headline font-extrabold text-2xl lg:text-3xl text-neutral-900">
+          Tiempos y Logística de Entrega en Colombia
+        </h2>
+<p class="text-neutral-600 text-sm mt-1.5">
+          Embalaje en guacal reforzado de exportación. Tu ciclomotor llega listo para rodar, ensamblado y con batería al 100%.
+        </p>
+</div>
+<div class="bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse text-xs">
+<thead>
+<tr class="bg-neutral-900 text-white font-semibold">
+<th class="py-3.5 px-6">Región de Destino</th>
+<th class="py-3.5 px-6">Principales Ciudades Cubiertas</th>
+<th class="py-3.5 px-6">Tiempo de Entrega Hábil</th>
+<th class="py-3.5 px-6">Modalidad</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-neutral-100 text-neutral-700 font-medium">
+<tr class="hover:bg-neutral-50 transition">
+<td class="py-4 px-6 font-bold text-neutral-900 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#1F8A4C]"></span>
+                  Región Caribe
+                </td>
+<td class="py-4 px-6">Barranquilla, Cartagena, Santa Marta, Valledupar, Montería</td>
+<td class="py-4 px-6 font-bold text-neutral-900">3 a 5 días hábiles</td>
+<td class="py-4 px-6 text-neutral-500">A domicilio en camión hidráulico</td>
+</tr>
+<tr class="hover:bg-neutral-50 transition">
+<td class="py-4 px-6 font-bold text-neutral-900 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#1F8A4C]"></span>
+                  Región Andina
+                </td>
+<td class="py-4 px-6">Bogotá D.C., Medellín, Bucaramanga, Tunja, Ibagué</td>
+<td class="py-4 px-6 font-bold text-neutral-900">5 a 8 días hábiles</td>
+<td class="py-4 px-6 text-neutral-500">A domicilio o retiro en taller oficial</td>
+</tr>
+<tr class="hover:bg-neutral-50 transition">
+<td class="py-4 px-6 font-bold text-neutral-900 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#1F8A4C]"></span>
+                  Eje Cafetero
+                </td>
+<td class="py-4 px-6">Pereira, Manizales, Armenia, Cartago</td>
+<td class="py-4 px-6 font-bold text-neutral-900">5 a 8 días hábiles</td>
+<td class="py-4 px-6 text-neutral-500">A domicilio asegurado</td>
+</tr>
+<tr class="hover:bg-neutral-50 transition">
+<td class="py-4 px-6 font-bold text-neutral-900 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#1F8A4C]"></span>
+                  Pacífico y Llanos
+                </td>
+<td class="py-4 px-6">Cali, Buenaventura, Pasto, Popayán, Villavicencio, Yopal</td>
+<td class="py-4 px-6 font-bold text-neutral-900">8 a 12 días hábiles</td>
+<td class="py-4 px-6 text-neutral-500">Transportadora especializada</td>
+</tr>
+<tr class="hover:bg-neutral-50 transition">
+<td class="py-4 px-6 font-bold text-neutral-900 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-neutral-400"></span>
+                  Amazonía e Insular
+                </td>
+<td class="py-4 px-6">Leticia, San Andrés Isla, Mitú, Puerto Carreño</td>
+<td class="py-4 px-6 font-bold text-neutral-900">Cotización especial</td>
+<td class="py-4 px-6 text-neutral-500">Flete combinado marítimo / fluvial</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-neutral-50 border-t border-neutral-200 flex flex-wrap items-center justify-between text-xs text-neutral-500 gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-[#1F8A4C]" data-icon="inventory_2">inventory_2</span>
+<span>Todos los envíos incluyen póliza todo riesgo de transporte contra robo y daño físico.</span>
+</div>
+<span class="font-bold text-neutral-700">Seguimiento en línea con guía satelital</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECCIÓN: RESEÑAS DE USUARIOS VERIFICADOS ==================== -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-16">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+<!-- Rating Summary (4 cols) -->
+<div class="lg:col-span-4 bg-neutral-50 p-6 rounded-2xl border border-neutral-200">
+<h3 class="font-headline font-extrabold text-xl text-neutral-900">Opiniones de compradores</h3>
+<p class="text-xs text-neutral-500 mt-1">Propietarios en Colombia</p>
+<div class="my-5 flex items-baseline gap-3">
+<span class="font-display font-extrabold text-5xl text-neutral-900 tabular-nums">4.8</span>
+<div>
+<div class="flex text-[#F59E0B] text-lg">
+              ★★★★★
+            </div>
+<p class="text-xs text-neutral-500 font-medium mt-0.5">Basado en 23 calificaciones</p>
+</div>
+</div>
+<div class="space-y-2 text-xs">
+<div class="flex items-center gap-2">
+<span class="w-12 text-neutral-500 font-medium">5 est.</span>
+<div class="flex-1 bg-neutral-200 rounded-full h-2 overflow-hidden">
+<div class="bg-[#1F8A4C] h-2 rounded-full" style="width: 87%"></div>
+</div>
+<span class="text-neutral-700 font-bold tabular-nums">87%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-12 text-neutral-500 font-medium">4 est.</span>
+<div class="flex-1 bg-neutral-200 rounded-full h-2 overflow-hidden">
+<div class="bg-[#1F8A4C] h-2 rounded-full" style="width: 13%"></div>
+</div>
+<span class="text-neutral-700 font-bold tabular-nums">13%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-12 text-neutral-500 font-medium">3 est.</span>
+<div class="flex-1 bg-neutral-200 rounded-full h-2 overflow-hidden">
+<div class="bg-neutral-300 h-2 rounded-full" style="width: 0%"></div>
+</div>
+<span class="text-neutral-400 font-bold tabular-nums">0%</span>
+</div>
+</div>
+<div class="mt-6 pt-5 border-t border-neutral-200">
+<button class="w-full text-center py-2.5 px-4 rounded-xl border border-neutral-300 font-bold text-xs hover:border-black transition">
+            Escribir una opinión de compra
+          </button>
+</div>
+</div>
+<!-- Testimonial Cards (8 cols) -->
+<div class="lg:col-span-8 space-y-4">
+<!-- Review 1: Bogotá -->
+<div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-neutral-900 text-white font-bold flex items-center justify-center text-xs">
+                CG
+              </div>
+<div>
+<h4 class="font-bold text-xs text-neutral-900">Camilo Gómez R.</h4>
+<div class="flex items-center gap-1.5 text-[11px] text-[#1F8A4C]">
+<span class="material-symbols-outlined text-xs" data-icon="verified">verified</span>
+<span class="font-semibold">Propietario verificado · Bogotá D.C.</span>
+</div>
+</div>
+</div>
+<span class="text-[11px] text-neutral-400">Hace 3 semanas</span>
+</div>
+<div class="flex text-[#F59E0B] text-sm">
+            ★★★★★
+          </div>
+<p class="text-xs text-neutral-700 leading-relaxed font-normal">
+            "La Brenson City 1500 me cambió los trayectos diarios de Suba a Chapinero. Antes gastaba 2 horas en trancón y ahora llego en 40 minutos en silencio absoluto. El baúl trasero de 28L es súper espacioso, cabe mi casco y el morral del portátil. La subo al apartamento sin problemas y la cargo en el tomacorriente común."
+          </p>
+</div>
+<!-- Review 2: Medellín -->
+<div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[#EE0000] text-white font-bold flex items-center justify-center text-xs">
+                VO
+              </div>
+<div>
+<h4 class="font-bold text-xs text-neutral-900">Valentina Osorio M.</h4>
+<div class="flex items-center gap-1.5 text-[11px] text-[#1F8A4C]">
+<span class="material-symbols-outlined text-xs" data-icon="verified">verified</span>
+<span class="font-semibold">Propietaria verificada · Medellín (El Poblado)</span>
+</div>
+</div>
+</div>
+<span class="text-[11px] text-neutral-400">Hace 1 mes</span>
+</div>
+<div class="flex text-[#F59E0B] text-sm">
+            ★★★★★
+          </div>
+<p class="text-xs text-neutral-700 leading-relaxed font-normal">
+            "Me daba susto la fuerza en lomas de Medellín pero responde con holgura en las subidas con dos personas. El proceso de financiación con Bancolombia a través del asesor de WhatsApp fue rapidísimo, en menos de 24 horas estaba aprobado. Excelente servicio postventa y entrega con su checklist firmado."
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECCIÓN: VEHÍCULOS RELACIONADOS ==================== -->
+<section class="bg-neutral-50 border-t border-neutral-200 py-16">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="font-headline font-extrabold text-2xl text-neutral-900">
+            Otros modelos de la gama Brenson
+          </h2>
+<p class="text-neutral-600 text-xs mt-1">Explora opciones con distintas autonomías y vocaciones de uso.</p>
+</div>
+<a class="text-xs font-bold text-neutral-900 hover:text-[#EE0000] flex items-center gap-1 transition" href="#">
+<span>Ver catálogo completo</span>
+<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Related 1: Delivery 2000 -->
+<div class="bg-white rounded-2xl overflow-hidden border border-neutral-200 shadow-sm flex flex-col justify-between group hover:shadow-md transition">
+<div>
+<div class="relative bg-neutral-100 aspect-[4/3] overflow-hidden flex items-center justify-center">
+<span class="absolute top-3 left-3 bg-neutral-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-full z-10">Flota y Carga</span>
+<img class="w-full h-full object-cover group-hover:scale-105 transition duration-300" data-alt="Ciclomotor eléctrico comercial de color rojo intenso equipado con parrilla trasera de alta resistencia para domicilios y entregas urbanas en una ciudad moderna bajo luz diurna clara." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTgtqFcIcGG99JATqREA8b09gtUIJiNfz-axmmB44o7pU-Iz5HzloBX5NnFhnEOv2VJcSepS4Y5Q-Pc_EW1mHr1KsQMDRK_-BvkZKT9iNUtscROqpS84Hf_XymkViQbYx1cFlCe2TgqVlvXvehxj2JF12p0PoE1aGrxEh3Lccm6lza_3q5zwVV8welGJO2r_s0s5TadGyL6QJ9cKR6CRL_DMt4eOC4XViAzyU6DUAAMgyLpTsto4OpOGc29a4r501PnNsDqPWXoLU"/>
+</div>
+<div class="p-5">
+<h3 class="font-headline font-bold text-base text-neutral-900">Brenson Delivery 2000</h3>
+<p class="text-xs text-neutral-500 mt-1">Parrilla reforzada para domicilios pesados y batería doble opcional.</p>
+<div class="flex items-center gap-3 mt-3 text-xs text-neutral-600">
+<span>⚡ 80 km</span> · <span>🚀 55 km/h</span> · <span>⚖️ 200 kg</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<div class="pt-3 border-t border-neutral-100 flex items-baseline justify-between">
+<div>
+<p class="text-[10px] text-neutral-400 uppercase font-semibold">Cuota desde</p>
+<p class="font-bold text-sm text-neutral-900 tabular-nums">$ 305.000 <span class="text-xs font-normal text-neutral-500">/mes</span></p>
+</div>
+<button class="text-xs font-bold text-[#EE0000] hover:underline">Ver detalles →</button>
+</div>
+</div>
+</div>
+<!-- Related 2: Sport 3000 -->
+<div class="bg-white rounded-2xl border border-neutral-200 shadow-sm flex flex-col justify-between group hover:shadow-md transition overflow-hidden">
+<div>
+<div class="relative bg-neutral-100 aspect-[4/3] overflow-hidden flex items-center justify-center">
+<span class="absolute top-3 left-3 bg-[#EE0000] text-white text-[10px] font-bold px-2.5 py-1 rounded-full z-10">Mayor Potencia</span>
+<img class="w-full h-full object-cover group-hover:scale-105 transition duration-300" data-alt="Scooter ciclomotor eléctrico deportivo de alta potencia color rojo brillante con llantas anchas y tablero tecnológico sobre un fondo neutro de estudio automotriz con iluminación nítida." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyOnO_r6gV3zV7zyEJKT6QFl7YzqREZvQ7S3gAeHV767KoOqVPpEbE9X9mTr_izNE8eBt5d-d_hTbwQCIyUvvIYzrBYLy2lVB6mbEkI5kMetkgewj3nTHN2IOeeAKR4Y9erlFKI7hEmI-VUAPk_ozRFAr-o0T_2K91rUy9PqlwI8o1vI_2UryOECilIvXzg1BuY451CKRIAJ-x5qwS38be2jGAPL7YLxyoHaSm9az9jZXxH5xzR9KYpKp9-E7ImrkDvFtBftD5igE"/>
+</div>
+<div class="p-5">
+<h3 class="font-headline font-bold text-base text-neutral-900">Brenson Sport 3000</h3>
+<p class="text-xs text-neutral-500 mt-1">Rendimiento deportivo para vías rápidas con doble disco de freno.</p>
+<div class="flex items-center gap-3 mt-3 text-xs text-neutral-600">
+<span>⚡ 90 km</span> · <span>🚀 75 km/h</span> · <span>⚖️ 160 kg</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<div class="pt-3 border-t border-neutral-100 flex items-baseline justify-between">
+<div>
+<p class="text-[10px] text-neutral-400 uppercase font-semibold">Cuota desde</p>
+<p class="font-bold text-sm text-neutral-900 tabular-nums">$ 399.000 <span class="text-xs font-normal text-neutral-500">/mes</span></p>
+</div>
+<button class="text-xs font-bold text-[#EE0000] hover:underline">Ver detalles →</button>
+</div>
+</div>
+</div>
+<!-- Related 3: Urban E250 -->
+<div class="bg-white rounded-2xl border border-neutral-200 shadow-sm flex flex-col justify-between group hover:shadow-md transition overflow-hidden">
+<div>
+<div class="relative bg-neutral-100 aspect-[4/3] overflow-hidden flex items-center justify-center">
+<span class="absolute top-3 left-3 bg-[#1F8A4C] text-white text-[10px] font-bold px-2.5 py-1 rounded-full z-10">Bicicleta Eléctrica</span>
+<img class="w-full h-full object-cover group-hover:scale-105 transition duration-300" data-alt="Bicicleta eléctrica urbana asistida compacta de marco aerodinámico minimalista en color gris con detalles rojos en ciclorruta protegida de Medellín bajo luz de mañana luminosa." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-aKwcM9Cy0BE9DvxEyClvUfvS0VgJGkh0CEJEjPt-qxpvyrLgyG_-OPHEiu3rnzxijRfP8Dd4G_YAuu4D9vkhLpopIk0RQpfRfsu25KZtIaBawO0MwplwlvbkvOXWPRdogLIyoXOlDZtSkLUbzHyeMemoS5qvV0CkIzSXW3wCDqVHytLpppKAOZPNBpz3VhM34yrpMPTkwj-fTQSpqfyw9UtX1TOB15K_rSoDCWOB41_t6Ym5cLhVu3DodjUz-HIfJg0nBwoibxE"/>
+</div>
+<div class="p-5">
+<h3 class="font-headline font-bold text-base text-neutral-900">Brenson Urban E250</h3>
+<p class="text-xs text-neutral-500 mt-1">Bicicleta eléctrica ultraliviana para ciclorrutas. No requiere licencia ni SOAT.</p>
+<div class="flex items-center gap-3 mt-3 text-xs text-neutral-600">
+<span>⚡ 45 km</span> · <span>🚀 25 km/h</span> · <span>⚖️ 120 kg</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<div class="pt-3 border-t border-neutral-100 flex items-baseline justify-between">
+<div>
+<p class="text-[10px] text-neutral-400 uppercase font-semibold">Cuota desde</p>
+<p class="font-bold text-sm text-neutral-900 tabular-nums">$ 145.000 <span class="text-xs font-normal text-neutral-500">/mes</span></p>
+</div>
+<button class="text-xs font-bold text-[#EE0000] hover:underline">Ver detalles →</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== INSTITUTIONAL FOOTER (SHARED COMPONENT) ==================== -->
+<footer class="bg-black dark:bg-neutral-950 text-white dark:text-neutral-100 border-t border-neutral-800 dark:border-neutral-900">
+<div class="w-full px-6 lg:px-12 py-12 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-neutral-800">
+<!-- Col 1: Brand & Bio -->
+<div class="md:col-span-1">
+<div class="font-display font-extrabold text-xl tracking-tight text-white dark:text-neutral-100 flex items-center gap-1.5 mb-3">
+<span class="w-2.5 h-5 bg-[#EE0000] rounded-xs inline-block"></span>
+            BRENSON
+          </div>
+<p class="font-body text-xs leading-relaxed text-neutral-400 dark:text-neutral-500">
+            Retailer colombiano líder en movilidad eléctrica liviana. Rediseñamos la forma en que Colombia se mueve por la ciudad con autonomía, potencia y respaldo técnico garantizado.
+          </p>
+<div class="mt-4 flex items-center space-x-3 text-neutral-400">
+<span class="text-xs font-semibold">NIT: 901.482.319-4</span>
+</div>
+</div>
+<!-- Col 2: Enlaces Institucionales -->
+<div>
+<h4 class="font-display font-bold text-xs text-white uppercase tracking-wider mb-4">Garantía &amp; Soporte</h4>
+<ul class="space-y-2 font-body text-xs leading-relaxed text-neutral-400 dark:text-neutral-500">
+<li><a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Certificado Brenson 12 Puntos</a></li>
+<li><a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Red de Talleres Autorizados</a></li>
+<li><a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Garantía de Baterías LiFePO4</a></li>
+<li><a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Repuestos Originales</a></li>
+</ul>
+</div>
+<!-- Col 3: Soluciones Corporativas -->
+<div>
+<h4 class="font-display font-bold text-xs text-white uppercase tracking-wider mb-4">Portal Empresas</h4>
+<ul class="space-y-2 font-body text-xs leading-relaxed text-neutral-400 dark:text-neutral-500">
+<li><a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Brenson Empresas B2B</a></li>
+<li><a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Planes de Flota Corporativa</a></li>
+<li><a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Línea Ética y Cumplimiento</a></li>
+<li><a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Facturación Electrónica DIAN</a></li>
+</ul>
+</div>
+<!-- Col 4: Atención & WhatsApp -->
+<div>
+<h4 class="font-display font-bold text-xs text-white uppercase tracking-wider mb-4">Canales de Contacto</h4>
+<p class="font-body text-xs leading-relaxed text-neutral-400 mb-2">
+            Línea nacional gratuita: <br/>
+<span class="text-white font-bold">01 8000 940 222</span>
+</p>
+<p class="font-body text-xs leading-relaxed text-neutral-400 mb-3">
+            Sede principal: <br/>
+            Calle 93B # 13-45, Chicó, Bogotá D.C.
+          </p>
+<a class="inline-flex items-center gap-2 text-xs text-[#25D366] font-bold hover:underline" href="https://wa.me/573000000000" target="_blank">
+<span class="material-symbols-outlined text-sm" data-icon="chat">chat</span>
+<span>WhatsApp Asesoría Inmediata</span>
+</a>
+</div>
+</div>
+<!-- Footer Bottom Row with Legal Links & Exact Copyright Text -->
+<div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 font-body text-xs leading-relaxed text-neutral-400 dark:text-neutral-500">
+<p class="text-center md:text-left">
+          © 2024 Brenson S.A.S. Movilidad Eléctrica Inteligente. Todos los derechos reservados. Colombia.
+        </p>
+<div class="flex flex-wrap items-center justify-center gap-5 text-[11px]">
+<a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Términos y Condiciones</a>
+<a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Políticas de Privacidad</a>
+<a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Certificado Brenson 12 Puntos</a>
+<a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Red de Talleres Autorizados</a>
+<a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Brenson Empresas B2B</a>
+<a class="hover:text-white dark:hover:text-neutral-200 transition-colors duration-150" href="#">Línea Ética y Cumplimiento</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- ==================== FLOATING WHATSAPP BUTTON WITH ONLINE BADGE ==================== -->
+<div class="fixed bottom-6 right-6 z-50 flex items-center group">
+<!-- Tooltip message on hover / presence -->
+<div class="hidden sm:flex items-center mr-3 bg-neutral-900 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-lg border border-neutral-700 animate-pulse">
+<span>Habla con un asesor Brenson</span>
+</div>
+<a class="relative w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200" href="https://wa.me/573000000000?text=Hola,%20quisiera%20asesoría%20sobre%20el%20Brenson%20City%201500" target="_blank" title="Chatear por WhatsApp">
+<!-- Animated Online Ping -->
+<span class="absolute top-0 right-0 -mt-0.5 -mr-0.5 flex h-3.5 w-3.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-400 border-2 border-neutral-900"></span>
+</span>
+<span class="material-symbols-outlined text-2xl" data-icon="chat">chat</span>
+</a>
+</div>
+<!-- ==================== MICRO-INTERACTION LOGIC ==================== -->
+<script>
+    // Gallery Thumb switcher
+    function changeThumb(index, imgSrc) {
+      const hero = document.getElementById('hero-main-img');
+      hero.src = imgSrc;
+      const buttons = document.querySelectorAll('.thumb-btn');
+      buttons.forEach((btn, idx) => {
+        if(idx === index) {
+          btn.classList.remove('border-neutral-200');
+          btn.classList.add('border-[#EE0000]');
+        } else {
+          btn.classList.remove('border-[#EE0000]');
+          btn.classList.add('border-neutral-200');
+        }
+      });
+    }
+
+    // Color Swatch selector
+    function selectColor(name, btn) {
+      document.getElementById('color-label').innerText = name;
+      document.querySelectorAll('.color-swatch').forEach(el => {
+        el.classList.remove('ring-2', 'ring-offset-2', 'ring-[#EE0000]');
+        el.classList.add('ring-0');
+      });
+      btn.classList.remove('ring-0');
+      btn.classList.add('ring-2', 'ring-offset-2', 'ring-[#EE0000]');
+    }
+
+    // Loan Simulator Logic
+    let currentInitialAmount = 799000;
+    let currentInitialPercent = 10;
+    let currentBaseMonthly = 289000;
+    let currentTermFactor = 1.0;
+    const totalPrice = 7990000;
+
+    function setDownPayment(pct, formattedLabel, baseMonthly, btn) {
+      currentInitialPercent = pct;
+      currentInitialAmount = (totalPrice * (pct / 100));
+      currentBaseMonthly = baseMonthly;
+
+      document.querySelectorAll('.down-chip').forEach(b => {
+        b.className = 'down-chip border border-neutral-300 hover:border-neutral-800 p-3 rounded-xl text-left transition focus:outline-none';
+        b.querySelector('span:first-child').className = 'block text-xs font-extrabold text-neutral-900';
+      });
+
+      btn.className = 'down-chip border-2 border-black bg-neutral-900 text-white p-3 rounded-xl text-left transition focus:outline-none';
+      btn.querySelector('span:first-child').className = 'block text-xs font-extrabold text-white';
+
+      recalcLoan();
+    }
+
+    function setTerm(months, factor, btn) {
+      currentTermFactor = factor;
+      document.querySelectorAll('.term-tab').forEach(b => {
+        b.className = 'term-tab py-2 text-center rounded-lg text-xs font-semibold text-neutral-600 hover:text-neutral-900 focus:outline-none';
+      });
+      btn.className = 'term-tab py-2 text-center rounded-lg text-xs font-bold bg-white text-neutral-900 shadow-sm focus:outline-none';
+      
+      recalcLoan();
+    }
+
+    function recalcLoan() {
+      const loanAmount = totalPrice - currentInitialAmount;
+      const monthly = Math.round((currentBaseMonthly * currentTermFactor) / 1000) * 1000;
+      
+      document.getElementById('calculated-quota').innerText = '$ ' + monthly.toLocaleString('es-CO');
+      document.getElementById('loan-amount').innerText = '$ ' + loanAmount.toLocaleString('es-CO') + ' COP';
+      document.getElementById('down-payment-label').innerText = '$ ' + currentInitialAmount.toLocaleString('es-CO') + ' (' + currentInitialPercent + '%)';
+    }
+  </script>
+</body></html>

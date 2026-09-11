@@ -1,0 +1,142 @@
+{%- comment -%}
+  brenson-lead-form — Módulo 09. Formulario de cotización / financiamiento / prueba de manejo.
+  Campos (decisión H4): nombre, WhatsApp, ciudad, uso previsto, cantidad. Vehículo precargado oculto.
+  Envío: POST a settings.brenson_services_url + '/lead' (S10). Si la URL está vacía → modo simulación: éxito local.
+  Respaldo sin JS: el formulario apunta al formulario de contacto nativo de Shopify (form 'contact').
+  Prueba de manejo (decisión I6): selector de modalidad sede / domicilio con ciudades desde settings.
+{%- endcomment -%}
+{%- liquid
+  assign tipo_default = section.settings.tipo
+  assign vehiculo_default = ''
+  if request.page_type == 'product' and product
+    assign vehiculo_default = product.title
+  endif
+  assign ciudades = settings.brenson_prueba_ciudades | split: ','
+-%}
+<section id="brenson-lead-form" class="brenson-section brenson-lead-form-section {% if section.settings.alt %}brenson-section--alt{% endif %}">
+  <div class="brenson-container">
+    <div class="brenson-lead-form__grid">
+      <header>
+        <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+        <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+        <p class="brenson-subheading">{{ section.settings.text }}</p>
+        <ul class="brenson-checklist" style="grid-template-columns:1fr">
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Respuesta en horario de atención el mismo día</li>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Sin compromiso de compra</li>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Tus datos se tratan según la Ley 1581 de 2012</li>
+        </ul>
+      </header>
+
+      {%- form 'contact', id: 'BrensonLeadForm', class: 'brenson-form', data-brenson-lead-form: '', data-endpoint: settings.brenson_services_url -%}
+        {%- if form.posted_successfully? -%}
+          <p class="brenson-form__success" role="status">Recibimos tu solicitud. Un asesor te contactará pronto.</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="brenson-form__error" role="alert">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+
+        <input type="hidden" name="contact[tipo]" data-name="tipo" value="{{ tipo_default }}">
+        <input type="hidden" name="contact[vehiculo]" data-name="vehiculo" value="{{ vehiculo_default | escape }}">
+        <input type="hidden" name="contact[simulacion]" data-name="simulacion" value="">
+        <input type="hidden" name="contact[fuente]" data-name="fuente" value="{{ request.page_type }}">
+        <input type="hidden" name="contact[url]" data-name="url" value="{{ request.origin }}{{ request.path }}">
+        <input type="text" name="contact[website]" tabindex="-1" autocomplete="off" class="brenson-visually-hidden" aria-hidden="true">
+
+        <div class="brenson-form__row brenson-form__row--2">
+          <div class="brenson-field">
+            <label for="lead-nombre">Nombre</label>
+            <input id="lead-nombre" type="text" name="contact[name]" data-name="nombre" required autocomplete="name">
+          </div>
+          <div class="brenson-field">
+            <label for="lead-whatsapp">WhatsApp</label>
+            <input id="lead-whatsapp" type="tel" name="contact[phone]" data-name="whatsapp" required inputmode="tel" placeholder="300 123 4567" autocomplete="tel">
+          </div>
+        </div>
+        <div class="brenson-form__row brenson-form__row--2">
+          <div class="brenson-field">
+            <label for="lead-email">Correo (opcional)</label>
+            <input id="lead-email" type="email" name="contact[email]" data-name="email" autocomplete="email">
+          </div>
+          <div class="brenson-field">
+            <label for="lead-ciudad">Ciudad</label>
+            <input id="lead-ciudad" type="text" name="contact[ciudad]" data-name="ciudad" required autocomplete="address-level2">
+          </div>
+        </div>
+        <div class="brenson-form__row brenson-form__row--2">
+          <div class="brenson-field">
+            <label for="lead-uso">Uso previsto</label>
+            <select id="lead-uso" name="contact[uso]" data-name="uso" required>
+              <option value="personal">Personal</option>
+              <option value="comercial">Comercial</option>
+              <option value="logistica">Logística / flota</option>
+            </select>
+          </div>
+          <div class="brenson-field">
+            <label for="lead-cantidad">Cantidad</label>
+            <input id="lead-cantidad" type="number" name="contact[cantidad]" data-name="cantidad" min="1" value="1" required>
+          </div>
+        </div>
+
+        {%- if section.settings.show_test_drive -%}
+          <fieldset class="brenson-field" data-lead-testdrive>
+            <legend style="font-weight:600; font-size: var(--brenson-text-sm); margin-bottom:.35rem">¿Quieres una prueba de manejo?</legend>
+            <div class="brenson-chips" role="group">
+              <button type="button" class="brenson-chip" data-testdrive="no" aria-pressed="true">No por ahora</button>
+              <button type="button" class="brenson-chip" data-testdrive="sede" aria-pressed="false">En la sede</button>
+              <button type="button" class="brenson-chip" data-testdrive="domicilio" aria-pressed="false">A domicilio</button>
+            </div>
+            <input type="hidden" name="contact[prueba_modalidad]" data-name="prueba_modalidad" value="no">
+            <div class="brenson-form__row brenson-form__row--2" data-testdrive-fields hidden style="margin-top: var(--brenson-space-3)">
+              <div class="brenson-field">
+                <label for="lead-fecha">Fecha preferida</label>
+                <input id="lead-fecha" type="date" name="contact[prueba_fecha]" data-name="prueba_fecha">
+              </div>
+              <div class="brenson-field" data-testdrive-city hidden>
+                <label for="lead-ciudad-prueba">Ciudad de la prueba</label>
+                <select id="lead-ciudad-prueba" name="contact[prueba_ciudad]" data-name="prueba_ciudad">
+                  {%- for c in ciudades -%}<option>{{ c | strip }}</option>{%- endfor -%}
+                </select>
+              </div>
+              <p class="brenson-field__hint" data-testdrive-sede-hint>Sede: {{ settings.brenson_sede_direccion }}</p>
+            </div>
+          </fieldset>
+        {%- endif -%}
+
+        <div class="brenson-field">
+          <label style="display:flex; gap:.5rem; align-items:flex-start; font-weight:400; font-size: var(--brenson-text-xs);">
+            <input type="checkbox" name="contact[acepta]" data-name="acepta" required style="width:auto; min-height:auto; margin-top:.15rem">
+            <span>Autorizo el tratamiento de mis datos según la <a href="/policies/privacy-policy" class="link">política de privacidad</a> de Brenson S.A.S.</span>
+          </label>
+        </div>
+
+        <div data-turnstile-slot></div>
+
+        <button type="submit" class="brenson-btn brenson-btn--primary brenson-btn--lg brenson-btn--block" data-lead-submit>{{ section.settings.cta_label }}</button>
+        <p class="brenson-form__success" data-lead-success hidden role="status">Recibimos tu solicitud. Un asesor te contactará en horario de atención.</p>
+        <p class="brenson-form__error" data-lead-error hidden role="alert">No pudimos enviar tu solicitud. Escríbenos por WhatsApp o intenta de nuevo.</p>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+<style>
+  .brenson-lead-form__grid { display: grid; gap: var(--brenson-space-8); }
+  @media (min-width: 990px) { .brenson-lead-form__grid { grid-template-columns: 1fr 1.2fr; align-items: start; } }
+</style>
+<script src="{{ 'brenson-lead-form.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Brenson · Formulario de lead",
+  "tag": "div",
+  "settings": [
+    { "type": "select", "id": "tipo", "label": "Tipo de solicitud", "default": "cotizacion", "options": [ { "value": "cotizacion", "label": "Cotización" }, { "value": "financiamiento", "label": "Financiamiento" }, { "value": "contacto", "label": "Contacto general" } ] },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Solicita tu cotización" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Un asesor te responde hoy" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Déjanos tus datos y te enviamos la cotización con opciones de financiación." },
+    { "type": "text", "id": "cta_label", "label": "Botón", "default": "Solicitar cotización" },
+    { "type": "checkbox", "id": "show_test_drive", "label": "Incluir prueba de manejo", "default": true },
+    { "type": "checkbox", "id": "alt", "label": "Fondo gris", "default": true }
+  ],
+  "presets": [ { "name": "Brenson · Formulario de lead" } ]
+}
+{% endschema %}

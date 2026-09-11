@@ -1,0 +1,93 @@
+{%- comment -%}
+  brenson-product-specs — Módulo 04. Especificaciones técnicas agrupadas desde metafields brenson.*
+  Grupos: Rendimiento · Batería · Dimensiones · Normativa · Otras (specs_adicionales JSON).
+  Botón de ficha técnica PDF: metafield brenson.ficha_tecnica_pdf o generado por brenson-services (S1/B9).
+{%- endcomment -%}
+{%- liquid
+  assign mf = product.metafields.brenson
+  assign has_any = false
+  if mf.autonomia_km.value or mf.velocidad_max_kmh.value or mf.potencia_motor_w.value or mf.bateria_tipo.value or mf.peso_kg.value
+    assign has_any = true
+  endif
+-%}
+{%- if has_any -%}
+<section id="especificaciones" class="brenson-section brenson-product-specs">
+  <div class="brenson-container">
+    <header class="brenson-section__head" style="display:flex; justify-content:space-between; align-items:flex-end; gap: var(--brenson-space-4); flex-wrap: wrap;">
+      <div>
+        <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+        <h2 class="brenson-heading" style="margin-bottom:0">{{ section.settings.title }}</h2>
+      </div>
+      {%- if mf.ficha_tecnica_pdf.value -%}
+        <a class="brenson-btn brenson-btn--outline" href="{{ mf.ficha_tecnica_pdf.value | file_url }}" target="_blank" rel="noopener" data-brenson-track="pdf_download">Descargar ficha técnica PDF</a>
+      {%- elsif settings.brenson_services_url != blank -%}
+        <a class="brenson-btn brenson-btn--outline" href="{{ settings.brenson_services_url }}/ficha/{{ product.handle }}.pdf" target="_blank" rel="noopener" data-brenson-track="pdf_download">Descargar ficha técnica PDF</a>
+      {%- endif -%}
+    </header>
+
+    <div class="brenson-spec-groups">
+      {%- comment -%} Rendimiento {%- endcomment -%}
+      <div class="brenson-spec-group">
+        <div class="brenson-spec-group__head"><svg viewBox="0 0 24 24"><path d="M4 14a8 8 0 1 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m12 14 3.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Rendimiento</div>
+        <dl>
+          {%- if mf.autonomia_km.value -%}<div class="brenson-spec-row"><dt>Autonomía</dt><dd>{{ mf.autonomia_km.value }} km</dd></div>{%- endif -%}
+          {%- if mf.velocidad_max_kmh.value -%}<div class="brenson-spec-row"><dt>Velocidad máxima</dt><dd>{{ mf.velocidad_max_kmh.value }} km/h</dd></div>{%- endif -%}
+          {%- if mf.potencia_motor_w.value -%}<div class="brenson-spec-row"><dt>Potencia del motor</dt><dd>{{ mf.potencia_motor_w.value }} W</dd></div>{%- endif -%}
+          {%- if mf.pasajeros.value -%}<div class="brenson-spec-row"><dt>Pasajeros</dt><dd>{{ mf.pasajeros.value }}</dd></div>{%- endif -%}
+          {%- if mf.uso.value -%}<div class="brenson-spec-row"><dt>Uso recomendado</dt><dd>{{ mf.uso.value | join: ', ' | capitalize }}</dd></div>{%- endif -%}
+        </dl>
+      </div>
+
+      {%- comment -%} Batería {%- endcomment -%}
+      <div class="brenson-spec-group">
+        <div class="brenson-spec-group__head"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="16" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M21 10v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="m11 9-2 3h3l-2 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Batería</div>
+        <dl>
+          {%- if mf.bateria_tipo.value -%}<div class="brenson-spec-row"><dt>Tipo</dt><dd>{{ mf.bateria_tipo.value }}</dd></div>{%- endif -%}
+          {%- if mf.bateria_capacidad.value -%}<div class="brenson-spec-row"><dt>Capacidad</dt><dd>{{ mf.bateria_capacidad.value }}</dd></div>{%- endif -%}
+          {%- if mf.tiempo_carga_h.value -%}<div class="brenson-spec-row"><dt>Tiempo de carga</dt><dd>{{ mf.tiempo_carga_h.value }} h</dd></div>{%- endif -%}
+          {%- if mf.garantia_bateria_meses.value -%}<div class="brenson-spec-row"><dt>Garantía de batería</dt><dd>{{ mf.garantia_bateria_meses.value }} meses</dd></div>{%- endif -%}
+        </dl>
+      </div>
+
+      {%- comment -%} Dimensiones {%- endcomment -%}
+      <div class="brenson-spec-group">
+        <div class="brenson-spec-group__head"><svg viewBox="0 0 24 24"><path d="M4 16 8 8h8l4 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 19h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Dimensiones y carga</div>
+        <dl>
+          {%- if mf.peso_kg.value -%}<div class="brenson-spec-row"><dt>Peso</dt><dd>{{ mf.peso_kg.value }} kg</dd></div>{%- endif -%}
+          {%- if mf.capacidad_carga_kg.value -%}<div class="brenson-spec-row"><dt>Carga máxima</dt><dd>{{ mf.capacidad_carga_kg.value }} kg</dd></div>{%- endif -%}
+          {%- if mf.specs_adicionales.value -%}
+            {%- for row in mf.specs_adicionales.value -%}
+              <div class="brenson-spec-row"><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>
+            {%- endfor -%}
+          {%- endif -%}
+        </dl>
+      </div>
+
+      {%- comment -%} Normativa {%- endcomment -%}
+      <div class="brenson-spec-group">
+        <div class="brenson-spec-group__head"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Normativa en Colombia</div>
+        <dl>
+          <div class="brenson-spec-row"><dt>Requiere licencia</dt><dd>{% if mf.requiere_licencia.value %}Sí{% else %}No{% endif %}</dd></div>
+          <div class="brenson-spec-row"><dt>Requiere SOAT</dt><dd>{% if mf.requiere_soat.value %}Sí{% else %}No{% endif %}</dd></div>
+          <div class="brenson-spec-row"><dt>Pico y placa</dt><dd>Exento en la mayoría de ciudades <span class="brenson-muted">[VALIDAR]</span></dd></div>
+          {%- if mf.garantia_meses.value -%}<div class="brenson-spec-row"><dt>Garantía del vehículo</dt><dd>{{ mf.garantia_meses.value }} meses</dd></div>{%- endif -%}
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brenson · Especificaciones",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Ficha técnica" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Especificaciones técnicas" },
+    { "type": "paragraph", "content": "Los datos vienen de los metafields brenson.* del producto. Si el producto no tiene specs, la sección no se muestra." }
+  ],
+  "presets": [ { "name": "Brenson · Especificaciones" } ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

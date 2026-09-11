@@ -1,0 +1,124 @@
+{%- comment -%}
+  brenson-social-proof — Módulo 06/01. Testimonios + aliados + contadores desde metaobjects (S7, S8).
+  Regla de confianza: en producción (modo simulación apagado) solo se muestran entradas con verificado = true.
+  Bloques activables: testimonios, aliados, contadores.
+{%- endcomment -%}
+{%- liquid
+  assign sim = settings.brenson_modo_simulacion
+  assign testimonios = shop.metaobjects.brenson_testimonio.values
+  assign aliados = shop.metaobjects.brenson_aliado.values
+  assign contadores = shop.metaobjects.brenson_contador.values
+-%}
+<section class="brenson-section brenson-social-proof {% if section.settings.alt %}brenson-section--alt{% endif %}">
+  <div class="brenson-container">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+
+        {%- when 'testimonios' -%}
+          {%- assign visibles = 0 -%}
+          {%- capture cards -%}
+            {%- for t in testimonios limit: block.settings.limit -%}
+              {%- if t.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
+              {%- assign visibles = visibles | plus: 1 -%}
+              <li class="brenson-testimonial">
+                <div class="brenson-testimonial__stars" aria-label="5 de 5">★★★★★</div>
+                <p class="brenson-testimonial__text">“{{ t.texto.value }}”</p>
+                <footer class="brenson-testimonial__meta">
+                  {%- if t.foto.value -%}{{ t.foto.value | image_url: width: 96 | image_tag: loading: 'lazy', class: 'brenson-testimonial__avatar', alt: t.nombre.value }}{%- else -%}<span class="brenson-testimonial__avatar brenson-testimonial__avatar--ph">{{ t.nombre.value | slice: 0 }}</span>{%- endif -%}
+                  <div>
+                    <strong>{{ t.nombre.value }}</strong>
+                    <span class="brenson-muted">{{ t.empresa.value }}{% if t.ciudad.value %} · {{ t.ciudad.value }}{% endif %}</span>
+                    {%- if t.vehiculo.value -%}<a class="link" href="{{ t.vehiculo.value.url }}" style="font-size: var(--brenson-text-xs)">{{ t.vehiculo.value.title }}</a>{%- endif -%}
+                  </div>
+                  {%- if t.verificado.value -%}<span class="brenson-status brenson-status--ok">Cliente verificado</span>{%- else -%}<span class="brenson-status brenson-status--pending">[MOCK]</span>{%- endif -%}
+                </footer>
+              </li>
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if visibles > 0 -%}
+            <div class="brenson-social-proof__block" {{ block.shopify_attributes }}>
+              <header class="brenson-section__head brenson-section__head--center">
+                <span class="brenson-eyebrow">{{ block.settings.eyebrow }}</span>
+                <h2 class="brenson-heading">{{ block.settings.title }}</h2>
+              </header>
+              <ul class="brenson-grid brenson-grid--3" role="list">{{ cards }}</ul>
+            </div>
+          {%- endif -%}
+
+        {%- when 'aliados' -%}
+          {%- capture logos -%}
+            {%- for a in aliados -%}
+              {%- if a.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
+              <li class="brenson-partner">
+                {%- if a.logo.value -%}{{ a.logo.value | image_url: width: 240 | image_tag: loading: 'lazy', alt: a.nombre.value }}{%- else -%}<span class="brenson-partner__ph">{{ a.nombre.value }}</span>{%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if logos != blank -%}
+            <div class="brenson-social-proof__block" {{ block.shopify_attributes }}>
+              <p class="brenson-eyebrow" style="justify-content:center; width:100%; color: var(--brenson-gris)">{{ block.settings.title }}</p>
+              <ul class="brenson-partners" role="list">{{ logos }}</ul>
+            </div>
+          {%- endif -%}
+
+        {%- when 'contadores' -%}
+          {%- capture nums -%}
+            {%- for c in contadores -%}
+              {%- if c.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
+              <li class="brenson-counter">
+                <strong class="brenson-num" data-brenson-counter="{{ c.valor.value }}">{{ c.valor.value }}</strong><span class="brenson-counter__suffix">{{ c.sufijo.value }}</span>
+                <span class="brenson-counter__label">{{ c.label.value }}</span>
+              </li>
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if nums != blank -%}
+            <div class="brenson-social-proof__block" {{ block.shopify_attributes }}>
+              <ul class="brenson-counters" role="list">{{ nums }}</ul>
+              {%- if sim -%}<p class="brenson-muted" style="text-align:center; font-size: var(--brenson-text-xs)">Cifras de demostración. Se publican solo datos verificados por Brenson.</p>{%- endif -%}
+            </div>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+  .brenson-social-proof__block + .brenson-social-proof__block { margin-top: var(--brenson-space-16); }
+  .brenson-testimonial { background: #fff; border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-6); display: flex; flex-direction: column; gap: var(--brenson-space-3); }
+  .brenson-testimonial__stars { color: #f5b301; letter-spacing: .1em; font-size: var(--brenson-text-sm); }
+  .brenson-testimonial__text { margin: 0; font-size: var(--brenson-text-md); line-height: 1.5; flex: 1; }
+  .brenson-testimonial__meta { display: flex; gap: var(--brenson-space-3); align-items: center; font-size: var(--brenson-text-sm); flex-wrap: wrap; }
+  .brenson-testimonial__meta > div { display: flex; flex-direction: column; flex: 1; }
+  .brenson-testimonial__avatar { width: 2.75rem; height: 2.75rem; border-radius: 50%; object-fit: cover; }
+  .brenson-testimonial__avatar--ph { display: grid; place-items: center; background: var(--brenson-carbon); color: #fff; font-weight: 700; }
+  .brenson-partners { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--brenson-space-8); align-items: center; filter: grayscale(1); opacity: .75; }
+  .brenson-partners img { height: 2.25rem; width: auto; }
+  .brenson-partner__ph { font-weight: 800; font-size: var(--brenson-text-lg); color: var(--brenson-carbon-60); letter-spacing: -.01em; }
+  .brenson-counters { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--brenson-space-6); text-align: center; }
+  @media (min-width: 750px) { .brenson-counters { grid-template-columns: repeat(4, 1fr); } }
+  .brenson-counter strong { font-size: clamp(2.25rem, 4vw, 3.5rem); font-weight: 800; color: var(--brenson-carbon); line-height: 1; }
+  .brenson-counter__suffix { font-size: 1.75rem; font-weight: 800; color: var(--brenson-rojo); }
+  .brenson-counter__label { display: block; font-size: var(--brenson-text-xs); text-transform: uppercase; letter-spacing: var(--brenson-tracking-wide); color: var(--brenson-gris); margin-top: .35rem; font-weight: 600; }
+</style>
+<script>
+  // Contador animado (Módulo 06) — respeta prefers-reduced-motion
+  (function(){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var els = document.querySelectorAll('[data-brenson-counter]'); if (!els.length || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function(entries){ entries.forEach(function(en){ if(!en.isIntersecting) return; io.unobserve(en.target); var end = +en.target.dataset.brensonCounter||0, t0 = performance.now(); (function step(t){ var p = Math.min(1,(t-t0)/1200); en.target.textContent = Math.round(end*(1-Math.pow(1-p,3))).toLocaleString('es-CO'); if(p<1) requestAnimationFrame(step); })(t0); }); }, { threshold: .4 });
+    els.forEach(function(e){ io.observe(e); });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Brenson · Prueba social",
+  "tag": "div",
+  "settings": [ { "type": "checkbox", "id": "alt", "label": "Fondo gris", "default": false }, { "type": "paragraph", "content": "Testimonios, aliados y contadores vienen de metaobjects. En producción solo se muestran los marcados como verificados." } ],
+  "blocks": [
+    { "type": "testimonios", "name": "Testimonios", "limit": 1, "settings": [ { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Clientes reales" }, { "type": "text", "id": "title", "label": "Título", "default": "Lo que dicen quienes ya ruedan con Brenson" }, { "type": "range", "id": "limit", "min": 3, "max": 9, "step": 3, "label": "Máximo", "default": 3 } ] },
+    { "type": "aliados", "name": "Aliados", "limit": 1, "settings": [ { "type": "text", "id": "title", "label": "Título", "default": "Aliados y clientes que confían en Brenson" } ] },
+    { "type": "contadores", "name": "Contadores", "limit": 1, "settings": [] }
+  ],
+  "presets": [ { "name": "Brenson · Prueba social", "blocks": [ { "type": "testimonios" }, { "type": "aliados" }, { "type": "contadores" } ] } ]
+}
+{% endschema %}

@@ -1,0 +1,87 @@
+{%- comment -%}
+  brenson-product-warranty — Módulo 06. Garantía expandible + envíos por región.
+  Meses desde metafields; términos desde brenson.garantia_terminos (rich text) o texto [BORRADOR] (S6).
+  Regiones de envío desde settings Brenson (decisión B18/B18b).
+{%- endcomment -%}
+{%- liquid
+  assign mf = product.metafields.brenson
+  assign g_veh = mf.garantia_meses.value | default: 12
+  assign g_bat = mf.garantia_bateria_meses.value | default: g_veh
+-%}
+<section id="garantia" class="brenson-section brenson-warranty">
+  <div class="brenson-container">
+    <div class="brenson-warranty__grid">
+      <div>
+        <span class="brenson-eyebrow" style="color: var(--brenson-certificado)">{{ section.settings.eyebrow }}</span>
+        <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+        <div class="brenson-warranty__badges">
+          <div class="brenson-warranty__badge"><strong>{{ g_veh }} meses</strong><span>Vehículo</span></div>
+          <div class="brenson-warranty__badge"><strong>{{ g_bat }} meses</strong><span>Batería</span></div>
+        </div>
+        <div class="brenson-accordion">
+          <details>
+            <summary>Qué cubre la garantía</summary>
+            <div class="brenson-accordion__body">
+              {%- if mf.garantia_terminos.value != blank -%}
+                {{ mf.garantia_terminos.value | metafield_tag }}
+              {%- else -%}
+                <p>Defectos de fabricación en motor, controlador, batería, cargador y estructura durante el periodo indicado, con uso normal y mantenimiento según el manual. <span class="brenson-muted">[BORRADOR: términos legales pendientes de aprobación]</span></p>
+              {%- endif -%}
+            </div>
+          </details>
+          <details>
+            <summary>Qué no cubre</summary>
+            <div class="brenson-accordion__body"><p>Desgaste normal de llantas, frenos y luces; daños por golpes, humedad extrema, sobrecarga, modificaciones o cargadores no originales. <span class="brenson-muted">[BORRADOR]</span></p></div>
+          </details>
+          <details>
+            <summary>Cómo hacer válida la garantía</summary>
+            <div class="brenson-accordion__body"><p>Escríbenos por WhatsApp con el número de serie de tu vehículo o ingresa a tu cuenta para ver el estado de garantía de cada unidad. Coordinamos revisión en sede o con un taller aliado.</p>
+              <a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{% render 'brenson-whatsapp-link', context: 'garantias' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="garantia">Consultar mi garantía</a>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      {%- if section.settings.show_shipping -%}
+        <div class="brenson-warranty__shipping">
+          <h3 style="font-size: var(--brenson-text-lg); margin: 0 0 var(--brenson-space-2)">Envíos y entrega</h3>
+          <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin: 0 0 var(--brenson-space-4)">Enviamos a toda Colombia. El costo se cotiza según destino y tipo de vehículo.</p>
+          <dl class="brenson-shipping-table">
+            <div><dt>Región Caribe</dt><dd>{{ settings.brenson_envio_caribe }}</dd></div>
+            <div><dt>Región Andina</dt><dd>{{ settings.brenson_envio_andina }}</dd></div>
+            <div><dt>Eje Cafetero y Santanderes</dt><dd>{{ settings.brenson_envio_cafetero }}</dd></div>
+            <div><dt>Pacífico y Llanos</dt><dd>{{ settings.brenson_envio_pacifico }}</dd></div>
+            <div><dt>Amazonía e insular</dt><dd>{{ settings.brenson_envio_otros }}</dd></div>
+          </dl>
+          <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin-top: var(--brenson-space-3)">Recogida en sede: {{ settings.brenson_sede_direccion }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+  .brenson-warranty__grid { display: grid; gap: var(--brenson-space-8); }
+  @media (min-width: 990px) { .brenson-warranty__grid { grid-template-columns: 1.2fr 1fr; align-items: start; } }
+  .brenson-warranty__badges { display: flex; gap: var(--brenson-space-3); margin-bottom: var(--brenson-space-6); }
+  .brenson-warranty__badge { flex: 1; display: flex; flex-direction: column; padding: var(--brenson-space-4); border-radius: var(--brenson-radius-lg); background: var(--brenson-certificado-suave); color: var(--brenson-certificado); }
+  .brenson-warranty__badge strong { font-size: var(--brenson-text-2xl); font-weight: 800; line-height: 1; }
+  .brenson-warranty__badge span { font-size: var(--brenson-text-sm); color: var(--brenson-carbon-60); }
+  .brenson-warranty__shipping { background: var(--brenson-gris-claro); border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-6); }
+  .brenson-shipping-table div { display: flex; justify-content: space-between; gap: var(--brenson-space-4); padding: .6rem 0; border-top: 1px solid var(--brenson-gris-borde); font-size: var(--brenson-text-sm); }
+  .brenson-shipping-table dt { margin: 0; color: var(--brenson-carbon-60); }
+  .brenson-shipping-table dd { margin: 0; font-weight: 600; text-align: right; }
+</style>
+
+{% schema %}
+{
+  "name": "Brenson · Garantía y envíos",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Respaldo" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Garantía Brenson" },
+    { "type": "checkbox", "id": "show_shipping", "label": "Mostrar tabla de envíos", "default": true }
+  ],
+  "presets": [ { "name": "Brenson · Garantía y envíos" } ],
+  "enabled_on": { "templates": ["product", "page"] }
+}
+{% endschema %}
