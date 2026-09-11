@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "test": "node --test test/",
+    "test": "node --test test/quote.test.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

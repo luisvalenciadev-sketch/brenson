@@ -63,6 +63,10 @@
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
+    {%- comment -%} Brenson: dataLayer + Consent Mode + GTM + noindex (Módulo 15/13) y JSON-LD (Módulo 13) {%- endcomment -%}
+    {%- render 'brenson-datalayer' -%}
+    {%- render 'brenson-json-ld' -%}
+
     {{ content_for_header }}
 
     {%- liquid

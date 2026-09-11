@@ -1,0 +1,70 @@
+{%- comment -%}
+  brenson-exit-intent — Módulo 09. Popup de salida en fichas: descarga de ficha técnica PDF a cambio del correo (decisión I7).
+  Frecuencia: una vez cada 7 días por visitante (localStorage). Desktop: mouse sale por arriba. Mobile: scroll rápido hacia arriba tras 40 % de lectura.
+  Envío: reutiliza el endpoint /lead con tipo 'ficha_pdf'. Sin endpoint → simulación (éxito + enlace directo al PDF).
+{%- endcomment -%}
+{%- if request.page_type == 'product' -%}
+{%- liquid
+  assign pdf_url = ''
+  if product.metafields.brenson.ficha_tecnica_pdf.value
+    assign pdf_url = product.metafields.brenson.ficha_tecnica_pdf.value | file_url
+  elsif settings.brenson_services_url != blank
+    assign pdf_url = settings.brenson_services_url | append: '/ficha/' | append: product.handle | append: '.pdf'
+  endif
+-%}
+<dialog class="brenson-exit" id="brenson-exit-intent" data-brenson-exit data-endpoint="{{ settings.brenson_services_url }}" data-pdf="{{ pdf_url }}" data-days="{{ section.settings.days }}" aria-labelledby="brenson-exit-title">
+  <form method="dialog" class="brenson-exit__close"><button aria-label="Cerrar">×</button></form>
+  <div class="brenson-exit__body">
+    <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+    <h2 id="brenson-exit-title" style="margin:0; font-size: var(--brenson-text-xl)">{{ section.settings.title | replace: '{modelo}', product.title }}</h2>
+    <p class="brenson-muted" style="margin:0; font-size: var(--brenson-text-sm)">{{ section.settings.text }}</p>
+    <form class="brenson-form" data-exit-form>
+      <input type="hidden" data-name="tipo" value="ficha_pdf">
+      <input type="hidden" data-name="vehiculo" value="{{ product.title | escape }}">
+      <input type="hidden" data-name="fuente" value="exit_intent">
+      <div class="brenson-field"><label for="exit-email" class="brenson-visually-hidden">Correo</label><input id="exit-email" type="email" data-name="email" required placeholder="tu@correo.com" autocomplete="email"></div>
+      <div class="brenson-field"><label for="exit-wa" class="brenson-visually-hidden">WhatsApp (opcional)</label><input id="exit-wa" type="tel" data-name="whatsapp" placeholder="WhatsApp (opcional)" inputmode="tel"></div>
+      <label style="display:flex; gap:.5rem; font-size: var(--brenson-text-xs); align-items:flex-start"><input type="checkbox" required style="width:auto; min-height:auto; margin-top:.15rem"><span>Acepto la <a class="link" href="/policies/privacy-policy">política de datos</a>.</span></label>
+      <button type="submit" class="brenson-btn brenson-btn--primary brenson-btn--block">{{ section.settings.cta_label }}</button>
+      <p class="brenson-form__success" data-exit-success hidden>Listo. <a class="link" data-exit-link href="{{ pdf_url }}" target="_blank" rel="noopener">Descargar la ficha técnica</a></p>
+    </form>
+  </div>
+</dialog>
+<style>
+  .brenson-exit { border: 0; border-radius: var(--brenson-radius-xl); padding: 0; max-width: 28rem; width: calc(100% - 2rem); box-shadow: var(--brenson-shadow-lg); }
+  .brenson-exit::backdrop { background: rgba(5,7,9,.6); backdrop-filter: blur(2px); }
+  .brenson-exit__body { padding: var(--brenson-space-6); display: grid; gap: var(--brenson-space-3); }
+  .brenson-exit__close { position: absolute; top: .5rem; right: .5rem; margin: 0; }
+  .brenson-exit__close button { width: 2.25rem; height: 2.25rem; border: 0; border-radius: 50%; background: var(--brenson-gris-claro); font-size: 1.25rem; cursor: pointer; }
+</style>
+<script>
+(function(){
+  var dlg=document.querySelector('[data-brenson-exit]'); if(!dlg||!('showModal' in dlg))return;
+  var key='brenson_exit_shown', days=parseInt(dlg.dataset.days,10)||7, now=Date.now();
+  try{ var last=parseInt(localStorage.getItem(key)||'0',10); if(now-last<days*864e5)return; }catch(e){}
+  var shown=false; function open(){ if(shown)return; shown=true; try{localStorage.setItem(key,String(now));}catch(e){} dlg.showModal(); window.dataLayer=window.dataLayer||[]; window.dataLayer.push({event:'brenson_exit_intent_open'}); }
+  if(matchMedia('(pointer:fine)').matches){ document.addEventListener('mouseout',function(e){ if(!e.relatedTarget&&e.clientY<=0)open(); }); }
+  else { var lastY=window.scrollY, deep=false; window.addEventListener('scroll',function(){ var y=window.scrollY; if(y>document.body.scrollHeight*0.4)deep=true; if(deep&&lastY-y>120)open(); lastY=y; },{passive:true}); }
+  var form=dlg.querySelector('[data-exit-form]'); form.addEventListener('submit',async function(e){ e.preventDefault(); var data={}; form.querySelectorAll('[data-name]').forEach(function(el){data[el.dataset.name]=el.value;}); data.nombre=data.email; data.page=location.href; var ep=(dlg.dataset.endpoint||'').replace(/\/$/,'');
+    try{ if(ep){ await fetch(ep+'/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); } else { console.info('[brenson] exit-intent lead (simulación):',data); } }catch(err){}
+    window.dataLayer.push({event:'brenson_lead_submit',tipo:'ficha_pdf',vehiculo:data.vehiculo});
+    form.querySelectorAll('input,button').forEach(function(el){el.disabled=true;}); var ok=form.querySelector('[data-exit-success]'); ok.hidden=false; var link=form.querySelector('[data-exit-link]'); if(link&&link.getAttribute('href'))window.open(link.href,'_blank','noopener'); });
+})();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brenson · Exit intent (ficha PDF)",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Antes de irte" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Llévate la ficha técnica del {modelo}", "info": "{modelo} inserta el nombre del vehículo." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Te enviamos la ficha técnica en PDF con specs, garantía y cuota estimada." },
+    { "type": "text", "id": "cta_label", "label": "Botón", "default": "Enviarme la ficha" },
+    { "type": "range", "id": "days", "min": 1, "max": 30, "step": 1, "label": "Mostrar de nuevo después de (días)", "default": 7 }
+  ],
+  "presets": [ { "name": "Brenson · Exit intent (ficha PDF)" } ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

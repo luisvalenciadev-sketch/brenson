@@ -1,0 +1,56 @@
+{%- comment -%}
+  brenson-datalayer — Módulo 15. Capa de datos + GTM + Consent Mode v2 (decisión K2: bloqueo estricto hasta aceptar).
+  - Consent Mode por defecto "denied"; el banner de consentimiento (Shopify Customer Privacy API) actualiza a "granted".
+  - GTM se carga solo si settings.brenson_gtm_id está configurado (S/K1).
+  - dataLayer inicial con page_type, template, producto/colección y estado B2B (sin datos personales).
+  - noindex para colecciones/plantillas exclusivas de Empresas (R-A2, Módulo 13).
+{%- endcomment -%}
+{%- liquid
+  assign noindex = false
+  if template.suffix == 'empresas' or template.suffix == 'empresas-acceso' or template.suffix == 'cotizador'
+    assign noindex = true
+  endif
+  if request.page_type == 'collection' and collection.metafields.brenson.solo_empresas.value == true
+    assign noindex = true
+  endif
+  if request.page_type contains 'customers/'
+    assign noindex = true
+  endif
+-%}
+{%- if noindex -%}<meta name="robots" content="noindex, nofollow">{%- endif -%}
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  // Consent Mode v2: todo denegado hasta que el visitante acepte (Ley 1581)
+  gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied', functionality_storage: 'granted', security_storage: 'granted', wait_for_update: 500 });
+  window.dataLayer.push({
+    event: 'brenson_page',
+    page_type: {{ request.page_type | json }},
+    template: {{ template.name | json }},
+    template_suffix: {{ template.suffix | json }},
+    {%- if request.page_type == 'product' -%}
+    product: { id: {{ product.id | json }}, handle: {{ product.handle | json }}, name: {{ product.title | json }}, price: {{ product.price | divided_by: 100.0 | json }}, category: {{ product.metafields.brenson.categoria.value | json }}, autonomia_km: {{ product.metafields.brenson.autonomia_km.value | json }}, financiable: {{ product.metafields.brenson.financiable.value | default: true | json }} },
+    {%- elsif request.page_type == 'collection' -%}
+    collection: { handle: {{ collection.handle | json }}, name: {{ collection.title | json }}, count: {{ collection.products_count | json }} },
+    {%- endif -%}
+    logged_in: {% if customer %}true{% else %}false{% endif %},
+    b2b: {% if customer and customer.tags contains 'cliente-corporativo' %}true{% else %}false{% endif %},
+    currency: 'COP'
+  });
+  // Puente con Shopify Customer Privacy API → Consent Mode
+  document.addEventListener('visitorConsentCollected', function (e) {
+    var d = e.detail || {};
+    gtag('consent', 'update', {
+      analytics_storage: d.analyticsAllowed ? 'granted' : 'denied',
+      ad_storage: d.marketingAllowed ? 'granted' : 'denied',
+      ad_user_data: d.marketingAllowed ? 'granted' : 'denied',
+      ad_personalization: d.marketingAllowed ? 'granted' : 'denied'
+    });
+    window.dataLayer.push({ event: 'brenson_consent', analytics: !!d.analyticsAllowed, marketing: !!d.marketingAllowed });
+  });
+</script>
+
+{%- if settings.brenson_gtm_id != blank -%}
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',{{ settings.brenson_gtm_id | json }});</script>
+{%- endif -%}
