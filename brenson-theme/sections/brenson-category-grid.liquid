@@ -11,7 +11,7 @@
       {%- if section.settings.subtitle != blank -%}<p class="brenson-subheading">{{ section.settings.subtitle }}</p>{%- endif -%}
     </header>
 
-    <ul class="brenson-grid brenson-grid--4" role="list">
+    <ul class="brenson-grid brenson-grid--4 brenson-carousel-mobile" role="list">
       {%- for block in section.blocks -%}
         {%- assign col = block.settings.collection -%}
         {%- if col == blank -%}{%- continue -%}{%- endif -%}

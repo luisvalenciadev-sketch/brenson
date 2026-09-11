@@ -1,0 +1,21 @@
+{%- comment -%} brenson-quick-view-modal — contenedor global del modal de vista rápida (se renderiza en theme.liquid) {%- endcomment -%}
+<dialog class="brenson-qv-modal" id="brenson-quick-view" data-brenson-qv aria-label="Vista rápida del vehículo">
+  <form method="dialog" class="brenson-qv-modal__close"><button aria-label="Cerrar">×</button></form>
+  <div class="brenson-qv-modal__body" data-brenson-qv-body>
+    <div class="brenson-qv-modal__loading" aria-live="polite">Cargando…</div>
+  </div>
+</dialog>
+<style>
+  .brenson-qv-modal { border: 0; border-radius: var(--brenson-radius-xl); padding: 0; width: min(960px, calc(100% - 2rem)); max-height: calc(100vh - 2rem); box-shadow: var(--brenson-shadow-lg); }
+  .brenson-qv-modal::backdrop { background: rgba(5,7,9,.6); backdrop-filter: blur(2px); }
+  .brenson-qv-modal__close { position: absolute; top: .75rem; right: .75rem; margin: 0; z-index: 2; }
+  .brenson-qv-modal__close button { width: 2.5rem; height: 2.5rem; border: 0; border-radius: 50%; background: #fff; box-shadow: var(--brenson-shadow); font-size: 1.4rem; cursor: pointer; }
+  .brenson-qv-modal__loading { padding: var(--brenson-space-12); text-align: center; color: var(--brenson-gris); }
+  .brenson-qv { display: grid; }
+  @media (min-width: 750px) { .brenson-qv { grid-template-columns: 1fr 1fr; } }
+  .brenson-qv__media { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; background: var(--brenson-gris-claro); aspect-ratio: 4/3; }
+  .brenson-qv__img { flex: none; width: 100%; height: 100%; object-fit: contain; scroll-snap-align: start; }
+  .brenson-qv__body { padding: var(--brenson-space-6); display: grid; gap: var(--brenson-space-4); align-content: start; }
+  .brenson-qv__title { margin: 0; font-size: var(--brenson-text-xl); font-weight: 700; }
+</style>
+<script src="{{ 'brenson-quick-view.js' | asset_url }}" defer></script>

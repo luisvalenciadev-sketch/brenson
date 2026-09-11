@@ -1518,7 +1518,8 @@
     "name": "Brenson · Desarrollo",
     "settings": [
       { "type": "checkbox", "id": "brenson_modo_simulacion", "label": "Modo simulación", "default": true, "info": "Muestra el aviso 'datos de demostración' y el contenido marcado como no verificado. APAGAR antes del lanzamiento (ver docs/ESTRATEGIA_SIMULACION.md)." },
-      { "type": "text", "id": "brenson_gtm_id", "label": "ID de Google Tag Manager", "default": "", "info": "GTM-XXXXXXX. Vacío = no se carga." }
+      { "type": "text", "id": "brenson_gtm_id", "label": "ID de Google Tag Manager", "default": "", "info": "GTM-XXXXXXX. Vacío = no se carga." },
+      { "type": "text", "id": "brenson_turnstile_site_key", "label": "Cloudflare Turnstile · site key", "default": "", "info": "Anti-spam en formularios. Vacío = desactivado. El secret va en brenson-services." }
     ]
   }
 ]

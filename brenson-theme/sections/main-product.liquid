@@ -748,9 +748,12 @@
         endif
       -%}
 
+      {%- comment -%} Brenson: para vehículos, el JSON-LD enriquecido lo emite snippets/brenson-json-ld.liquid (evita duplicado, Módulo 13) {%- endcomment -%}
+      {%- if product.metafields.brenson.categoria.value == blank -%}
       <script type="application/ld+json">
         {{ product | structured_data }}
       </script>
+      {%- endif -%}
     </div>
   </product-component>
 </product-info>

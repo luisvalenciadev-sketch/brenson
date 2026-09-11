@@ -19,7 +19,7 @@ import type { Env } from './types';
 import { getProviders } from './providers';
 import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, updateCustomerNoteAndTags, setCustomerMetafield } from './lib/shopify';
 import { computeQuote, quoteHtml, specSheetHtml, nextQuoteNumber } from './lib/quote';
-import { verifyTurnstile, rateLimit, jsonError, scoreFor } from './lib/util';
+import { verifyTurnstile, rateLimit, jsonError, scoreFor, signPath, verifySignedPath } from './lib/util';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -87,18 +87,20 @@ app.post('/b2b/request', async (c) => {
 app.post('/upload', async (c) => {
   const form = await c.req.formData().catch(() => null);
   if (!form) return jsonError(c, 400, 'multipart requerido');
-  const file = form.get('file');
+  const file = form.get('file') as unknown as File | string | null;
   const tipo = String(form.get('tipo') || 'camara_comercio');
   const email = String(form.get('email') || '');
   const customerId = String(form.get('customer_id') || '');
-  if (!(file instanceof File)) return jsonError(c, 422, 'Archivo requerido');
+  if (!file || typeof file === 'string') return jsonError(c, 422, 'Archivo requerido');
   const max = Number(c.env.UPLOAD_MAX_BYTES || 5242880);
   if (file.size > max) return jsonError(c, 413, 'Archivo supera 5 MB');
   if (!/^(application\/pdf|image\/(png|jpe?g|webp))$/.test(file.type)) return jsonError(c, 415, 'Solo PDF o imagen');
 
   const { storage } = getProviders(c.env);
   const key = `b2b/${customerId || 'anon'}/${Date.now()}-${tipo}.${file.type === 'application/pdf' ? 'pdf' : file.type.split('/')[1]}`;
-  const url = await storage.put(key, file, { contentType: file.type, email, customerId, tipo });
+  const stored = await storage.put(key, file, { contentType: file.type, email, customerId, tipo });
+  // Enlace firmado de 180 días para que el equipo de habilitación abra el documento desde el Admin (bucket privado)
+  const url = stored.startsWith('r2://') ? new URL(await signPath(c.env, `/docs/${key}`, 60 * 60 * 24 * 180), c.req.url).toString() : stored;
   if (c.env.SHOPIFY_ADMIN_TOKEN && customerId) {
     await setCustomerMetafield(c.env, `gid://shopify/Customer/${customerId}`, 'brenson_b2b', 'documento_url', url, 'url');
     await setCustomerMetafield(c.env, `gid://shopify/Customer/${customerId}`, 'brenson_b2b', 'documento_tipo', tipo, 'single_line_text_field');
@@ -116,7 +118,9 @@ app.post('/quote', async (c) => {
   const quote = await computeQuote(c.env, body);
   quote.numero = await nextQuoteNumber(c.env);
   const html = quoteHtml(quote, c.env);
-  const pdfUrl = await pdf.render({ id: quote.numero, html, template: c.env.PDFMONKEY_TEMPLATE_QUOTE, data: quote });
+  let pdfUrl = await pdf.render({ id: quote.numero, html, template: c.env.PDFMONKEY_TEMPLATE_QUOTE, data: quote });
+  // Proveedor HTML: el enlace se firma (30 días) para que el número de cotización no sea adivinable (Módulo 18)
+  if (pdfUrl.startsWith('/quotes/')) pdfUrl = new URL(await signPath(c.env, `/quotes/${quote.numero}`), c.req.url).toString();
   quote.pdf_url = pdfUrl;
 
   if (c.env.SHOPIFY_ADMIN_TOKEN) {
@@ -145,10 +149,22 @@ app.post('/quote', async (c) => {
 });
 
 app.get('/quotes/:id', async (c) => {
+  const id = c.req.param('id').replace(/\.pdf$/, '');
+  if (!(await verifySignedPath(c.env, `/quotes/${id}`, c.req.query('exp'), c.req.query('sig')))) return jsonError(c, 403, 'Enlace inválido o vencido');
   const { pdf } = getProviders(c.env);
-  const html = await pdf.get(c.req.param('id').replace(/\.pdf$/, ''));
+  const html = await pdf.get(id);
   if (!html) return c.notFound();
   return c.html(html);
+});
+
+/* ---------------- Documentos B2B (bucket privado, enlace firmado) ---------------- */
+app.get('/docs/*', async (c) => {
+  const key = c.req.path.replace(/^\/docs\//, '');
+  if (!(await verifySignedPath(c.env, `/docs/${key}`, c.req.query('exp'), c.req.query('sig')))) return jsonError(c, 403, 'Enlace inválido o vencido');
+  if (!c.env.DOCS) return jsonError(c, 501, 'Storage R2 no configurado');
+  const obj = await c.env.DOCS.get(key);
+  if (!obj) return c.notFound();
+  return new Response(obj.body, { headers: { 'Content-Type': obj.httpMetadata?.contentType || 'application/octet-stream', 'Content-Disposition': `inline; filename="${key.split('/').pop()}"`, 'Cache-Control': 'private, no-store' } });
 });
 
 /* ---------------- Ficha técnica PDF ---------------- */

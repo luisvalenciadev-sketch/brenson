@@ -1,86 +1,60 @@
-# Estado de construcción — Brenson Ecosistema
+# Estado del proyecto — Brenson Ecosistema
 
-Actualizado: 11 de septiembre de 2026. Todo construido con datos simulados según `ESTRATEGIA_SIMULACION.md`. Nada desplegado aún: falta acceso a la tienda Shopify (verificaciones Sprint 1).
+Actualizado: 11 de septiembre de 2026, cierre de la sesión 1 de construcción.
+Regla: **todo lo que no dependía de accesos externos está hecho.** Lo pendiente requiere la tienda Shopify, Cloudflare, una app custom o contenido de Brenson. Cómo publicar: `docs/GUIA_PUBLICACION.md`.
 
-## Diseño (Stitch)
+## Resumen en una tabla
 
-Proyecto `projects/6680964782534882674` · design system `assets/7471924313442223255`. Capturas y HTML en `stitch-design/`.
-
-| # | Pantalla | Estado |
+| Componente | Estado | Verificación |
 |---|---|---|
-| 01 | Homepage desktop | ✅ revisada |
-| 02 | Catálogo Ciclomotores desktop | ✅ revisada |
-| 03 | Ficha City 1500 desktop | ✅ revisada |
-| 04 | Dashboard Empresas | ✅ revisada |
-| 05 | Crear cuenta / login | ✅ |
-| 06 | Financiación | ✅ |
-| 07 | Landing Empresas (sin sesión) | ✅ |
-| 08 | Cotizador de flota | ✅ |
-| 09 | Homepage mobile | ✅ |
-| 10 | Ficha mobile con sticky bar | ✅ |
+| Diseño (Stitch) | ✅ 14 pantallas desktop y mobile | `stitch-design/SCREENS.md`, correcciones en `REVIEWS.md` |
+| Tema `brenson-theme` | ✅ código completo, sin desplegar | Theme Check 0 errores / 0 warnings |
+| Backend `brenson-services` | ✅ código completo, sin desplegar | `tsc` sin errores, 3 tests |
+| Function `brenson-b2b-functions` | ✅ código completo, sin desplegar | 5 tests |
+| Scripts de datos | ✅ listos, probados en dry-run | `npm run definitions:dry`, `npm run import:mocks:dry` |
+| Datos simulados | ✅ 12 vehículos + 11 metaobjects + blog + políticas + placeholders | `mock-data/` |
+| Documentación | ✅ plan, decisiones, simulación, Flows, QA, manual, copy, publicación, prompt | `docs/` |
+| Despliegue en Shopify | ❌ requiere acceso | Guía §1 a §3 |
+| Despliegue Worker | ❌ requiere Cloudflare | Guía §4 |
+| Despliegue Function | ❌ requiere app custom | Guía §6 |
+| Flows y webhooks | ❌ requiere Admin | Guía §5 |
+| GTM, Meta, Klaviyo, Junip, inglés | ❌ Sprint 6 y Fase 5 | Guía §7 y §8 |
+| Contenido real de Brenson | ❌ ver entregables | `DECISIONES_BRENSON.md` |
 
-Pendientes de diseño: catálogo mobile, Empresas mobile, cotizador mobile, estados pendiente/rechazado, página de garantía, blog. Notas de corrección en `stitch-design/REVIEWS.md` (Stitch inventa marcas y datos: nada de eso pasa al tema).
+## Tema: módulos de la propuesta
 
-## Tema `brenson-theme` (Dawn 16 + `brenson-*`)
-
-Theme Check: 0 errores, 0 warnings.
-
-| Módulo | Implementado | Archivos clave |
+| Módulo | Estado | Archivos clave |
 |---|---|---|
-| 01 Homepage | ✅ | `templates/index.json`, `brenson-hero`, `brenson-trust-bar`, `brenson-category-grid`, `brenson-financing-banner`, `brenson-case-studies`, `brenson-social-proof`, `brenson-empresas-cta` |
-| 02 Catálogo | ✅ base | `templates/collection.json`, `card-product` extendido (badge, 3 specs, cuota) |
-| 03 Filtros | ✅ nativo | Facetas de Dawn (Search & Discovery). Falta configurar filtros por metafield en Admin |
-| 04 Ficha | ✅ | `templates/product.json`, bloques `brenson_*` en `main-product`, `brenson-product-specs`, `-certification`, `-warranty`, `brenson-faq`, `brenson-sticky-cta` |
-| 05 Simulador | ✅ | `brenson-simulator` (Web Component), `brenson-price` (cálculo Liquid), `page.financiacion.json` |
-| 06 Confianza | ✅ | Sello certificado, checklist, garantía, envíos, contadores, aliados, testimonios (solo verificados en producción) |
-| 07 Cuentas | ✅ | Templates clásicos de Dawn 14, `main-register` (Persona/Empresa, ciudad, uso), `main-account` (unidades y garantías), `brenson-b2b-request-access` con validación NIT |
-| 08 Portal Empresas | ✅ | `layout/theme.empresas.liquid`, `page.empresas.json`, `brenson-b2b-gate` (4 estados), `-dashboard`, `-header/-footer`, `-collection-grid` (gating server-side), `-quoter` + JS, `page.cotizador.json`, `page.empresas-acceso.json` |
-| 09 Leads | ✅ | `brenson-lead-form` + JS (endpoint o simulación), exit intent ❌ pendiente |
-| 10 WhatsApp | ✅ | `brenson-whatsapp-link`, `brenson-whatsapp-float` + horario, mensajes por contexto |
-| 11 CRM | ✅ backend | Adaptador GHL + mock en `brenson-services` |
-| 12 Admin | ✅ | 4 grupos de settings Brenson, metaobjects definidos en `docs/metafield-definitions.json` |
-| 13 SEO | ✅ base | `brenson-json-ld` (Organization, Product, Breadcrumb), FAQPage, noindex Empresas. Redirecciones y blog ❌ |
-| 14 Performance | ⏳ | Sin jQuery, JS por módulo con `defer`. Medición pendiente |
-| 15 Analytics | ✅ base | `brenson-datalayer` (Consent Mode v2, GTM, eventos custom en todos los JS) |
-| 16 Remarketing | ❌ | Klaviyo/Meta se configuran en Admin (Sprint 6) |
-| 17 Mobile | ✅ | Sticky bar, chips apilados, grids responsivos |
-| 18 Seguridad | ✅ | Gating Liquid, Function como validación real, HMAC, Turnstile, rate limit |
+| 01 Homepage | ✅ | `templates/index.json`; `brenson-hero`, `-trust-bar`, `-category-grid`, `-financing-banner`, `-case-studies`, `-social-proof`, `-empresas-cta` |
+| 02 Catálogo | ✅ | `templates/collection.json`; `card-product` (badge, 3 specs, cuota, vista rápida); `brenson-quick-view` + modal + JS; chips en `main-collection-banner` |
+| 03 Filtros | ✅ por tramos | Facetas nativas + metafields `autonomia_tramo`, `velocidad_tramo`, `carga_tramo` (decisión: tramos, no slider). Configurar en Search & Discovery |
+| 04 Ficha | ✅ | `templates/product.json`; bloques `brenson_*` en `main-product`; `brenson-product-specs`, `-certification`, `-warranty`, `brenson-faq`, `-sticky-cta`, `-exit-intent` |
+| 05 Simulador | ✅ | `brenson-simulator` + JS; `brenson-price` (cálculo en Liquid); `page.financiacion.json` |
+| 06 Confianza | ✅ | Sello, checklist, garantía, envíos, contadores, aliados, testimonios (solo verificados en producción) |
+| 07 Cuentas | ✅ | Templates clásicos (Dawn 14); header con enlace clásico; `main-register` (Persona/Empresa, ciudad, uso); `main-account` (unidades); `brenson-b2b-request-access` con NIT |
+| 08 Empresas | ✅ | `theme.empresas.liquid`; `brenson-b2b-gate` (4 estados), `-dashboard`, `-header`, `-footer`, `-collection-grid`, `-quoter` (+ `?add`, `?duplicar`); templates `page.empresas`, `page.empresas-acceso`, `page.cotizador`, `collection.empresas` |
+| 09 Leads | ✅ | `brenson-lead-form` + JS, exit intent, Turnstile opcional |
+| 10 WhatsApp | ✅ | `brenson-whatsapp-link`, `-float` con horario, CTA en header, mensajes por contexto |
+| 11 CRM | ✅ backend | Adaptadores mock/GHL en `brenson-services` |
+| 12 Admin | ✅ | 4 grupos de settings; `settings_data.json` con paleta y Montserrat; metaobjects |
+| 13 SEO | ✅ | `brenson-json-ld` (Organization, Product enriquecido, Breadcrumb), FAQPage, noindex Empresas; JSON-LD de Dawn desactivado para vehículos |
+| 14 Performance | ⏳ medir | Sin jQuery, JS por módulo con `defer`. Lighthouse pendiente de staging |
+| 15 Analytics | ✅ | `brenson-datalayer`: Consent Mode v2, GTM condicional, eventos `brenson_*` |
+| 16 Remarketing | ❌ Admin | Klaviyo, Meta (Sprint 6) |
+| 17 Mobile | ✅ | Sticky bar, chips apilados, carruseles con scroll-snap |
+| 18 Seguridad | ✅ | Gating server-side, Function como validación real, HMAC, Turnstile, rate limit, enlaces firmados de PDF y documentos |
 
-## `brenson-services` (Cloudflare Worker)
+## Backend `brenson-services`
 
-Endpoints `/lead`, `/b2b/request`, `/upload`, `/quote`, `/ficha/:handle.pdf`, `/quotes/:id.pdf`, `/webhooks/shopify/:topic`, `/health`. Proveedores mock/real por variable de entorno. Test de fórmulas en `test/`. Sin desplegar (falta cuenta Cloudflare de Brenson).
+Endpoints: `/health`, `POST /lead`, `POST /b2b/request`, `POST /upload`, `POST /quote`, `GET /quotes/:id.pdf` (firmado), `GET /docs/*` (firmado, R2 privado), `GET /ficha/:handle.pdf`, `POST /webhooks/shopify/:topic`. Proveedores por variable: CRM mock/GHL, mail consola/Resend, PDF HTML/PDFMonkey, storage local/R2. Dependencias instaladas, `tsc` limpio.
 
-## `brenson-b2b-functions` (Shopify Function)
+## Pendiente de código (menor, para después de tener staging)
 
-`extensions/tier-discount`: descuento por tier con override por producto y mínimo de unidades. 5 tests pasan. Sin desplegar (falta app custom en la tienda).
+- Ajustes visuales que solo se ven con la tienda real (espaciados de Dawn vs. diseño Stitch).
+- Traducción de las cadenas `t:` de los schemas nuevos si se quiere el editor 100 % en español (hoy los labels Brenson ya están en español literal).
+- Exportar plantilla Excel para Brenson (`docs/PLANTILLA_SPECS.xlsx`) — hoy el esquema es `mock-data/vehiculos.json`.
+- Redirecciones 301 (lista depende de Search Console).
 
-## Datos simulados
+## Entregables de Brenson que desbloquean el reemplazo de mocks
 
-`mock-data/vehiculos.json` (12 vehículos) y `mock-data/metaobjects.json` (financiación, tiers, asesores, certificación, FAQ, testimonios, aliados, contadores, casos, regiones, clientes B2B, unidades, cotizaciones). Falta el script de importación `scripts/import-*.mjs` (requiere token Admin).
-
-## Cierre de la sesión 1 (11-sep-2026, segunda parte)
-
-Añadido sin necesitar acceso a la tienda:
-
-| Elemento | Archivo |
-|---|---|
-| Scripts listos para ejecutar con token: definiciones, importación de mocks (colecciones, productos, metaobjects, clientes B2B, unidades, cotizaciones), blog, placeholders, check de mocks | `scripts/*.mjs`, `package.json` raíz |
-| Automatizaciones Shopify Flow (5) y webhooks | `docs/FLOWS.md` |
-| Matriz de QA (60 casos B2C, B2B y backend) | `docs/QA_MATRIZ.md` |
-| Manual del equipo Brenson por roles | `docs/MANUAL_ADMIN.md` |
-| Copy de seguimiento GHL, flows Klaviyo y plantillas WhatsApp | `docs/COPY_MENSAJES.md` |
-| 6 artículos de blog en borrador | `mock-data/blog.json` |
-| Estructura de políticas legales `[BORRADOR]` | `mock-data/POLITICAS_BORRADOR.md` |
-| Placeholders SVG por categoría y hero | `mock-data/img/` |
-| Pantalla 11 Stitch: estados pendiente / personal / rechazado | `stitch-design/11-empresas-estados` |
-| Prompt para continuar en otra sesión | `docs/PROMPT_CONTINUACION.md` |
-
-Pantallas Stitch 12 a 14 completadas y descargadas: catálogo mobile con drawer de filtros, cotizador mobile con resumen sticky, garantía + blog desktop. Total: **14 pantallas**. Diseño pendiente solo para el futuro inglés y para páginas menores (404, búsqueda, carrito), que Dawn ya cubre.
-
-## Siguiente paso operativo
-
-1. Acceso colaborador a la tienda → verificaciones Sprint 1 (cuentas clásicas, plan, apps, GHL).
-2. Crear metafields/metaobjects con `docs/metafield-definitions.json` e importar mocks.
-3. `shopify theme push --unpublished` como "Brenson Staging" y revisar en el editor.
-4. Cuenta Cloudflare → `wrangler deploy` y poner la URL en Ajustes → Brenson · Empresas.
-5. App custom → `shopify app deploy` y activar el descuento automático.
+Manual de marca · fotos y video · specs · tasa y aliado financiero · % por tier · checklist de certificación · textos legales · testimonios y aliados autorizados · cifras de contadores · lista de clientes B2B · tiempos por región · dirección de sede. Detalle con fechas en `DECISIONES_BRENSON.md`.

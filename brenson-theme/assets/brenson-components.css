@@ -223,6 +223,24 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 @media (min-width: 990px) { .brenson-grid--3 { grid-template-columns: repeat(3, 1fr); } .brenson-grid--4 { grid-template-columns: repeat(4, 1fr); } }
 @media (max-width: 749px) { .brenson-grid--2 { grid-template-columns: 1fr; } }
 
+/* ---------- Carrusel mobile (pantallas Stitch 09/10): grid en desktop, scroll-snap en móvil ---------- */
+@media (max-width: 749px) {
+  .brenson-carousel-mobile {
+    display: flex !important;
+    grid-template-columns: none !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: var(--brenson-space-4);
+    padding-bottom: var(--brenson-space-2);
+    margin-inline: calc(-1 * var(--brenson-gutter));
+    padding-inline: var(--brenson-gutter);
+    scrollbar-width: none;
+  }
+  .brenson-carousel-mobile::-webkit-scrollbar { display: none; }
+  .brenson-carousel-mobile > * { flex: 0 0 82%; scroll-snap-align: start; }
+}
+
 /* ---------- Chips / tabs (simulador, filtros) ---------- */
 .brenson-chips { display: flex; flex-wrap: wrap; gap: var(--brenson-space-2); }
 .brenson-chip {
