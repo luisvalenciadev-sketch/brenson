@@ -1,0 +1,135 @@
+{
+  "_mock": true,
+  "_nota": "Entradas simuladas para todos los metaobjects brenson_*. Cada clave de primer nivel es un tipo de metaobject. Reemplazar con datos reales de Brenson según docs/ESTRATEGIA_SIMULACION.md.",
+
+  "parametros_financiacion": {
+    "tasa_mensual": 1.9,
+    "plazos": [12, 24, 36, 48],
+    "iniciales_pct": [0, 10, 20, 30],
+    "plazo_default": 36,
+    "inicial_default": 10,
+    "aliado_nombre": "Aliado Financiero [BORRADOR]",
+    "disclaimer": "Cuota mensual estimada con fines informativos. Sujeta a estudio y aprobación crediticia por parte de la entidad financiera aliada. No incluye matrícula, SOAT, estudio de crédito ni seguros. No constituye una oferta comercial. [BORRADOR: pendiente revisión legal]",
+    "costos_no_incluidos": ["Matrícula y trámites de tránsito", "SOAT", "Estudio de crédito y seguro del crédito"]
+  },
+
+  "tiers_b2b": [
+    { "codigo": "tier_1", "nombre": "Flota Inicial", "minimo_unidades": 10, "descuento_pct": 8, "descripcion": "Para empresas que inician su transición eléctrica.", "beneficios": ["8 % de descuento sobre precio público", "Asesor B2B dedicado", "Cotización PDF inmediata"] },
+    { "codigo": "tier_2", "nombre": "Flota Crecimiento", "minimo_unidades": 20, "descuento_pct": 12, "descripcion": "Para operaciones logísticas en expansión.", "beneficios": ["12 % de descuento", "Prioridad en entregas", "Capacitación de conductores incluida"] },
+    { "codigo": "tier_3", "nombre": "Flota Corporativa", "minimo_unidades": 50, "descuento_pct": 18, "descripcion": "Para grandes flotas y contratos marco.", "beneficios": ["18 % de descuento", "Plan de mantenimiento preventivo", "Telemetría de flota", "Condiciones de pago a 60 días"] }
+  ],
+
+  "asesores": [
+    { "handle": "asesor-ventas-b2c", "nombre": "Laura Martínez", "cargo": "Asesora comercial", "canal": "b2c", "whatsapp": "573164820543", "email": "ventas@brenson.co", "horario": "Lun a vie 8:00 a 18:00 · Sáb 9:00 a 13:00", "foto": null },
+    { "handle": "asesor-ventas-b2b", "nombre": "Andrés Gómez", "cargo": "Ejecutivo de cuentas corporativas", "canal": "b2b", "whatsapp": "573164820543", "email": "empresas@brenson.co", "horario": "Lun a vie 8:00 a 18:00", "foto": null },
+    { "handle": "asesor-servicio", "nombre": "Camilo Ruiz", "cargo": "Coordinador de servicio técnico", "canal": "servicio", "whatsapp": "573164820543", "email": "servicio@brenson.co", "horario": "Lun a vie 8:00 a 17:00", "foto": null },
+    { "handle": "asesor-garantias", "nombre": "Diana Torres", "cargo": "Gestora de garantías", "canal": "garantias", "whatsapp": "573164820543", "email": "garantias@brenson.co", "horario": "Lun a vie 8:00 a 17:00", "foto": null }
+  ],
+
+  "horario_atencion": {
+    "zona_horaria": "America/Bogota",
+    "dias": [
+      { "dia": 1, "apertura": "08:00", "cierre": "18:00" },
+      { "dia": 2, "apertura": "08:00", "cierre": "18:00" },
+      { "dia": 3, "apertura": "08:00", "cierre": "18:00" },
+      { "dia": 4, "apertura": "08:00", "cierre": "18:00" },
+      { "dia": 5, "apertura": "08:00", "cierre": "18:00" },
+      { "dia": 6, "apertura": "09:00", "cierre": "13:00" }
+    ],
+    "mensaje_fuera_horario": "Estamos fuera de horario. Escríbenos y te respondemos al inicio de la próxima jornada."
+  },
+
+  "certificacion": {
+    "nombre": "Certificación Brenson",
+    "puntos_inspeccion": 12,
+    "descripcion": "Cada vehículo pasa por 12 puntos de inspección y preparación antes de entregarse. [BORRADOR: proceso a validar en workshop con Brenson]",
+    "checklist": [
+      "Diagnóstico de batería: capacidad, celdas y BMS",
+      "Prueba de motor y controlador bajo carga",
+      "Calibración de acelerador y frenos regenerativos",
+      "Revisión y ajuste de frenos mecánicos e hidráulicos",
+      "Torque de tornillería estructural",
+      "Presión y estado de llantas",
+      "Luces, señalización y bocina",
+      "Suspensión y dirección",
+      "Cargador y conector verificados",
+      "Prueba de ruta de 5 km",
+      "Actualización de firmware del controlador",
+      "Limpieza, protección y entrega documentada"
+    ]
+  },
+
+  "contadores": [
+    { "label": "Vehículos entregados", "valor": 250, "sufijo": "+", "icono": "vehicle", "verificado": false },
+    { "label": "Clientes y empresas", "valor": 120, "sufijo": "+", "icono": "users", "verificado": false },
+    { "label": "Años en movilidad eléctrica", "valor": 6, "sufijo": "", "icono": "calendar", "verificado": false },
+    { "label": "Ciudades con entregas", "valor": 18, "sufijo": "", "icono": "map", "verificado": false }
+  ],
+
+  "aliados": [
+    { "nombre": "Parque Tayrona [MOCK]", "tipo": "cliente", "logo": null, "url": null, "verificado": false },
+    { "nombre": "Comfandi [MOCK]", "tipo": "institucional", "logo": null, "url": null, "verificado": false },
+    { "nombre": "IsaMotos [MOCK]", "tipo": "cliente", "logo": null, "url": null, "verificado": false },
+    { "nombre": "Aliado Financiero [MOCK]", "tipo": "financiero", "logo": null, "url": null, "verificado": false },
+    { "nombre": "Logística Caribe S.A.S. [MOCK]", "tipo": "cliente", "logo": null, "url": null, "verificado": false }
+  ],
+
+  "testimonios": [
+    { "nombre": "Carlos P.", "empresa": "Reparto urbano independiente", "ciudad": "Barranquilla", "vehiculo": "brenson-delivery-2000", "texto": "Pasé de gastar 400 mil en gasolina al mes a menos de 40 mil en electricidad. La moto no ha fallado en 8 meses.", "foto": null, "verificado": false },
+    { "nombre": "María F.", "empresa": "Hotel boutique", "ciudad": "Santa Marta", "vehiculo": "brenson-quad-tour", "texto": "Nuestros huéspedes adoran los recorridos silenciosos. El equipo de Brenson nos capacitó y responde el mismo día.", "foto": null, "verificado": false },
+    { "nombre": "Jorge L.", "empresa": "Distribuidora de alimentos", "ciudad": "Cartagena", "vehiculo": "brenson-carga-500", "texto": "Con tres motocarros cubrimos el centro histórico sin restricciones. La cotización de flota fue clara y rápida.", "foto": null, "verificado": false },
+    { "nombre": "Ana R.", "empresa": "Uso personal", "ciudad": "Bogotá", "vehiculo": "brenson-urban-e250", "texto": "Voy al trabajo sin sudar y sin trancón. Financiada quedó en menos de lo que pagaba de transporte.", "foto": null, "verificado": false },
+    { "nombre": "Felipe M.", "empresa": "Finca agroindustrial", "ciudad": "Valledupar", "vehiculo": "brenson-quad-work-4x2", "texto": "El cuadriciclo aguanta el terreno y no huele a combustible cerca de los cultivos. Excelente soporte.", "foto": null, "verificado": false },
+    { "nombre": "Sandra V.", "empresa": "Empresa de mensajería", "ciudad": "Medellín", "vehiculo": "brenson-delivery-2000", "texto": "Diez unidades en operación y el portal de empresas nos deja cotizar repuestos y nuevas unidades sin llamar.", "foto": null, "verificado": false }
+  ],
+
+  "casos_uso": [
+    { "titulo": "Recorridos ecológicos en un parque natural", "cliente": "Parque Tayrona [MOCK]", "resumen": "Flota de cuadriciclos y motocarros de pasajeros para traslados internos sin emisiones ni ruido.", "vehiculos": ["brenson-quad-tour", "brenson-pasajeros-tuk"], "metricas": { "unidades": 8, "km_mes": 4200, "ahorro_combustible_pct": 85 }, "imagen": null, "verificado": false },
+    { "titulo": "Última milla eléctrica en el Caribe", "cliente": "Logística Caribe S.A.S. [MOCK]", "resumen": "Sustitución de motos a gasolina por ciclomotores eléctricos con batería extraíble para reparto urbano.", "vehiculos": ["brenson-delivery-2000", "brenson-cargo-bike-e350"], "metricas": { "unidades": 15, "km_mes": 18000, "ahorro_combustible_pct": 78 }, "imagen": null, "verificado": false }
+  ],
+
+  "faq": [
+    { "categoria": "general", "pregunta": "¿Necesito licencia de conducción para un vehículo eléctrico?", "respuesta": "Las bicicletas eléctricas con asistencia hasta 25 km/h y motor hasta 350 W no requieren licencia. Ciclomotores, motocarros y cuadriciclos sí requieren licencia y matrícula según la Resolución 160 de 2017 y normas vigentes. [VALIDAR]" },
+    { "categoria": "general", "pregunta": "¿Los vehículos eléctricos pagan SOAT?", "respuesta": "Los ciclomotores, motocarros y cuadriciclos matriculados deben tener SOAT. Las bicicletas eléctricas no. [VALIDAR]" },
+    { "categoria": "general", "pregunta": "¿Tienen restricción de pico y placa?", "respuesta": "En la mayoría de ciudades colombianas los vehículos eléctricos están exentos de pico y placa. Confirma la norma de tu ciudad. [VALIDAR]" },
+    { "categoria": "bateria", "pregunta": "¿Dónde y cómo cargo el vehículo?", "respuesta": "En cualquier toma doméstica de 110 V. Los modelos con batería extraíble se cargan dentro de casa u oficina. El tiempo de carga completo está en la ficha de cada modelo." },
+    { "categoria": "bateria", "pregunta": "¿Cuánto cuesta cargar la batería?", "respuesta": "Una carga completa de un ciclomotor típico consume entre 2 y 3 kWh, es decir entre 1.500 y 2.500 pesos según la tarifa de tu ciudad. [VALIDAR]" },
+    { "categoria": "bateria", "pregunta": "¿Cuánto dura la batería?", "respuesta": "Las baterías de litio LiFePO4 conservan más del 80 % de su capacidad después de 2.000 ciclos, entre 5 y 7 años de uso normal. La garantía de batería está en cada ficha." },
+    { "categoria": "garantia", "pregunta": "¿Qué cubre la garantía Brenson?", "respuesta": "Defectos de fabricación en motor, controlador, batería y estructura durante el periodo indicado en la ficha. No cubre desgaste normal, golpes ni modificaciones. [BORRADOR: términos legales pendientes]" },
+    { "categoria": "servicio", "pregunta": "¿Dónde hago el mantenimiento?", "respuesta": "En nuestra sede y en la red de talleres aliados. También coordinamos servicio a domicilio en las principales ciudades. [VALIDAR ciudades]" },
+    { "categoria": "compra", "pregunta": "¿Puedo financiar mi vehículo?", "respuesta": "Sí. Usa el simulador de la ficha para ver la cuota estimada y solicita el estudio de crédito con nuestro aliado financiero desde el mismo sitio." },
+    { "categoria": "compra", "pregunta": "¿Hacen envíos a toda Colombia?", "respuesta": "Sí. El costo del envío se cotiza según el destino y el tipo de vehículo. Los tiempos estimados por región están en cada ficha." }
+  ],
+
+  "regiones_envio": [
+    { "region": "Región Caribe", "tiempo": "3 a 5 días hábiles" },
+    { "region": "Región Andina (Bogotá, Medellín, Cali, Bucaramanga)", "tiempo": "5 a 8 días hábiles" },
+    { "region": "Eje Cafetero y Santanderes", "tiempo": "5 a 8 días hábiles" },
+    { "region": "Pacífico y Llanos", "tiempo": "8 a 12 días hábiles" },
+    { "region": "Amazonía e insular", "tiempo": "Cotización especial" }
+  ],
+
+  "clientes_b2b": [
+    { "email": "compras@logisticacaribe-mock.co", "nombre": "Patricia", "apellido": "Herrera", "razon_social": "Logística Caribe S.A.S. [MOCK]", "nit": "900123456-8", "sector": "logistica", "ciudad": "Barranquilla", "flota_estimada": 15, "cargo_contacto": "Jefe de compras", "tier": "tier_2", "asesor": "asesor-ventas-b2b", "estado_b2b": "aprobado", "tags": ["cliente-corporativo"] },
+    { "email": "gerencia@hotelbrisas-mock.co", "nombre": "Ricardo", "apellido": "Mendoza", "razon_social": "Hotel Brisas del Mar S.A.S. [MOCK]", "nit": "800987654-1", "sector": "turismo", "ciudad": "Santa Marta", "flota_estimada": 8, "cargo_contacto": "Gerente general", "tier": "tier_1", "asesor": "asesor-ventas-b2b", "estado_b2b": "aprobado", "tags": ["cliente-corporativo"] },
+    { "email": "flota@rapidomensajeria-mock.co", "nombre": "Juliana", "apellido": "Castro", "razon_social": "Rápido Mensajería Nacional S.A. [MOCK]", "nit": "901234567-6", "sector": "delivery", "ciudad": "Medellín", "flota_estimada": 60, "cargo_contacto": "Directora de operaciones", "tier": "tier_3", "asesor": "asesor-ventas-b2b", "estado_b2b": "aprobado", "tags": ["cliente-corporativo"] },
+    { "email": "admin@agrocampo-mock.co", "nombre": "Óscar", "apellido": "Pineda", "razon_social": "Agrocampo del Cesar Ltda. [MOCK]", "nit": "890111222-3", "sector": "otro", "ciudad": "Valledupar", "flota_estimada": 4, "cargo_contacto": "Administrador", "tier": null, "asesor": null, "estado_b2b": "pendiente", "tags": ["b2b-pendiente"] }
+  ],
+
+  "unidades": [
+    { "serie": "BRN-DLV-2025-000341", "producto": "brenson-delivery-2000", "cliente": "compras@logisticacaribe-mock.co", "pedido": "#1041", "fecha_entrega": "2026-02-14", "fin_garantia": "2027-02-14", "fin_garantia_bateria": "2028-02-14", "estado": "activa" },
+    { "serie": "BRN-DLV-2025-000342", "producto": "brenson-delivery-2000", "cliente": "compras@logisticacaribe-mock.co", "pedido": "#1041", "fecha_entrega": "2026-02-14", "fin_garantia": "2027-02-14", "fin_garantia_bateria": "2028-02-14", "estado": "activa" },
+    { "serie": "BRN-CRG-2025-000118", "producto": "brenson-cargo-bike-e350", "cliente": "compras@logisticacaribe-mock.co", "pedido": "#1055", "fecha_entrega": "2026-04-02", "fin_garantia": "2027-04-02", "fin_garantia_bateria": "2027-10-02", "estado": "en_reclamo" },
+    { "serie": "BRN-QTR-2025-000027", "producto": "brenson-quad-tour", "cliente": "gerencia@hotelbrisas-mock.co", "pedido": "#1032", "fecha_entrega": "2025-12-10", "fin_garantia": "2026-12-10", "fin_garantia_bateria": "2027-12-10", "estado": "activa" },
+    { "serie": "BRN-QTR-2025-000028", "producto": "brenson-quad-tour", "cliente": "gerencia@hotelbrisas-mock.co", "pedido": "#1032", "fecha_entrega": "2025-12-10", "fin_garantia": "2026-12-10", "fin_garantia_bateria": "2027-12-10", "estado": "activa" },
+    { "serie": "BRN-TUK-2025-000009", "producto": "brenson-pasajeros-tuk", "cliente": "gerencia@hotelbrisas-mock.co", "pedido": "#1038", "fecha_entrega": "2026-01-20", "fin_garantia": "2027-01-20", "fin_garantia_bateria": "2028-01-20", "estado": "activa" },
+    { "serie": "BRN-DLV-2024-000210", "producto": "brenson-delivery-2000", "cliente": "flota@rapidomensajeria-mock.co", "pedido": "#0987", "fecha_entrega": "2025-06-30", "fin_garantia": "2026-06-30", "fin_garantia_bateria": "2027-06-30", "estado": "vencida" },
+    { "serie": "BRN-CAR-2025-000064", "producto": "brenson-carga-500", "cliente": "flota@rapidomensajeria-mock.co", "pedido": "#1049", "fecha_entrega": "2026-03-11", "fin_garantia": "2027-03-11", "fin_garantia_bateria": "2028-03-11", "estado": "activa" }
+  ],
+
+  "cotizaciones": [
+    { "numero": "COT-2026-0001", "cliente": "compras@logisticacaribe-mock.co", "asesor": "asesor-ventas-b2b", "creada_en": "2026-08-20", "validez_dias": 15, "estado": "enviada", "descuento_pct": 12, "items": [{ "producto": "brenson-delivery-2000", "variante": "Batería doble", "cantidad": 10, "precio_unitario": 11290000 }, { "producto": "brenson-cargo-bike-e350", "variante": "Naranja flota", "cantidad": 5, "precio_unitario": 6990000 }], "observaciones": "Entrega escalonada en dos lotes.", "pdf": null },
+    { "numero": "COT-2026-0002", "cliente": "gerencia@hotelbrisas-mock.co", "asesor": "asesor-ventas-b2b", "creada_en": "2026-08-28", "validez_dias": 15, "estado": "aceptada", "descuento_pct": 8, "items": [{ "producto": "brenson-quad-tour", "variante": "Blanco hotel", "cantidad": 4, "precio_unitario": 28900000 }], "observaciones": "", "pdf": null },
+    { "numero": "COT-2026-0003", "cliente": "flota@rapidomensajeria-mock.co", "asesor": "asesor-ventas-b2b", "creada_en": "2026-09-05", "validez_dias": 30, "estado": "borrador", "descuento_pct": 18, "items": [{ "producto": "brenson-delivery-2000", "variante": "Batería sencilla", "cantidad": 40, "precio_unitario": 9490000 }, { "producto": "brenson-carga-800-pro", "variante": "Furgón cerrado", "cantidad": 6, "precio_unitario": 32900000 }], "observaciones": "Solicitan plan de mantenimiento y telemetría.", "pdf": null }
+  ]
+}

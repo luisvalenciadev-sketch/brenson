@@ -1,0 +1,193 @@
+{
+  "_nota": "Definiciones de metafields y metaobjects Brenson en formato listo para crearlas con Admin GraphQL (metafieldDefinitionCreate / metaobjectDefinitionCreate). Fuente: PLAN_DE_TRABAJO_BRENSON.md §3 y Anexo A. Los tipos siguen la nomenclatura oficial de Shopify.",
+  "product": {
+    "namespace": "brenson",
+    "definitions": [
+      { "key": "categoria", "name": "Categoría", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"bicicleta\",\"ciclomotor\",\"motocarro\",\"cuadriciclo\"]" }], "filterable": true },
+      { "key": "uso", "name": "Uso recomendado", "type": "list.single_line_text_field", "validations": [{ "name": "choices", "value": "[\"personal\",\"comercial\",\"logistica\"]" }], "filterable": true },
+      { "key": "autonomia_km", "name": "Autonomía (km)", "type": "number_integer", "filterable": true },
+      { "key": "velocidad_max_kmh", "name": "Velocidad máxima (km/h)", "type": "number_integer", "filterable": true },
+      { "key": "capacidad_carga_kg", "name": "Capacidad de carga (kg)", "type": "number_integer", "filterable": true },
+      { "key": "potencia_motor_w", "name": "Potencia del motor (W)", "type": "number_integer" },
+      { "key": "bateria_tipo", "name": "Tipo de batería", "type": "single_line_text_field" },
+      { "key": "bateria_capacidad", "name": "Capacidad de batería", "type": "single_line_text_field" },
+      { "key": "tiempo_carga_h", "name": "Tiempo de carga (h)", "type": "number_decimal" },
+      { "key": "peso_kg", "name": "Peso (kg)", "type": "number_decimal" },
+      { "key": "pasajeros", "name": "Pasajeros", "type": "number_integer" },
+      { "key": "requiere_licencia", "name": "Requiere licencia", "type": "boolean", "filterable": true },
+      { "key": "requiere_soat", "name": "Requiere SOAT", "type": "boolean" },
+      { "key": "specs_adicionales", "name": "Especificaciones adicionales", "type": "json" },
+      { "key": "garantia_meses", "name": "Garantía vehículo (meses)", "type": "number_integer" },
+      { "key": "garantia_bateria_meses", "name": "Garantía batería (meses)", "type": "number_integer" },
+      { "key": "garantia_terminos", "name": "Términos de garantía", "type": "rich_text_field" },
+      { "key": "certificado", "name": "Certificado Brenson", "type": "boolean" },
+      { "key": "certificacion", "name": "Certificación aplicada", "type": "metaobject_reference", "metaobject": "brenson_certificacion" },
+      { "key": "badge", "name": "Badge de catálogo", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"mas_vendido\",\"nuevo\",\"financiacion\",\"flota\"]" }] },
+      { "key": "video_url", "name": "Video (YouTube/Vimeo)", "type": "url" },
+      { "key": "ficha_tecnica_pdf", "name": "Ficha técnica PDF", "type": "file_reference" },
+      { "key": "faq", "name": "Preguntas frecuentes", "type": "list.metaobject_reference", "metaobject": "brenson_faq" },
+      { "key": "financiable", "name": "Financiable", "type": "boolean", "filterable": true },
+      { "key": "cuota_desde_override", "name": "Cuota desde (manual)", "type": "money" },
+      { "key": "b2b_disponible", "name": "Disponible para empresas", "type": "boolean" },
+      { "key": "b2b_minimo_unidades", "name": "Mínimo de unidades B2B", "type": "number_integer" },
+      { "key": "b2b_precio_tier", "name": "Descuento por tier (override JSON)", "type": "json" },
+      { "key": "exclusivo_flota", "name": "Exclusivo de flota (oculto al público)", "type": "boolean" },
+      { "key": "casos_uso", "name": "Casos de uso", "type": "list.metaobject_reference", "metaobject": "brenson_caso_uso" }
+    ]
+  },
+  "collection": {
+    "namespace": "brenson",
+    "definitions": [
+      { "key": "descripcion_larga", "name": "Descripción larga", "type": "rich_text_field" },
+      { "key": "imagen_hero", "name": "Imagen hero", "type": "file_reference" },
+      { "key": "icono", "name": "Icono de categoría", "type": "file_reference" },
+      { "key": "faq", "name": "FAQ de categoría", "type": "list.metaobject_reference", "metaobject": "brenson_faq" },
+      { "key": "solo_empresas", "name": "Solo empresas (noindex + gating)", "type": "boolean" }
+    ]
+  },
+  "customer": {
+    "namespace": "brenson_b2b",
+    "definitions": [
+      { "key": "tipo_cliente", "name": "Tipo de cliente", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"personal\",\"empresa\"]" }] },
+      { "key": "nit", "name": "NIT", "type": "single_line_text_field" },
+      { "key": "razon_social", "name": "Razón social", "type": "single_line_text_field" },
+      { "key": "sector", "name": "Sector", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"logistica\",\"turismo\",\"delivery\",\"gobierno\",\"otro\"]" }] },
+      { "key": "flota_estimada", "name": "Flota estimada (unidades)", "type": "number_integer" },
+      { "key": "cargo_contacto", "name": "Cargo del contacto", "type": "single_line_text_field" },
+      { "key": "documento_url", "name": "Documento (cámara de comercio / RUT)", "type": "url" },
+      { "key": "documento_tipo", "name": "Tipo de documento", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"camara_comercio\",\"rut\"]" }] },
+      { "key": "tier", "name": "Tier B2B", "type": "metaobject_reference", "metaobject": "brenson_tier_b2b" },
+      { "key": "asesor", "name": "Asesor asignado", "type": "metaobject_reference", "metaobject": "brenson_asesor" },
+      { "key": "estado_b2b", "name": "Estado B2B", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"pendiente\",\"aprobado\",\"rechazado\",\"suspendido\"]" }] },
+      { "key": "fecha_aprobacion", "name": "Fecha de aprobación", "type": "date" },
+      { "key": "ghl_contact_id", "name": "ID contacto CRM", "type": "single_line_text_field" }
+    ]
+  },
+  "customer_b2c": {
+    "namespace": "brenson",
+    "definitions": [
+      { "key": "ciudad", "name": "Ciudad", "type": "single_line_text_field" },
+      { "key": "uso_previsto", "name": "Uso previsto", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"personal\",\"comercial\",\"logistica\"]" }] }
+    ]
+  },
+  "shop": {
+    "namespace": "brenson",
+    "definitions": [
+      { "key": "whatsapp_principal", "name": "WhatsApp principal", "type": "single_line_text_field", "valor_inicial": "573164820543" },
+      { "key": "email_ventas", "name": "Email ventas", "type": "single_line_text_field" },
+      { "key": "email_empresas", "name": "Email empresas", "type": "single_line_text_field" },
+      { "key": "nit_brenson", "name": "NIT Brenson", "type": "single_line_text_field" },
+      { "key": "direccion", "name": "Dirección sede", "type": "multi_line_text_field" },
+      { "key": "ciudades_prueba_domicilio", "name": "Ciudades con prueba de manejo a domicilio", "type": "list.single_line_text_field" }
+    ]
+  },
+  "metaobjects": [
+    { "type": "brenson_parametros_financiacion", "name": "Parámetros de financiación", "single_entry": true, "storefront": true, "fields": [
+      { "key": "tasa_mensual", "name": "Tasa mensual (%)", "type": "number_decimal", "required": true },
+      { "key": "plazos", "name": "Plazos (meses)", "type": "list.number_integer", "required": true },
+      { "key": "iniciales_pct", "name": "Cuotas iniciales (%)", "type": "list.number_integer", "required": true },
+      { "key": "plazo_default", "name": "Plazo por defecto", "type": "number_integer" },
+      { "key": "inicial_default", "name": "Inicial por defecto (%)", "type": "number_integer" },
+      { "key": "aliado_nombre", "name": "Aliado financiero", "type": "single_line_text_field" },
+      { "key": "aliado_logo", "name": "Logo aliado", "type": "file_reference" },
+      { "key": "disclaimer", "name": "Disclaimer legal", "type": "rich_text_field", "required": true },
+      { "key": "costos_no_incluidos", "name": "Costos no incluidos", "type": "list.single_line_text_field" }
+    ]},
+    { "type": "brenson_tier_b2b", "name": "Tier B2B", "storefront": true, "fields": [
+      { "key": "codigo", "name": "Código", "type": "single_line_text_field", "required": true },
+      { "key": "nombre", "name": "Nombre", "type": "single_line_text_field", "required": true },
+      { "key": "minimo_unidades", "name": "Mínimo de unidades", "type": "number_integer", "required": true },
+      { "key": "descuento_pct", "name": "Descuento (%)", "type": "number_decimal", "required": true },
+      { "key": "descripcion", "name": "Descripción", "type": "multi_line_text_field" },
+      { "key": "beneficios", "name": "Beneficios", "type": "list.single_line_text_field" }
+    ]},
+    { "type": "brenson_asesor", "name": "Asesor", "storefront": true, "fields": [
+      { "key": "nombre", "name": "Nombre", "type": "single_line_text_field", "required": true },
+      { "key": "cargo", "name": "Cargo", "type": "single_line_text_field" },
+      { "key": "canal", "name": "Canal", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"b2c\",\"b2b\",\"servicio\",\"garantias\"]" }] },
+      { "key": "whatsapp", "name": "WhatsApp (E.164 sin +)", "type": "single_line_text_field", "required": true },
+      { "key": "email", "name": "Email", "type": "single_line_text_field" },
+      { "key": "foto", "name": "Foto", "type": "file_reference" },
+      { "key": "horario", "name": "Horario", "type": "single_line_text_field" }
+    ]},
+    { "type": "brenson_horario_atencion", "name": "Horario de atención", "single_entry": true, "storefront": true, "fields": [
+      { "key": "zona_horaria", "name": "Zona horaria", "type": "single_line_text_field" },
+      { "key": "horario_json", "name": "Horario (JSON)", "type": "json", "required": true },
+      { "key": "mensaje_fuera_horario", "name": "Mensaje fuera de horario", "type": "multi_line_text_field" }
+    ]},
+    { "type": "brenson_certificacion", "name": "Certificación", "storefront": true, "fields": [
+      { "key": "nombre", "name": "Nombre", "type": "single_line_text_field", "required": true },
+      { "key": "puntos_inspeccion", "name": "Puntos de inspección", "type": "number_integer" },
+      { "key": "descripcion", "name": "Descripción", "type": "multi_line_text_field" },
+      { "key": "checklist", "name": "Checklist", "type": "list.single_line_text_field", "required": true },
+      { "key": "sello", "name": "Sello", "type": "file_reference" }
+    ]},
+    { "type": "brenson_faq", "name": "Pregunta frecuente", "storefront": true, "fields": [
+      { "key": "pregunta", "name": "Pregunta", "type": "single_line_text_field", "required": true },
+      { "key": "respuesta", "name": "Respuesta", "type": "rich_text_field", "required": true },
+      { "key": "categoria", "name": "Categoría", "type": "single_line_text_field" }
+    ]},
+    { "type": "brenson_aliado", "name": "Aliado", "storefront": true, "fields": [
+      { "key": "nombre", "name": "Nombre", "type": "single_line_text_field", "required": true },
+      { "key": "logo", "name": "Logo", "type": "file_reference" },
+      { "key": "url", "name": "URL", "type": "url" },
+      { "key": "tipo", "name": "Tipo", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"cliente\",\"financiero\",\"institucional\"]" }] },
+      { "key": "verificado", "name": "Autorización verificada", "type": "boolean" }
+    ]},
+    { "type": "brenson_testimonio", "name": "Testimonio", "storefront": true, "fields": [
+      { "key": "nombre", "name": "Nombre", "type": "single_line_text_field", "required": true },
+      { "key": "empresa", "name": "Empresa o uso", "type": "single_line_text_field" },
+      { "key": "ciudad", "name": "Ciudad", "type": "single_line_text_field" },
+      { "key": "texto", "name": "Testimonio", "type": "multi_line_text_field", "required": true },
+      { "key": "foto", "name": "Foto", "type": "file_reference" },
+      { "key": "vehiculo", "name": "Vehículo", "type": "product_reference" },
+      { "key": "verificado", "name": "Autorización verificada", "type": "boolean" }
+    ]},
+    { "type": "brenson_caso_uso", "name": "Caso de uso", "storefront": true, "fields": [
+      { "key": "titulo", "name": "Título", "type": "single_line_text_field", "required": true },
+      { "key": "cliente", "name": "Cliente", "type": "single_line_text_field" },
+      { "key": "resumen", "name": "Resumen", "type": "multi_line_text_field" },
+      { "key": "imagen", "name": "Imagen", "type": "file_reference" },
+      { "key": "vehiculos", "name": "Vehículos", "type": "list.product_reference" },
+      { "key": "metricas", "name": "Métricas (JSON)", "type": "json" },
+      { "key": "verificado", "name": "Autorización verificada", "type": "boolean" }
+    ]},
+    { "type": "brenson_contador", "name": "Contador", "storefront": true, "fields": [
+      { "key": "label", "name": "Etiqueta", "type": "single_line_text_field", "required": true },
+      { "key": "valor", "name": "Valor", "type": "number_integer", "required": true },
+      { "key": "sufijo", "name": "Sufijo", "type": "single_line_text_field" },
+      { "key": "icono", "name": "Icono", "type": "single_line_text_field" },
+      { "key": "verificado", "name": "Dato verificado", "type": "boolean" }
+    ]},
+    { "type": "brenson_unidad", "name": "Unidad vendida", "storefront": true, "fields": [
+      { "key": "serie", "name": "Número de serie / chasis", "type": "single_line_text_field", "required": true },
+      { "key": "producto", "name": "Producto", "type": "product_reference", "required": true },
+      { "key": "cliente", "name": "Cliente", "type": "customer_reference", "required": true },
+      { "key": "pedido", "name": "Pedido", "type": "single_line_text_field" },
+      { "key": "fecha_entrega", "name": "Fecha de entrega", "type": "date", "required": true },
+      { "key": "fin_garantia", "name": "Fin garantía vehículo", "type": "date" },
+      { "key": "fin_garantia_bateria", "name": "Fin garantía batería", "type": "date" },
+      { "key": "estado", "name": "Estado", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"activa\",\"en_reclamo\",\"vencida\"]" }] },
+      { "key": "notas", "name": "Notas", "type": "multi_line_text_field" }
+    ]},
+    { "type": "brenson_cotizacion_b2b", "name": "Cotización B2B", "storefront": true, "fields": [
+      { "key": "numero", "name": "Número", "type": "single_line_text_field", "required": true },
+      { "key": "cliente", "name": "Cliente", "type": "customer_reference", "required": true },
+      { "key": "asesor", "name": "Asesor", "type": "metaobject_reference", "metaobject": "brenson_asesor" },
+      { "key": "items", "name": "Ítems (JSON)", "type": "json", "required": true },
+      { "key": "subtotal", "name": "Subtotal", "type": "money" },
+      { "key": "descuento_pct", "name": "Descuento (%)", "type": "number_decimal" },
+      { "key": "total", "name": "Total", "type": "money" },
+      { "key": "validez_dias", "name": "Validez (días)", "type": "number_integer" },
+      { "key": "estado", "name": "Estado", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"borrador\",\"enviada\",\"aceptada\",\"vencida\",\"rechazada\"]" }] },
+      { "key": "observaciones", "name": "Observaciones", "type": "multi_line_text_field" },
+      { "key": "pdf_url", "name": "PDF", "type": "url" },
+      { "key": "creada_en", "name": "Creada en", "type": "date_time" }
+    ]}
+  ],
+  "facetas_search_discovery": [
+    "price", "availability",
+    "brenson.categoria", "brenson.uso", "brenson.autonomia_km", "brenson.velocidad_max_kmh",
+    "brenson.capacidad_carga_kg", "brenson.financiable", "brenson.requiere_licencia"
+  ]
+}
