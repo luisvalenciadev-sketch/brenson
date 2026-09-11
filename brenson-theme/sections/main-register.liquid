@@ -26,6 +26,19 @@
   <h1>
     {{ 'customer.register.title' | t }}
   </h1>
+  {%- comment -%} Brenson: selector Persona / Empresa (decisión I8, pantalla Stitch 05) {%- endcomment -%}
+  <div class="brenson-tabs" role="tablist" style="max-width: 32rem; margin: 0 auto 1.5rem" data-brenson-register-type>
+    <button type="button" role="tab" class="brenson-tab" aria-selected="true" data-type="personal">Persona</button>
+    <button type="button" role="tab" class="brenson-tab" aria-selected="false" data-type="empresa">Empresa <span class="brenson-badge brenson-badge--gris brenson-badge--sm">B2B</span></button>
+  </div>
+  <div class="brenson-b2b-card" data-brenson-register-empresa hidden style="max-width: 32rem; margin: 0 auto 1.5rem; background: var(--brenson-gris-claro); box-shadow:none">
+    <strong>¿Compra para su empresa o requiere factura con NIT?</strong>
+    <p class="brenson-muted" style="margin:0; font-size: var(--brenson-text-sm)">Cree su cuenta corporativa con NIT y acceda a precios por volumen, cotizador de flota y asesor dedicado.</p>
+    <a class="brenson-btn brenson-btn--carbon brenson-btn--block" href="/pages/empresas-acceso">Registrar mi empresa en Brenson Empresas</a>
+  </div>
+  <script>
+    (function(){var t=document.querySelector('[data-brenson-register-type]'),p=document.querySelector('[data-brenson-register-empresa]'),f=document.querySelector('.customer.register form');if(!t)return;t.addEventListener('click',function(e){var b=e.target.closest('[data-type]');if(!b)return;t.querySelectorAll('[data-type]').forEach(function(x){x.setAttribute('aria-selected',String(x===b))});var emp=b.dataset.type==='empresa';p.hidden=!emp;if(f)f.hidden=emp;});})();
+  </script>
   {%- form 'create_customer', novalidate: 'novalidate' -%}
     {%- if form.errors -%}
       <h2 class="form__message" tabindex="-1" autofocus>
@@ -135,10 +148,40 @@
         {{ form.errors.messages.password }}.
       </span>
     {%- endif -%}
+    {%- comment -%} Brenson: ciudad y uso previsto para segmentación (decisión I8). Se guardan en la nota del cliente; Flow los copia a metafields brenson.ciudad / brenson.uso_previsto {%- endcomment -%}
+    <div class="field">
+      <input type="text" name="customer[note][Ciudad]" id="RegisterForm-Ciudad" autocomplete="address-level2" placeholder="Ciudad de residencia">
+      <label for="RegisterForm-Ciudad">Ciudad de residencia</label>
+    </div>
+    <div class="field" style="display:block">
+      <label for="RegisterForm-Uso" style="position:static; font-size: 1.2rem; margin-bottom: .4rem; display:block">Uso previsto del vehículo</label>
+      <select name="customer[note][Uso previsto]" id="RegisterForm-Uso" class="select__select" style="width:100%; min-height: 4.5rem; padding: 0 1.5rem; border: 1px solid rgba(var(--color-foreground), .55); border-radius: var(--inputs-radius); font-family: inherit; font-size: 1.4rem; background: transparent">
+        <option value="personal">Personal / urbano</option>
+        <option value="comercial">Comercial / independiente</option>
+        <option value="logistica">Logística y reparto</option>
+      </select>
+    </div>
+    <label style="display:flex; gap:.6rem; align-items:flex-start; font-size: 1.2rem; margin: 1rem 0">
+      <input type="checkbox" required style="margin-top:.2rem">
+      <span>Acepto la <a class="link" href="/policies/privacy-policy">política de tratamiento de datos</a> (Ley 1581 de 2012).</span>
+    </label>
+    <label style="display:flex; gap:.6rem; align-items:flex-start; font-size: 1.2rem; margin: 0 0 1rem">
+      <input type="checkbox" name="customer[accepts_marketing]" value="true" style="margin-top:.2rem">
+      <span>Quiero recibir novedades, lanzamientos y ofertas de Brenson.</span>
+    </label>
     <button>
       {{ 'customer.register.submit' | t }}
     </button>
   {%- endform -%}
+  <div class="brenson-b2b-card" style="max-width: 32rem; margin: 2rem auto 0; background: var(--brenson-carbon); color:#fff">
+    <strong>Beneficios de tu cuenta Brenson</strong>
+    <ul class="brenson-checklist" style="grid-template-columns:1fr; color: rgba(255,255,255,.85)">
+      <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Seguimiento de pedidos y despachos</li>
+      <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Estado de garantía por unidad (número de serie)</li>
+      <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Facturas descargables</li>
+      <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Historial de cotizaciones y solicitudes de financiación</li>
+    </ul>
+  </div>
 </div>
 
 {% schema %}

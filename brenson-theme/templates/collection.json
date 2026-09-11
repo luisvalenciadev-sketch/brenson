@@ -2,17 +2,13 @@
   "sections": {
     "banner": {
       "type": "main-collection-banner",
-      "settings": {
-        "show_collection_description": true,
-        "show_collection_image": false,
-        "color_scheme": "scheme-1"
-      }
+      "settings": { "show_collection_description": true, "show_collection_image": true, "color_scheme": "scheme-1" }
     },
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
-        "products_per_page": 16,
-        "columns_desktop": 4,
+        "products_per_page": 12,
+        "columns_desktop": 3,
         "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
@@ -21,16 +17,33 @@
         "show_rating": false,
         "quick_add": "none",
         "enable_filtering": true,
-        "filter_type": "horizontal",
+        "filter_type": "vertical",
         "enable_sorting": true,
-        "columns_mobile": "2",
-        "padding_top": 36,
+        "columns_mobile": "1",
+        "padding_top": 24,
         "padding_bottom": 36
       }
+    },
+    "asesor": {
+      "type": "brenson-empresas-cta",
+      "settings": {
+        "eyebrow": "Asesoría sin costo",
+        "title": "¿No sabes cuál se adapta a tu ruta o trabajo?",
+        "text": "Cuéntanos tu recorrido diario, pendientes de tu ciudad o si lo requieres para entregas. Te ayudamos a simular la cuota exacta y el ahorro frente a gasolina.",
+        "cta_label": "Chatear con un asesor",
+        "cta_url": "shopify://pages/contacto"
+      }
+    },
+    "trust": {
+      "type": "brenson-trust-bar",
+      "blocks": { "t1": { "type": "certificado" }, "t2": { "type": "garantia", "settings": { "text": "Respaldo directo de Brenson en Colombia" } }, "t3": { "type": "envios", "settings": { "title": "Envíos a toda Colombia", "text": "Tiempos estimados por región en cada ficha" } }, "t4": { "type": "financiacion", "settings": { "title": "Financiación con aliado", "text": "Simula tu cuota en cada ficha" } } },
+      "block_order": ["t1", "t2", "t3", "t4"],
+      "settings": { "padding": 24 }
+    },
+    "faq": {
+      "type": "brenson-faq",
+      "settings": { "eyebrow": "Respaldo normativo y técnico", "title": "Preguntas frecuentes", "categoria": "general", "limit": 4, "show_cta": true }
     }
   },
-  "order": [
-    "banner",
-    "product-grid"
-  ]
+  "order": ["banner", "product-grid", "asesor", "trust", "faq"]
 }

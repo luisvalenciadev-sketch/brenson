@@ -1,0 +1,21 @@
+{
+  "name": "brenson-services",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Backend serverless de Brenson (Cloudflare Workers): leads, cotizaciones PDF, carga de documentos B2B y webhooks Shopify → CRM.",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test test/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.6.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250101.0",
+    "typescript": "^5.6.0",
+    "wrangler": "^3.90.0"
+  }
+}

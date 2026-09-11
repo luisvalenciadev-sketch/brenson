@@ -1,0 +1,81 @@
+{
+  "sections": {
+    "hero": {
+      "type": "rich-text",
+      "blocks": {
+        "caption": { "type": "caption", "settings": { "caption": "Financiación ágil y 100 % digital", "text_style": "caption-with-letter-spacing", "text_size": "medium" } },
+        "heading": { "type": "heading", "settings": { "heading": "<p>Tu vehículo eléctrico, en cuotas que sí puedes pagar.</p>", "heading_size": "h1" } },
+        "text": { "type": "text", "settings": { "text": "<p>Simula tu cuota, ajusta tu pago inicial y solicita el estudio de crédito con nuestro aliado financiero sin papeleos ni salir de casa.</p>" } }
+      },
+      "block_order": ["caption", "heading", "text"],
+      "settings": { "desktop_content_position": "center", "content_alignment": "center", "color_scheme": "scheme-2", "full_width": true, "padding_top": 56, "padding_bottom": 24 }
+    },
+    "simulador": {
+      "type": "brenson-simulator",
+      "settings": {
+        "eyebrow": "Calculadora interactiva",
+        "title": "Calcula tu plan de financiación",
+        "subtitle": "Ajusta los parámetros para adaptar la cuota exacta a tu presupuesto mensual.",
+        "cta_label": "Solicitar financiamiento",
+        "collection": "destacados",
+        "dark": false
+      }
+    },
+    "pasos": {
+      "type": "multicolumn",
+      "blocks": {
+        "p1": { "type": "column", "settings": { "title": "1 · Simula tu cuota", "text": "<p>Elige el modelo, la cuota inicial y el plazo según tu presupuesto.</p>" } },
+        "p2": { "type": "column", "settings": { "title": "2 · Déjanos tus datos", "text": "<p>Un formulario de dos minutos con tu documento y WhatsApp.</p>" } },
+        "p3": { "type": "column", "settings": { "title": "3 · Nuestro aliado estudia tu crédito", "text": "<p>Respuesta ágil, sin cuota de manejo y sin salir de casa.</p>" } },
+        "p4": { "type": "column", "settings": { "title": "4 · Recibe tu vehículo certificado", "text": "<p>Listo para rodar con los 12 puntos de inspección Brenson.</p>" } }
+      },
+      "block_order": ["p1", "p2", "p3", "p4"],
+      "settings": { "title": "¿Cómo funciona el proceso de financiación?", "heading_size": "h2", "image_width": "third", "image_ratio": "adapt", "columns_desktop": 4, "column_alignment": "left", "background_style": "primary", "button_label": "", "button_link": "", "color_scheme": "scheme-1", "columns_mobile": "1", "swipe_on_mobile": true, "padding_top": 48, "padding_bottom": 48 }
+    },
+    "comparativa": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Compara la cuota por vehículo",
+        "heading_size": "h2",
+        "description": "Cuotas calculadas a 36 meses con 10 % de inicial y la tasa de referencia vigente.",
+        "show_description": true,
+        "description_style": "body",
+        "collection": "destacados",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "outline",
+        "enable_desktop_slider": false,
+        "swipe_on_mobile": true,
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "1",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "lead": {
+      "type": "brenson-lead-form",
+      "settings": {
+        "tipo": "financiamiento",
+        "eyebrow": "Estudio sin costo",
+        "title": "Solicita tu estudio de crédito",
+        "text": "Ingresa tus datos de contacto. Un asesor te acompaña en el proceso con nuestro aliado financiero.",
+        "cta_label": "Solicitar financiamiento",
+        "show_test_drive": false,
+        "alt": true
+      }
+    },
+    "faq": {
+      "type": "brenson-faq",
+      "settings": { "eyebrow": "Resolvemos tus dudas", "title": "Preguntas frecuentes sobre financiación", "categoria": "compra", "limit": 6, "show_cta": true }
+    }
+  },
+  "order": ["hero", "simulador", "pasos", "comparativa", "lead", "faq"]
+}

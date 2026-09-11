@@ -139,6 +139,36 @@
     </div>
 
     <div>
+      {%- comment -%} Brenson: unidades y garantías por número de serie (decisión I5, metaobject brenson_unidad) {%- endcomment -%}
+      {%- include 'brenson-b2b-guard' -%}
+      {%- if b2b_state == 'aprobado' -%}
+        <a class="brenson-btn brenson-btn--carbon brenson-btn--block" href="/pages/empresas" style="margin-bottom:1.5rem">Ir al portal Brenson Empresas</a>
+      {%- elsif b2b_state == 'pendiente' -%}
+        <p class="brenson-status brenson-status--pending" style="margin-bottom:1.5rem">Solicitud corporativa en validación</p>
+      {%- endif -%}
+      <h2>Mis unidades y garantías</h2>
+      {%- assign cid = customer.id | append: '' -%}
+      {%- assign has_units = false -%}
+      {%- capture unit_rows -%}
+        {%- for u in shop.metaobjects.brenson_unidad.values -%}
+          {%- assign ucid = u.cliente.value.id | append: '' -%}
+          {%- if ucid != cid -%}{%- continue -%}{%- endif -%}
+          {%- assign has_units = true -%}
+          <li class="brenson-b2b-card" style="box-shadow:none; border:1px solid var(--brenson-gris-borde); padding:1.2rem; gap:.4rem; margin-bottom:.8rem">
+            <strong>{%- if u.producto.value -%}{{ u.producto.value.title }}{%- else -%}Vehículo{%- endif -%}</strong>
+            <span style="font-size:1.2rem; color: var(--brenson-gris)">Serie <code>{{ u.serie.value }}</code> · Entregado {{ u.fecha_entrega.value | date: '%d %b %Y' }}</span>
+            <span style="font-size:1.2rem">Garantía vehículo hasta <strong>{{ u.fin_garantia.value | date: '%d %b %Y' }}</strong>{% if u.fin_garantia_bateria.value %} · batería hasta <strong>{{ u.fin_garantia_bateria.value | date: '%d %b %Y' }}</strong>{% endif %}</span>
+            {%- case u.estado.value -%}{%- when 'activa' -%}<span class="brenson-status brenson-status--ok" style="align-self:flex-start">Garantía activa</span>{%- when 'en_reclamo' -%}<span class="brenson-status brenson-status--pending" style="align-self:flex-start">En reclamo</span>{%- else -%}<span class="brenson-status brenson-status--muted" style="align-self:flex-start">Vencida</span>{%- endcase -%}
+          </li>
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- if has_units -%}
+        <ul style="list-style:none; padding:0; margin:0 0 1.5rem">{{ unit_rows }}</ul>
+      {%- else -%}
+        <p>Cuando recibas tu vehículo, aparecerá aquí con su número de serie y el estado de la garantía.</p>
+      {%- endif -%}
+      <a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{% render 'brenson-whatsapp-link', context: 'garantias' %}" target="_blank" rel="noopener" style="margin-bottom:2rem">Consultar garantía por WhatsApp</a>
+
       <h2>{{ 'customer.account.details' | t }}</h2>
 
       {{ customer.default_address | format_address }}

@@ -1,0 +1,7 @@
+{
+  "layout": "theme.empresas",
+  "sections": {
+    "grid": { "type": "brenson-b2b-collection-grid", "settings": {} }
+  },
+  "order": ["grid"]
+}

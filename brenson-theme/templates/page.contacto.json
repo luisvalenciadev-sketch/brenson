@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "hero": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": { "type": "heading", "settings": { "heading": "<p>Hablemos de tu próximo vehículo eléctrico</p>", "heading_size": "h1" } },
+        "text": { "type": "text", "settings": { "text": "<p>Escríbenos por WhatsApp, déjanos tus datos o agenda una prueba de manejo en sede o a domicilio.</p>" } }
+      },
+      "block_order": ["heading", "text"],
+      "settings": { "desktop_content_position": "center", "content_alignment": "center", "color_scheme": "scheme-2", "full_width": true, "padding_top": 56, "padding_bottom": 24 }
+    },
+    "lead": {
+      "type": "brenson-lead-form",
+      "settings": { "tipo": "contacto", "eyebrow": "Contacto", "title": "Un asesor te responde hoy", "text": "Atendemos de lunes a viernes de 8:00 a 18:00 y sábados de 9:00 a 13:00. Fuera de horario te respondemos al inicio de la siguiente jornada.", "cta_label": "Enviar mensaje", "show_test_drive": true, "alt": false }
+    },
+    "trust": {
+      "type": "brenson-trust-bar",
+      "blocks": { "t1": { "type": "certificado" }, "t2": { "type": "garantia", "settings": { "text": "Respaldo directo de Brenson en Colombia" } }, "t3": { "type": "envios", "settings": { "title": "Envíos a toda Colombia", "text": "Tiempos estimados por región en cada ficha" } }, "t4": { "type": "financiacion", "settings": { "title": "Financiación con aliado", "text": "Simula tu cuota en línea" } } },
+      "block_order": ["t1", "t2", "t3", "t4"],
+      "settings": { "padding": 24 }
+    },
+    "faq": { "type": "brenson-faq", "settings": { "eyebrow": "Antes de escribir", "title": "Preguntas frecuentes", "categoria": "todas", "limit": 6, "show_cta": false } }
+  },
+  "order": ["hero", "lead", "trust", "faq"]
+}

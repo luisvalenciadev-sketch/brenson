@@ -1,0 +1,42 @@
+{
+  "sections": {
+    "hero": {
+      "type": "rich-text",
+      "blocks": {
+        "caption": { "type": "caption", "settings": { "caption": "Respaldo Brenson", "text_style": "caption-with-letter-spacing", "text_size": "medium" } },
+        "heading": { "type": "heading", "settings": { "heading": "<p>Garantía transparente y sin letra chica</p>", "heading_size": "h1" } },
+        "text": { "type": "text", "settings": { "text": "<p>Cada vehículo sale con inspección de 12 puntos, garantía directa de Brenson en Colombia y una red de servicio para acompañarte. <em>[BORRADOR: texto legal pendiente]</em></p>" } }
+      },
+      "block_order": ["caption", "heading", "text"],
+      "settings": { "desktop_content_position": "center", "content_alignment": "center", "color_scheme": "scheme-2", "full_width": true, "padding_top": 56, "padding_bottom": 24 }
+    },
+    "trust": {
+      "type": "brenson-trust-bar",
+      "blocks": { "t1": { "type": "certificado" }, "t2": { "type": "garantia", "settings": { "text": "Vehículo, motor, controlador y batería" } }, "t3": { "type": "envios", "settings": { "title": "Servicio en sede y talleres aliados", "text": "Coordinación por WhatsApp" } }, "t4": { "type": "custom", "settings": { "title": "Garantía por número de serie", "text": "Consulta el estado de cada unidad en tu cuenta" } } },
+      "block_order": ["t1", "t2", "t3", "t4"],
+      "settings": { "padding": 24 }
+    },
+    "certificacion": {
+      "type": "brenson-product-certification",
+      "settings": { "eyebrow": "Certificación Brenson", "title": "Los 12 puntos de inspección antes de cada entrega", "text": "Revisamos batería, motor, frenos, estructura y hacemos una prueba de ruta. Entregamos el vehículo con su reporte de inspección." }
+    },
+    "terminos": {
+      "type": "collapsible-content",
+      "blocks": {
+        "c1": { "type": "collapsible_row", "settings": { "heading": "¿Qué cubre la garantía?", "row_content": "<p>Defectos de fabricación en motor, controlador, batería, cargador y estructura durante el periodo indicado en la ficha de cada modelo, con uso normal y mantenimiento según el manual. <em>[BORRADOR]</em></p>" } },
+        "c2": { "type": "collapsible_row", "settings": { "heading": "¿Qué no cubre?", "row_content": "<p>Desgaste normal de llantas, frenos y luces; daños por golpes, humedad extrema, sobrecarga, modificaciones o cargadores no originales. <em>[BORRADOR]</em></p>" } },
+        "c3": { "type": "collapsible_row", "settings": { "heading": "¿Cómo hago válida mi garantía?", "row_content": "<p>Escríbenos por WhatsApp con el número de serie de tu vehículo o ingresa a tu cuenta para ver el estado de garantía de cada unidad. Coordinamos la revisión en sede o con un taller aliado.</p>" } },
+        "c4": { "type": "collapsible_row", "settings": { "heading": "Garantía de batería", "row_content": "<p>Las baterías de litio LiFePO4 cuentan con garantía extendida según el modelo (12 a 36 meses). Cubre pérdida de capacidad por debajo del 70 % con uso normal. <em>[BORRADOR]</em></p>" } },
+        "c5": { "type": "collapsible_row", "settings": { "heading": "Derecho de retracto y devoluciones", "row_content": "<p>Según el Estatuto del Consumidor (Ley 1480 de 2011). <em>[BORRADOR: Brenson entrega texto legal]</em></p>" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5"],
+      "settings": { "caption": "", "heading": "Términos de garantía", "heading_size": "h2", "heading_alignment": "center", "layout": "none", "color_scheme": "scheme-1", "container_color_scheme": "scheme-1", "open_first_collapsible_row": true, "padding_top": 48, "padding_bottom": 48 }
+    },
+    "lead": {
+      "type": "brenson-lead-form",
+      "settings": { "tipo": "contacto", "eyebrow": "Servicio técnico", "title": "¿Necesitas soporte o un repuesto?", "text": "Cuéntanos qué vehículo tienes y qué necesitas. El equipo de servicio te responde en horario de atención.", "cta_label": "Solicitar soporte", "show_test_drive": false, "alt": true }
+    },
+    "faq": { "type": "brenson-faq", "settings": { "eyebrow": "Dudas frecuentes", "title": "Garantía y servicio", "categoria": "garantia", "limit": 6, "show_cta": true } }
+  },
+  "order": ["hero", "trust", "certificacion", "terminos", "lead", "faq"]
+}

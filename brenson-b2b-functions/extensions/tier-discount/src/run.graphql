@@ -1,0 +1,36 @@
+query RunInput {
+  cart {
+    buyerIdentity {
+      customer {
+        id
+        hasTags(tags: ["cliente-corporativo"]) { tag hasTag }
+        tier: metafield(namespace: "brenson_b2b", key: "tier") {
+          reference {
+            ... on Metaobject {
+              codigo: field(key: "codigo") { value }
+              descuento: field(key: "descuento_pct") { value }
+              minimo: field(key: "minimo_unidades") { value }
+              nombre: field(key: "nombre") { value }
+            }
+          }
+        }
+      }
+    }
+    lines {
+      id
+      quantity
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            id
+            b2bDisponible: metafield(namespace: "brenson", key: "b2b_disponible") { value }
+            minB2B: metafield(namespace: "brenson", key: "b2b_minimo_unidades") { value }
+            tierOverride: metafield(namespace: "brenson", key: "b2b_precio_tier") { value }
+          }
+        }
+      }
+    }
+  }
+}
