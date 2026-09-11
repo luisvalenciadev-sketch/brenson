@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Ciclomotores Eléctricos | Brenson Colombia</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#EE0000',
+              carbon: '#050709',
+              light: '#F4F4F4',
+              cert: '#1F8A4C',
+              whatsapp: '#25D366'
+            }
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          fontFamily: {
+            headline: ["Montserrat", "sans-serif"],
+            display: ["Montserrat", "sans-serif"],
+            body: ["Montserrat", "sans-serif"],
+            label: ["Montserrat", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      background-color: #F8F9FA;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 500;
+    }
+    .tabular-num {
+      font-variant-numeric: tabular-nums;
+    }
+    /* Hide scrollbars for chips horizontal scroll */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-neutral-100 text-neutral-900 antialiased min-h-screen pb-24">
+<!-- ===============================
+       1. HEADER COMPACTO STICKY
+  =============================== -->
+<header class="sticky top-0 z-40 bg-white shadow-sm w-full max-w-md mx-auto">
+<div class="px-4 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button aria-label="Abrir menú" class="text-neutral-900 active:scale-95 transition-transform" id="menu-btn" type="button">
+<span class="material-symbols-outlined text-[26px]">menu</span>
+</button>
+<div class="flex items-center gap-1.5 cursor-pointer">
+<span class="w-2.5 h-6 bg-[#EE0000] rounded-sm transform -skew-x-12"></span>
+<span class="font-headline font-black text-xl tracking-tighter text-neutral-950">BRENSON</span>
+</div>
+</div>
+<div class="flex items-center gap-2 text-neutral-800">
+<button aria-label="Buscar" class="p-2 active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[22px]">search</span>
+</button>
+<button aria-label="Mi Cuenta" class="p-2 active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[24px]">person</span>
+</button>
+</div>
+</div>
+<!-- Breadcrumb sutil -->
+<div class="px-4 py-1.5 bg-neutral-50 flex items-center gap-1.5 text-[11px] font-medium text-neutral-500 overflow-x-auto whitespace-nowrap no-scrollbar border-b border-neutral-100">
+<span>Inicio</span>
+<span class="material-symbols-outlined text-[12px] text-neutral-400">chevron_right</span>
+<span>Vehículos</span>
+<span class="material-symbols-outlined text-[12px] text-neutral-400">chevron_right</span>
+<span class="text-neutral-900 font-semibold">Ciclomotores</span>
+</div>
+</header>
+<!-- MAIN CANVAS (Max width 390px-448px mobile wrapper) -->
+<main class="max-w-md mx-auto w-full">
+<!-- ===============================
+         2. HERO DE COLECCIÓN COMPACTO
+    =============================== -->
+<section class="px-4 pt-5 pb-4 bg-white">
+<!-- Tag Movilidad -->
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-neutral-100 mb-2.5">
+<span class="w-2 h-2 rounded-full bg-[#1F8A4C] animate-pulse"></span>
+<span class="text-[11px] font-semibold text-neutral-700 tracking-tight">Movilidad urbana 100% eléctrica</span>
+</div>
+<h1 class="font-headline font-black text-2xl tracking-tight text-neutral-950 leading-tight mb-2">
+        Ciclomotores eléctricos
+      </h1>
+<p class="font-body text-xs text-neutral-600 leading-relaxed mb-4">
+        Silenciosos, económicos y sin pico y placa. Ideales para tu trayecto diario o logística ligera. Requieren licencia y SOAT.
+      </p>
+<!-- Chips destacados -->
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-[#EE0000] border border-red-200 rounded-full shrink-0">
+<span class="material-symbols-outlined text-sm">payments</span>
+<span class="text-xs font-bold tabular-num">Desde $ 289.000/mes</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-[#1F8A4C] border border-emerald-200 rounded-full shrink-0">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span class="text-xs font-semibold">Garantía hasta 24 meses</span>
+</div>
+</div>
+</section>
+<!-- ===============================
+         3. BARRA DE CONTROL DE CATÁLOGO
+    =============================== -->
+<section class="sticky top-14 z-30 bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-sm border-b border-neutral-100">
+<!-- 50/50 Control Buttons -->
+<div class="grid grid-cols-2 gap-2 mb-2">
+<button class="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-neutral-900 text-white rounded-xl text-xs font-bold active:scale-[0.98] transition-transform" id="open-filter-btn" type="button">
+<span class="material-symbols-outlined text-base">tune</span>
+<span>Filtrar</span>
+<span class="w-4 h-4 rounded-full bg-[#EE0000] text-white text-[10px] font-black flex items-center justify-center ml-0.5">1</span>
+</button>
+<button class="flex items-center justify-between py-2.5 px-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 rounded-xl text-xs font-semibold active:scale-[0.98] transition-transform" type="button">
+<div class="flex items-center gap-1 truncate">
+<span class="material-symbols-outlined text-base text-neutral-500">swap_vert</span>
+<span class="truncate">Cuota mensual</span>
+</div>
+<span class="material-symbols-outlined text-sm text-neutral-500 shrink-0">expand_more</span>
+</button>
+</div>
+<!-- Active filter tags & count -->
+<div class="flex items-center justify-between text-xs pt-1">
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 bg-neutral-200 text-neutral-900 rounded-full font-medium text-[11px] shrink-0">
+<span>Ciclomotores</span>
+<button class="hover:text-red-600 focus:outline-none flex items-center" type="button">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<button class="text-[11px] font-semibold text-neutral-500 underline underline-offset-2 shrink-0" type="button">
+            Limpiar filtros
+          </button>
+</div>
+<span class="text-[11px] font-medium text-neutral-500 tabular-num whitespace-nowrap pl-2">
+          3 vehículos
+        </span>
+</div>
+</section>
+<!-- ===============================
+         4. CARDS DE VEHÍCULOS APILADAS
+    =============================== -->
+<section class="px-4 py-4 space-y-4">
+<!-- CARD 1: Brenson City 1500 (Ref user scooter image) -->
+<article class="bg-white rounded-2xl p-4 shadow-sm border border-neutral-200/80 relative flex flex-col">
+<!-- Badge & Wishlist -->
+<div class="flex items-center justify-between mb-2">
+<span class="px-2.5 py-0.5 bg-[#EE0000] text-white text-[10px] font-black rounded-md tracking-wider uppercase">
+            MÁS VENDIDO
+          </span>
+<button aria-label="Favorito" class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-600 active:scale-90 hover:text-red-600 transition-colors" type="button">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<!-- Product Image (From user prompt reference) -->
+<div class="relative w-full aspect-[4/3] bg-neutral-50 rounded-xl overflow-hidden mb-3 flex items-center justify-center">
+<img alt="Ciclomotor eléctrico Brenson City 1500 rojo brillante sobre fondo neutro de estudio" class="w-full h-full object-contain p-2 hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1Xi-j-tEWfpWERCwg-gNJD6G5qfLN9aMUJh7DClUX4HBy3erj5VhgAolNfU31RQ4V4-L_HOugJQMnp7guMo1zw8KnUF6CgUhobvHAbusZVvaVjnDrs-v7zxf6Spv7UOsysAU_3h9PIfvlUJvdFN_P43aoNRUxXE5T7gvhKmFzy_Yrigg8UxJNaaj1bxeqHediBYkRo7TmnGGwSHwFdMAS6JK8VoOPTr7kAOvSF4mRW9v_32tWU1U4gR0uE"/>
+</div>
+<!-- Title & Subtitle -->
+<div class="mb-3">
+<h2 class="font-headline font-bold text-lg text-neutral-950 tracking-tight">Brenson City 1500</h2>
+<p class="text-xs text-neutral-500 font-medium">Urbano ágil · Batería de litio extraíble</p>
+</div>
+<!-- Specs Grid (3 specs) -->
+<div class="grid grid-cols-3 gap-2 p-2.5 bg-neutral-50 rounded-xl mb-3 border border-neutral-100 text-center">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-neutral-600 mb-0.5">battery_charging_full</span>
+<span class="text-[10px] text-neutral-500 font-medium">Autonomía</span>
+<span class="text-xs font-bold text-neutral-900 tabular-num">65 km</span>
+</div>
+<div class="flex flex-col items-center border-x border-neutral-200">
+<span class="material-symbols-outlined text-base text-neutral-600 mb-0.5">speed</span>
+<span class="text-[10px] text-neutral-500 font-medium">Vel. máx</span>
+<span class="text-xs font-bold text-neutral-900 tabular-num">50 km/h</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-neutral-600 mb-0.5">weight</span>
+<span class="text-[10px] text-neutral-500 font-medium">Carga máx</span>
+<span class="text-xs font-bold text-neutral-900 tabular-num">150 kg</span>
+</div>
+</div>
+<!-- Financiación & Precios -->
+<div class="mb-3">
+<span class="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider block">Cuota estimada desde</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline font-extrabold text-2xl text-[#EE0000] tabular-num">$ 289.000</span>
+<span class="text-xs font-semibold text-neutral-600">/mes</span>
+</div>
+<p class="text-[11px] text-neutral-500 font-medium mt-0.5">Precio de contado $ 7.990.000 (IVA incluido)</p>
+</div>
+<!-- Sello de Confianza -->
+<div class="flex items-center gap-1.5 text-[#1F8A4C] text-[11px] font-semibold mb-4 bg-emerald-50/70 p-2 rounded-lg">
+<span class="material-symbols-outlined text-base fill-icon">verified</span>
+<span>Certificado Brenson (12 puntos de inspección)</span>
+</div>
+<!-- Primary CTA -->
+<button class="w-full py-3 bg-[#050709] hover:bg-neutral-800 active:scale-[0.98] text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all" type="button">
+<span>Ver vehículo</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</article>
+<!-- CARD 2: Brenson Delivery 2000 -->
+<article class="bg-white rounded-2xl p-4 shadow-sm border border-neutral-200/80 relative flex flex-col">
+<!-- Badge & Wishlist -->
+<div class="flex items-center justify-between mb-2">
+<span class="px-2.5 py-0.5 bg-neutral-900 text-white text-[10px] font-black rounded-md tracking-wider uppercase">
+            FLOTA / CARGA
+          </span>
+<button aria-label="Favorito" class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-600 active:scale-90 hover:text-red-600 transition-colors" type="button">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<!-- Product Image (Delivery Scooter) -->
+<div class="relative w-full aspect-[4/3] bg-neutral-50 rounded-xl overflow-hidden mb-3 flex items-center justify-center">
+<img class="w-full h-full object-contain p-2 hover:scale-105 transition-transform duration-300" data-alt="Modern electric delivery moped in sleek matte black with heavy-duty cargo rear rack and insulated courier delivery trunk box. The vehicle is parked in a clean minimalist commercial studio with crisp softbox illumination and clean light grey floor reflections. Technical urban Colombian utility style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq7j_d-O3_9Onrp9uLddCo1Qohvhx-NquamNfXlOHvawYSlfmrH7ZL-qFmKTPoDZ0zHUm0HHuAUOGTVL0uxWdrajxSl8DHCrcPuou4fZdG31f4R3wCz0_luUWhjMEl-v2x42x5q8RTSmFltKjxlcR8BtvA8w05N2PZfDFgDQtfOP0dOURIDcmWDKfA-BZDAinU5ALKtOcbOFd9S9fuT5WYqwyaUoTEiVyeYrhYSnCTdpsrp3mupL8DlG_G9rcPDCcHuk4jUALh-Yk"/>
+</div>
+<!-- Title & Subtitle -->
+<div class="mb-3">
+<h2 class="font-headline font-bold text-lg text-neutral-950 tracking-tight">Brenson Delivery 2000</h2>
+<p class="text-xs text-neutral-500 font-medium">Carga reforzada · Autonomía extendida para mensajería</p>
+</div>
+<!-- Specs Grid -->
+<div class="grid grid-cols-3 gap-2 p-2.5 bg-neutral-50 rounded-xl mb-3 border border-neutral-100 text-center">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-neutral-600 mb-0.5">battery_charging_full</span>
+<span class="text-[10px] text-neutral-500 font-medium">Autonomía</span>
+<span class="text-xs font-bold text-neutral-900 tabular-num">80 km</span>
+</div>
+<div class="flex flex-col items-center border-x border-neutral-200">
+<span class="material-symbols-outlined text-base text-neutral-600 mb-0.5">speed</span>
+<span class="text-[10px] text-neutral-500 font-medium">Vel. máx</span>
+<span class="text-xs font-bold text-neutral-900 tabular-num">55 km/h</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-neutral-600 mb-0.5">weight</span>
+<span class="text-[10px] text-neutral-500 font-medium">Carga máx</span>
+<span class="text-xs font-bold text-neutral-900 tabular-num">180 kg</span>
+</div>
+</div>
+<!-- Financiación & Precios -->
+<div class="mb-3">
+<span class="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider block">Cuota estimada desde</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline font-extrabold text-2xl text-[#EE0000] tabular-num">$ 343.000</span>
+<span class="text-xs font-semibold text-neutral-600">/mes</span>
+</div>
+<p class="text-[11px] text-neutral-500 font-medium mt-0.5">Precio de contado $ 9.490.000 (IVA incluido)</p>
+</div>
+<!-- Sello de Confianza -->
+<div class="flex items-center gap-1.5 text-[#1F8A4C] text-[11px] font-semibold mb-4 bg-emerald-50/70 p-2 rounded-lg">
+<span class="material-symbols-outlined text-base fill-icon">verified</span>
+<span>Certificado Brenson (12 puntos)</span>
+</div>
+<!-- Primary CTA -->
+<button class="w-full py-3 bg-[#050709] hover:bg-neutral-800 active:scale-[0.98] text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all" type="button">
+<span>Ver vehículo</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</article>
+<!-- CARD 3: Brenson Sport 3000 -->
+<article class="bg-white rounded-2xl p-4 shadow-sm border border-neutral-200/80 relative flex flex-col">
+<!-- Badge & Wishlist -->
+<div class="flex items-center justify-between mb-2">
+<span class="px-2.5 py-0.5 bg-[#EE0000] text-white text-[10px] font-black rounded-md tracking-wider uppercase">
+            NUEVO
+          </span>
+<button aria-label="Favorito" class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-600 active:scale-90 hover:text-red-600 transition-colors" type="button">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<!-- Product Image (Sport scooter) -->
+<div class="relative w-full aspect-[4/3] bg-neutral-50 rounded-xl overflow-hidden mb-3 flex items-center justify-center">
+<img class="w-full h-full object-contain p-2 hover:scale-105 transition-transform duration-300" data-alt="High-performance sport electric urban moped in titanium silver and bold dark carbon finish with aerodynamic front fairing and aggressive dual headlights. Photographed inside a bright modern showroom with soft ambient lighting on a polished concrete floor. High-end automotive product photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrbmOC3F-ryvZGGGFfj8T2D8X_DIROX8SrvbQ75YRX-eL4Ehjmkj92gX5CVHLfCk3H_GWAyuQvzXogNUDjzXIKEfvHAB5ns3n4Oms7Sa15QzuYEdCqf6GxMPcz0ToAeZD_1lASLZIMI6ioTIwgfkbeMWBgGfLzgmasK01rWbzU-ScRgGNy5hDa70aQR6Eal46yj52qVZNNHRsmAll_y66SSEbRNnkjpmusM9v0qEe8NY_wjHn4l3RnObA4zeF9RXzfunsQO4rX2NQ"/>
+</div>
+<!-- Title & Subtitle -->
+<div class="mb-3">
+<h2 class="font-headline font-bold text-lg text-neutral-950 tracking-tight">Brenson Sport 3000</h2>
+<p class="text-xs text-neutral-500 font-medium">Rendimiento deportivo con doble freno de disco</p>
+</div>
+<!-- Specs Grid -->
+<div class="grid grid-cols-3 gap-2 p-2.5 bg-neutral-50 rounded-xl mb-3 border border-neutral-100 text-center">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-neutral-600 mb-0.5">battery_charging_full</span>
+<span class="text-[10px] text-neutral-500 font-medium">Autonomía</span>
+<span class="text-xs font-bold text-neutral-900 tabular-num">90 km</span>
+</div>
+<div class="flex flex-col items-center border-x border-neutral-200">
+<span class="material-symbols-outlined text-base text-neutral-600 mb-0.5">speed</span>
+<span class="text-[10px] text-neutral-500 font-medium">Vel. máx</span>
+<span class="text-xs font-bold text-neutral-900 tabular-num">80 km/h</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-neutral-600 mb-0.5">weight</span>
+<span class="text-[10px] text-neutral-500 font-medium">Carga máx</span>
+<span class="text-xs font-bold text-neutral-900 tabular-num">160 kg</span>
+</div>
+</div>
+<!-- Financiación & Precios -->
+<div class="mb-3">
+<span class="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider block">Cuota estimada desde</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline font-extrabold text-2xl text-[#EE0000] tabular-num">$ 503.000</span>
+<span class="text-xs font-semibold text-neutral-600">/mes</span>
+</div>
+<p class="text-[11px] text-neutral-500 font-medium mt-0.5">Precio de contado $ 13.900.000 (IVA incluido)</p>
+</div>
+<!-- Sello de Confianza -->
+<div class="flex items-center gap-1.5 text-[#1F8A4C] text-[11px] font-semibold mb-4 bg-emerald-50/70 p-2 rounded-lg">
+<span class="material-symbols-outlined text-base fill-icon">verified</span>
+<span>Certificado Brenson (12 puntos)</span>
+</div>
+<!-- Primary CTA -->
+<button class="w-full py-3 bg-[#050709] hover:bg-neutral-800 active:scale-[0.98] text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all" type="button">
+<span>Ver vehículo</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</article>
+</section>
+<!-- ===============================
+         5. TARJETA SOPORTE Y ASESORÍA
+    =============================== -->
+<section class="px-4 py-2">
+<div class="bg-[#050709] text-white p-5 rounded-2xl relative overflow-hidden shadow-md">
+<!-- Subtle Glow Background Accent -->
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center gap-2 mb-2.5">
+<div class="w-8 h-8 rounded-full bg-emerald-500/20 text-[#25D366] flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">support_agent</span>
+</div>
+<span class="text-[11px] uppercase tracking-wider font-bold text-emerald-400">Atención personalizada</span>
+</div>
+<h3 class="font-headline font-bold text-base mb-1.5 text-white">
+          ¿No sabes cuál elegir? Un asesor te ayuda por WhatsApp
+        </h3>
+<p class="text-xs text-neutral-400 leading-relaxed mb-4">
+          Cuéntanos tus recorridos diarios y te asesoramos con la cuota exacta y financiamiento aprobado en 5 min.
+        </p>
+<a class="w-full py-3 px-4 bg-[#25D366] hover:bg-emerald-600 active:scale-[0.98] text-neutral-950 font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all" href="https://wa.me/573000000000?text=Hola%20Brenson,%20quiero%20asesoria%20para%20un%20ciclomotor%20electrico" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-base">chat</span>
+<span>Chatear con un asesor</span>
+</a>
+</div>
+</section>
+<!-- ===============================
+         6. TRUST BAR (Grid 2x2)
+    =============================== -->
+<section class="px-4 py-4">
+<div class="bg-white rounded-2xl p-4 border border-neutral-200">
+<h3 class="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3 text-center">El respaldo Brenson en Colombia</h3>
+<div class="grid grid-cols-2 gap-3">
+<!-- Item 1 -->
+<div class="p-2.5 bg-neutral-50 rounded-xl flex flex-col items-start">
+<div class="w-7 h-7 rounded-lg bg-emerald-100/80 text-[#1F8A4C] flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-base">verified</span>
+</div>
+<h4 class="font-bold text-xs text-neutral-900 leading-tight">Certificado Brenson</h4>
+<p class="text-[11px] text-neutral-500 mt-1 leading-snug">Inspección de 12 puntos clave.</p>
+</div>
+<!-- Item 2 -->
+<div class="p-2.5 bg-neutral-50 rounded-xl flex flex-col items-start">
+<div class="w-7 h-7 rounded-lg bg-red-100 text-[#EE0000] flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-base">shield</span>
+</div>
+<h4 class="font-bold text-xs text-neutral-900 leading-tight">Garantía hasta 24 meses</h4>
+<p class="text-[11px] text-neutral-500 mt-1 leading-snug">Respaldo directo en motor y batería.</p>
+</div>
+<!-- Item 3 -->
+<div class="p-2.5 bg-neutral-50 rounded-xl flex flex-col items-start">
+<div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-base">local_shipping</span>
+</div>
+<h4 class="font-bold text-xs text-neutral-900 leading-tight">Envíos a Colombia</h4>
+<p class="text-[11px] text-neutral-500 mt-1 leading-snug">Entrega asegurada puerta a puerta.</p>
+</div>
+<!-- Item 4 -->
+<div class="p-2.5 bg-neutral-50 rounded-xl flex flex-col items-start">
+<div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-base">account_balance</span>
+</div>
+<h4 class="font-bold text-xs text-neutral-900 leading-tight">Financiación aliada</h4>
+<p class="text-[11px] text-neutral-500 mt-1 leading-snug">Bancolombia, Sufi y Addi en casa.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ===============================
+         7. PREGUNTAS FRECUENTES (FAQ)
+    =============================== -->
+<section class="px-4 py-4">
+<div class="bg-white rounded-2xl p-4 border border-neutral-200">
+<h3 class="font-headline font-bold text-base text-neutral-950 mb-3">
+          Preguntas frecuentes sobre ciclomotores
+        </h3>
+<div class="divide-y divide-neutral-100 text-xs">
+<!-- FAQ 1 (Opened by default) -->
+<details class="group py-3" open="">
+<summary class="flex justify-between items-center font-semibold text-neutral-900 cursor-pointer list-none">
+<span class="pr-2">¿Se requiere licencia de conducción para ciclomotor en Colombia?</span>
+<span class="material-symbols-outlined text-base transition-transform duration-200 group-open:rotate-180 text-neutral-400">expand_more</span>
+</summary>
+<p class="text-neutral-600 mt-2 leading-relaxed text-[11.5px] bg-neutral-50 p-2.5 rounded-lg border border-neutral-100">
+              Sí. De acuerdo con la Resolución 160 de 2017 del Ministerio de Transporte, los ciclomotores eléctricos deben ser conducidos por personas con licencia de conducción categoría A1 o A2 vigente.
+            </p>
+</details>
+<!-- FAQ 2 -->
+<details class="group py-3">
+<summary class="flex justify-between items-center font-semibold text-neutral-900 cursor-pointer list-none">
+<span class="pr-2">¿Es obligatorio el SOAT y la matrícula de placa?</span>
+<span class="material-symbols-outlined text-base transition-transform duration-200 group-open:rotate-180 text-neutral-400">expand_more</span>
+</summary>
+<p class="text-neutral-600 mt-2 leading-relaxed text-[11.5px] bg-neutral-50 p-2.5 rounded-lg border border-neutral-100">
+              Sí, los ciclomotores deben registrarse en el RUNT, portar placa visible trasera y contar con Seguro Obligatorio de Accidentes de Tránsito (SOAT) vigente. En Brenson te entregamos la documentación lista.
+            </p>
+</details>
+<!-- FAQ 3 -->
+<details class="group py-3">
+<summary class="flex justify-between items-center font-semibold text-neutral-900 cursor-pointer list-none">
+<span class="pr-2">¿Los ciclomotores eléctricos tienen restricción de pico y placa?</span>
+<span class="material-symbols-outlined text-base transition-transform duration-200 group-open:rotate-180 text-neutral-400">expand_more</span>
+</summary>
+<p class="text-neutral-600 mt-2 leading-relaxed text-[11.5px] bg-neutral-50 p-2.5 rounded-lg border border-neutral-100">
+              No. Por ser vehículos 100% eléctricos cero emisiones contaminantes, están exentos de pico y placa en Bogotá, Medellín, Cali, Barranquilla y demás ciudades capitales.
+            </p>
+</details>
+<!-- FAQ 4 -->
+<details class="group py-3">
+<summary class="flex justify-between items-center font-semibold text-neutral-900 cursor-pointer list-none">
+<span class="pr-2">¿Dónde y cómo se recargan estos vehículos?</span>
+<span class="material-symbols-outlined text-base transition-transform duration-200 group-open:rotate-180 text-neutral-400">expand_more</span>
+</summary>
+<p class="text-neutral-600 mt-2 leading-relaxed text-[11.5px] bg-neutral-50 p-2.5 rounded-lg border border-neutral-100">
+              Se recargan en cualquier toma corriente estándar de 110V de tu casa u oficina mediante el cargador inteligente incluido. Las baterías son extraíbles para que puedas subirlas cómodamente a tu apartamento.
+            </p>
+</details>
+</div>
+</div>
+</section>
+<!-- ===============================
+         8. FOOTER INSTITUCIONAL COMPACTO
+         (Adheres to Shared Components JSON)
+    =============================== -->
+<footer class="w-full px-6 py-10 flex flex-col gap-6 text-neutral-400 max-w-screen-md mx-auto mb-20 bg-neutral-950 border-t border-neutral-900 font-body text-xs font-normal leading-relaxed">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-6 bg-[#EE0000] rounded-sm transform -skew-x-12"></span>
+<span class="font-headline text-lg font-black tracking-tight text-white">BRENSON</span>
+</div>
+<nav class="flex flex-col gap-2.5">
+<a class="text-neutral-400 hover:text-white transition-colors" href="#">Certificado Brenson</a>
+<a class="text-neutral-400 hover:text-white transition-colors" href="#">Garantía y Respaldo</a>
+<a class="text-neutral-400 hover:text-white transition-colors" href="#">Financiación</a>
+<a class="text-neutral-400 hover:text-white transition-colors" href="#">Brenson Empresas (B2B)</a>
+<a class="text-neutral-400 hover:text-white transition-colors" href="#">Términos y Condiciones</a>
+</nav>
+<div class="pt-4 border-t border-neutral-900 text-[11px] text-neutral-500">
+<p>© 2024 Brenson S.A.S. Todos los derechos reservados. Nit: 901.452.120-1. Movilidad eléctrica en Colombia.</p>
+</div>
+</footer>
+</main>
+<!-- ===============================
+       9. BOTÓN FLOTANTE WHATSAPP
+  =============================== -->
+<aside class="fixed bottom-6 right-5 z-40">
+<a aria-label="WhatsApp Asesor" class="w-14 h-14 bg-[#25D366] hover:bg-emerald-600 rounded-full flex items-center justify-center text-white shadow-xl hover:scale-105 active:scale-95 transition-all" href="https://wa.me/573000000000" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[32px]">chat</span>
+</a>
+</aside>
+<!-- ===============================
+       10. BOTTOM SHEET / DRAWER DE FILTROS
+       (Abierto sobre la pantalla interactivo)
+  =============================== -->
+<div class="fixed inset-0 z-50 flex items-end justify-center" id="filter-modal">
+<!-- Backdrop translúcido oscuro -->
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="backdrop"></div>
+<!-- Bottom sheet panel -->
+<div class="relative bg-white w-full max-w-md h-[86vh] rounded-t-3xl shadow-2xl flex flex-col z-10 overflow-hidden">
+<!-- Drag Handle -->
+<div class="w-full flex justify-center pt-3 pb-1 cursor-grab">
+<div class="w-12 h-1.5 bg-neutral-300 rounded-full"></div>
+</div>
+<!-- Drawer Header -->
+<div class="px-5 py-3 border-b border-neutral-100 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-2">
+<h3 class="font-headline font-bold text-lg text-neutral-950">Filtrar</h3>
+<span class="px-2 py-0.5 bg-red-100 text-[#EE0000] text-xs font-bold rounded-full">1 activo</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-xs font-semibold text-[#EE0000] hover:underline underline-offset-2" type="button">
+            Limpiar todo
+          </button>
+<button class="w-8 h-8 rounded-full bg-neutral-100 text-neutral-600 flex items-center justify-center hover:bg-neutral-200" id="close-filter-btn" type="button">
+<span class="material-symbols-outlined text-lg">close</span>
+</button>
+</div>
+</div>
+<!-- Contenido Scrolleable del Drawer -->
+<div class="flex-1 overflow-y-auto px-5 py-4 space-y-6 no-scrollbar">
+<!-- Acordeón Categoría -->
+<div>
+<h4 class="font-headline font-bold text-xs uppercase tracking-wider text-neutral-500 mb-2.5">
+            Categoría
+          </h4>
+<div class="space-y-2.5 text-xs font-medium text-neutral-800">
+<label class="flex items-center justify-between p-2 rounded-lg hover:bg-neutral-50 cursor-pointer">
+<span class="flex items-center gap-2.5">
+<input class="rounded border-neutral-300 text-[#EE0000] focus:ring-[#EE0000]" type="checkbox"/>
+<span>Bicicletas eléctricas</span>
+</span>
+<span class="text-neutral-400 tabular-num text-[11px]">(3)</span>
+</label>
+<label class="flex items-center justify-between p-2 bg-red-50/60 rounded-lg cursor-pointer font-semibold text-neutral-950">
+<span class="flex items-center gap-2.5">
+<input checked="" class="rounded border-neutral-300 text-[#EE0000] focus:ring-[#EE0000]" type="checkbox"/>
+<span>Ciclomotores</span>
+</span>
+<span class="text-[#EE0000] tabular-num text-[11px] font-bold">(3)</span>
+</label>
+<label class="flex items-center justify-between p-2 rounded-lg hover:bg-neutral-50 cursor-pointer">
+<span class="flex items-center gap-2.5">
+<input class="rounded border-neutral-300 text-[#EE0000] focus:ring-[#EE0000]" type="checkbox"/>
+<span>Motocarros de carga</span>
+</span>
+<span class="text-neutral-400 tabular-num text-[11px]">(3)</span>
+</label>
+<label class="flex items-center justify-between p-2 rounded-lg hover:bg-neutral-50 cursor-pointer">
+<span class="flex items-center gap-2.5">
+<input class="rounded border-neutral-300 text-[#EE0000] focus:ring-[#EE0000]" type="checkbox"/>
+<span>Cuadriciclos urbanos</span>
+</span>
+<span class="text-neutral-400 tabular-num text-[11px]">(3)</span>
+</label>
+</div>
+</div>
+<hr class="border-neutral-100"/>
+<!-- Acordeón Uso Previsto -->
+<div>
+<h4 class="font-headline font-bold text-xs uppercase tracking-wider text-neutral-500 mb-2.5">
+            Uso previsto
+          </h4>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<button class="px-3 py-2 bg-neutral-900 text-white rounded-xl font-semibold flex items-center justify-between" type="button">
+<span>Personal / Urbano</span>
+<span class="material-symbols-outlined text-sm">check</span>
+</button>
+<button class="px-3 py-2 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 rounded-xl font-medium" type="button">
+              Logística y Reparto
+            </button>
+<button class="px-3 py-2 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 rounded-xl font-medium col-span-2 text-center" type="button">
+              Comercial
+            </button>
+</div>
+</div>
+<hr class="border-neutral-100"/>
+<!-- Rango Precio de Contado -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<h4 class="font-headline font-bold text-xs uppercase tracking-wider text-neutral-500">
+              Precio de contado
+            </h4>
+<span class="text-xs font-bold text-neutral-900 tabular-num">$ 3.490.000 - $ 14.000.000</span>
+</div>
+<!-- Slider Dual Track Visual -->
+<div class="relative pt-1 pb-3">
+<div class="h-1.5 bg-neutral-200 rounded-full">
+<div class="h-1.5 bg-[#EE0000] rounded-full w-4/5 ml-1"></div>
+</div>
+<div class="flex justify-between text-[11px] text-neutral-400 mt-1 tabular-num">
+<span>$ 3.490.000</span>
+<span>$ 14.000.000</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3 mt-1">
+<div>
+<label class="block text-[10px] text-neutral-400 mb-1">Mínimo</label>
+<div class="relative">
+<span class="absolute left-2.5 top-2.5 text-xs text-neutral-500">$</span>
+<input class="w-full pl-6 pr-2 py-2 border border-neutral-200 rounded-lg text-xs font-semibold tabular-num" type="text" value="3.490.000"/>
+</div>
+</div>
+<div>
+<label class="block text-[10px] text-neutral-400 mb-1">Máximo</label>
+<div class="relative">
+<span class="absolute left-2.5 top-2.5 text-xs text-neutral-500">$</span>
+<input class="w-full pl-6 pr-2 py-2 border border-neutral-200 rounded-lg text-xs font-semibold tabular-num" type="text" value="14.000.000"/>
+</div>
+</div>
+</div>
+</div>
+<hr class="border-neutral-100"/>
+<!-- Sliders Autonomía, Velocidad y Carga -->
+<div class="space-y-4">
+<!-- Autonomía -->
+<div>
+<div class="flex items-center justify-between text-xs mb-1.5">
+<span class="font-semibold text-neutral-700">Autonomía mínima</span>
+<span class="font-bold text-[#EE0000] tabular-num">Hasta 90 km</span>
+</div>
+<input class="w-full accent-[#EE0000] h-1.5 bg-neutral-200 rounded-lg cursor-pointer" max="100" min="45" type="range" value="90"/>
+<div class="flex justify-between text-[10px] text-neutral-400 mt-0.5">
+<span>45 km</span>
+<span>100 km</span>
+</div>
+</div>
+<!-- Velocidad Máxima -->
+<div>
+<div class="flex items-center justify-between text-xs mb-1.5">
+<span class="font-semibold text-neutral-700">Velocidad máxima</span>
+<span class="font-bold text-neutral-900 tabular-num">Hasta 80 km/h</span>
+</div>
+<input class="w-full accent-neutral-900 h-1.5 bg-neutral-200 rounded-lg cursor-pointer" max="90" min="40" type="range" value="80"/>
+</div>
+<!-- Capacidad de Carga -->
+<div>
+<div class="flex items-center justify-between text-xs mb-1.5">
+<span class="font-semibold text-neutral-700">Capacidad de carga</span>
+<span class="font-bold text-neutral-900 tabular-num">Hasta 180 kg</span>
+</div>
+<input class="w-full accent-neutral-900 h-1.5 bg-neutral-200 rounded-lg cursor-pointer" max="220" min="120" type="range" value="180"/>
+</div>
+</div>
+<hr class="border-neutral-100"/>
+<!-- Toggles Switch iOS style -->
+<div class="space-y-3">
+<div class="flex items-center justify-between py-1">
+<div>
+<span class="text-xs font-bold text-neutral-900 block">100% Financiable</span>
+<span class="text-[11px] text-neutral-500">Aprobación aliada sin cuota inicial</span>
+</div>
+<button class="w-11 h-6 bg-[#EE0000] rounded-full relative p-0.5 transition-colors" type="button">
+<div class="w-5 h-5 bg-white rounded-full shadow-md transform translate-x-5 transition-transform"></div>
+</button>
+</div>
+<div class="flex items-center justify-between py-1">
+<div>
+<span class="text-xs font-bold text-neutral-900 block">No requiere licencia</span>
+<span class="text-[11px] text-neutral-500">Solo aplicable a bicis asistidas &lt;350W</span>
+</div>
+<button class="w-11 h-6 bg-neutral-200 rounded-full relative p-0.5 transition-colors" type="button">
+<div class="w-5 h-5 bg-white rounded-full shadow-md transform translate-x-0 transition-transform"></div>
+</button>
+</div>
+</div>
+<hr class="border-neutral-100"/>
+<!-- Disponibilidad Chips -->
+<div>
+<h4 class="font-headline font-bold text-xs uppercase tracking-wider text-neutral-500 mb-2.5">
+            Disponibilidad
+          </h4>
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-2 rounded-xl bg-neutral-900 text-white font-semibold text-xs flex items-center gap-1.5" type="button">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+<span>En stock (3)</span>
+</button>
+<button class="px-3.5 py-2 rounded-xl bg-neutral-100 text-neutral-600 hover:bg-neutral-200 font-medium text-xs" type="button">
+              Bajo pedido
+            </button>
+</div>
+</div>
+</div>
+<!-- Footer Fijo Inferior del Drawer -->
+<div class="p-4 bg-white border-t border-neutral-200 shadow-lg shrink-0">
+<button class="w-full py-3.5 bg-[#EE0000] hover:bg-red-700 active:scale-[0.98] text-white font-headline font-bold text-sm rounded-xl shadow-md flex items-center justify-center gap-2 transition-all" id="apply-filters-btn" type="button">
+<span>Ver 3 vehículos</span>
+<span class="material-symbols-outlined text-sm">check_circle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Microinteractions Script to open/close Filter Drawer -->
+<script>
+    const filterModal = document.getElementById('filter-modal');
+    const openFilterBtn = document.getElementById('open-filter-btn');
+    const closeFilterBtn = document.getElementById('close-filter-btn');
+    const applyFiltersBtn = document.getElementById('apply-filters-btn');
+    const backdrop = document.getElementById('backdrop');
+
+    function openModal() {
+      filterModal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeModal() {
+      filterModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // Event listeners
+    openFilterBtn.addEventListener('click', openModal);
+    closeFilterBtn.addEventListener('click', closeModal);
+    applyFiltersBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+  </script>
+</body></html>

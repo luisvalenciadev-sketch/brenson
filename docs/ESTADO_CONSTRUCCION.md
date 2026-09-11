@@ -75,7 +75,7 @@ Añadido sin necesitar acceso a la tienda:
 | Pantalla 11 Stitch: estados pendiente / personal / rechazado | `stitch-design/11-empresas-estados` |
 | Prompt para continuar en otra sesión | `docs/PROMPT_CONTINUACION.md` |
 
-Pantallas Stitch lanzadas y pendientes de descargar si terminaron: catálogo mobile con drawer de filtros, cotizador mobile, garantía + blog desktop (ver `SCREENS.md`).
+Pantallas Stitch 12 a 14 completadas y descargadas: catálogo mobile con drawer de filtros, cotizador mobile con resumen sticky, garantía + blog desktop. Total: **14 pantallas**. Diseño pendiente solo para el futuro inglés y para páginas menores (404, búsqueda, carrito), que Dawn ya cubre.
 
 ## Siguiente paso operativo
 
