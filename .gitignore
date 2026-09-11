@@ -1,0 +1,10 @@
+node_modules/
+.shopify/
+.env
+.env.*
+!.env.example
+dist/
+.wrangler/
+*.log
+.DS_Store
+Thumbs.db
