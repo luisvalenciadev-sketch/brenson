@@ -17,3 +17,4 @@ Pendientes: financiación, login/registro, cotizador de flota, landing Empresas 
 | 08 | Cotizador de flota desktop | a4499e23e63c41079f8e637a052b8a15 | 08-cotizador |
 | 09 | Homepage mobile | a868266b92fe476ea5c34e65e71b8182 | 09-home-mobile |
 | 10 | Ficha City 1500 mobile | 5d8e295945eb42408e669bfa04dd88b5 | 10-ficha-mobile |
+| 11 | Estados pendiente / personal / rechazado (desktop) | 52a60a95d28a42eeb777883b9ad821db | 11-empresas-estados |

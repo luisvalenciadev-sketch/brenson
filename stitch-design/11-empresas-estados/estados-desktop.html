@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=1440, initial-scale=1.0"/>
+  <title>Estados de Acceso · Brenson Empresas B2B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: "#EE0000",
+              dark: "#050709",
+              card: "#FFFFFF",
+              muted: "#F4F4F4",
+              wa: "#25D366"
+            }
+          },
+          fontFamily: {
+            headline: ["Montserrat", "sans-serif"],
+            display: ["Montserrat", "sans-serif"],
+            body: ["Montserrat", "sans-serif"],
+            label: ["Montserrat", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #050709;
+      color: #FFFFFF;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="bg-[#050709] text-white min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white antialiased">
+
+  <!-- HEADER OSCURO DEL PORTAL B2B -->
+  <header class="w-full bg-[#050709]/95 backdrop-blur-md border-b border-neutral-800/80 sticky top-0 z-50">
+    <div class="max-w-[1440px] mx-auto px-10 h-20 flex items-center justify-between">
+      <!-- Logo BRENSON Empresas -->
+      <div class="flex items-center gap-3">
+        <a href="#" class="flex items-center gap-2.5 group">
+          <div class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white shadow-md shadow-red-900/30 group-hover:scale-105 transition-transform duration-150">
+            <span class="material-symbols-outlined material-symbols-fill text-xl">bolt</span>
+          </div>
+          <span class="font-headline text-xl font-extrabold tracking-tight text-white flex items-center">
+            BRENSON <span class="text-xs font-bold text-red-500 uppercase ml-2 px-2 py-0.5 rounded bg-red-600/10 border border-red-500/20 tracking-wider">Empresas</span>
+          </span>
+        </a>
+        <div class="hidden md:flex items-center gap-2 pl-4 border-l border-neutral-800 text-xs font-medium text-neutral-400">
+          <span>Portal Corporativo de Movilidad Eléctrica</span>
+        </div>
+      </div>
+
+      <!-- Acciones de Header -->
+      <div class="flex items-center gap-4">
+        <a href="#" class="text-xs font-semibold text-neutral-300 hover:text-white px-3.5 py-2 rounded-lg border border-neutral-800 hover:border-neutral-700 bg-neutral-900/60 transition-colors">
+          Iniciar sesión
+        </a>
+        <a href="#" class="text-xs font-bold text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg shadow-md shadow-red-900/30 active:scale-95 transition-all">
+          Solicitar acceso
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL: 3 ESTADOS EN TARJETAS DE 640PX -->
+  <main class="w-full max-w-[1440px] mx-auto px-6 py-14 flex flex-col items-center gap-14">
+
+    <!-- Encabezado contextual superior de la pantalla -->
+    <div class="text-center max-w-xl space-y-2">
+      <div class="inline-flex items-center gap-2 bg-neutral-900 border border-neutral-800 px-3 py-1 rounded-full text-xs font-semibold text-neutral-400">
+        <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+        <span>Flujos de Autenticación & Validación B2B</span>
+      </div>
+      <h1 class="text-2xl font-extrabold font-headline text-white tracking-tight">
+        Panel de gestión de acceso empresarial
+      </h1>
+      <p class="text-xs text-neutral-400 font-body">
+        Visualización comparativa de los tres estados de autorización de cuenta para clientes corporativos de Brenson Colombia.
+      </p>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TARJETA 1 · ESTADO: SOLICITUD PENDIENTE -->
+    <!-- ================================================================= -->
+    <div class="w-full flex flex-col items-center">
+      <!-- Etiqueta superior de estado -->
+      <div class="w-full max-w-[640px] flex items-center justify-between mb-2.5 px-2">
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-neutral-400 font-headline">Estado: Solicitud pendiente</span>
+        </div>
+        <span class="text-[11px] text-neutral-400 font-medium">Ref: B2B-VAL-2026</span>
+      </div>
+
+      <!-- Tarjeta 1 Blanca (640px) -->
+      <article class="w-full max-w-[640px] bg-white text-neutral-900 rounded-2xl p-8 shadow-xl border border-neutral-200/90 relative transition-all">
+        
+        <!-- Header de la tarjeta con Chip Ámbar -->
+        <div class="flex items-center justify-between pb-4 border-b border-neutral-100">
+          <div class="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold px-3 py-1 rounded-full">
+            <span class="material-symbols-outlined text-amber-600 text-sm material-symbols-fill">pending</span>
+            <span>Solicitud en validación</span>
+          </div>
+          <span class="text-[11px] font-semibold text-neutral-600">NIT 901.482.319-2</span>
+        </div>
+
+        <!-- Título y descripción formal de "usted" -->
+        <div class="mt-5 space-y-2">
+          <h2 class="text-xl font-extrabold font-headline text-neutral-950 tracking-tight leading-snug">
+            Estamos validando su empresa
+          </h2>
+          <p class="text-xs text-neutral-600 font-body leading-relaxed">
+            Recibimos la solicitud de <strong class="text-neutral-900 font-semibold">Logística Caribe S.A.S.</strong> Nuestro equipo la revisa en un plazo de 24 horas hábiles y le notificará por correo cuando el acceso esté activo.
+          </p>
+        </div>
+
+        <!-- Fila de pasos de progreso: 1 Registro ✓ · 2 Documento · 3 Validación · 4 Acceso -->
+        <div class="mt-6 pt-5 border-t border-neutral-100">
+          <div class="grid grid-cols-4 gap-2 text-center relative">
+            <!-- Línea conectora base -->
+            <div class="absolute top-3.5 left-8 right-8 h-0.5 bg-neutral-200 -z-0"></div>
+            <!-- Línea de progreso hasta paso 2 -->
+            <div class="absolute top-3.5 left-8 w-1/3 h-0.5 bg-neutral-900 -z-0"></div>
+
+            <!-- Paso 1: Completado -->
+            <div class="flex flex-col items-center relative z-10">
+              <div class="w-7 h-7 rounded-full bg-neutral-900 text-white flex items-center justify-center text-xs font-bold shadow-sm">
+                <span class="material-symbols-outlined text-sm font-extrabold">check</span>
+              </div>
+              <span class="text-[11px] font-bold text-neutral-900 mt-2 font-headline">1. Registro</span>
+              <span class="text-[9px] text-neutral-600 font-medium">Completado</span>
+            </div>
+
+            <!-- Paso 2: Activo -->
+            <div class="flex flex-col items-center relative z-10">
+              <div class="w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center text-xs font-bold shadow-sm ring-4 ring-red-100 animate-pulse">
+                2
+              </div>
+              <span class="text-[11px] font-bold text-red-600 mt-2 font-headline">2. Documento</span>
+              <span class="text-[9px] text-red-700 font-semibold">En espera</span>
+            </div>
+
+            <!-- Paso 3: Futuro -->
+            <div class="flex flex-col items-center relative z-10">
+              <div class="w-7 h-7 rounded-full bg-neutral-100 border border-neutral-300 text-neutral-500 flex items-center justify-center text-xs font-semibold">
+                3
+              </div>
+              <span class="text-[11px] font-medium text-neutral-600 mt-2 font-headline">3. Validación</span>
+              <span class="text-[9px] text-neutral-500 font-normal">24 horas</span>
+            </div>
+
+            <!-- Paso 4: Futuro -->
+            <div class="flex flex-col items-center relative z-10">
+              <div class="w-7 h-7 rounded-full bg-neutral-100 border border-neutral-300 text-neutral-500 flex items-center justify-center text-xs font-semibold">
+                4
+              </div>
+              <span class="text-[11px] font-medium text-neutral-600 mt-2 font-headline">4. Acceso</span>
+              <span class="text-[9px] text-neutral-500 font-normal">Precios flota</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zona punteada: Adjunte cámara de comercio o RUT -->
+        <div class="mt-6 bg-neutral-50 border-2 border-dashed border-neutral-300 rounded-xl p-4 transition-colors hover:border-neutral-400">
+          <div class="flex flex-col items-center text-center space-y-2">
+            <div class="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-700">
+              <span class="material-symbols-outlined text-xl">upload_file</span>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-neutral-900 font-headline">
+                Adjunte cámara de comercio o RUT (PDF o imagen, máx. 5 MB)
+              </p>
+              <p class="text-[11px] text-neutral-600">
+                Documento con vigencia no mayor a 90 días para validación fiscal de personería jurídica.
+              </p>
+            </div>
+          </div>
+
+          <!-- Select tipo de documento y botón carbón "Adjuntar" -->
+          <div class="mt-4 flex flex-col sm:flex-row items-center gap-2.5">
+            <div class="relative w-full sm:flex-1">
+              <select class="w-full text-xs font-medium bg-white border border-neutral-300 rounded-lg py-2.5 px-3 pr-8 text-neutral-800 focus:ring-1 focus:ring-red-600 focus:outline-none appearance-none">
+                <option value="camara" selected>Certificado Cámara de Comercio (.pdf)</option>
+                <option value="rut">RUT actualizado DIAN (.pdf)</option>
+                <option value="representacion">Cédula del Representante Legal (.pdf o .jpg)</option>
+              </select>
+              <span class="material-symbols-outlined text-neutral-500 text-base absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none">expand_more</span>
+            </div>
+            <button type="button" class="w-full sm:w-auto bg-[#050709] hover:bg-neutral-800 active:scale-95 transition-all text-white font-headline font-bold text-xs px-5 py-2.5 rounded-lg flex items-center justify-center gap-2 shadow-sm whitespace-nowrap">
+              <span class="material-symbols-outlined text-base">attach_file</span>
+              <span>Adjuntar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Asesor asignado & WhatsApp -->
+        <div class="mt-5 pt-4 border-t border-neutral-100 flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full overflow-hidden bg-neutral-200 border border-neutral-300 flex-shrink-0">
+              <img src="https://lh3.googleusercontent.com/aida/AEtjO1XfratIjWlaCZwB6UhYhZBrAhUjCJgOZGys9Le1tRUpVs4t0_A_0WSf5tUm-HoRZ9BkqZp7gh149l1NiJ-_QsBn_HVeuVXZztYwGM3ENWb5jfv1Js8r88phcjLxgNNoct3OH7tywd85azjqBCIwXppKI6KBb_8buXJPkBh2l4Htn8aNg71QGau5dxDMhE3BFJkMmS1FIcc2U-cSq2wdNdCsH-95pstfeoa-Qmeg3-yPlDjx3TNwtTWRCFE" alt="Andrés Gómez Asesor B2B Brenson" class="w-full h-full object-cover object-top"/>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase font-bold text-neutral-600 block tracking-wider font-headline">Asesor asignado</span>
+              <span class="text-xs font-bold text-neutral-900 font-headline">Su contacto es Andrés Gómez</span>
+            </div>
+          </div>
+          
+          <a href="https://wa.me/573009124000" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20bd5a] text-white font-headline font-bold text-xs px-4 py-2 rounded-lg shadow-sm hover:shadow transition-all active:scale-95">
+            <span class="material-symbols-outlined text-base material-symbols-fill">chat</span>
+            <span>Escribir a Andrés</span>
+          </a>
+        </div>
+
+        <!-- Enlace Cerrar sesión -->
+        <div class="mt-5 text-center pt-3 border-t border-neutral-100">
+          <a href="#" class="text-xs font-semibold text-neutral-600 hover:text-red-600 transition-colors inline-flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">logout</span>
+            <span>Cerrar sesión</span>
+          </a>
+        </div>
+
+      </article>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TARJETA 2 · ESTADO: CUENTA PERSONAL -->
+    <!-- ================================================================= -->
+    <div class="w-full flex flex-col items-center">
+      <!-- Etiqueta superior de estado -->
+      <div class="w-full max-w-[640px] flex items-center justify-between mb-2.5 px-2">
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-neutral-400 font-headline">Estado: Cuenta personal</span>
+        </div>
+        <span class="text-[11px] text-neutral-400 font-medium">B2C Retail Activo</span>
+      </div>
+
+      <!-- Tarjeta 2 Blanca (640px) -->
+      <article class="w-full max-w-[640px] bg-white text-neutral-900 rounded-2xl p-8 shadow-xl border border-neutral-200/90 relative transition-all">
+        
+        <!-- Header de la tarjeta con Chip Gris -->
+        <div class="flex items-center justify-between pb-4 border-b border-neutral-100">
+          <div class="inline-flex items-center gap-1.5 bg-neutral-100 border border-neutral-300 text-neutral-700 text-xs font-bold px-3 py-1 rounded-full">
+            <span class="material-symbols-outlined text-neutral-500 text-sm">person</span>
+            <span>Cuenta personal</span>
+          </div>
+          <span class="text-[11px] font-semibold text-neutral-600">Usuario: persona natural</span>
+        </div>
+
+        <!-- Título y descripción formal de "usted" -->
+        <div class="mt-5 space-y-2">
+          <h2 class="text-xl font-extrabold font-headline text-neutral-950 tracking-tight leading-snug">
+            Su cuenta actual es personal
+          </h2>
+          <p class="text-xs text-neutral-600 font-body leading-relaxed">
+            Para acceder a precios por volumen y al cotizador de flota, registre los datos de su empresa. Validamos NIT y cámara de comercio en 24 horas hábiles.
+          </p>
+        </div>
+
+        <!-- Resumen de beneficios B2B excluidos para cuentas personales -->
+        <div class="mt-6 bg-neutral-50 rounded-xl p-4 border border-neutral-200/80">
+          <span class="text-[11px] font-bold text-neutral-700 uppercase tracking-wider font-headline block mb-2.5">
+            Beneficios exclusivos del canal Brenson Empresas:
+          </span>
+          <div class="grid grid-cols-2 gap-2 text-xs font-medium text-neutral-700">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-600 text-base material-symbols-fill">check_circle</span>
+              <span>Descuentos de flota del 8 % al 18 %</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-600 text-base material-symbols-fill">check_circle</span>
+              <span>Cotizador autónomo con PDF oficial</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-600 text-base material-symbols-fill">check_circle</span>
+              <span>Facturación exenta de IVA (Ley 1715)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-600 text-base material-symbols-fill">check_circle</span>
+              <span>Asesor y soporte posventa prioritario</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón rojo ancho "Registrar mi empresa" -->
+        <div class="mt-6 space-y-3">
+          <button type="button" class="w-full bg-red-600 hover:bg-red-700 active:scale-[0.99] transition-all duration-150 text-white font-headline font-bold text-xs py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-red-900/20">
+            <span>Registrar mi empresa</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </button>
+        </div>
+
+        <!-- Enlace Volver a mi cuenta -->
+        <div class="mt-5 text-center pt-3 border-t border-neutral-100">
+          <a href="#" class="text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition-colors inline-flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Volver a mi cuenta</span>
+          </a>
+        </div>
+
+      </article>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TARJETA 3 · ESTADO: ACCESO NO HABILITADO -->
+    <!-- ================================================================= -->
+    <div class="w-full flex flex-col items-center">
+      <!-- Etiqueta superior de estado -->
+      <div class="w-full max-w-[640px] flex items-center justify-between mb-2.5 px-2">
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-neutral-400 font-headline">Estado: Acceso no habilitado</span>
+        </div>
+        <span class="text-[11px] text-neutral-400 font-medium">Revisión requerida</span>
+      </div>
+
+      <!-- Tarjeta 3 Blanca (640px) -->
+      <article class="w-full max-w-[640px] bg-white text-neutral-900 rounded-2xl p-8 shadow-xl border border-neutral-200/90 relative transition-all">
+        
+        <!-- Header de la tarjeta con Chip Rojo -->
+        <div class="flex items-center justify-between pb-4 border-b border-neutral-100">
+          <div class="inline-flex items-center gap-1.5 bg-red-50 border border-red-200 text-red-700 text-xs font-bold px-3 py-1 rounded-full">
+            <span class="material-symbols-outlined text-red-600 text-sm material-symbols-fill">cancel</span>
+            <span>Acceso no habilitado</span>
+          </div>
+          <span class="text-[11px] font-semibold text-neutral-600">Estado de cuenta: Inactivo</span>
+        </div>
+
+        <!-- Título y descripción formal de "usted" -->
+        <div class="mt-5 space-y-2">
+          <h2 class="text-xl font-extrabold font-headline text-neutral-950 tracking-tight leading-snug">
+            Su cuenta corporativa no está activa
+          </h2>
+          <p class="text-xs text-neutral-600 font-body leading-relaxed">
+            No pudimos habilitar el acceso a precios de flota con la información recibida. Con gusto revisamos su caso con un ejecutivo.
+          </p>
+        </div>
+
+        <!-- Alerta informativa formal -->
+        <div class="mt-5 bg-neutral-50 rounded-xl p-3.5 border border-neutral-200 text-neutral-600 text-xs leading-relaxed flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-neutral-500 text-base flex-shrink-0 mt-0.5">info</span>
+          <p>
+            Esto puede ocurrir si el RUT adjunto tiene más de 90 días, si la personería jurídica requiere aclaración de objeto social o si la actividad económica requiere asignación personalizada de cupos de producción.
+          </p>
+        </div>
+
+        <!-- Botón verde WhatsApp & Botón outline blanco -->
+        <div class="mt-6 space-y-2.5">
+          <!-- Botón verde WhatsApp "Hablar con un ejecutivo" -->
+          <a href="https://wa.me/573009124000" target="_blank" rel="noopener noreferrer" class="w-full bg-[#25D366] hover:bg-[#20bd5a] active:scale-[0.99] transition-all duration-150 text-white font-headline font-bold text-xs py-3 px-6 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-emerald-900/10">
+            <span class="material-symbols-outlined text-base material-symbols-fill">chat</span>
+            <span>Hablar con un ejecutivo</span>
+          </a>
+
+          <!-- Botón outline blanco "Enviar correo a empresas@brenson.co" -->
+          <a href="mailto:empresas@brenson.co" class="w-full bg-white hover:bg-neutral-50 active:scale-[0.99] transition-all duration-150 text-neutral-800 font-headline font-semibold text-xs py-3 px-6 rounded-xl border border-neutral-300 flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-neutral-600 text-base">mail</span>
+            <span>Enviar correo a empresas@brenson.co</span>
+          </a>
+        </div>
+
+        <!-- Enlace Cerrar sesión -->
+        <div class="mt-5 text-center pt-3 border-t border-neutral-100">
+          <a href="#" class="text-xs font-semibold text-neutral-600 hover:text-red-600 transition-colors inline-flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">logout</span>
+            <span>Cerrar sesión</span>
+          </a>
+        </div>
+
+      </article>
+    </div>
+
+  </main>
+
+  <!-- FOOTER OSCURO COMPACTO -->
+  <footer class="w-full bg-neutral-950 border-t border-neutral-900 py-8 mt-12">
+    <div class="max-w-[1440px] mx-auto px-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
+      
+      <!-- Marca y Copyright -->
+      <div class="flex items-center gap-3">
+        <span class="font-headline font-black text-sm text-white tracking-tight">BRENSON</span>
+        <span class="text-neutral-400">·</span>
+        <span class="font-medium text-[11px] text-neutral-400">División Corporativa Brenson Empresas · NIT 901.482.319-1</span>
+      </div>
+
+      <!-- Enlaces legales compactos -->
+      <div class="flex items-center gap-5 text-[11px] font-medium text-neutral-400">
+        <a href="#" class="hover:text-white transition-colors">Términos del Portal</a>
+        <a href="#" class="hover:text-white transition-colors">Política de Tratamiento de Datos</a>
+        <a href="#" class="hover:text-white transition-colors">Línea Nacional B2B</a>
+      </div>
+
+      <!-- Indicador seguro SSL -->
+      <div class="flex items-center gap-1.5 text-[11px] text-neutral-400">
+        <span class="material-symbols-outlined text-xs text-emerald-500">lock</span>
+        <span>Conexión cifrada de alta seguridad SSL 256-bit</span>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<rect width="1200" height="900" fill="#f4f4f4"/>
+<path d="M180 650a80 80 0 1 0 160 0 80 80 0 1 0-160 0Zm300 0a80 80 0 1 0 160 0 80 80 0 1 0-160 0Zm420 0a80 80 0 1 0 160 0 80 80 0 1 0-160 0ZM260 650V400h340v250M600 400l-80-130H360l-100 130M640 380h300v270M940 380l60 90v180" fill="none" stroke="#c4c8cf" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="600" y="820" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="34" font-weight="700" fill="#9aa0a8" letter-spacing="4">MOTOCARRO · IMAGEN DE DEMOSTRACIÓN</text>
+</svg>

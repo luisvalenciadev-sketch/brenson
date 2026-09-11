@@ -58,6 +58,25 @@ Endpoints `/lead`, `/b2b/request`, `/upload`, `/quote`, `/ficha/:handle.pdf`, `/
 
 `mock-data/vehiculos.json` (12 vehículos) y `mock-data/metaobjects.json` (financiación, tiers, asesores, certificación, FAQ, testimonios, aliados, contadores, casos, regiones, clientes B2B, unidades, cotizaciones). Falta el script de importación `scripts/import-*.mjs` (requiere token Admin).
 
+## Cierre de la sesión 1 (11-sep-2026, segunda parte)
+
+Añadido sin necesitar acceso a la tienda:
+
+| Elemento | Archivo |
+|---|---|
+| Scripts listos para ejecutar con token: definiciones, importación de mocks (colecciones, productos, metaobjects, clientes B2B, unidades, cotizaciones), blog, placeholders, check de mocks | `scripts/*.mjs`, `package.json` raíz |
+| Automatizaciones Shopify Flow (5) y webhooks | `docs/FLOWS.md` |
+| Matriz de QA (60 casos B2C, B2B y backend) | `docs/QA_MATRIZ.md` |
+| Manual del equipo Brenson por roles | `docs/MANUAL_ADMIN.md` |
+| Copy de seguimiento GHL, flows Klaviyo y plantillas WhatsApp | `docs/COPY_MENSAJES.md` |
+| 6 artículos de blog en borrador | `mock-data/blog.json` |
+| Estructura de políticas legales `[BORRADOR]` | `mock-data/POLITICAS_BORRADOR.md` |
+| Placeholders SVG por categoría y hero | `mock-data/img/` |
+| Pantalla 11 Stitch: estados pendiente / personal / rechazado | `stitch-design/11-empresas-estados` |
+| Prompt para continuar en otra sesión | `docs/PROMPT_CONTINUACION.md` |
+
+Pantallas Stitch lanzadas y pendientes de descargar si terminaron: catálogo mobile con drawer de filtros, cotizador mobile, garantía + blog desktop (ver `SCREENS.md`).
+
 ## Siguiente paso operativo
 
 1. Acceso colaborador a la tienda → verificaciones Sprint 1 (cuentas clásicas, plan, apps, GHL).

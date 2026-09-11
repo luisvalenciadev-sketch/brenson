@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+<defs><radialGradient id="g" cx="80%" cy="20%" r="90%"><stop offset="0" stop-color="#2a2f38"/><stop offset="1" stop-color="#050709"/></radialGradient></defs>
+<rect width="1920" height="1080" fill="url(#g)"/>
+<path d="m1000 300-260 400h190l-40 260 270-400h-200l40-260Z" fill="#ee0000" opacity=".9"/>
+<text x="960" y="1020" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="28" fill="#6b7280" letter-spacing="4">HERO DE DEMOSTRACIÓN · REEMPLAZAR POR VIDEO</text>
+</svg>
