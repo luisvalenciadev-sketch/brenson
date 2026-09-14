@@ -52,7 +52,7 @@
       "settings": {
         "title": "Los más vendidos para moverte o trabajar",
         "heading_size": "h2",
-        "description": "Cuota mensual estimada con 10 % de inicial a 36 meses. Precio contado con IVA incluido.",
+        "description": "<p>Cuota mensual estimada con 10 % de inicial a 36 meses. Precio contado con IVA incluido.</p>",
         "show_description": true,
         "description_style": "body",
         "collection": "destacados",

@@ -275,6 +275,16 @@
       }
     }
   },
+  "main-login": {
+    "name": "Iniciar sesión",
+    "settings": {
+      "shop_login_button": {
+        "enable": {
+          "label": "Habilitar botón de inicio de sesión"
+        }
+      }
+    }
+  },
   "sections": {
     "header": {
       "announcement": "Anuncio",

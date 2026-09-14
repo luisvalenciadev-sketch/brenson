@@ -7,7 +7,7 @@
   Nota: Liquid no puede filtrar metaobjects por referencia server-side de forma nativa; se recorren y se
   comparan por customer.id. Con <100 entradas es aceptable. Al escalar, brenson-services expone /me/quotes y /me/units.
 {%- endcomment -%}
-{%- include 'brenson-b2b-guard' -%}
+{%- render 'brenson-b2b-guard' -%}
 {%- if b2b_state == 'aprobado' -%}
 {%- liquid
   assign tiers = shop.metaobjects.brenson_tier_b2b.values
@@ -171,7 +171,7 @@
           <ul class="brenson-doc-list">
             {%- for block in section.blocks -%}
               {%- if block.type == 'documento' and block.settings.file != blank -%}
-                <li {{ block.shopify_attributes }}><a href="{{ block.settings.file | file_url }}" target="_blank" rel="noopener"><span>{{ block.settings.title }}</span><span class="brenson-muted">PDF</span></a></li>
+                <li {{ block.shopify_attributes }}><a href="{{ block.settings.file }}" target="_blank" rel="noopener"><span>{{ block.settings.title }}</span><span class="brenson-muted">PDF</span></a></li>
               {%- endif -%}
             {%- endfor -%}
             {%- if settings.brenson_services_url != blank -%}
@@ -198,13 +198,13 @@
 
 {% schema %}
 {
-  "name": "Brenson · Empresas: dashboard",
+  "name": "B2B dashboard",
   "tag": "div",
   "settings": [ { "type": "paragraph", "content": "Visible solo para clientes con acceso aprobado. Datos desde metafields del cliente y metaobjects de cotizaciones y unidades." } ],
   "blocks": [
-    { "type": "documento", "name": "Documento descargable", "settings": [ { "type": "text", "id": "title", "label": "Título", "default": "Catálogo de flota" }, { "type": "file", "id": "file", "label": "Archivo PDF" } ] }
+    { "type": "documento", "name": "Documento", "settings": [ { "type": "text", "id": "title", "label": "Título", "default": "Catálogo de flota" }, { "type": "url", "id": "file", "label": "Archivo" } ] }
   ],
-  "presets": [ { "name": "Brenson · Empresas: dashboard" } ],
+  "presets": [ { "name": "B2B dashboard" } ],
   "enabled_on": { "templates": ["page"] }
 }
 {% endschema %}

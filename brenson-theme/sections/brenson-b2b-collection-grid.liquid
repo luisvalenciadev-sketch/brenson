@@ -5,7 +5,7 @@
   Precio corporativo = precio público × (1 − descuento tier). Display only; la Function aplica el descuento real.
   La colección debe tener metafield brenson.solo_empresas = true (noindex en meta-tags).
 {%- endcomment -%}
-{%- include 'brenson-b2b-guard' -%}
+{%- render 'brenson-b2b-guard' -%}
 <section class="brenson-section">
   <div class="brenson-container">
     {%- if b2b_state != 'aprobado' -%}
@@ -65,10 +65,10 @@
 
 {% schema %}
 {
-  "name": "Brenson · Empresas: catálogo",
+  "name": "B2B catálogo",
   "tag": "div",
   "settings": [ { "type": "paragraph", "content": "Catálogo corporativo con precios por tier. Solo renderiza productos para clientes aprobados." } ],
-  "presets": [ { "name": "Brenson · Empresas: catálogo" } ],
+  "presets": [ { "name": "B2B catálogo" } ],
   "enabled_on": { "templates": ["collection"] }
 }
 {% endschema %}

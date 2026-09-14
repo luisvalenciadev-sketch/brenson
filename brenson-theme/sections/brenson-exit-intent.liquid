@@ -12,11 +12,11 @@
     assign pdf_url = settings.brenson_services_url | append: '/ficha/' | append: product.handle | append: '.pdf'
   endif
 -%}
-<dialog class="brenson-exit" id="brenson-exit-intent" data-brenson-exit data-endpoint="{{ settings.brenson_services_url }}" data-pdf="{{ pdf_url }}" data-days="{{ section.settings.days }}" aria-labelledby="brenson-exit-title">
+<dialog class="brenson-exit" id="brenson-exit-intent" data-brenson-exit data-endpoint="{{ settings.brenson_services_url }}" data-pdf="{{ pdf_url }}" data-days="{{ section.settings.days }}" data-product-title="{{ product.title | escape }}" aria-labelledby="brenson-exit-title">
   <form method="dialog" class="brenson-exit__close"><button aria-label="Cerrar">×</button></form>
   <div class="brenson-exit__body">
     <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
-    <h2 id="brenson-exit-title" style="margin:0; font-size: var(--brenson-text-xl)">{{ section.settings.title | replace: '{modelo}', product.title }}</h2>
+    <h2 id="brenson-exit-title" style="margin:0; font-size: var(--brenson-text-xl)"><span data-exit-title-template>{{ section.settings.title | escape }}</span></h2>
     <p class="brenson-muted" style="margin:0; font-size: var(--brenson-text-sm)">{{ section.settings.text }}</p>
     <form class="brenson-form" data-exit-form>
       <input type="hidden" data-name="tipo" value="ficha_pdf">
@@ -45,7 +45,11 @@
   var shown=false; function open(){ if(shown)return; shown=true; try{localStorage.setItem(key,String(now));}catch(e){} dlg.showModal(); window.dataLayer=window.dataLayer||[]; window.dataLayer.push({event:'brenson_exit_intent_open'}); }
   if(matchMedia('(pointer:fine)').matches){ document.addEventListener('mouseout',function(e){ if(!e.relatedTarget&&e.clientY<=0)open(); }); }
   else { var lastY=window.scrollY, deep=false; window.addEventListener('scroll',function(){ var y=window.scrollY; if(y>document.body.scrollHeight*0.4)deep=true; if(deep&&lastY-y>120)open(); lastY=y; },{passive:true}); }
-  var form=dlg.querySelector('[data-exit-form]'); form.addEventListener('submit',async function(e){ e.preventDefault(); var data={}; form.querySelectorAll('[data-name]').forEach(function(el){data[el.dataset.name]=el.value;}); data.nombre=data.email; data.page=location.href; var ep=(dlg.dataset.endpoint||'').replace(/\/$/,'');
+  var form=dlg.querySelector('[data-exit-form]');
+  // Replace title placeholder {modelo} client-side to avoid Liquid parsing issues
+  var titleTpl = dlg.querySelector('[data-exit-title-template]');
+  if(titleTpl){ var prod = dlg.dataset.productTitle || ''; titleTpl.textContent = titleTpl.textContent.replace('{modelo}', prod); }
+  form.addEventListener('submit',async function(e){ e.preventDefault(); var data={}; form.querySelectorAll('[data-name]').forEach(function(el){data[el.dataset.name]=el.value;}); data.nombre=data.email; data.page=location.href; var ep=(dlg.dataset.endpoint||'').replace(/\/$/,'');
     try{ if(ep){ await fetch(ep+'/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); } else { console.info('[brenson] exit-intent lead (simulación):',data); } }catch(err){}
     window.dataLayer.push({event:'brenson_lead_submit',tipo:'ficha_pdf',vehiculo:data.vehiculo});
     form.querySelectorAll('input,button').forEach(function(el){el.disabled=true;}); var ok=form.querySelector('[data-exit-success]'); ok.hidden=false; var link=form.querySelector('[data-exit-link]'); if(link&&link.getAttribute('href'))window.open(link.href,'_blank','noopener'); });
@@ -55,16 +59,16 @@
 
 {% schema %}
 {
-  "name": "Brenson · Exit intent (ficha PDF)",
+  "name": "Exit intent PDF",
   "tag": "div",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Antes de irte" },
-    { "type": "text", "id": "title", "label": "Título", "default": "Llévate la ficha técnica del {modelo}", "info": "{modelo} inserta el nombre del vehículo." },
+    { "type": "text", "id": "title", "label": "Título", "default": "Llévate la ficha técnica del modelo", "info": "Usa {modelo} si quieres insertar el nombre del vehículo en runtime." },
     { "type": "textarea", "id": "text", "label": "Texto", "default": "Te enviamos la ficha técnica en PDF con specs, garantía y cuota estimada." },
     { "type": "text", "id": "cta_label", "label": "Botón", "default": "Enviarme la ficha" },
     { "type": "range", "id": "days", "min": 1, "max": 30, "step": 1, "label": "Mostrar de nuevo después de (días)", "default": 7 }
   ],
-  "presets": [ { "name": "Brenson · Exit intent (ficha PDF)" } ],
+  "presets": [ { "name": "Exit intent PDF" } ],
   "enabled_on": { "templates": ["product"] }
 }
 {% endschema %}

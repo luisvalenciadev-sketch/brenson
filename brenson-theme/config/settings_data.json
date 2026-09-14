@@ -126,7 +126,7 @@
     "brenson_email_empresas": "empresas@brenson.co",
     "brenson_horario_semana": "08:00-18:00",
     "brenson_horario_sabado": "09:00-13:00",
-    "brenson_horario_domingo": "",
+    "brenson_horario_domingo": "Cerrado",
     "brenson_fuera_horario_msg": "Estamos fuera de horario. Escríbenos y te respondemos al inicio de la próxima jornada.",
     "brenson_show_certificado": true,
     "brenson_certificado_puntos": "12",
@@ -145,8 +145,8 @@
     "brenson_b2b_validez_dias": "15",
     "brenson_services_url": "",
     "brenson_modo_simulacion": true,
-    "brenson_gtm_id": "",
-    "brenson_turnstile_site_key": "",
+    "brenson_gtm_id": "GTM-XXXXXXX",
+    "brenson_turnstile_site_key": "TURNSTILE_SITE_KEY_PLACEHOLDER",
     "color_schemes": {
       "scheme-1": {
         "settings": {

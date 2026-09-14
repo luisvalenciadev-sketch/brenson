@@ -8,7 +8,7 @@
     aprobado  → nada (las secciones del dashboard se renderizan a continuación)
   Tono formal (usted).
 {%- endcomment -%}
-{%- include 'brenson-b2b-guard' -%}
+{%- render 'brenson-b2b-guard' -%}
 {%- assign tiers = shop.metaobjects.brenson_tier_b2b.values -%}
 
 {%- if b2b_state != 'aprobado' -%}
@@ -142,7 +142,7 @@
 
 {% schema %}
 {
-  "name": "Brenson · Empresas: acceso",
+  "name": "B2B acceso",
   "tag": "div",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Portal corporativo B2B · Colombia" },
@@ -150,7 +150,7 @@
     { "type": "textarea", "id": "text", "label": "Texto", "default": "Acceda a precios corporativos desde 10 unidades, cotizaciones en PDF al instante y un asesor dedicado para su operación." },
     { "type": "paragraph", "content": "Evalúa el estado del cliente (sin sesión, personal, pendiente, aprobado, rechazado). Cuando está aprobado no muestra nada y deja paso al dashboard." }
   ],
-  "presets": [ { "name": "Brenson · Empresas: acceso" } ],
+  "presets": [ { "name": "B2B acceso" } ],
   "enabled_on": { "templates": ["page"] }
 }
 {% endschema %}

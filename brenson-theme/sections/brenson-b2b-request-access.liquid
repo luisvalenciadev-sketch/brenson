@@ -30,8 +30,9 @@
 
         {%- if b2b_state == 'personal' -%}
           {%- comment -%} Cliente B2C logueado: conversión a corporativo (sin crear cuenta) {%- endcomment -%}
-          <form class="brenson-form" data-brenson-b2b-convert data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
+          {%- form 'customer', class: 'brenson-form', data-brenson-b2b-convert: '', data-endpoint: settings.brenson_services_url, data-customer-id: customer.id, data-customer-email: customer.email -%}
             <p class="brenson-form__hint brenson-muted" style="font-size: var(--brenson-text-sm)">Sesión iniciada como <strong>{{ customer.email }}</strong>. Convertiremos esta cuenta en corporativa.</p>
+          {%- endform -%}
         {%- else -%}
           {%- form 'customer', class: 'brenson-form', id: 'BrensonB2BRegister', data-brenson-b2b-register: '', data-endpoint: settings.brenson_services_url, return_to: '/pages/empresas-acceso' -%}
             {%- if form.errors -%}<p class="brenson-form__error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
@@ -41,7 +42,6 @@
               la nota como estado pendiente.
             {%- endcomment -%}
             <input type="hidden" name="customer[note]" data-b2b-note value="">
-        {%- endif -%}
 
             <div class="brenson-form__row brenson-form__row--2">
               <div class="brenson-field"><label for="b2b-razon">Razón social *</label><input id="b2b-razon" type="text" data-b2b="razon_social" required placeholder="Ej. Transportes del Caribe S.A.S."></div>
@@ -113,11 +113,9 @@
             <p class="brenson-form__success" data-b2b-success hidden role="status">Solicitud enviada. Le confirmaremos la activación por correo.</p>
             <p class="brenson-form__error" data-b2b-error hidden role="alert">No pudimos enviar la solicitud. Escríbanos por WhatsApp o intente de nuevo.</p>
 
-        {%- if b2b_state == 'personal' -%}
-          </form>
-        {%- else -%}
-          {%- endform -%}
+            {%- endform -%}
         {%- endif -%}
+          {%- comment -%} endform closed inside each branch above to avoid 'else' inside form block {%- endcomment -%}
       </div>
     {%- endif -%}
   </div>
@@ -126,10 +124,10 @@
 
 {% schema %}
 {
-  "name": "Brenson · Empresas: solicitud de acceso",
+  "name": "B2B solicitud",
   "tag": "div",
   "settings": [ { "type": "paragraph", "content": "Registro corporativo en dos pasos (cuenta + documento). El tag pendiente y la nota con datos de empresa se guardan en el cliente para que Shopify Flow notifique a Brenson." } ],
-  "presets": [ { "name": "Brenson · Empresas: solicitud de acceso" } ],
+  "presets": [ { "name": "B2B solicitud" } ],
   "enabled_on": { "templates": ["page"] }
 }
 {% endschema %}

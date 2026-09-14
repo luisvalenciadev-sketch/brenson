@@ -2,7 +2,7 @@
   brenson-b2b-header — Header del portal Empresas (layout theme.empresas.liquid). Tono formal.
   Navegación visible solo con acceso aprobado. Sin sesión: enlaces públicos + login/solicitar.
 {%- endcomment -%}
-{%- include 'brenson-b2b-guard' -%}
+{%- render 'brenson-b2b-guard' -%}
 <header class="brenson-b2b-header">
   <div class="brenson-container brenson-b2b-header__inner">
     <a class="brenson-b2b-header__logo" href="/pages/empresas">
@@ -52,5 +52,5 @@
 </header>
 
 {% schema %}
-{ "name": "Brenson · Empresas: header", "tag": "div", "settings": [ { "type": "paragraph", "content": "Header del portal corporativo. Se usa en el layout theme.empresas." } ] }
+{ "name": "B2B header", "tag": "div", "settings": [ { "type": "paragraph", "content": "Header del portal corporativo. Se usa en el layout theme.empresas." } ] }
 {% endschema %}

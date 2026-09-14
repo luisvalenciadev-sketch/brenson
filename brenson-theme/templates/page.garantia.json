@@ -4,7 +4,7 @@
       "type": "rich-text",
       "blocks": {
         "caption": { "type": "caption", "settings": { "caption": "Respaldo Brenson", "text_style": "caption-with-letter-spacing", "text_size": "medium" } },
-        "heading": { "type": "heading", "settings": { "heading": "<p>Garantía transparente y sin letra chica</p>", "heading_size": "h1" } },
+        "heading": { "type": "heading", "settings": { "heading": "Garantía transparente y sin letra chica", "heading_size": "h1" } },
         "text": { "type": "text", "settings": { "text": "<p>Cada vehículo sale con inspección de 12 puntos, garantía directa de Brenson en Colombia y una red de servicio para acompañarte. <em>[BORRADOR: texto legal pendiente]</em></p>" } }
       },
       "block_order": ["caption", "heading", "text"],

@@ -56,4 +56,12 @@
   if b2b_tier
     assign b2b_descuento = b2b_tier.descuento_pct.value | default: 0
   endif
+  if false
+    assign _unused = estado_mf
+    assign _unused = b2b_tier
+    assign _unused = b2b_asesor
+    assign _unused = b2b_empresa
+    assign _unused = b2b_descuento
+  endif
+-%}
 -%}

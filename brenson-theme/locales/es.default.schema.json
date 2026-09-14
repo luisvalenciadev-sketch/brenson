@@ -660,6 +660,37 @@
         "name": "Lista de colecciones"
       }
     },
+    "main-account": {
+      "name": "Cuenta"
+    },
+    "main-activate-account": {
+      "name": "Activar cuenta"
+    },
+    "main-addresses": {
+      "name": "Direcciones"
+    },
+    "main-login": {
+      "name": "Iniciar sesión",
+      "settings": {
+        "shop_login_button": {
+          "enable": {
+            "label": "Habilitar botón de inicio de sesión"
+          }
+        }
+      },
+      "shop_login_button": {
+        "enable": "Habilitar botón de inicio de sesión"
+      }
+    },
+    "main-order": {
+      "name": "Pedido"
+    },
+    "main-register": {
+      "name": "Registro"
+    },
+    "main-reset-password": {
+      "name": "Restablecer contraseña"
+    },
     "contact-form": {
       "name": "Formulario de contacto",
       "presets": {
@@ -1539,7 +1570,7 @@
       }
     },
     "main-list-collections": {
-      "name": "Página de lista de colecciones",
+      "name": "Lista colecciones",
       "settings": {
         "title": {
           "label": "Título",
@@ -1599,7 +1630,7 @@
       "name": "Página"
     },
     "main-password-footer": {
-      "name": "Pie de página de contraseña"
+      "name": "Pie contraseña"
     },
     "main-password-header": {
       "name": "Encabezado de contraseña",
@@ -2269,7 +2300,7 @@
       }
     },
     "newsletter": {
-      "name": "Suscriptor de correo electrónico",
+      "name": "Newsletter",
       "settings": {
         "full_width": {
           "label": "Ancho completo"
@@ -2302,7 +2333,7 @@
         }
       },
       "presets": {
-        "name": "Suscriptor de correo electrónico"
+        "name": "Newsletter"
       }
     },
     "page": {
@@ -2637,7 +2668,7 @@
       }
     },
     "email-signup-banner": {
-      "name": "Banner de suscripción de correo electrónico",
+      "name": "Banner suscripción",
       "settings": {
         "paragraph": {
           "content": "Suscriptores agregados [perfiles de clientes](https://help.shopify.com/manual/customers/manage-customers)"
@@ -2769,11 +2800,11 @@
         }
       },
       "presets": {
-        "name": "Banner de suscripción de correo electrónico"
+        "name": "Banner suscripción"
       }
     },
     "slideshow": {
-      "name": "Presentación de diapositivas",
+      "name": "Presentación",
       "settings": {
         "layout": {
           "label": "Diseño",

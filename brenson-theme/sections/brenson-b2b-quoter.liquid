@@ -7,7 +7,7 @@
   - Sin backend (modo simulación): "Generar PDF" descarga un resumen HTML imprimible y muestra éxito.
   - Datos para JS en <script type="application/json">. Vanilla JS (Alpine se descartó: el componente es pequeño).
 {%- endcomment -%}
-{%- include 'brenson-b2b-guard' -%}
+{%- render 'brenson-b2b-guard' -%}
 {%- if b2b_state != 'aprobado' -%}
   <section class="brenson-section"><div class="brenson-container">
     <div class="brenson-b2b-card brenson-b2b-card--center">
@@ -149,10 +149,10 @@
 
 {% schema %}
 {
-  "name": "Brenson · Empresas: cotizador",
+  "name": "B2B cotizador",
   "tag": "div",
   "settings": [ { "type": "paragraph", "content": "Cotizador de flota. Usa la colección corporativa y el tier del cliente. El total oficial lo calcula brenson-services." } ],
-  "presets": [ { "name": "Brenson · Empresas: cotizador" } ],
+  "presets": [ { "name": "B2B cotizador" } ],
   "enabled_on": { "templates": ["page"] }
 }
 {% endschema %}
