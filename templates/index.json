@@ -1,147 +1,25 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "hero": {
-      "type": "brenson-hero",
-      "blocks": {
-        "cat_bicicletas": { "type": "categoria", "settings": { "collection": "bicicletas-electricas", "label": "Bicicletas" } },
-        "cat_ciclomotores": { "type": "categoria", "settings": { "collection": "ciclomotores", "label": "Ciclomotores" } },
-        "cat_motocarros": { "type": "categoria", "settings": { "collection": "motocarros", "label": "Motocarros" } },
-        "cat_cuadriciclos": { "type": "categoria", "settings": { "collection": "cuadriciclos", "label": "Cuadriciclos" } }
-      },
-      "block_order": ["cat_bicicletas", "cat_ciclomotores", "cat_motocarros", "cat_cuadriciclos"],
-      "settings": {
-        "overlay_opacity": 55,
-        "min_height": 85,
-        "show_certificado": true,
-        "title": "Movilidad eléctrica certificada para tu ciudad y tu negocio",
-        "subtitle": "Bicicletas, ciclomotores, motocarros y cuadriciclos con garantía Brenson y financiación a tu medida.",
-        "cta_label": "Ver catálogo",
-        "cta_url": "shopify://collections/all",
-        "show_whatsapp": true,
-        "color_scheme": "scheme-1"
-      }
-    },
-    "trust": {
-      "type": "brenson-trust-bar",
-      "blocks": {
-        "t1": { "type": "certificado" },
-        "t2": { "type": "garantia", "settings": { "text": "Respaldo directo de Brenson en Colombia" } },
-        "t3": { "type": "envios", "settings": { "title": "Envíos a toda Colombia", "text": "Tiempos estimados por región en cada ficha" } },
-        "t4": { "type": "financiacion", "settings": { "title": "Financiación con aliado", "text": "Simula tu cuota y solicita el estudio en línea" } }
-      },
-      "block_order": ["t1", "t2", "t3", "t4"],
-      "settings": { "padding": 24 }
-    },
-    "categorias": {
-      "type": "brenson-category-grid",
-      "blocks": {
-        "c1": { "type": "categoria", "settings": { "collection": "bicicletas-electricas", "label": "Bicicletas eléctricas", "text": "Para tu trayecto diario sin sudar ni pagar parqueadero.", "tag": "Urbano y plegable" } },
-        "c2": { "type": "categoria", "settings": { "collection": "ciclomotores", "label": "Ciclomotores", "text": "Silenciosos, económicos y sin pico y placa.", "tag": "Ágil y veloz" } },
-        "c3": { "type": "categoria", "settings": { "collection": "motocarros", "label": "Motocarros", "text": "Carga de hasta 800 kg para logística urbana.", "tag": "Carga y trabajo" } },
-        "c4": { "type": "categoria", "settings": { "collection": "cuadriciclos", "label": "Cuadriciclos", "text": "Para turismo, hoteles, parques y fincas.", "tag": "Pasajeros y terreno" } }
-      },
-      "block_order": ["c1", "c2", "c3", "c4"],
-      "settings": {
-        "eyebrow": "Portafolio",
-        "title": "Elige tu vehículo ideal",
-        "subtitle": "Diseñados para la topografía y el clima colombiano, con el menor costo por kilómetro del mercado."
-      }
-    },
-    "destacados": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Los más vendidos para moverte o trabajar",
-        "heading_size": "h2",
-        "description": "<p>Cuota mensual estimada con 10 % de inicial a 36 meses. Precio contado con IVA incluido.</p>",
-        "show_description": true,
-        "description_style": "body",
-        "collection": "destacados",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "outline",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": true,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "1",
-        "padding_top": 64,
-        "padding_bottom": 48
-      }
-    },
-    "financiacion": {
-      "type": "brenson-financing-banner",
-      "settings": {
-        "eyebrow": "Financiación",
-        "title": "La cuota vende, el precio total asusta. Simula la tuya en segundos.",
-        "text": "Trabajamos con un aliado financiero para que tengas respuesta rápida sin moverte de casa.",
-        "cta_label": "Simular mi cuota",
-        "cta_url": "shopify://pages/financiacion",
-        "note": "Tasa de referencia editable desde el admin",
-        "collection": "destacados"
-      }
-    },
-    "casos": {
-      "type": "brenson-case-studies",
-      "settings": {
-        "eyebrow": "Impacto en operación real",
-        "title": "Rentabilidad y sostenibilidad comprobadas en Colombia",
-        "subtitle": "Conoce cómo empresas y emprendedores del país han transformado sus costos logísticos con Brenson."
-      }
-    },
-    "prueba_social": {
-      "type": "brenson-social-proof",
-      "blocks": {
-        "testimonios": { "type": "testimonios", "settings": { "eyebrow": "Clientes reales", "title": "Lo que dicen quienes ya ruedan con Brenson", "limit": 3 } },
-        "aliados": { "type": "aliados", "settings": { "title": "Aliados y clientes que confían en Brenson" } },
-        "contadores": { "type": "contadores" }
-      },
-      "block_order": ["testimonios", "aliados", "contadores"],
-      "settings": { "alt": true }
-    },
-    "empresas_cta": {
-      "type": "brenson-empresas-cta",
-      "settings": {
-        "eyebrow": "Brenson Empresas",
-        "title": "Flotas eléctricas para su empresa.",
-        "text": "Precios por volumen desde 10 unidades, asesor corporativo dedicado y cotización en PDF al instante.",
-        "cta_label": "Conocer Brenson Empresas",
-        "cta_url": "shopify://pages/empresas"
-      }
-    },
-    "blog": {
-      "type": "featured-blog",
-      "settings": {
-        "heading": "Guías y novedades de movilidad eléctrica",
-        "heading_size": "h2",
-        "blog": "movilidad-electrica",
-        "post_limit": 3,
-        "columns_desktop": 3,
-        "color_scheme": "scheme-1",
-        "show_image": true,
-        "show_date": true,
-        "show_author": false,
-        "show_view_all": true,
-        "padding_top": 64,
-        "padding_bottom": 48
-      }
-    },
     "newsletter": {
       "type": "newsletter",
-      "blocks": {
-        "heading": { "type": "heading", "settings": { "heading": "Recibe ofertas exclusivas y novedades", "heading_size": "h2" } },
-        "paragraph": { "type": "paragraph", "settings": { "text": "<p>Lanzamientos, promociones de financiación y guías de movilidad eléctrica. Sin spam.</p>" } },
-        "email_form": { "type": "email_form" }
-      },
-      "block_order": ["heading", "paragraph", "email_form"],
-      "settings": { "color_scheme": "scheme-2", "full_width": true, "padding_top": 48, "padding_bottom": 48 }
+      "settings": {
+        "color_scheme": "scheme-2",
+        "full_width": true,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     }
   },
-  "order": ["hero", "trust", "categorias", "destacados", "financiacion", "casos", "prueba_social", "empresas_cta", "blog", "newsletter"]
+  "order": [
+    "newsletter"
+  ]
 }
