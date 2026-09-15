@@ -16,6 +16,12 @@
   <link rel="stylesheet" href="{{ 'component-mega-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 
+<!-- Fuentes Brenson -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
 <style>
   header-drawer {
     justify-self: start;
@@ -121,6 +127,120 @@
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
+  }
+
+  /* ===== BRENSON HEADER SKIN ===== */
+  .header-wrapper {
+    background: rgba(255,255,255,0.95) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid #E2E5E9 !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  .header {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  /* Logo: caja negra + icono + texto Montserrat */
+  .header__heading-link {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+  }
+
+  .header__heading-link::before {
+    content: 'verified_user';
+    font-family: 'Material Symbols Outlined';
+    font-variation-settings: 'FILL' 1;
+    font-size: 1.4rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    border-radius: 0.5rem;
+    background: #050709;
+    color: #EE0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header__heading-link .h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: #050709;
+    line-height: 1;
+  }
+
+  /* Menú de navegación */
+  .header__inline-menu .header__menu-item,
+  .header__inline-menu .list-menu__item--link {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #374151;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .header__inline-menu .header__menu-item:hover,
+  .header__inline-menu .list-menu__item--link:hover {
+    color: #EE0000;
+  }
+
+  /* Iconos (buscar, cuenta, carrito) */
+  .header__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+  }
+
+  .header__icon:hover {
+    background-color: #F4F5F7;
+  }
+
+  .header__icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cart-count-bubble {
+    background: #EE0000;
+  }
+
+  /* Botón WhatsApp: reforzar look píldora por si el asset brenson-btn no está cargado */
+  .brenson-btn--whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #25D366;
+    color: #fff !important;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: background-color 0.2s, transform 0.15s;
+  }
+
+  .brenson-btn--whatsapp:hover {
+    background: #20BA5A;
+    transform: scale(1.03);
+  }
+
+  .brenson-btn__icon {
+    width: 18px;
+    height: 18px;
   }
 {%- endstyle -%}
 
