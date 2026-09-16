@@ -43,6 +43,10 @@ body.brenson-empresas main { min-height: 60vh; }
 .brenson-b2b-header__user { margin-left: auto; display: flex; align-items: center; gap: var(--brenson-space-3); font-size: var(--brenson-text-xs); color: rgba(255,255,255,.75); }
 .brenson-b2b-header__user strong { display: block; color: #fff; font-size: var(--brenson-text-sm); }
 .brenson-b2b-header__avatar { width: 3.6rem; height: 3.6rem; border-radius: 50%; background: var(--brenson-rojo); color: #fff; display: grid; place-items: center; font-weight: 800; }
+.brenson-b2b-header__eyebrow { display: block; font-size: var(--brenson-text-xs); color: rgba(255,255,255,.5); }
+.brenson-b2b-header__bell { position: relative; display: grid; place-items: center; width: 3.6rem; height: 3.6rem; border: 0; background: transparent; color: rgba(255,255,255,.75); cursor: pointer; }
+.brenson-b2b-header__bell:hover { color: #fff; }
+.brenson-b2b-header__bell-dot { position: absolute; top: 0.6rem; right: 0.7rem; width: 0.72rem; height: 0.72rem; border-radius: 50%; background: var(--brenson-rojo); border: 2px solid var(--brenson-carbon); }
 .brenson-b2b-footer { border-top: 1px solid rgba(255,255,255,.1); padding-block: var(--brenson-space-8); font-size: var(--brenson-text-xs); color: rgba(255,255,255,.6); }
 .brenson-b2b-footer__inner { display: flex; flex-wrap: wrap; gap: var(--brenson-space-4) var(--brenson-space-8); justify-content: space-between; align-items: center; }
 .brenson-b2b-footer a { color: rgba(255,255,255,.8); }

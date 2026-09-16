@@ -25,6 +25,8 @@
       assign msg = 'Hola Brenson, necesito soporte de servicio técnico.'
     when 'garantias'
       assign msg = 'Hola Brenson, quiero hacer una consulta sobre mi garantía.'
+    when 'b2b_ascenso'
+      assign msg = 'Buen día, quisiera consultar los requisitos para ascender de tier en el programa de flotas Brenson.'
     else
       assign msg = settings.brenson_whatsapp_msg_default | default: 'Hola Brenson, quiero más información sobre sus vehículos eléctricos.'
   endcase

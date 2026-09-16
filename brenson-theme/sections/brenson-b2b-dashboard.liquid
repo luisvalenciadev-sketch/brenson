@@ -48,6 +48,13 @@
       break
     endif
   endfor
+
+  assign current_idx = -1
+  for t in tiers
+    if b2b_tier and t.system.handle == b2b_tier.system.handle
+      assign current_idx = forloop.index0
+    endif
+  endfor
 -%}
 <section class="brenson-section brenson-b2b-dashboard">
   <div class="brenson-container">
@@ -59,7 +66,10 @@
         <span>{{ b2b_empresa }}</span>
         {%- if customer.metafields.brenson_b2b.nit.value -%}<span>· NIT {{ customer.metafields.brenson_b2b.nit.value }}</span>{%- endif -%}
         {%- if b2b_tier -%}<span class="brenson-badge brenson-badge--sm" style="background: rgba(255,255,255,.12); color:#fff">Tier {{ b2b_tier.nombre.value }} · {{ b2b_descuento | round }} % de descuento</span>{%- endif -%}
-        <a class="brenson-btn brenson-btn--primary brenson-btn--sm" style="margin-left:auto" href="/pages/cotizador">Cotizar nueva flota</a>
+        <div style="margin-left:auto; display:flex; gap: var(--brenson-space-3);">
+          <a class="brenson-btn brenson-btn--outline brenson-btn--sm" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{{ routes.account_url }}">Configuración corporativa</a>
+          <a class="brenson-btn brenson-btn--primary brenson-btn--sm" href="/pages/cotizador">Cotizar nueva flota</a>
+        </div>
       </div>
     </div>
 
@@ -180,18 +190,40 @@
           </ul>
           {%- if section.blocks.size == 0 -%}<p class="brenson-muted" style="font-size: var(--brenson-text-sm)">Agregue documentos desde el editor del tema.</p>{%- endif -%}
         </div>
-        {%- if tiers.size > 0 -%}
-          <div class="brenson-b2b-card">
-            <span class="brenson-kpi__label">Beneficios por volumen</span>
-            {%- for t in tiers -%}
-              <div style="display:flex; justify-content:space-between; gap:1.6rem; padding:0.8rem 0; border-top:1px solid var(--brenson-gris-borde); font-size: var(--brenson-text-sm); {% if b2b_tier and t.system.handle == b2b_tier.system.handle %}font-weight:700; color: var(--brenson-rojo){% endif %}">
-                <span>{{ t.nombre.value }} · {{ t.minimo_unidades.value }}+</span><span class="brenson-num">{{ t.descuento_pct.value | round }} %</span>
-              </div>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
       </div>
     </div>
+
+    {%- if tiers.size > 0 -%}
+      <div class="brenson-b2b-block">
+        <header class="brenson-section__head brenson-section__head--center">
+          <span class="brenson-eyebrow" style="color:#ff6b6b">Programa escala flotas Brenson</span>
+          <h2 class="brenson-heading">Beneficios corporativos por volumen de flota</h2>
+          <p class="brenson-subheading" style="color: rgba(255,255,255,.75)">Tarifas preferenciales, soporte técnico prioritario y condiciones de crédito flexibles estructuradas para su crecimiento logístico.</p>
+        </header>
+        <ul class="brenson-grid brenson-grid--3" role="list">
+          {%- for t in tiers -%}
+            {%- assign is_current = false -%}
+            {%- if forloop.index0 == current_idx -%}{%- assign is_current = true -%}{%- endif -%}
+            <li class="brenson-b2b-card brenson-tier {% if is_current %}brenson-tier--featured{% endif %}">
+              {%- if is_current -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm brenson-tier__tag">Su nivel actual</span>{%- endif -%}
+              <span class="brenson-eyebrow">Tier {{ t.nombre.value }} · {{ t.minimo_unidades.value }}+ unidades</span>
+              <h3 style="margin:0; font-size: var(--brenson-text-xl)">{{ t.nombre.value }}</h3>
+              <div class="brenson-tier__pct brenson-num">{{ t.descuento_pct.value | round }} %<small> descuento directo</small></div>
+              <ul class="brenson-checklist" style="grid-template-columns:1fr">
+                {%- for b in t.beneficios.value -%}<li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ b }}</li>{%- endfor -%}
+              </ul>
+              {%- if is_current -%}
+                <p style="text-align:center; font-weight:700; color: var(--brenson-rojo); font-size: var(--brenson-text-sm); margin:0">Actualmente disfrutando este tier</p>
+              {%- elsif forloop.index0 < current_idx -%}
+                <p class="brenson-muted" style="text-align:center; font-size: var(--brenson-text-sm); margin:0">Nivel de entrada para empresas</p>
+              {%- else -%}
+                <a class="brenson-btn brenson-btn--outline brenson-btn--block" href="{% render 'brenson-whatsapp-link', context: 'b2b_ascenso' %}" target="_blank" rel="noopener">Consultar requisitos para ascender</a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 {%- endif -%}

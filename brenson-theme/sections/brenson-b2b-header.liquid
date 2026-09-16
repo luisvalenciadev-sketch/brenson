@@ -25,8 +25,13 @@
         <a href="{{ routes.account_url }}">Pedidos</a>
       </nav>
       <div class="brenson-b2b-header__user">
+        <button type="button" class="brenson-b2b-header__bell" aria-label="Notificaciones">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 4 1.5 5.5 1.5 5.5H4.5S6 13 6 9Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span class="brenson-b2b-header__bell-dot" aria-hidden="true"></span>
+        </button>
         <span class="brenson-b2b-header__avatar" aria-hidden="true">{{ b2b_empresa | slice: 0 }}</span>
         <div>
+          <span class="brenson-b2b-header__eyebrow">Empresa autorizada</span>
           <strong>{{ b2b_empresa | truncate: 28 }}</strong>
           {%- if customer.metafields.brenson_b2b.nit.value -%}NIT {{ customer.metafields.brenson_b2b.nit.value }}{%- endif -%}
         </div>
