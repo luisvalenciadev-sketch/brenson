@@ -17,15 +17,34 @@
 
     {%- case b2b_state -%}
     {%- when 'pendiente' -%}
-      <div class="brenson-b2b-card brenson-b2b-card--center">
-        <span class="brenson-status brenson-status--pending">Solicitud en validación</span>
+      <div class="brenson-b2b-card" style="max-width: 720px; margin: 0 auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1.6rem; flex-wrap:wrap">
+          <span class="brenson-status brenson-status--pending">Solicitud en validación</span>
+          {%- if customer.metafields.brenson_b2b.nit.value -%}<span class="brenson-muted" style="font-size: var(--brenson-text-sm)">NIT {{ customer.metafields.brenson_b2b.nit.value }}</span>{%- endif -%}
+        </div>
         <h1 class="brenson-heading">Estamos validando su empresa</h1>
         <p class="brenson-subheading">Recibimos la solicitud de <strong>{{ b2b_empresa }}</strong>. Nuestro equipo la revisa en un plazo de 24 horas hábiles y le notificará por correo cuando el acceso esté activo.</p>
+
+        <ol class="brenson-b2b-steps" role="list">
+          <li class="is-done"><span class="brenson-b2b-steps__n">✓</span><div><strong>1. Registro</strong><span>Completado</span></div></li>
+          <li class="is-current"><span class="brenson-b2b-steps__n">2</span><div><strong>2. Documento</strong><span>En espera</span></div></li>
+          <li><span class="brenson-b2b-steps__n">3</span><div><strong>3. Validación</strong><span>24 horas</span></div></li>
+          <li><span class="brenson-b2b-steps__n">4</span><div><strong>4. Acceso</strong><span>Precios flota</span></div></li>
+        </ol>
+
+        {%- render 'brenson-b2b-upload' -%}
+
         {%- if b2b_asesor -%}
-          <p class="brenson-muted">Si desea adelantar la conversación, su contacto es <strong>{{ b2b_asesor.nombre.value }}</strong>.</p>
-          <a class="brenson-btn brenson-btn--whatsapp" href="https://wa.me/{{ b2b_asesor.whatsapp.value }}?text={{ 'Buen día, tengo una solicitud de acceso corporativo pendiente en Brenson Empresas.' | url_encode }}" target="_blank" rel="noopener">Escribir a {{ b2b_asesor.nombre.value | split: ' ' | first }}</a>
+          <div class="brenson-advisor" style="margin-top: var(--brenson-space-5)">
+            {%- if b2b_asesor.foto.value -%}{{ b2b_asesor.foto.value | image_url: width: 96 | image_tag: class: 'brenson-advisor__avatar', alt: b2b_asesor.nombre.value }}{%- else -%}<span class="brenson-advisor__avatar" aria-hidden="true">{{ b2b_asesor.nombre.value | slice: 0 }}</span>{%- endif -%}
+            <div>
+              <span class="brenson-muted" style="font-size: var(--brenson-text-xs); text-transform:uppercase; letter-spacing:.04em">Asesor asignado</span><br>
+              Su contacto es <strong>{{ b2b_asesor.nombre.value }}</strong>
+            </div>
+            <a class="brenson-btn brenson-btn--whatsapp brenson-btn--sm" href="https://wa.me/{{ b2b_asesor.whatsapp.value }}?text={{ 'Buen día, tengo una solicitud de acceso corporativo pendiente en Brenson Empresas.' | url_encode }}" target="_blank" rel="noopener">Escribir a {{ b2b_asesor.nombre.value | split: ' ' | first }}</a>
+          </div>
         {%- endif -%}
-        <a class="link" href="{{ routes.account_logout_url }}">Cerrar sesión</a>
+        <a class="link" style="display:block; text-align:center; margin-top: var(--brenson-space-5)" href="{{ routes.account_logout_url }}">Cerrar sesión</a>
       </div>
 
     {%- when 'rechazado' -%}
@@ -33,7 +52,12 @@
         <span class="brenson-status brenson-status--error">Acceso no habilitado</span>
         <h1 class="brenson-heading">Su cuenta corporativa no está activa</h1>
         <p class="brenson-subheading">No pudimos habilitar el acceso a precios de flota con la información recibida. Con gusto revisamos su caso con un ejecutivo.</p>
-        <a class="brenson-btn brenson-btn--whatsapp" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">Hablar con un ejecutivo</a>
+        <div class="brenson-b2b-notice">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <p>Esto puede ocurrir si el RUT adjunto tiene más de 90 días, si la personería jurídica requiere aclaración de objeto social o si la actividad económica requiere asignación personalizada de cupos de producción.</p>
+        </div>
+        <a class="brenson-btn brenson-btn--whatsapp brenson-btn--block" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">Hablar con un ejecutivo</a>
+        <a class="brenson-btn brenson-btn--outline brenson-btn--block" href="mailto:{{ settings.brenson_email_empresas }}">Enviar correo a {{ settings.brenson_email_empresas }}</a>
         <a class="link" href="{{ routes.account_logout_url }}">Cerrar sesión</a>
       </div>
 
@@ -42,6 +66,15 @@
         <span class="brenson-status brenson-status--muted">Cuenta personal</span>
         <h1 class="brenson-heading">Su cuenta actual es personal</h1>
         <p class="brenson-subheading">Para acceder a precios por volumen y al cotizador de flota, registre los datos de su empresa. Validamos NIT y cámara de comercio en 24 horas hábiles.</p>
+        <div class="brenson-b2b-notice" style="text-align:left">
+          <p style="font-weight:700; text-transform:uppercase; font-size: var(--brenson-text-xs); letter-spacing:.04em; margin:0 0 0.8rem">Beneficios exclusivos del canal Brenson Empresas</p>
+          <ul class="brenson-checklist" style="grid-template-columns: repeat(2, 1fr)">
+            <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Descuentos de flota del 8 % al 18 %</li>
+            <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Cotizador autónomo con PDF oficial</li>
+            <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Facturación exenta de IVA (Ley 1715)</li>
+            <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Asesor y soporte posventa prioritario</li>
+          </ul>
+        </div>
         <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="/pages/empresas-acceso">Registrar mi empresa</a>
         <a class="link" href="{{ routes.account_url }}">Volver a mi cuenta</a>
       </div>

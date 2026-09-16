@@ -79,6 +79,20 @@ body.brenson-empresas .brenson-trust__text { color: rgba(255,255,255,.6); }
 .brenson-advisor { display: flex; flex-wrap: wrap; gap: var(--brenson-space-4); align-items: center; }
 .brenson-advisor__avatar { width: 6.4rem; height: 6.4rem; border-radius: 50%; object-fit: cover; background: var(--brenson-carbon); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 2.4rem; }
 .brenson-advisor__actions { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-left: auto; }
+
+.brenson-b2b-steps { list-style:none; display:flex; margin: var(--brenson-space-6) 0; padding:0; }
+.brenson-b2b-steps li { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.56rem; position:relative; font-size: var(--brenson-text-xs); color: var(--brenson-gris); }
+.brenson-b2b-steps li:not(:last-child)::after { content:''; position:absolute; top:1.4rem; left:50%; width:100%; height:2px; background: var(--brenson-gris-borde); z-index:0; }
+.brenson-b2b-steps li.is-done:not(:last-child)::after { background: var(--brenson-carbon); }
+.brenson-b2b-steps__n { position:relative; z-index:1; width:2.8rem; height:2.8rem; border-radius:50%; display:grid; place-items:center; background:#fff; border:2px solid var(--brenson-gris-borde); font-weight:700; color: var(--brenson-gris); }
+.brenson-b2b-steps li.is-done .brenson-b2b-steps__n { background: var(--brenson-carbon); border-color: var(--brenson-carbon); color:#fff; }
+.brenson-b2b-steps li.is-current .brenson-b2b-steps__n { background: var(--brenson-rojo); border-color: var(--brenson-rojo); color:#fff; }
+.brenson-b2b-steps li strong { display:block; font-size: var(--brenson-text-xs); color: var(--brenson-carbon); }
+.brenson-b2b-steps li.is-current strong { color: var(--brenson-rojo); }
+
+.brenson-b2b-notice { display:flex; gap: var(--brenson-space-3); align-items:flex-start; background: var(--brenson-gris-claro); border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-4); margin: var(--brenson-space-5) 0; text-align:left; color: var(--brenson-carbon-60); font-size: var(--brenson-text-sm); }
+.brenson-b2b-notice svg { flex-shrink:0; margin-top:0.16rem; color: var(--brenson-gris); }
+.brenson-b2b-notice p { margin:0; }
 .brenson-quick-actions { display: grid; gap: 0.8rem; }
 .brenson-doc-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.8rem; font-size: var(--brenson-text-sm); }
 .brenson-doc-list a { display: flex; justify-content: space-between; gap: 1.6rem; padding: 0.96rem 1.2rem; border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius); color: var(--brenson-carbon); text-decoration: none; }
