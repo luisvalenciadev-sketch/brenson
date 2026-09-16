@@ -1,0 +1,109 @@
+{%- comment -%}
+  brenson-financing-compare — Pantalla Stitch 06. Tabla comparativa de cuota estimada por vehículo.
+  Cuota calculada con el mismo sistema francés que brenson-simulator.js (P·i / (1−(1+i)^−n)),
+  usando la tasa/plazo/inicial por defecto de brenson_parametros_financiacion (S3).
+  Estado por fila: se deriva de señales reales (flota B2B, disponibilidad e inventario), no de datos inventados.
+{%- endcomment -%}
+{%- liquid
+  assign params = shop.metaobjects.brenson_parametros_financiacion.values | first
+  assign tasa = 1.9
+  assign plazo_default = 36
+  assign inicial_default = 10
+  if params
+    if params.tasa_mensual.value
+      assign tasa = params.tasa_mensual.value
+    endif
+    if params.plazo_default.value
+      assign plazo_default = params.plazo_default.value
+    endif
+    if params.inicial_default.value
+      assign inicial_default = params.inicial_default.value
+    endif
+  endif
+  assign i = tasa | divided_by: 100.0
+  assign one_plus_i = i | plus: 1.0
+  assign low_stock = section.settings.low_stock_threshold
+-%}
+<section class="brenson-section brenson-financing-compare">
+  <div class="brenson-container">
+    <header class="brenson-section__head" style="display:flex; justify-content:space-between; align-items:flex-end; gap: var(--brenson-space-4); flex-wrap:wrap;">
+      <div>
+        <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+        <h2 class="brenson-heading" style="margin-bottom:0">{{ section.settings.title }}</h2>
+        <p class="brenson-subheading" style="margin-top:0.4rem">{{ section.settings.subtitle }} a {{ plazo_default }} meses · {{ inicial_default }} % de inicial.</p>
+      </div>
+    </header>
+
+    <div class="brenson-table-wrap">
+      <table class="brenson-table">
+        <thead>
+          <tr><th>Vehículo y tipo</th><th>Precio contado</th><th>Cuota estimada</th><th>Estado</th><th></th></tr>
+        </thead>
+        <tbody>
+          {%- for p in section.settings.collection.products limit: 12 -%}
+            {%- liquid
+              assign pm = p.metafields.brenson
+              assign inicial_amt = p.price_min | times: inicial_default | divided_by: 100
+              assign principal = p.price_min | minus: inicial_amt
+              assign pow = 1.0
+              for x in (1..plazo_default)
+                assign pow = pow | times: one_plus_i
+              endfor
+              assign factor = 1.0 | minus: 1.0 | divided_by: pow
+              assign cuota = 0
+              if factor > 0
+                assign cuota = principal | times: i | divided_by: factor | round
+              endif
+              assign variant = p.selected_or_first_available_variant
+
+              assign estado_label = 'Entrega inmediata'
+              assign estado_mod = 'ok'
+              if pm.exclusivo_flota.value or pm.b2b_minimo_unidades.value
+                assign estado_label = 'Portal Empresas B2B'
+                assign estado_mod = 'muted'
+              elsif p.available == false
+                assign estado_label = 'Agotado'
+                assign estado_mod = 'error'
+              elsif variant.inventory_management != blank and variant.inventory_quantity <= low_stock
+                assign estado_label = 'En bodega'
+                assign estado_mod = 'pending'
+              endif
+            -%}
+            <tr>
+              <td>
+                <div style="display:flex; align-items:center; gap: var(--brenson-space-3)">
+                  {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 96 | image_tag: loading: 'lazy', alt: p.title, style: 'width:4.8rem; height:4.8rem; object-fit:cover; border-radius: var(--brenson-radius); background: var(--brenson-gris-claro)' }}{%- endif -%}
+                  <div>
+                    <a class="link" style="font-weight:700; color: var(--brenson-carbon)" href="{{ p.url }}">{{ p.title }}</a>
+                    {%- if pm.badge.value != blank -%}<div>{% render 'brenson-badge', product: p, type: 'catalogo', size: 'sm' %}</div>{%- endif -%}
+                  </div>
+                </div>
+              </td>
+              <td class="brenson-num">{{ p.price_min | money_without_trailing_zeros }}</td>
+              <td class="brenson-num"><strong>Desde {{ cuota | times: 100 | money_without_trailing_zeros }}</strong><span class="brenson-muted" style="display:block; font-size: var(--brenson-text-xs)">/mes</span></td>
+              <td><span class="brenson-status brenson-status--{{ estado_mod }}">{{ estado_label }}</span></td>
+              <td style="text-align:right; white-space:nowrap"><a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ p.url }}">Ver vehículo →</a></td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+    <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin-top: var(--brenson-space-3)">* Cuota estimada a {{ plazo_default }} meses con {{ inicial_default }} % de inicial y la tasa referencial vigente ({{ tasa }} % mensual). Sujeta a estudio y aprobación crediticia.</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Financiación · Cuotas",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Portafolio disponible" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Compara la cuota por vehículo" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo", "default": "Modelos homologados con respaldo oficial y entrega nacional. Calculado" },
+    { "type": "collection", "id": "collection", "label": "Colección de vehículos" },
+    { "type": "range", "id": "low_stock_threshold", "min": 0, "max": 20, "step": 1, "label": "Umbral de \"En bodega\" (unidades en inventario)", "default": 5 }
+  ],
+  "presets": [ { "name": "Financiación · Cuotas" } ],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

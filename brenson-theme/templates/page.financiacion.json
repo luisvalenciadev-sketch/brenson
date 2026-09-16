@@ -33,31 +33,25 @@
       "settings": { "title": "¿Cómo funciona el proceso de financiación?", "heading_size": "h2", "image_width": "third", "image_ratio": "adapt", "columns_desktop": 4, "column_alignment": "left", "background_style": "primary", "button_label": "", "button_link": "", "color_scheme": "scheme-1", "columns_mobile": "1", "swipe_on_mobile": true, "padding_top": 48, "padding_bottom": 48 }
     },
     "comparativa": {
-      "type": "featured-collection",
+      "type": "brenson-financing-compare",
       "settings": {
+        "eyebrow": "Portafolio disponible",
         "title": "Compara la cuota por vehículo",
-        "heading_size": "h2",
-        "description": "<p>Cuotas calculadas a 36 meses con 10 % de inicial y la tasa de referencia vigente.</p>",
-        "show_description": true,
-        "description_style": "body",
+        "subtitle": "Modelos homologados con respaldo oficial y entrega nacional. Calculado",
         "collection": "destacados",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "outline",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": true,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "1",
-        "padding_top": 48,
-        "padding_bottom": 48
+        "low_stock_threshold": 5
+      }
+    },
+    "ahorro": {
+      "type": "brenson-savings-compare",
+      "settings": {
+        "eyebrow": "Economía de bolsillo real en Colombia",
+        "title_pre": "Lo que ahorras:",
+        "title_highlight": "La cuota se paga sola.",
+        "text": "En una ciudad colombiana promedio, rodar 40 km al día en moto a gasolina cuesta más de $380.000 COP al mes entre combustible corriente, cambios periódicos de aceite y desgaste de bujes. Con Brenson, recargas en casa a 110V como lo harías con cualquier celular, por una fracción.",
+        "costo_gasolina": 380000,
+        "costo_electrico": 35000,
+        "kwh_mes": 20
       }
     },
     "lead": {
@@ -77,5 +71,5 @@
       "settings": { "eyebrow": "Resolvemos tus dudas", "title": "Preguntas frecuentes sobre financiación", "categoria": "compra", "limit": 6, "show_cta": true }
     }
   },
-  "order": ["hero", "simulador", "pasos", "comparativa", "lead", "faq"]
+  "order": ["hero", "simulador", "pasos", "comparativa", "ahorro", "lead", "faq"]
 }

@@ -1,0 +1,68 @@
+{%- comment -%}
+  brenson-savings-compare — Pantalla Stitch 06. "Lo que ahorras": gasolina vs. eléctrico Brenson.
+  Cifras editables por el merchant (no hay una fuente de datos de consumo real que las derive).
+{%- endcomment -%}
+{%- liquid
+  assign ahorro = section.settings.costo_gasolina | minus: section.settings.costo_electrico
+  assign max_costo = section.settings.costo_gasolina
+  assign pct_gasolina = 100
+  assign pct_electrico = section.settings.costo_electrico | times: 100 | divided_by: max_costo
+-%}
+<section class="brenson-section brenson-section--dark brenson-savings">
+  <div class="brenson-container brenson-savings__grid">
+    <div>
+      <span class="brenson-eyebrow" style="color: var(--brenson-certificado)">{{ section.settings.eyebrow }}</span>
+      <h2 class="brenson-heading" style="color:#fff">{{ section.settings.title_pre }} <span style="color: var(--brenson-certificado)">{{ section.settings.title_highlight }}</span></h2>
+      <p class="brenson-subheading" style="color: rgba(255,255,255,.75)">{{ section.settings.text }}</p>
+      <div class="brenson-savings__amount">
+        <span class="brenson-muted" style="color: rgba(255,255,255,.6); font-size: var(--brenson-text-sm)">Ahorro neto estimado</span>
+        <strong class="brenson-num">{{ ahorro | times: 100 | money_without_trailing_zeros }} COP</strong>
+        <span class="brenson-muted" style="color: rgba(255,255,255,.6); font-size: var(--brenson-text-xs)">al mes frente a una cuota de gasolina equivalente. Lo que ahorras cada mes puedes destinarlo a tu cuota Brenson.</span>
+      </div>
+    </div>
+    <div class="brenson-savings__bars">
+      <div class="brenson-savings__bar">
+        <div class="brenson-savings__bar-head"><span>⛽ Moto a gasolina convencional</span><strong class="brenson-num">{{ section.settings.costo_gasolina | times: 100 | money_without_trailing_zeros }} /mes</strong></div>
+        <div class="brenson-savings__track"><div class="brenson-savings__fill brenson-savings__fill--gas" style="width: {{ pct_gasolina }}%"></div></div>
+        <p class="brenson-muted" style="color: rgba(255,255,255,.5); font-size: var(--brenson-text-xs); margin:0.32rem 0 0">Gasolina corriente + cambios de aceite de motor y kit de arrastre frecuente.</p>
+      </div>
+      <div class="brenson-savings__bar">
+        <div class="brenson-savings__bar-head"><span>⚡ Vehículo Eléctrico Brenson</span><strong class="brenson-num" style="color: var(--brenson-certificado)">{{ section.settings.costo_electrico | times: 100 | money_without_trailing_zeros }} /mes</strong></div>
+        <div class="brenson-savings__track"><div class="brenson-savings__fill brenson-savings__fill--electrico" style="width: {{ pct_electrico }}%"></div></div>
+        <p class="brenson-muted" style="color: rgba(255,255,255,.5); font-size: var(--brenson-text-xs); margin:0.32rem 0 0">Recargas estándar en casa a 110V (aprox. {{ section.settings.kwh_mes }} kWh/mes). Cero aceite, cero filtros.</p>
+      </div>
+      <p class="brenson-muted" style="color: rgba(255,255,255,.4); font-size: var(--brenson-text-xs); margin-top: var(--brenson-space-2)">Dato ilustrativo para recorrido urbano típico de 40 km/día en Colombia. Tarifa promedio residencial de kWh regulada. {{ section.settings.disclaimer }}</p>
+    </div>
+  </div>
+</section>
+<style>
+  .brenson-savings__grid { display: grid; gap: var(--brenson-space-8); }
+  @media (min-width: 990px) { .brenson-savings__grid { grid-template-columns: 1fr 1fr; align-items: center; } }
+  .brenson-savings__amount { margin-top: var(--brenson-space-6); background: rgba(255,255,255,.06); border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-5); display: flex; flex-direction: column; gap: 0.32rem; }
+  .brenson-savings__amount strong { font-size: var(--brenson-text-3xl); font-weight: 800; color: #fff; }
+  .brenson-savings__bar + .brenson-savings__bar { margin-top: var(--brenson-space-5); }
+  .brenson-savings__bar-head { display: flex; justify-content: space-between; gap: var(--brenson-space-3); font-size: var(--brenson-text-sm); color: #fff; margin-bottom: 0.4rem; }
+  .brenson-savings__track { background: rgba(255,255,255,.1); border-radius: 999px; height: 0.8rem; overflow: hidden; }
+  .brenson-savings__fill { height: 100%; border-radius: 999px; }
+  .brenson-savings__fill--gas { background: #ef4444; }
+  .brenson-savings__fill--electrico { background: var(--brenson-certificado); }
+</style>
+
+{% schema %}
+{
+  "name": "Financiación · Ahorro",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Economía de bolsillo real en Colombia" },
+    { "type": "text", "id": "title_pre", "label": "Título (parte 1)", "default": "Lo que ahorras:" },
+    { "type": "text", "id": "title_highlight", "label": "Título (resaltado)", "default": "La cuota se paga sola." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "En una ciudad colombiana promedio, rodar 40 km al día en moto a gasolina cuesta más de $380.000 COP al mes entre combustible corriente, cambios periódicos de aceite y desgaste de bujes. Con Brenson, recargas en casa a 110V como lo harías con cualquier celular, por una fracción." },
+    { "type": "number", "id": "costo_gasolina", "label": "Costo mensual gasolina (COP)", "default": 380000 },
+    { "type": "number", "id": "costo_electrico", "label": "Costo mensual recarga eléctrica (COP)", "default": 35000 },
+    { "type": "number", "id": "kwh_mes", "label": "Consumo eléctrico estimado (kWh/mes)", "default": 20 },
+    { "type": "text", "id": "disclaimer", "label": "Disclaimer adicional", "default": "Cifras de referencia; el consumo real varía según el modelo, el kilometraje y la tarifa local." }
+  ],
+  "presets": [ { "name": "Financiación · Ahorro" } ],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}
