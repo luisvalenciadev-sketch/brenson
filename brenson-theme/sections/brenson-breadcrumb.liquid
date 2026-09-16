@@ -19,6 +19,9 @@
       {%- endif -%}
       <li aria-hidden="true">/</li>
       <li aria-current="page">{{ product.title }}</li>
+    {%- elsif section.settings.manual_label != blank -%}
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ section.settings.manual_label }}</li>
     {%- endif -%}
   </ol>
 </nav>
@@ -34,6 +37,8 @@
 {
   "name": "Breadcrumb",
   "tag": "div",
-  "settings": []
+  "settings": [
+    { "type": "text", "id": "manual_label", "label": "Última miga (páginas sin producto/colección)", "info": "Se usa solo cuando la página no es de producto ni de colección, ej. \"Mi Cuenta / Acceso\"." }
+  ]
 }
 {% endschema %}
