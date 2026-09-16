@@ -37,6 +37,7 @@
     <header style="display:flex; flex-wrap:wrap; align-items:center; gap: var(--brenson-space-3); margin-bottom: var(--brenson-space-6)">
       <h1 style="margin:0; font-size: clamp(2.56rem, 3vw, 3.6rem)">Nueva cotización de flota</h1>
       {%- if b2b_tier -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Tier {{ b2b_tier.nombre.value }} · {{ b2b_descuento | round }} %</span>{%- endif -%}
+      <span class="brenson-status brenson-status--ok" style="margin-left:auto">Descuento activo en todas las unidades · Facturación directa con exención IVA Ley 1715</span>
       <p style="width:100%; margin:0; color: rgba(255,255,255,.7); font-size: var(--brenson-text-sm)">Seleccione los vehículos y cantidades. El descuento de su tier se aplica automáticamente. Los valores son con IVA incluido.</p>
     </header>
 
@@ -137,11 +138,49 @@
         <button type="button" class="brenson-btn brenson-btn--primary brenson-btn--lg brenson-btn--block" data-q-pdf disabled>Generar cotización PDF</button>
         <button type="button" class="brenson-btn brenson-btn--outline brenson-btn--block" data-q-draft disabled>Guardar borrador</button>
         <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin:0">Recibirá el PDF en su correo{% if b2b_asesor %} y su asesor <strong>{{ b2b_asesor.nombre.value }}</strong> será notificado{% endif %}.</p>
-        <div><span class="brenson-kpi__label">Modalidades de pago</span><div class="brenson-chips" style="margin-top:0.56rem">{% for m in section.settings.pagos %}{% endfor %}<span class="brenson-badge brenson-badge--gris brenson-badge--sm">Transferencia / PSE</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Crédito 30/60 días</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Leasing con aliado</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Tarjeta en línea</span></div></div>
+        <div><span class="brenson-kpi__label">Modalidades de pago corporativo</span><div class="brenson-chips" style="margin-top:0.56rem"><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Transferencia / PSE</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Crédito 30/60 días</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Leasing Bancolombia / Sufi</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Tarjeta corporativa</span></div></div>
         <p class="brenson-form__success" data-q-success hidden role="status">Cotización generada. Revise su correo.</p>
         <p class="brenson-form__error" data-q-error hidden role="alert">No pudimos generar la cotización. Intente de nuevo o contacte a su asesor.</p>
       </aside>
     </brenson-quoter>
+
+    {%- comment -%} Historial de cotizaciones del cliente (misma fuente que el dashboard) {%- endcomment -%}
+    {%- assign has_quotes = false -%}
+    {%- for q in shop.metaobjects.brenson_cotizacion_b2b.values -%}
+      {%- assign qcid2 = q.cliente.value.id | append: '' -%}
+      {%- if qcid2 == cid -%}{%- assign has_quotes = true -%}{%- break -%}{%- endif -%}
+    {%- endfor -%}
+    {%- if has_quotes -%}
+      <div class="brenson-b2b-card" style="margin-top: var(--brenson-space-6)">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1.6rem; flex-wrap:wrap">
+          <div>
+            <h2 style="margin:0; font-size: var(--brenson-text-xl)">Historial de cotizaciones recientes de {{ b2b_empresa }}</h2>
+            <p class="brenson-muted" style="margin:0.32rem 0 0; font-size: var(--brenson-text-sm)">Consulte o descargue las versiones emitidas en las últimas jornadas comerciales.</p>
+          </div>
+          <a class="link" href="/pages/empresas#cotizaciones">Ver todas las cotizaciones →</a>
+        </div>
+        <div class="brenson-table-wrap">
+          <table class="brenson-table">
+            <thead><tr><th>Código / Lote</th><th>Fecha de emisión</th><th>Volumen</th><th>Monto total</th><th>Estado</th><th></th></tr></thead>
+            <tbody>
+              {%- for q in shop.metaobjects.brenson_cotizacion_b2b.values -%}
+                {%- assign qcid3 = q.cliente.value.id | append: '' -%}
+                {%- if qcid3 != cid -%}{%- continue -%}{%- endif -%}
+                {%- assign units2 = 0 -%}{%- for it in q.items.value -%}{%- assign units2 = units2 | plus: it.cantidad -%}{%- endfor -%}
+                <tr>
+                  <td><code>{{ q.numero.value }}</code></td>
+                  <td>{{ q.creada_en.value | date: '%d %b %Y' }}</td>
+                  <td>{{ units2 }} unidades</td>
+                  <td class="brenson-num"><strong>{% if q.total.value %}{{ q.total.value.amount | times: 100 | money_without_trailing_zeros }}{% else %}—{% endif %}</strong></td>
+                  <td>{%- case q.estado.value -%}{%- when 'enviada' -%}<span class="brenson-status brenson-status--ok">Enviada y vigente</span>{%- when 'aceptada' -%}<span class="brenson-status brenson-status--ok">Aceptada</span>{%- when 'borrador' -%}<span class="brenson-status brenson-status--pending">Borrador</span>{%- else -%}<span class="brenson-status brenson-status--muted">{{ q.estado.value | capitalize }}</span>{%- endcase -%}</td>
+                  <td style="text-align:right; white-space:nowrap">{%- if q.pdf_url.value -%}<a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ q.pdf_url.value }}" target="_blank" rel="noopener">Descargar PDF</a>{%- endif -%} <a class="brenson-btn brenson-btn--sm" href="/pages/cotizador?duplicar={{ q.numero.value }}">Duplicar</a></td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 <script src="{{ 'brenson-b2b-quoter.js' | asset_url }}" defer></script>

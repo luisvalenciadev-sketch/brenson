@@ -1,7 +1,9 @@
 {
   "layout": "theme.empresas",
   "sections": {
-    "quoter": { "type": "brenson-b2b-quoter", "settings": {} }
+    "breadcrumb": { "type": "brenson-breadcrumb", "settings": { "root_label": "Brenson Empresas", "root_url": "/pages/empresas", "manual_label": "Cotizador de flota" } },
+    "quoter": { "type": "brenson-b2b-quoter", "settings": {} },
+    "trust": { "type": "brenson-trust-bar", "blocks": { "c": { "type": "certificado" }, "g": { "type": "garantia" }, "e": { "type": "envios" }, "f": { "type": "financiacion" } }, "block_order": ["c", "g", "e", "f"] }
   },
-  "order": ["quoter"]
+  "order": ["breadcrumb", "quoter", "trust"]
 }

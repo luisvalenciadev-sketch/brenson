@@ -4,7 +4,7 @@
 {%- endcomment -%}
 <nav class="brenson-breadcrumb" aria-label="Breadcrumb">
   <ol class="brenson-breadcrumb__list">
-    <li><a href="{{ routes.root_url }}">Inicio</a></li>
+    <li><a href="{{ section.settings.root_url | default: routes.root_url }}">{{ section.settings.root_label | default: 'Inicio' }}</a></li>
     {%- if collection -%}
       <li aria-hidden="true">/</li>
       <li><a href="{{ routes.all_products_collection_url }}">Vehículos</a></li>
@@ -38,7 +38,9 @@
   "name": "Breadcrumb",
   "tag": "div",
   "settings": [
-    { "type": "text", "id": "manual_label", "label": "Última miga (páginas sin producto/colección)", "info": "Se usa solo cuando la página no es de producto ni de colección, ej. \"Mi Cuenta / Acceso\"." }
+    { "type": "text", "id": "manual_label", "label": "Última miga (páginas sin producto/colección)", "info": "Se usa solo cuando la página no es de producto ni de colección, ej. \"Mi Cuenta / Acceso\"." },
+    { "type": "text", "id": "root_label", "label": "Texto de la primera miga", "info": "Por defecto \"Inicio\". Ej. \"Brenson Empresas\" en el portal B2B." },
+    { "type": "url", "id": "root_url", "label": "Enlace de la primera miga", "info": "Por defecto la página de inicio." }
   ]
 }
 {% endschema %}

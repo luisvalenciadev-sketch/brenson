@@ -3,6 +3,13 @@ body.brenson-empresas { background: var(--brenson-carbon); color: #fff; }
 body.brenson-empresas .brenson-heading { color: #fff; }
 body.brenson-empresas .brenson-subheading { color: rgba(255,255,255,.75); }
 body.brenson-empresas main { min-height: 60vh; }
+body.brenson-empresas .brenson-breadcrumb__list { color: rgba(255,255,255,.5); }
+body.brenson-empresas .brenson-breadcrumb__list a { color: rgba(255,255,255,.5); }
+body.brenson-empresas .brenson-breadcrumb__list a:hover { color: #fff; }
+body.brenson-empresas .brenson-breadcrumb__list [aria-current="page"] { color: #fff; }
+body.brenson-empresas .brenson-trust-bar.brenson-section--alt { background: transparent; border-top: 1px solid rgba(255,255,255,.08); }
+body.brenson-empresas .brenson-trust__title { color: #fff; }
+body.brenson-empresas .brenson-trust__text { color: rgba(255,255,255,.6); }
 
 .brenson-b2b-card {
   background: #fff; color: var(--brenson-carbon);
