@@ -195,6 +195,15 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 }
 .brenson-card:hover .brenson-card__quick, .brenson-card__quick:focus-visible { opacity: 1; }
 @media (hover: none) { .brenson-card__quick { opacity: 1; } }
+.brenson-card__wishlist {
+  position: absolute; right: var(--brenson-space-3); top: var(--brenson-space-3); z-index: 1;
+  width: 3.2rem; height: 3.2rem; border-radius: 50%;
+  background: rgba(255,255,255,.9); border: 0; color: var(--brenson-gris);
+  display: grid; place-items: center; cursor: pointer;
+}
+.brenson-card__wishlist:hover { color: var(--brenson-rojo); background: #fff; }
+.brenson-card__wishlist.is-active { color: var(--brenson-rojo); }
+.brenson-card__wishlist.is-active svg path { fill: currentColor; }
 .brenson-card__body { display: flex; flex-direction: column; gap: var(--brenson-space-3); padding: var(--brenson-space-4); flex: 1; }
 .brenson-card__category { font-size: var(--brenson-text-xs); text-transform: uppercase; letter-spacing: var(--brenson-tracking-wide); color: var(--brenson-on-surface-muted); font-weight: var(--brenson-font-weight-semibold); }
 .brenson-card__title { font-size: var(--brenson-text-lg); font-weight: var(--brenson-font-weight-bold); margin: 0; line-height: 1.2; }

@@ -1,5 +1,6 @@
 {
   "sections": {
+    "breadcrumb": { "type": "brenson-breadcrumb" },
     "banner": {
       "type": "main-collection-banner",
       "settings": { "show_collection_description": true, "show_collection_image": true, "color_scheme": "scheme-1" }
@@ -31,7 +32,9 @@
         "title": "¿No sabes cuál se adapta a tu ruta o trabajo?",
         "text": "Cuéntanos tu recorrido diario, pendientes de tu ciudad o si lo requieres para entregas. Te ayudamos a simular la cuota exacta y el ahorro frente a gasolina.",
         "cta_label": "Chatear con un asesor",
-        "cta_url": "shopify://pages/contacto"
+        "cta_style": "whatsapp",
+        "show_secondary_button": false,
+        "show_tiers": false
       }
     },
     "trust": {
@@ -45,5 +48,5 @@
       "settings": { "eyebrow": "Respaldo normativo y técnico", "title": "Preguntas frecuentes", "categoria": "general", "limit": 4, "show_cta": true }
     }
   },
-  "order": ["banner", "product-grid", "asesor", "trust", "faq"]
+  "order": ["breadcrumb", "banner", "product-grid", "asesor", "trust", "faq"]
 }

@@ -2,39 +2,52 @@
   brenson-empresas-cta — Módulo 01/08. Bloque de invitación al portal Brenson Empresas. Tono formal (usted).
 {%- endcomment -%}
 {%- assign tiers = shop.metaobjects.brenson_tier_b2b.values -%}
-<section class="brenson-section brenson-section--dark brenson-empresas-cta">
+<section class="brenson-empresas-cta{% if section.settings.show_tiers %} brenson-section brenson-section--dark{% else %} brenson-empresas-cta--compact{% endif %}">
   <div class="brenson-container">
-    <div class="brenson-empresas-cta__grid">
+    <div class="brenson-empresas-cta__grid{% unless section.settings.show_tiers %} brenson-empresas-cta__grid--simple{% endunless %}">
       <div>
         <span class="brenson-eyebrow" style="color:#ff6b6b">{{ section.settings.eyebrow }}</span>
         <h2 class="brenson-heading">{{ section.settings.title }}</h2>
         <p class="brenson-subheading" style="color: rgba(255,255,255,.8)">{{ section.settings.text }}</p>
         <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap;">
-          <a class="brenson-btn brenson-btn--white brenson-btn--lg" href="{{ section.settings.cta_url | default: '/pages/empresas' }}">{{ section.settings.cta_label }}</a>
-          <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="empresas_cta">Hablar con un ejecutivo</a>
+          {%- if section.settings.cta_style == 'whatsapp' -%}
+            <a class="brenson-btn brenson-btn--whatsapp brenson-btn--lg" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="empresas_cta">{{ section.settings.cta_label }}</a>
+          {%- else -%}
+            <a class="brenson-btn brenson-btn--white brenson-btn--lg" href="{{ section.settings.cta_url | default: '/pages/empresas' }}">{{ section.settings.cta_label }}</a>
+          {%- endif -%}
+          {%- if section.settings.show_secondary_button -%}
+            <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="empresas_cta">Hablar con un ejecutivo</a>
+          {%- endif -%}
         </div>
       </div>
-      <ul class="brenson-empresas-cta__tiers" role="list">
-        {%- if tiers.size > 0 -%}
-          {%- for t in tiers -%}
-            <li>
-              <span class="brenson-empresas-cta__tier-name">{{ t.nombre.value }}</span>
-              <strong class="brenson-num">{{ t.descuento_pct.value | round }} %</strong>
-              <span class="brenson-muted" style="color: rgba(255,255,255,.6)">desde {{ t.minimo_unidades.value }} unidades</span>
-            </li>
-          {%- endfor -%}
-        {%- else -%}
-          <li><span class="brenson-empresas-cta__tier-name">Flota Inicial</span><strong>8 %</strong><span style="color: rgba(255,255,255,.6)">desde 10 unidades</span></li>
-          <li><span class="brenson-empresas-cta__tier-name">Flota Crecimiento</span><strong>12 %</strong><span style="color: rgba(255,255,255,.6)">desde 20 unidades</span></li>
-          <li><span class="brenson-empresas-cta__tier-name">Flota Corporativa</span><strong>18 %</strong><span style="color: rgba(255,255,255,.6)">desde 50 unidades</span></li>
-        {%- endif -%}
-      </ul>
+      {%- if section.settings.show_tiers -%}
+        <ul class="brenson-empresas-cta__tiers" role="list">
+          {%- if tiers.size > 0 -%}
+            {%- for t in tiers -%}
+              <li>
+                <span class="brenson-empresas-cta__tier-name">{{ t.nombre.value }}</span>
+                <strong class="brenson-num">{{ t.descuento_pct.value | round }} %</strong>
+                <span class="brenson-muted" style="color: rgba(255,255,255,.6)">desde {{ t.minimo_unidades.value }} unidades</span>
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            <li><span class="brenson-empresas-cta__tier-name">Flota Inicial</span><strong>8 %</strong><span style="color: rgba(255,255,255,.6)">desde 10 unidades</span></li>
+            <li><span class="brenson-empresas-cta__tier-name">Flota Crecimiento</span><strong>12 %</strong><span style="color: rgba(255,255,255,.6)">desde 20 unidades</span></li>
+            <li><span class="brenson-empresas-cta__tier-name">Flota Corporativa</span><strong>18 %</strong><span style="color: rgba(255,255,255,.6)">desde 50 unidades</span></li>
+          {%- endif -%}
+        </ul>
+      {%- endif -%}
     </div>
   </div>
 </section>
 <style>
   .brenson-empresas-cta__grid { display: grid; gap: var(--brenson-space-8); align-items: center; }
   @media (min-width: 990px) { .brenson-empresas-cta__grid { grid-template-columns: 1.4fr 1fr; } }
+  .brenson-empresas-cta__grid--simple { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--brenson-space-6); }
+  .brenson-empresas-cta__grid--simple > div:first-child { flex: 1 1 32rem; }
+  .brenson-empresas-cta--compact { padding-block: var(--brenson-space-6); }
+  .brenson-empresas-cta--compact .brenson-empresas-cta__grid--simple { background: var(--brenson-carbon); color: var(--brenson-blanco); border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-6) var(--brenson-space-8); }
+  .brenson-empresas-cta--compact .brenson-heading { font-size: var(--brenson-text-2xl); }
   .brenson-empresas-cta__tiers { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--brenson-space-3); }
   .brenson-empresas-cta__tiers li { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0.4rem var(--brenson-space-4); padding: var(--brenson-space-4) var(--brenson-space-5); border: 1px solid rgba(255,255,255,.15); border-radius: var(--brenson-radius-lg); background: rgba(255,255,255,.04); }
   .brenson-empresas-cta__tiers li > span:last-child { grid-column: 1; font-size: var(--brenson-text-xs); }
@@ -51,7 +64,10 @@
     { "type": "text", "id": "title", "label": "Título", "default": "Flotas eléctricas para su empresa." },
     { "type": "textarea", "id": "text", "label": "Texto", "default": "Precios por volumen desde 10 unidades, asesor corporativo dedicado y cotización en PDF al instante." },
     { "type": "text", "id": "cta_label", "label": "Botón", "default": "Conocer Brenson Empresas" },
-    { "type": "url", "id": "cta_url", "label": "Enlace" }
+    { "type": "url", "id": "cta_url", "label": "Enlace" },
+    { "type": "select", "id": "cta_style", "label": "Estilo del botón principal", "options": [ { "value": "white", "label": "Blanco (enlace a página)" }, { "value": "whatsapp", "label": "WhatsApp (verde)" } ], "default": "white" },
+    { "type": "checkbox", "id": "show_secondary_button", "label": "Mostrar botón secundario 'Hablar con un ejecutivo'", "default": true },
+    { "type": "checkbox", "id": "show_tiers", "label": "Mostrar tabla de tiers de descuento", "default": true }
   ],
   "presets": [ { "name": "Brenson · CTA Empresas" } ]
 }

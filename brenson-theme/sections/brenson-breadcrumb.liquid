@@ -1,0 +1,39 @@
+{%- comment -%}
+  brenson-breadcrumb — Migas de pan simples (Inicio > Vehículos > Categoría/Producto).
+  Se agrega como primera sección en collection.json y product.json.
+{%- endcomment -%}
+<nav class="brenson-breadcrumb" aria-label="Breadcrumb">
+  <ol class="brenson-breadcrumb__list">
+    <li><a href="{{ routes.root_url }}">Inicio</a></li>
+    {%- if collection -%}
+      <li aria-hidden="true">/</li>
+      <li><a href="{{ routes.all_products_collection_url }}">Vehículos</a></li>
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ collection.title }}</li>
+    {%- elsif product -%}
+      <li aria-hidden="true">/</li>
+      <li><a href="{{ routes.all_products_collection_url }}">Vehículos</a></li>
+      {%- if collection.title -%}
+        <li aria-hidden="true">/</li>
+        <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+      {%- endif -%}
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ product.title }}</li>
+    {%- endif -%}
+  </ol>
+</nav>
+<style>
+  .brenson-breadcrumb { max-width: var(--brenson-container); margin-inline: auto; padding: var(--brenson-space-4) var(--brenson-gutter) 0; }
+  .brenson-breadcrumb__list { list-style: none; display: flex; flex-wrap: wrap; gap: var(--brenson-space-2); margin: 0; padding: 0; font-size: var(--brenson-text-sm); color: var(--brenson-gris); }
+  .brenson-breadcrumb__list a { color: var(--brenson-gris); text-decoration: none; }
+  .brenson-breadcrumb__list a:hover { color: var(--brenson-rojo); text-decoration: underline; }
+  .brenson-breadcrumb__list [aria-current="page"] { color: var(--brenson-carbon); font-weight: 600; }
+</style>
+
+{% schema %}
+{
+  "name": "Breadcrumb",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

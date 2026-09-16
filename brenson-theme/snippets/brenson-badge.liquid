@@ -22,9 +22,7 @@
     {%- endif -%}
       <svg class="brenson-badge__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m13 7-4 6h3l-1 4 4-6h-3l1-4Z" fill="currentColor"/></svg>
       <span>{{ 'brenson.certificado' | t }}</span>
-      {%- if badge_size == 'md' -%}
-        <span class="brenson-badge__sub">· {{ 'brenson.puntos_inspeccion' | t: count: puntos }}</span>
-      {%- endif -%}
+      <span class="brenson-badge__sub">({{ 'brenson.puntos_inspeccion' | t: count: puntos }})</span>
     {%- if expandable -%}</button>{%- else -%}</span>{%- endif -%}
   {%- endif -%}
 {%- else -%}

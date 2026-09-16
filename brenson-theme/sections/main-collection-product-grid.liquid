@@ -1,6 +1,8 @@
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'brenson-view-toggle.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'brenson-view-toggle.js' | asset_url }}" defer="defer"></script>
 
 {% if section.settings.image_shape == 'blob' %}
   {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
@@ -60,13 +62,16 @@
                     aria-describedby="a11y-refresh-page-message"
                   >
                     {%- for option in collection.sort_options -%}
+                      {%- assign brenson_sort_label = option.name -%}
+                      {%- if option.value == 'price-ascending' -%}{%- assign brenson_sort_label = 'Cuota mensual: menor a mayor' -%}
+                      {%- elsif option.value == 'price-descending' -%}{%- assign brenson_sort_label = 'Cuota mensual: mayor a menor' -%}{%- endif -%}
                       <option
                         value="{{ option.value | escape }}"
                         {% if option.value == sort_by %}
                           selected="selected"
                         {% endif %}
                       >
-                        {{ option.name | escape }}
+                        {{ brenson_sort_label | escape }}
                       </option>
                     {%- endfor -%}
                   </select>
@@ -74,6 +79,14 @@
                     {{- 'icon-caret.svg' | inline_asset_content -}}
                   </span>
                 </div>
+              </div>
+              <div class="brenson-view-toggle" data-brenson-view-toggle role="group" aria-label="Tipo de vista">
+                <button type="button" class="brenson-view-toggle__btn is-active" data-view="grid" aria-label="Vista cuadrícula">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"/></svg>
+                </button>
+                <button type="button" class="brenson-view-toggle__btn" data-view="list" aria-label="Vista lista">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M4 5h16v3H4V5zm0 5.5h16v3H4v-3zM4 16h16v3H4v-3z"/></svg>
+                </button>
               </div>
             </div>
 

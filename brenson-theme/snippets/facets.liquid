@@ -405,13 +405,16 @@
                     aria-describedby="a11y-refresh-page-message"
                   >
                     {%- for option in results.sort_options -%}
+                      {%- assign brenson_sort_label = option.name -%}
+                      {%- if option.value == 'price-ascending' -%}{%- assign brenson_sort_label = 'Cuota mensual: menor a mayor' -%}
+                      {%- elsif option.value == 'price-descending' -%}{%- assign brenson_sort_label = 'Cuota mensual: mayor a menor' -%}{%- endif -%}
                       <option
                         value="{{ option.value | escape }}"
                         {% if option.value == sort_by %}
                           selected="selected"
                         {% endif %}
                       >
-                        {{ option.name | escape }}
+                        {{ brenson_sort_label | escape }}
                       </option>
                     {%- endfor -%}
                   </select>
@@ -738,13 +741,16 @@
                           aria-describedby="a11y-refresh-page-message"
                         >
                           {%- for option in results.sort_options -%}
+                            {%- assign brenson_sort_label = option.name -%}
+                            {%- if option.value == 'price-ascending' -%}{%- assign brenson_sort_label = 'Cuota mensual: menor a mayor' -%}
+                            {%- elsif option.value == 'price-descending' -%}{%- assign brenson_sort_label = 'Cuota mensual: mayor a menor' -%}{%- endif -%}
                             <option
                               value="{{ option.value | escape }}"
                               {% if option.value == sort_by %}
                                 selected="selected"
                               {% endif %}
                             >
-                              {{ option.name | escape }}
+                              {{ brenson_sort_label | escape }}
                             </option>
                           {%- endfor -%}
                         </select>
@@ -845,13 +851,16 @@
                 aria-describedby="a11y-refresh-page-message"
               >
                 {%- for option in results.sort_options -%}
+                  {%- assign brenson_sort_label = option.name -%}
+                  {%- if option.value == 'price-ascending' -%}{%- assign brenson_sort_label = 'Cuota mensual: menor a mayor' -%}
+                  {%- elsif option.value == 'price-descending' -%}{%- assign brenson_sort_label = 'Cuota mensual: mayor a menor' -%}{%- endif -%}
                   <option
                     value="{{ option.value | escape }}"
                     {% if option.value == sort_by %}
                       selected="selected"
                     {% endif %}
                   >
-                    {{ option.name | escape }}
+                    {{ brenson_sort_label | escape }}
                   </option>
                 {%- endfor -%}
               </select>

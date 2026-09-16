@@ -1,0 +1,14 @@
+.facet-filters.sorting { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--brenson-space-3, 1.2rem); }
+.brenson-view-toggle { display: flex; align-items: center; gap: 0.2rem; border: 1px solid var(--brenson-gris-borde, #e3e5e8); border-radius: var(--brenson-radius, 8px); padding: 0.2rem; background: var(--brenson-gris-claro, #f4f4f4); }
+.brenson-view-toggle__btn { display: flex; align-items: center; justify-content: center; width: 3.2rem; height: 3.2rem; border: 0; border-radius: calc(var(--brenson-radius, 8px) - 2px); background: transparent; color: var(--brenson-gris, #6b7280); cursor: pointer; }
+.brenson-view-toggle__btn.is-active { background: #fff; color: var(--brenson-carbon, #050709); box-shadow: 0 1px 2px rgba(5,7,9,.08); }
+
+/* Vista lista: una columna, cada tarjeta usa la clase nativa card--horizontal de Dawn.
+   Este Dawn usa flexbox con width/max-width por item (no CSS grid), por eso se sobreescribe así. */
+.brenson-view--list #product-grid.product-grid {
+  flex-direction: column;
+}
+.brenson-view--list #product-grid.product-grid .grid__item {
+  width: 100% !important;
+  max-width: 100% !important;
+}
