@@ -51,7 +51,7 @@
               <div class="brenson-field"><label for="b2b-razon">Razón social *</label><input id="b2b-razon" type="text" data-b2b="razon_social" required placeholder="Ej. Transportes del Caribe S.A.S."></div>
               <div class="brenson-field">
                 <label for="b2b-nit">NIT con dígito de verificación *</label>
-                <div style="display:grid; grid-template-columns: 1fr 4rem; gap:.5rem">
+                <div style="display:grid; grid-template-columns: 1fr 6.4rem; gap:0.8rem">
                   <input id="b2b-nit" type="text" inputmode="numeric" data-b2b="nit" required placeholder="900123456" pattern="\d{9,10}">
                   <input id="b2b-dv" type="text" inputmode="numeric" data-b2b="dv" required placeholder="DV" maxlength="1" aria-label="Dígito de verificación">
                 </div>
@@ -87,12 +87,12 @@
               <div class="brenson-field"><label for="b2b-ciudad">Ciudad principal de operación *</label><input id="b2b-ciudad" type="text" data-b2b="ciudad" required autocomplete="address-level2"></div>
             </div>
             <fieldset class="brenson-field">
-              <legend style="font-weight:600; font-size: var(--brenson-text-sm); margin-bottom:.35rem">Volumen estimado de flota a electrificar *</legend>
+              <legend style="font-weight:600; font-size: var(--brenson-text-sm); margin-bottom:0.56rem">Volumen estimado de flota a electrificar *</legend>
               <div class="brenson-chips" role="radiogroup">
-                <label class="brenson-chip"><input type="radio" name="flota_rango" value="10" data-b2b-radio="flota_estimada" required style="margin-right:.4rem">10 a 20 unidades</label>
-                <label class="brenson-chip"><input type="radio" name="flota_rango" value="20" data-b2b-radio="flota_estimada" style="margin-right:.4rem">21 a 50 unidades</label>
-                <label class="brenson-chip"><input type="radio" name="flota_rango" value="50" data-b2b-radio="flota_estimada" style="margin-right:.4rem">Más de 50 unidades</label>
-                <label class="brenson-chip"><input type="radio" name="flota_rango" value="5" data-b2b-radio="flota_estimada" style="margin-right:.4rem">Menos de 10</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="10" data-b2b-radio="flota_estimada" required style="margin-right:0.64rem">10 a 20 unidades</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="20" data-b2b-radio="flota_estimada" style="margin-right:0.64rem">21 a 50 unidades</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="50" data-b2b-radio="flota_estimada" style="margin-right:0.64rem">Más de 50 unidades</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="5" data-b2b-radio="flota_estimada" style="margin-right:0.64rem">Menos de 10</label>
               </div>
             </fieldset>
 
@@ -106,8 +106,8 @@
             {%- endif -%}
 
             <div class="brenson-field">
-              <label style="display:flex; gap:.5rem; align-items:flex-start; font-weight:400; font-size: var(--brenson-text-xs)">
-                <input type="checkbox" data-b2b="acepta" required style="width:auto; min-height:auto; margin-top:.15rem">
+              <label style="display:flex; gap:0.8rem; align-items:flex-start; font-weight:400; font-size: var(--brenson-text-xs)">
+                <input type="checkbox" data-b2b="acepta" required style="width:auto; min-height:auto; margin-top:0.24rem">
                 <span>Autorizo el tratamiento de los datos de la empresa y del contacto de acuerdo con la <a class="link" href="/policies/privacy-policy">política de tratamiento de datos</a> de Brenson S.A.S. (Ley 1581 de 2012).</span>
               </label>
             </div>

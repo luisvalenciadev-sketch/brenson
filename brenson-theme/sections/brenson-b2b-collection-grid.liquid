@@ -13,14 +13,14 @@
         <span class="brenson-status brenson-status--muted">Catálogo corporativo</span>
         <h1 class="brenson-heading">Precios de flota disponibles para empresas aprobadas</h1>
         <p class="brenson-subheading">Inicie sesión con su cuenta corporativa o solicite acceso. Validamos su empresa en 24 horas hábiles.</p>
-        <div style="display:flex; gap:.75rem; flex-wrap:wrap; justify-content:center">
+        <div style="display:flex; gap:1.2rem; flex-wrap:wrap; justify-content:center">
           <a class="brenson-btn brenson-btn--carbon" href="/pages/empresas#b2b-login">Iniciar sesión</a>
           <a class="brenson-btn brenson-btn--primary" href="/pages/empresas-acceso">Solicitar acceso</a>
         </div>
       </div>
     {%- else -%}
       <header style="display:flex; flex-wrap:wrap; align-items:center; gap: var(--brenson-space-3); margin-bottom: var(--brenson-space-6)">
-        <h1 style="margin:0; font-size: clamp(1.6rem, 3vw, 2.25rem)">{{ collection.title }}</h1>
+        <h1 style="margin:0; font-size: clamp(2.56rem, 3vw, 3.6rem)">{{ collection.title }}</h1>
         {%- if b2b_tier -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Tier {{ b2b_tier.nombre.value }} · {{ b2b_descuento | round }} %</span>{%- endif -%}
         <a class="brenson-btn brenson-btn--primary brenson-btn--sm" style="margin-left:auto" href="/pages/cotizador">Ir al cotizador</a>
         {%- if collection.description != blank -%}<p style="width:100%; margin:0; color: rgba(255,255,255,.7); font-size: var(--brenson-text-sm)">{{ collection.description | strip_html }}</p>{%- endif -%}

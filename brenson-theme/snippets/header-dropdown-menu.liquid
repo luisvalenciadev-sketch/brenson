@@ -95,6 +95,9 @@
             >
               {{- link.title | escape -}}
             </span>
+            {%- if link.title == 'Empresas' -%}
+              <span class="brenson-nav-badge">B2B</span>
+            {%- endif -%}
           </a>
         {%- endif -%}
       </li>

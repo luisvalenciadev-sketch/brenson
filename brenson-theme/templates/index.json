@@ -10,7 +10,8 @@
       },
       "block_order": ["cat_bicicletas", "cat_ciclomotores", "cat_motocarros", "cat_cuadriciclos"],
       "settings": {
-        "overlay_opacity": 55,
+        "image": "shopify://shop_images/AB6AXuCnsAoTWqC9bnnsfxiwMZuwSVgJauzXebQU3SWrpEmZHZKTxlI3-7qubEjzb8RoH3DRjW5pYp9fd45MuhAK6OITRTiS7ivZai911zZfbj3quhnvkK2W0Z3h4seQUz1AEE1eVjoFfkNDcbMbHGx7QCZf5eNlA1Ks7LU18fJDxD6yeH0BYNm.jpg",
+        "overlay_opacity": 70,
         "min_height": 85,
         "show_certificado": true,
         "title": "Movilidad eléctrica certificada para tu ciudad y tu negocio",

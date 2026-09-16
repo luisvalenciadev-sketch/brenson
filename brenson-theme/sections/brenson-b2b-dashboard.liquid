@@ -95,7 +95,7 @@
 
         {%- comment -%} Cotizaciones {%- endcomment -%}
         <div class="brenson-b2b-card" id="cotizaciones">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:1.6rem; flex-wrap:wrap">
             <h2 style="margin:0; font-size: var(--brenson-text-xl)">Mis cotizaciones</h2>
             <a class="brenson-btn brenson-btn--primary brenson-btn--sm" href="/pages/cotizador">Nueva cotización</a>
           </div>
@@ -184,7 +184,7 @@
           <div class="brenson-b2b-card">
             <span class="brenson-kpi__label">Beneficios por volumen</span>
             {%- for t in tiers -%}
-              <div style="display:flex; justify-content:space-between; gap:1rem; padding:.5rem 0; border-top:1px solid var(--brenson-gris-borde); font-size: var(--brenson-text-sm); {% if b2b_tier and t.system.handle == b2b_tier.system.handle %}font-weight:700; color: var(--brenson-rojo){% endif %}">
+              <div style="display:flex; justify-content:space-between; gap:1.6rem; padding:0.8rem 0; border-top:1px solid var(--brenson-gris-borde); font-size: var(--brenson-text-sm); {% if b2b_tier and t.system.handle == b2b_tier.system.handle %}font-weight:700; color: var(--brenson-rojo){% endif %}">
                 <span>{{ t.nombre.value }} · {{ t.minimo_unidades.value }}+</span><span class="brenson-num">{{ t.descuento_pct.value | round }} %</span>
               </div>
             {%- endfor -%}

@@ -13,7 +13,7 @@
     {%- endfor -%}
   </div>
   <div class="brenson-qv__body">
-    <div style="display:flex; gap:.5rem; flex-wrap:wrap; align-items:center">
+    <div style="display:flex; gap:0.8rem; flex-wrap:wrap; align-items:center">
       {%- render 'brenson-badge', product: product, type: 'catalogo', size: 'sm' -%}
       {%- render 'brenson-badge', product: product, type: 'certificado', size: 'sm' -%}
     </div>
@@ -27,7 +27,7 @@
       </ul>
     {%- endif -%}
     {%- render 'brenson-price', product: product, layout: 'full', show_link: false -%}
-    <div style="display:grid; gap:.5rem">
+    <div style="display:grid; gap:0.8rem">
       <a class="brenson-btn brenson-btn--carbon brenson-btn--block" href="{{ product.url }}">Ver ficha completa</a>
       <a class="brenson-btn brenson-btn--whatsapp brenson-btn--block" href="{% render 'brenson-whatsapp-link', context: 'product', product: product %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="quick_view" data-brenson-product="{{ product.handle }}">Hablar con un asesor</a>
     </div>

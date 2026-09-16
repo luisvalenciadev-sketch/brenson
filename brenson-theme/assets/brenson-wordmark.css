@@ -1,0 +1,5 @@
+.brenson-wordmark { display: inline-flex; align-items: center; gap: 1.04rem; }
+.brenson-wordmark__badge { width: 3.6rem; height: 3.6rem; border-radius: 0.8rem; background: var(--brenson-carbon, #050709); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.brenson-wordmark__text { display: flex; flex-direction: column; line-height: 1; }
+.brenson-wordmark__name { font-family: var(--brenson-font, inherit); font-weight: 900; font-size: 2.2rem; letter-spacing: -0.02em; text-transform: uppercase; color: var(--brenson-carbon, #050709); }
+.brenson-wordmark__tagline { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--brenson-rojo, #ee0000); margin-top: 0.32rem; }

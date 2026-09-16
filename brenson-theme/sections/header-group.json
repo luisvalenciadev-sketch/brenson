@@ -5,8 +5,8 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "settings": {
-        "color_scheme": "scheme-1",
-        "show_line_separator": true,
+        "color_scheme": "scheme-4",
+        "show_line_separator": false,
         "show_social": false,
         "auto_rotate": false,
         "change_slides_speed": 5,
@@ -14,18 +14,18 @@
         "enable_language_selector": false
       },
       "blocks": {
-        "announcement-bar-0": {
+        "a1": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "Financia tu vehículo eléctrico desde $ 129.000/mes · Envíos a toda Colombia",
             "text_alignment": "center",
-            "color_scheme": "scheme-1",
-            "link": ""
+            "color_scheme": "scheme-4",
+            "link": "shopify://pages/financiacion"
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "a1"
       ]
     },
     "header": {
@@ -38,12 +38,13 @@
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
         "show_line_separator": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
         "mobile_logo_position": "center",
+        "brenson_show_whatsapp": true,
         "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
+        "padding_top": 12,
+        "padding_bottom": 12
       }
     }
   },

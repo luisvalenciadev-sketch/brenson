@@ -7,12 +7,12 @@
 {%- endcomment -%}
 <div class="brenson-field brenson-upload" data-brenson-b2b-upload data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" style="padding: var(--brenson-space-4); border: 1px dashed var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); background: var(--brenson-gris-claro)">
   <label for="b2b-doc" style="font-weight:600">Cámara de comercio o RUT (PDF o imagen, máx. 5 MB)</label>
-  <div style="display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; margin-top:.5rem">
-    <select data-upload-type aria-label="Tipo de documento" style="max-width: 14rem">
+  <div style="display:flex; gap:1.2rem; align-items:center; flex-wrap:wrap; margin-top:0.8rem">
+    <select data-upload-type aria-label="Tipo de documento" style="max-width: 22.4rem">
       <option value="camara_comercio">Cámara de comercio</option>
       <option value="rut">RUT</option>
     </select>
-    <input id="b2b-doc" type="file" accept=".pdf,image/*" data-upload-file style="min-height:auto; padding:.5rem; flex:1">
+    <input id="b2b-doc" type="file" accept=".pdf,image/*" data-upload-file style="min-height:auto; padding:0.8rem; flex:1">
     <button type="button" class="brenson-btn brenson-btn--carbon brenson-btn--sm" data-upload-submit>Adjuntar</button>
   </div>
   <p class="brenson-field__hint">Solo lo ve el equipo de habilitación de Brenson. Se elimina 90 días después de la decisión.</p>

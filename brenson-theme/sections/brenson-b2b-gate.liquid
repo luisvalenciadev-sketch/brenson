@@ -51,7 +51,7 @@
       <div class="brenson-b2b-hero">
         <div>
           <span class="brenson-eyebrow" style="color:#ff6b6b">{{ section.settings.eyebrow }}</span>
-          <h1 class="brenson-heading" style="font-size: clamp(2rem, 4vw, 3.25rem)">{{ section.settings.title }}</h1>
+          <h1 class="brenson-heading" style="font-size: clamp(3.2rem, 4vw, 5.2rem)">{{ section.settings.title }}</h1>
           <p class="brenson-subheading" style="color: rgba(255,255,255,.8)">{{ section.settings.text }}</p>
           <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap;">
             <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="/pages/empresas-acceso">Solicitar acceso corporativo</a>
@@ -59,15 +59,15 @@
           </div>
         </div>
         <div class="brenson-b2b-card" id="b2b-login">
-          <h2 style="font-size: var(--brenson-text-lg); margin:0 0 .25rem">Ingreso al portal de flotas</h2>
-          <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0 0 1rem">Consulte sus cotizaciones y precios de flota vigentes.</p>
+          <h2 style="font-size: var(--brenson-text-lg); margin:0 0 0.4rem">Ingreso al portal de flotas</h2>
+          <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0 0 1.6rem">Consulte sus cotizaciones y precios de flota vigentes.</p>
           {%- form 'customer_login', class: 'brenson-form', return_to: '/pages/empresas' -%}
             {%- if form.errors -%}<p class="brenson-form__error">{{ form.errors | default_errors }}</p>{%- endif -%}
             <div class="brenson-field"><label for="b2b-email">Correo corporativo</label><input id="b2b-email" type="email" name="customer[email]" autocomplete="email" required></div>
             <div class="brenson-field"><label for="b2b-pass">Contraseña</label><input id="b2b-pass" type="password" name="customer[password]" autocomplete="current-password" required></div>
             <button class="brenson-btn brenson-btn--carbon brenson-btn--block" type="submit">Ingresar</button>
             <p style="text-align:center; font-size: var(--brenson-text-sm); margin:0"><a class="link" href="{{ routes.account_recover_url }}">¿Olvidó su contraseña?</a></p>
-            <hr style="border:0; border-top:1px solid var(--brenson-gris-borde); margin: .5rem 0">
+            <hr style="border:0; border-top:1px solid var(--brenson-gris-borde); margin: 0.8rem 0">
             <p style="text-align:center; font-size: var(--brenson-text-sm); margin:0"><a class="link" href="/pages/empresas-acceso">Registrar mi empresa</a></p>
           {%- endform -%}
         </div>
@@ -114,7 +114,7 @@
                 <div class="brenson-card__body">
                   <h3 class="brenson-card__title">{{ p.title }}</h3>
                   <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ pm.autonomia_km.value }} km · {{ pm.capacidad_carga_kg.value }} kg</p>
-                  <p style="display:flex; gap:.4rem; align-items:center; font-size: var(--brenson-text-xs); color: var(--brenson-gris); margin:0"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V7a4 4 0 0 1 8 0v4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Precio corporativo al iniciar sesión</p>
+                  <p style="display:flex; gap:0.64rem; align-items:center; font-size: var(--brenson-text-xs); color: var(--brenson-gris); margin:0"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V7a4 4 0 0 1 8 0v4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Precio corporativo al iniciar sesión</p>
                 </div>
               </li>
             {%- endfor -%}

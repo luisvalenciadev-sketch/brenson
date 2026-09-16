@@ -1,0 +1,14 @@
+{%- comment -%}
+  brenson-wordmark — Lockup de marca (badge + nombre + tagline) mientras no exista un logo oficial subido en Configuración del tema.
+  En cuanto Brenson entregue el logo real, subirlo en Ajustes del tema → Logo y este snippet deja de usarse automáticamente.
+{%- endcomment -%}
+{{ 'brenson-wordmark.css' | asset_url | stylesheet_tag }}
+<span class="brenson-wordmark">
+  <span class="brenson-wordmark__badge" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="#EE0000" stroke-width="2" stroke-linejoin="round"/><path d="m9.5 12 2 2 4-4.5" fill="none" stroke="#EE0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </span>
+  <span class="brenson-wordmark__text">
+    <span class="brenson-wordmark__name">{{ shop.name }}</span>
+    <span class="brenson-wordmark__tagline">E-Mobility Colombia</span>
+  </span>
+</span>

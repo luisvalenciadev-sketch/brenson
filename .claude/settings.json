@@ -4,7 +4,21 @@
       "Bash(shopify theme *)",
       "Bash(node -e ' *)",
       "Bash(rm -f out.json)",
-      "Bash(export SHOPIFY_SHOP='brenson-0.myshopify.com')"
+      "Bash(export SHOPIFY_SHOP='brenson-0.myshopify.com')",
+      "Bash(node scripts/create-pages.mjs)",
+      "Bash(node scripts/create-navigation.mjs)",
+      "Bash(node scripts/import-home-images.mjs)",
+      "Bash(node scripts/import-blog-images.mjs)",
+      "Bash(curl -s \"https://brenson-0.myshopify.com/?preview_theme_id=143001354315\" -H \"User-Agent: Mozilla/5.0\" -o /tmp/home.html -L)",
+      "Bash(node scripts/publish-online-store.mjs)",
+      "Bash(node scripts/publish-blog-articles.mjs)",
+      "Bash(node scripts/upload-hero-image.mjs)",
+      "Bash(node scripts/fix-inventory-policy.mjs)",
+      "Bash(node \"/c/Users/USER/AppData/Local/Temp/claude/c--Users-USER-OneDrive-Documentos-X-SOLUTION-brenson/74291d8e-fad0-4a5e-9af6-0cd4e7bdac50/scratchpad/fix-rem.mjs\" assets/brenson-hero.css assets/brenson-wordmark.css assets/brenson-components.css assets/brenson-empresas.css)",
+      "Bash(node \"/c/Users/USER/AppData/Local/Temp/claude/c--Users-USER-OneDrive-Documentos-X-SOLUTION-brenson/74291d8e-fad0-4a5e-9af6-0cd4e7bdac50/scratchpad/fix-rem.mjs\" sections/brenson-case-studies.liquid sections/brenson-empresas-cta.liquid sections/brenson-exit-intent.liquid sections/brenson-lead-form.liquid sections/brenson-product-certification.liquid sections/brenson-product-warranty.liquid sections/brenson-social-proof.liquid)",
+      "Bash(node \"/c/Users/USER/AppData/Local/Temp/claude/c--Users-USER-OneDrive-Documentos-X-SOLUTION-brenson/74291d8e-fad0-4a5e-9af6-0cd4e7bdac50/scratchpad/fix-rem.mjs\" snippets/brenson-b2b-upload.liquid snippets/brenson-product-block.liquid snippets/brenson-quick-view-modal.liquid sections/brenson-b2b-collection-grid.liquid sections/brenson-b2b-dashboard.liquid sections/brenson-b2b-gate.liquid sections/brenson-b2b-quoter.liquid sections/brenson-b2b-request-access.liquid sections/brenson-quick-view.liquid)",
+      "Bash(mkdir -p \"/c/Users/USER/AppData/Local/Temp/theme-verify\" && cd '/c/Users/USER/OneDrive/Documentos/X-SOLUTION/brenson' && shopify theme pull --path \"/c/Users/USER/AppData/Local/Temp/theme-verify\" --theme 143001354315 --store brenson-0.myshopify.com --only assets/brenson-hero.css 2>&1 | tail -10 && grep 'brenson-hero__image' \"/c/Users/USER/AppData/Local/Temp/theme-verify/assets/brenson-hero.css\")",
+      "Read(//c/Users/USER/AppData/Local/Temp/theme-verify/assets/**)"
     ]
   }
 }

@@ -45,7 +45,7 @@
   letter-spacing: var(--brenson-tracking-tight);
   line-height: var(--brenson-leading-tight);
   margin: 0 0 var(--brenson-space-4);
-  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+  font-size: clamp(2.8rem, 3.2vw, 4rem);
 }
 .brenson-subheading {
   color: var(--brenson-on-surface-muted);
@@ -63,7 +63,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--brenson-space-2);
-  min-height: 3rem;
+  min-height: 4.8rem;
   padding: 0 var(--brenson-space-6);
   border-radius: var(--brenson-radius);
   font-family: var(--brenson-font);
@@ -87,8 +87,8 @@
 .brenson-btn--white { background: #fff; color: var(--brenson-carbon); }
 .brenson-btn--whatsapp { background: var(--brenson-whatsapp); color: #fff; }
 .brenson-btn--whatsapp:hover { background: var(--brenson-whatsapp-hover); }
-.brenson-btn--lg { min-height: 3.5rem; font-size: var(--brenson-text-md); padding-inline: var(--brenson-space-8); }
-.brenson-btn--sm { min-height: 2.5rem; font-size: var(--brenson-text-xs); padding-inline: var(--brenson-space-4); }
+.brenson-btn--lg { min-height: 5.6rem; font-size: var(--brenson-text-md); padding-inline: var(--brenson-space-8); }
+.brenson-btn--sm { min-height: 4rem; font-size: var(--brenson-text-xs); padding-inline: var(--brenson-space-4); }
 .brenson-btn--block { width: 100%; }
 .brenson-btn__icon { width: 1.25em; height: 1.25em; flex: none; }
 
@@ -104,8 +104,8 @@
   border: 0;
   font-family: var(--brenson-font);
 }
-.brenson-badge--md { font-size: var(--brenson-text-xs); padding: 0.5rem 0.75rem; }
-.brenson-badge--sm { font-size: 0.6875rem; padding: 0.35rem 0.6rem; }
+.brenson-badge--md { font-size: var(--brenson-text-xs); padding: 0.8rem 1.2rem; }
+.brenson-badge--sm { font-size: 1.1rem; padding: 0.56rem 0.96rem; }
 .brenson-badge--rojo { background: var(--brenson-rojo); color: #fff; }
 .brenson-badge--carbon { background: var(--brenson-carbon); color: #fff; }
 .brenson-badge--verde { background: var(--brenson-certificado-suave); color: var(--brenson-certificado); }
@@ -121,7 +121,7 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 .brenson-badge__sub { font-weight: var(--brenson-font-weight-medium); opacity: 0.85; }
 
 /* ---------- Bloque de precio ---------- */
-.brenson-price { display: flex; flex-direction: column; gap: 0.15rem; }
+.brenson-price { display: flex; flex-direction: column; gap: 0.24rem; }
 .brenson-price__label {
   font-size: var(--brenson-text-xs);
   font-weight: var(--brenson-font-weight-semibold);
@@ -148,11 +148,11 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 .brenson-price__contado {
   font-size: var(--brenson-text-sm);
   color: var(--brenson-on-surface-muted);
-  margin-top: 0.25rem;
+  margin-top: 0.4rem;
 }
 .brenson-price__contado strong { color: var(--brenson-on-surface); font-weight: var(--brenson-font-weight-bold); }
 .brenson-price__iva { font-size: var(--brenson-text-xs); }
-.brenson-price__link { font-size: var(--brenson-text-sm); font-weight: var(--brenson-font-weight-semibold); margin-top: 0.25rem; }
+.brenson-price__link { font-size: var(--brenson-text-sm); font-weight: var(--brenson-font-weight-semibold); margin-top: 0.4rem; }
 
 /* ---------- Specs inline (cards) ---------- */
 .brenson-specs {
@@ -162,13 +162,13 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
   padding: 0; margin: 0;
 }
 .brenson-specs__item {
-  display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
   flex: 1;
   font-size: var(--brenson-text-xs);
   color: var(--brenson-on-surface-muted);
   text-align: center;
 }
-.brenson-specs__item svg { width: 1.25rem; height: 1.25rem; color: var(--brenson-carbon); }
+.brenson-specs__item svg { width: 2rem; height: 2rem; color: var(--brenson-carbon); }
 .brenson-specs__value { font-weight: var(--brenson-font-weight-bold); color: var(--brenson-on-surface); font-size: var(--brenson-text-sm); }
 
 /* ---------- Card de vehículo ---------- */
@@ -188,7 +188,7 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 .brenson-card__badges { position: absolute; top: var(--brenson-space-3); left: var(--brenson-space-3); display: flex; gap: var(--brenson-space-2); z-index: 1; }
 .brenson-card__quick {
   position: absolute; right: var(--brenson-space-3); bottom: var(--brenson-space-3);
-  width: 2.5rem; height: 2.5rem; border-radius: 50%;
+  width: 4rem; height: 4rem; border-radius: 50%;
   background: #fff; border: 1px solid var(--brenson-gris-borde);
   display: grid; place-items: center; cursor: pointer;
   opacity: 0; transition: opacity var(--brenson-duration) var(--brenson-ease);
@@ -211,9 +211,9 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 }
 @media (min-width: 750px) { .brenson-trust { grid-template-columns: repeat(4, 1fr); } }
 .brenson-trust__item { display: flex; gap: var(--brenson-space-3); align-items: flex-start; }
-.brenson-trust__icon { flex: none; width: 2.5rem; height: 2.5rem; border-radius: var(--brenson-radius); background: var(--brenson-certificado-suave); color: var(--brenson-certificado); display: grid; place-items: center; }
-.brenson-trust__icon svg { width: 1.35rem; height: 1.35rem; }
-.brenson-trust__title { font-weight: var(--brenson-font-weight-bold); font-size: var(--brenson-text-sm); margin: 0 0 0.15rem; }
+.brenson-trust__icon { flex: none; width: 4rem; height: 4rem; border-radius: var(--brenson-radius); background: var(--brenson-certificado-suave); color: var(--brenson-certificado); display: grid; place-items: center; }
+.brenson-trust__icon svg { width: 2.16rem; height: 2.16rem; }
+.brenson-trust__title { font-weight: var(--brenson-font-weight-bold); font-size: var(--brenson-text-sm); margin: 0 0 0.24rem; }
 .brenson-trust__text { font-size: var(--brenson-text-xs); color: var(--brenson-on-surface-muted); margin: 0; }
 
 /* ---------- Grid genérico ---------- */
@@ -244,7 +244,7 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 /* ---------- Chips / tabs (simulador, filtros) ---------- */
 .brenson-chips { display: flex; flex-wrap: wrap; gap: var(--brenson-space-2); }
 .brenson-chip {
-  min-height: 2.75rem; padding: 0 var(--brenson-space-4);
+  min-height: 4.4rem; padding: 0 var(--brenson-space-4);
   border-radius: var(--brenson-radius-pill);
   border: 1.5px solid var(--brenson-gris-borde); background: #fff;
   font-family: var(--brenson-font); font-size: var(--brenson-text-sm); font-weight: var(--brenson-font-weight-semibold);
@@ -252,9 +252,9 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
   transition: all var(--brenson-duration) var(--brenson-ease);
 }
 .brenson-chip[aria-pressed='true'], .brenson-chip.is-active { background: var(--brenson-carbon); color: #fff; border-color: var(--brenson-carbon); }
-.brenson-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 0.25rem; padding: 0.25rem; background: var(--brenson-gris-claro); border-radius: var(--brenson-radius); }
+.brenson-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 0.4rem; padding: 0.4rem; background: var(--brenson-gris-claro); border-radius: var(--brenson-radius); }
 .brenson-tab {
-  min-height: 2.75rem; border: 0; border-radius: calc(var(--brenson-radius) - 2px);
+  min-height: 4.4rem; border: 0; border-radius: calc(var(--brenson-radius) - 2px);
   background: transparent; font-family: var(--brenson-font); font-weight: var(--brenson-font-weight-semibold); font-size: var(--brenson-text-sm);
   color: var(--brenson-carbon-60); cursor: pointer;
 }
@@ -274,7 +274,7 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 .brenson-simulator__result-label { font-size: var(--brenson-text-xs); text-transform: uppercase; letter-spacing: var(--brenson-tracking-wide); color: var(--brenson-on-surface-muted); font-weight: var(--brenson-font-weight-semibold); }
 .brenson-simulator__cuota { font-size: var(--brenson-text-cuota); font-weight: var(--brenson-font-weight-black); color: var(--brenson-rojo); line-height: 1; }
 .brenson-simulator__cuota small { font-size: 0.4em; color: var(--brenson-on-surface-muted); font-weight: var(--brenson-font-weight-semibold); }
-.brenson-simulator__rows { display: grid; gap: 0.35rem; font-size: var(--brenson-text-sm); color: var(--brenson-on-surface-muted); }
+.brenson-simulator__rows { display: grid; gap: 0.56rem; font-size: var(--brenson-text-sm); color: var(--brenson-on-surface-muted); }
 .brenson-simulator__rows div { display: flex; justify-content: space-between; gap: var(--brenson-space-4); }
 .brenson-simulator__rows strong { color: var(--brenson-carbon); }
 .brenson-simulator__disclaimer { font-size: var(--brenson-text-xs); color: var(--brenson-on-surface-muted); line-height: 1.45; margin: 0; }
@@ -284,7 +284,7 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 @media (min-width: 750px) { .brenson-spec-groups { grid-template-columns: repeat(2, 1fr); } }
 .brenson-spec-group { border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); overflow: hidden; }
 .brenson-spec-group__head { display: flex; align-items: center; gap: var(--brenson-space-2); padding: var(--brenson-space-3) var(--brenson-space-4); background: var(--brenson-gris-claro); font-weight: var(--brenson-font-weight-bold); font-size: var(--brenson-text-sm); }
-.brenson-spec-group__head svg { width: 1.1rem; height: 1.1rem; }
+.brenson-spec-group__head svg { width: 1.76rem; height: 1.76rem; }
 .brenson-spec-row { display: flex; justify-content: space-between; gap: var(--brenson-space-4); padding: var(--brenson-space-3) var(--brenson-space-4); border-top: 1px solid var(--brenson-gris-borde); font-size: var(--brenson-text-sm); }
 .brenson-spec-row dt { color: var(--brenson-on-surface-muted); margin: 0; }
 .brenson-spec-row dd { margin: 0; font-weight: var(--brenson-font-weight-semibold); text-align: right; }
@@ -294,7 +294,7 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 @media (min-width: 750px) { .brenson-checklist { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 990px) { .brenson-checklist { grid-template-columns: repeat(3, 1fr); } }
 .brenson-checklist li { display: flex; gap: var(--brenson-space-2); align-items: flex-start; font-size: var(--brenson-text-sm); }
-.brenson-checklist svg { flex: none; width: 1.25rem; height: 1.25rem; color: var(--brenson-certificado); margin-top: 0.05rem; }
+.brenson-checklist svg { flex: none; width: 2rem; height: 2rem; color: var(--brenson-certificado); margin-top: 0.08rem; }
 
 /* ---------- WhatsApp flotante ---------- */
 .brenson-wa-float {
@@ -302,19 +302,19 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
   bottom: calc(var(--brenson-space-4) + var(--brenson-thumb-zone));
   z-index: var(--brenson-z-whatsapp);
   display: inline-flex; align-items: center; gap: var(--brenson-space-2);
-  min-height: 3.5rem; padding: 0 var(--brenson-space-5) 0 var(--brenson-space-4);
+  min-height: 5.6rem; padding: 0 var(--brenson-space-5) 0 var(--brenson-space-4);
   border-radius: var(--brenson-radius-pill);
   background: var(--brenson-whatsapp); color: #fff; text-decoration: none;
   font-weight: var(--brenson-font-weight-bold); font-size: var(--brenson-text-sm);
   box-shadow: var(--brenson-shadow-lg);
 }
-.brenson-wa-float svg { width: 1.6rem; height: 1.6rem; }
-.brenson-wa-float__status { display: block; font-size: 0.6875rem; font-weight: var(--brenson-font-weight-medium); opacity: 0.9; }
-.brenson-wa-float__status::before { content: ''; display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #fff; margin-right: 0.3rem; }
+.brenson-wa-float svg { width: 2.56rem; height: 2.56rem; }
+.brenson-wa-float__status { display: block; font-size: 1.1rem; font-weight: var(--brenson-font-weight-medium); opacity: 0.9; }
+.brenson-wa-float__status::before { content: ''; display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 50%; background: #fff; margin-right: 0.48rem; }
 .brenson-wa-float[data-status='closed'] .brenson-wa-float__status::before { background: var(--brenson-pendiente); }
 @media (max-width: 749px) {
   .brenson-wa-float__text { display: none; }
-  .brenson-wa-float { width: 3.5rem; padding: 0; justify-content: center; }
+  .brenson-wa-float { width: 5.6rem; padding: 0; justify-content: center; }
   body.has-brenson-sticky-bar .brenson-wa-float { bottom: calc(var(--brenson-sticky-bar-height) + var(--brenson-space-3) + var(--brenson-thumb-zone)); }
 }
 
@@ -326,7 +326,7 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
   background: #fff; border-top: 1px solid var(--brenson-gris-borde); box-shadow: 0 -6px 20px rgba(5,7,9,0.08);
 }
 .brenson-sticky-bar .brenson-price__cuota { font-size: var(--brenson-text-xl); }
-.brenson-sticky-bar .brenson-price__label, .brenson-sticky-bar .brenson-price__contado { font-size: 0.6875rem; }
+.brenson-sticky-bar .brenson-price__label, .brenson-sticky-bar .brenson-price__contado { font-size: 1.1rem; }
 .brenson-sticky-bar .brenson-btn { margin-left: auto; }
 @media (min-width: 990px) { .brenson-sticky-bar { display: none; } }
 
@@ -334,8 +334,8 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 .brenson-sim-banner {
   position: fixed; left: 0; bottom: 0; z-index: var(--brenson-z-modal);
   background: var(--brenson-pendiente); color: var(--brenson-carbon);
-  font-size: 0.6875rem; font-weight: var(--brenson-font-weight-bold);
-  padding: 0.25rem 0.75rem; border-top-right-radius: var(--brenson-radius);
+  font-size: 1.1rem; font-weight: var(--brenson-font-weight-bold);
+  padding: 0.4rem 1.2rem; border-top-right-radius: var(--brenson-radius);
   pointer-events: none; letter-spacing: 0.02em;
 }
 
@@ -344,12 +344,12 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 .brenson-accordion details { border-bottom: 1px solid var(--brenson-gris-borde); }
 .brenson-accordion summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: var(--brenson-space-4); padding: var(--brenson-space-4) 0; font-weight: var(--brenson-font-weight-semibold); }
 .brenson-accordion summary::-webkit-details-marker { display: none; }
-.brenson-accordion summary::after { content: '+'; font-size: 1.25rem; color: var(--brenson-on-surface-muted); flex: none; }
+.brenson-accordion summary::after { content: '+'; font-size: 2rem; color: var(--brenson-on-surface-muted); flex: none; }
 .brenson-accordion details[open] summary::after { content: '−'; }
 .brenson-accordion__body { padding: 0 0 var(--brenson-space-4); color: var(--brenson-on-surface-muted); font-size: var(--brenson-text-sm); line-height: var(--brenson-leading-normal); }
 
 /* ---------- Estados / chips de estado ---------- */
-.brenson-status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: var(--brenson-text-xs); font-weight: var(--brenson-font-weight-bold); padding: 0.35rem 0.65rem; border-radius: var(--brenson-radius-pill); }
+.brenson-status { display: inline-flex; align-items: center; gap: 0.56rem; font-size: var(--brenson-text-xs); font-weight: var(--brenson-font-weight-bold); padding: 0.56rem 1.04rem; border-radius: var(--brenson-radius-pill); }
 .brenson-status--ok { background: var(--brenson-certificado-suave); color: var(--brenson-certificado); }
 .brenson-status--pending { background: var(--brenson-pendiente-suave); color: #92400e; }
 .brenson-status--error { background: var(--brenson-error-suave); color: var(--brenson-error); }
@@ -359,14 +359,14 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 .brenson-form { display: grid; gap: var(--brenson-space-4); }
 .brenson-form__row { display: grid; gap: var(--brenson-space-4); }
 @media (min-width: 750px) { .brenson-form__row--2 { grid-template-columns: 1fr 1fr; } }
-.brenson-field label { display: block; font-size: var(--brenson-text-sm); font-weight: var(--brenson-font-weight-semibold); margin-bottom: 0.35rem; }
+.brenson-field label { display: block; font-size: var(--brenson-text-sm); font-weight: var(--brenson-font-weight-semibold); margin-bottom: 0.56rem; }
 .brenson-field input, .brenson-field select, .brenson-field textarea {
-  width: 100%; min-height: 3rem; padding: 0.75rem 1rem;
+  width: 100%; min-height: 4.8rem; padding: 1.2rem 1.6rem;
   border: 1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius);
   font-family: var(--brenson-font); font-size: var(--brenson-text-md); background: #fff; color: var(--brenson-carbon);
 }
 .brenson-field input:focus, .brenson-field select:focus, .brenson-field textarea:focus { outline: 2px solid var(--brenson-carbon); outline-offset: 1px; border-color: var(--brenson-carbon); }
-.brenson-field__hint { font-size: var(--brenson-text-xs); color: var(--brenson-on-surface-muted); margin-top: 0.25rem; }
+.brenson-field__hint { font-size: var(--brenson-text-xs); color: var(--brenson-on-surface-muted); margin-top: 0.4rem; }
 .brenson-form__success { padding: var(--brenson-space-4); border-radius: var(--brenson-radius); background: var(--brenson-certificado-suave); color: var(--brenson-certificado); font-weight: var(--brenson-font-weight-semibold); }
 .brenson-form__error { padding: var(--brenson-space-4); border-radius: var(--brenson-radius); background: var(--brenson-error-suave); color: var(--brenson-error); }
 
