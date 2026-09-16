@@ -1,0 +1,151 @@
+{%- comment -%}
+  brenson-product-reviews — Resumen de calificación + reseñas de compradores.
+  Contenido editable por bloques (sin app de reviews conectada aún); marcado [MOCK] mientras no haya reseñas reales.
+{%- endcomment -%}
+<section class="brenson-section brenson-product-reviews">
+  <div class="brenson-container brenson-reviews__grid">
+    <div class="brenson-reviews__summary">
+      <h2 class="brenson-heading" style="font-size: var(--brenson-text-xl); margin-bottom: 0.32rem;">{{ section.settings.title }}</h2>
+      <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin: 0;">{{ section.settings.subtitle }}</p>
+      <div class="brenson-reviews__score">
+        <span class="brenson-reviews__avg">{{ section.settings.rating_avg }}</span>
+        <div>
+          <div class="brenson-reviews__stars" aria-hidden="true">★★★★★</div>
+          <p class="brenson-muted" style="font-size: var(--brenson-text-xs); font-weight: 600; margin: 0.16rem 0 0;">Basado en {{ section.settings.rating_count }} calificaciones</p>
+        </div>
+      </div>
+      <div class="brenson-reviews__bars">
+        {%- assign pcts = section.settings.pct_5 | append: '|' | append: section.settings.pct_4 | append: '|' | append: section.settings.pct_3 | append: '|' | append: section.settings.pct_2 | append: '|' | append: section.settings.pct_1 | split: '|' -%}
+        {%- for pct in pcts -%}
+          {%- assign estrellas = forloop.index0 | times: -1 | plus: 5 -%}
+          <div class="brenson-reviews__bar-row">
+            <span>{{ estrellas }} est.</span>
+            <div class="brenson-reviews__bar"><div style="width: {{ pct }}%"></div></div>
+            <span class="brenson-reviews__pct">{{ pct }}%</span>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- if section.settings.show_write_review -%}
+        <button type="button" class="brenson-btn brenson-btn--outline brenson-btn--sm brenson-reviews__write" data-brenson-track="write_review_click">{{ section.settings.write_review_label }}</button>
+      {%- endif -%}
+      <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin-top: var(--brenson-space-3);">[MOCK: reseñas de demostración, pendiente integrar app de reviews]</p>
+    </div>
+
+    <ul class="brenson-reviews__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'resena' -%}
+          {%- liquid
+            assign nombre = block.settings.nombre
+            assign palabras = nombre | split: ' '
+            assign iniciales = ''
+            for p in palabras
+              assign iniciales = iniciales | append: p | slice: 0, 1
+            endfor
+          -%}
+          <li class="brenson-review-card" {{ block.shopify_attributes }}>
+            <div class="brenson-review-card__head">
+              <div class="brenson-review-card__who">
+                <span class="brenson-review-card__avatar" style="background: {{ block.settings.avatar_color }}">{{ iniciales | slice: 0, 2 | upcase }}</span>
+                <div>
+                  <h4>{{ block.settings.nombre }}</h4>
+                  <span class="brenson-review-card__verificado">
+                    <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="m9 12 2 2 4-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                    {{ block.settings.rol }}
+                  </span>
+                </div>
+              </div>
+              <span class="brenson-review-card__fecha">{{ block.settings.fecha_texto }}</span>
+            </div>
+            <div class="brenson-reviews__stars" style="font-size: var(--brenson-text-sm);" aria-hidden="true">★★★★★</div>
+            <p class="brenson-review-card__texto">&ldquo;{{ block.settings.texto }}&rdquo;</p>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+<style>
+  .brenson-reviews__grid { display: grid; gap: var(--brenson-space-8); }
+  @media (min-width: 990px) { .brenson-reviews__grid { grid-template-columns: 0.85fr 1.6fr; align-items: start; } }
+  .brenson-reviews__summary { background: var(--brenson-gris-claro); border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-6); }
+  .brenson-reviews__score { display: flex; align-items: baseline; gap: var(--brenson-space-3); margin: var(--brenson-space-4) 0; }
+  .brenson-reviews__avg { font-size: var(--brenson-text-4xl); font-weight: 800; line-height: 1; color: var(--brenson-carbon); }
+  .brenson-reviews__stars { color: #f5b301; letter-spacing: .1em; font-size: var(--brenson-text-md); }
+  .brenson-reviews__bars { display: flex; flex-direction: column; gap: var(--brenson-space-2); margin-top: var(--brenson-space-3); }
+  .brenson-reviews__bar-row { display: flex; align-items: center; gap: var(--brenson-space-2); font-size: var(--brenson-text-xs); }
+  .brenson-reviews__bar-row > span:first-child { width: 4.8rem; color: var(--brenson-carbon-60); font-weight: 600; }
+  .brenson-reviews__bar { flex: 1; background: var(--brenson-gris-borde); border-radius: 999px; height: 0.64rem; overflow: hidden; }
+  .brenson-reviews__bar div { background: var(--brenson-certificado); height: 100%; border-radius: 999px; }
+  .brenson-reviews__pct { font-weight: 700; color: var(--brenson-carbon); min-width: 3.2rem; text-align: right; }
+  .brenson-reviews__write { width: 100%; margin-top: var(--brenson-space-5); }
+  .brenson-reviews__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--brenson-space-4); }
+  .brenson-review-card { background: #fff; border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-6); display: flex; flex-direction: column; gap: var(--brenson-space-3); }
+  .brenson-review-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--brenson-space-3); }
+  .brenson-review-card__who { display: flex; align-items: center; gap: var(--brenson-space-3); }
+  .brenson-review-card__avatar { width: 4rem; height: 4rem; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: var(--brenson-text-xs); flex-shrink: 0; }
+  .brenson-review-card__who h4 { margin: 0; font-size: var(--brenson-text-sm); font-weight: 700; color: var(--brenson-carbon); }
+  .brenson-review-card__verificado { display: inline-flex; align-items: center; gap: 0.32rem; font-size: var(--brenson-text-xs); font-weight: 600; color: var(--brenson-certificado); margin-top: 0.16rem; }
+  .brenson-review-card__fecha { font-size: var(--brenson-text-xs); color: var(--brenson-carbon-60); white-space: nowrap; }
+  .brenson-review-card__texto { margin: 0; font-size: var(--brenson-text-sm); line-height: 1.6; color: var(--brenson-carbon-60); }
+</style>
+
+{% schema %}
+{
+  "name": "Brenson · Reseñas",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Título", "default": "Opiniones de compradores" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo", "default": "Propietarios en Colombia" },
+    { "type": "text", "id": "rating_avg", "label": "Calificación promedio", "default": "4.8" },
+    { "type": "number", "id": "rating_count", "label": "Número de calificaciones", "default": 23 },
+    { "type": "range", "id": "pct_5", "min": 0, "max": 100, "step": 1, "label": "% de 5 estrellas", "default": 87 },
+    { "type": "range", "id": "pct_4", "min": 0, "max": 100, "step": 1, "label": "% de 4 estrellas", "default": 13 },
+    { "type": "range", "id": "pct_3", "min": 0, "max": 100, "step": 1, "label": "% de 3 estrellas", "default": 0 },
+    { "type": "range", "id": "pct_2", "min": 0, "max": 100, "step": 1, "label": "% de 2 estrellas", "default": 0 },
+    { "type": "range", "id": "pct_1", "min": 0, "max": 100, "step": 1, "label": "% de 1 estrella", "default": 0 },
+    { "type": "checkbox", "id": "show_write_review", "label": "Mostrar botón \"Escribir opinión\"", "default": true },
+    { "type": "text", "id": "write_review_label", "label": "Texto del botón", "default": "Escribir una opinión de compra" }
+  ],
+  "blocks": [
+    {
+      "type": "resena",
+      "name": "Reseña",
+      "settings": [
+        { "type": "text", "id": "nombre", "label": "Nombre", "default": "Camilo Gómez R." },
+        { "type": "text", "id": "rol", "label": "Rol / ubicación", "default": "Propietario verificado · Bogotá D.C." },
+        { "type": "text", "id": "fecha_texto", "label": "Fecha (texto)", "default": "Hace 3 semanas" },
+        { "type": "textarea", "id": "texto", "label": "Texto de la reseña", "default": "Excelente vehículo, cumple todo lo prometido y el servicio postventa fue muy bueno." },
+        { "type": "color", "id": "avatar_color", "label": "Color de avatar", "default": "#1A1A1A" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brenson · Reseñas",
+      "blocks": [
+        {
+          "type": "resena",
+          "settings": {
+            "nombre": "Camilo Gómez R.",
+            "rol": "Propietario verificado · Bogotá D.C.",
+            "fecha_texto": "Hace 3 semanas",
+            "texto": "La Brenson City 1500 me cambió los trayectos diarios de Suba a Chapinero. Antes gastaba 2 horas en trancón y ahora llego en 40 minutos en silencio absoluto. El baúl trasero de 28L es súper espacioso, cabe mi casco y el morral del portátil. La subo al apartamento sin problemas y la cargo en el tomacorriente común.",
+            "avatar_color": "#1A1A1A"
+          }
+        },
+        {
+          "type": "resena",
+          "settings": {
+            "nombre": "Valentina Osorio M.",
+            "rol": "Propietaria verificada · Medellín (El Poblado)",
+            "fecha_texto": "Hace 1 mes",
+            "texto": "Me daba susto la fuerza en lomas de Medellín pero responde con holgura en las subidas con dos personas. El proceso de financiación con Bancolombia a través del asesor de WhatsApp fue rapidísimo, en menos de 24 horas estaba aprobado. Excelente servicio postventa y entrega con su checklist firmado.",
+            "avatar_color": "#EE0000"
+          }
+        }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

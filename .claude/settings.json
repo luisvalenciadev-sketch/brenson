@@ -26,7 +26,10 @@
       "Bash(node scripts/set-collection-sort.mjs)",
       "Read(//c/USER/OneDrive/Documentos/X-SOLUTION/brenson/brenson-theme/snippets/**)",
       "Bash(rm -rf \"/c/Users/USER/AppData/Local/Temp/theme-verify\")",
-      "Bash(mkdir -p \"/c/Users/USER/AppData/Local/Temp/theme-verify\")"
+      "Bash(mkdir -p \"/c/Users/USER/AppData/Local/Temp/theme-verify\")",
+      "Bash(env)",
+      "Bash(shopify auth *)",
+      "Read(//c/Users/USER/.config/**)"
     ]
   }
 }

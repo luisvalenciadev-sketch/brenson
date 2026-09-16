@@ -59,6 +59,45 @@
       "type": "brenson-product-warranty",
       "settings": { "eyebrow": "Respaldo postventa directo", "title": "Garantía Brenson: transparente y sin letra chica", "show_shipping": true }
     },
+    "resenas": {
+      "type": "brenson-product-reviews",
+      "blocks": {
+        "r1": {
+          "type": "resena",
+          "settings": {
+            "nombre": "Camilo Gómez R.",
+            "rol": "Propietario verificado · Bogotá D.C.",
+            "fecha_texto": "Hace 3 semanas",
+            "texto": "La Brenson City 1500 me cambió los trayectos diarios de Suba a Chapinero. Antes gastaba 2 horas en trancón y ahora llego en 40 minutos en silencio absoluto. El baúl trasero de 28L es súper espacioso, cabe mi casco y el morral del portátil. La subo al apartamento sin problemas y la cargo en el tomacorriente común.",
+            "avatar_color": "#1A1A1A"
+          }
+        },
+        "r2": {
+          "type": "resena",
+          "settings": {
+            "nombre": "Valentina Osorio M.",
+            "rol": "Propietaria verificada · Medellín (El Poblado)",
+            "fecha_texto": "Hace 1 mes",
+            "texto": "Me daba susto la fuerza en lomas de Medellín pero responde con holgura en las subidas con dos personas. El proceso de financiación con Bancolombia a través del asesor de WhatsApp fue rapidísimo, en menos de 24 horas estaba aprobado. Excelente servicio postventa y entrega con su checklist firmado.",
+            "avatar_color": "#EE0000"
+          }
+        }
+      },
+      "block_order": ["r1", "r2"],
+      "settings": {
+        "title": "Opiniones de compradores",
+        "subtitle": "Propietarios en Colombia",
+        "rating_avg": "4.8",
+        "rating_count": 23,
+        "pct_5": 87,
+        "pct_4": 13,
+        "pct_3": 0,
+        "pct_2": 0,
+        "pct_1": 0,
+        "show_write_review": true,
+        "write_review_label": "Escribir una opinión de compra"
+      }
+    },
     "faq": {
       "type": "brenson-faq",
       "settings": { "eyebrow": "Resolvemos tus dudas", "title": "Preguntas frecuentes", "categoria": "todas", "limit": 6, "show_cta": true }
@@ -96,5 +135,5 @@
     "sticky": { "type": "brenson-sticky-cta", "settings": {} },
     "exit": { "type": "brenson-exit-intent", "settings": { "eyebrow": "Antes de irte", "title": "Llévate la ficha técnica del {modelo}", "text": "Te enviamos la ficha técnica en PDF con specs, garantía y cuota estimada.", "cta_label": "Enviarme la ficha", "days": 7 } }
   },
-  "order": ["breadcrumb", "main", "simulador", "certificacion", "specs", "garantia", "faq", "lead", "related", "sticky", "exit"]
+  "order": ["breadcrumb", "main", "simulador", "certificacion", "specs", "garantia", "resenas", "faq", "lead", "related", "sticky", "exit"]
 }
