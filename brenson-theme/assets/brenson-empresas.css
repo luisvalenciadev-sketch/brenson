@@ -17,6 +17,12 @@ body.brenson-empresas main { min-height: 60vh; }
 .brenson-b2b-hero { display: grid; gap: var(--brenson-space-8); align-items: center; padding-block: var(--brenson-space-8); }
 @media (min-width: 990px) { .brenson-b2b-hero { grid-template-columns: 1.3fr 1fr; padding-block: var(--brenson-space-12); } }
 .brenson-b2b-block { padding-block: var(--brenson-space-12); border-top: 1px solid rgba(255,255,255,.08); }
+.brenson-partners--dark { filter: none; opacity: 1; }
+.brenson-partners--dark img { filter: brightness(0) invert(1); opacity: .7; }
+.brenson-partners--dark .brenson-partner__ph { color: rgba(255,255,255,.6); }
+.brenson-b2b-hero__chips { list-style:none; margin: var(--brenson-space-4) 0 0; padding:0; display:flex; flex-wrap:wrap; gap: var(--brenson-space-4); }
+.brenson-b2b-hero__chips li { display:flex; align-items:center; gap:0.48rem; font-size: var(--brenson-text-xs); color: rgba(255,255,255,.7); }
+.brenson-b2b-hero__chips svg { color: var(--brenson-certificado); flex-shrink:0; }
 
 .brenson-tier { position: relative; }
 .brenson-tier--featured { outline: 2px solid var(--brenson-rojo); }

@@ -57,6 +57,11 @@
             <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="/pages/empresas-acceso">Solicitar acceso corporativo</a>
             <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="#b2b-login">Ya tengo cuenta</a>
           </div>
+          <ul class="brenson-b2b-hero__chips" role="list">
+            <li><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Facturación electrónica DIAN</li>
+            <li><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Exención de IVA según Ley 1715</li>
+            <li><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Homologación MinTransporte</li>
+          </ul>
         </div>
         <div class="brenson-b2b-card" id="b2b-login">
           <h2 style="font-size: var(--brenson-text-lg); margin:0 0 0.4rem">Ingreso al portal de flotas</h2>
@@ -72,6 +77,26 @@
           {%- endform -%}
         </div>
       </div>
+
+      {%- comment -%} Empresas que operan con Brenson (aliados verificados) {%- endcomment -%}
+      {%- liquid
+        assign sim = settings.brenson_modo_simulacion
+        assign aliados = shop.metaobjects.brenson_aliado.values
+      -%}
+      {%- capture logos -%}
+        {%- for a in aliados -%}
+          {%- if a.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
+          <li class="brenson-partner">
+            {%- if a.logo.value -%}{{ a.logo.value | image_url: width: 240 | image_tag: loading: 'lazy', alt: a.nombre.value }}{%- else -%}<span class="brenson-partner__ph">{{ a.nombre.value }}</span>{%- endif -%}
+          </li>
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- if logos != blank -%}
+        <div class="brenson-b2b-block" style="padding-block: var(--brenson-space-8)">
+          <p class="brenson-eyebrow" style="justify-content:center; width:100%; color: rgba(255,255,255,.5)">Empresas que ya operan con Brenson en Colombia</p>
+          <ul class="brenson-partners brenson-partners--dark" role="list">{{ logos }}</ul>
+        </div>
+      {%- endif -%}
 
       {%- comment -%} Tiers {%- endcomment -%}
       <div class="brenson-b2b-block">
@@ -100,9 +125,12 @@
       {%- assign fleet = settings.brenson_b2b_collection -%}
       {%- if fleet != blank and fleet.products.size > 0 -%}
         <div class="brenson-b2b-block">
-          <header class="brenson-section__head">
-            <span class="brenson-eyebrow" style="color:#ff6b6b">Catálogo corporativo</span>
-            <h2 class="brenson-heading">Vehículos optimizados para operación de flota</h2>
+          <header class="brenson-section__head" style="display:flex; justify-content:space-between; align-items:flex-end; gap: var(--brenson-space-4); flex-wrap:wrap;">
+            <div>
+              <span class="brenson-eyebrow" style="color:#ff6b6b">Catálogo corporativo</span>
+              <h2 class="brenson-heading">Vehículos optimizados para operación de flota</h2>
+            </div>
+            <span class="brenson-status brenson-status--muted">Precios netos visibles tras validación NIT</span>
           </header>
           <ul class="brenson-grid brenson-grid--4" role="list">
             {%- for p in fleet.products limit: 4 -%}
@@ -115,6 +143,7 @@
                   <h3 class="brenson-card__title">{{ p.title }}</h3>
                   <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ pm.autonomia_km.value }} km · {{ pm.capacidad_carga_kg.value }} kg</p>
                   <p style="display:flex; gap:0.64rem; align-items:center; font-size: var(--brenson-text-xs); color: var(--brenson-gris); margin:0"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V7a4 4 0 0 1 8 0v4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Precio corporativo al iniciar sesión</p>
+                  <a class="brenson-btn brenson-btn--carbon brenson-btn--sm brenson-btn--block" href="/pages/empresas-acceso">Solicitar cotización</a>
                 </div>
               </li>
             {%- endfor -%}

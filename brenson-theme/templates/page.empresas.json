@@ -9,6 +9,15 @@
         "text": "Acceda a precios corporativos desde 10 unidades, cotizaciones en PDF al instante y un asesor dedicado para su operación."
       }
     },
+    "casos": {
+      "type": "brenson-case-studies",
+      "settings": {
+        "eyebrow": "Caso de estudio logístico",
+        "title": "Resultados reales de empresas que ya operan con Brenson",
+        "subtitle": "",
+        "limit": 2
+      }
+    },
     "dashboard": {
       "type": "brenson-b2b-dashboard",
       "blocks": {
@@ -20,5 +29,5 @@
       "settings": {}
     }
   },
-  "order": ["gate", "dashboard"]
+  "order": ["gate", "casos", "dashboard"]
 }
