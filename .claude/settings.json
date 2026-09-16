@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(shopify theme *)",
+      "Bash(node -e ' *)",
+      "Bash(rm -f out.json)",
+      "Bash(export SHOPIFY_SHOP='brenson-0.myshopify.com')"
+    ]
+  }
+}

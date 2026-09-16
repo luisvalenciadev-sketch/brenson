@@ -11,12 +11,13 @@
   elsif settings.brenson_services_url != blank
     assign pdf_url = settings.brenson_services_url | append: '/ficha/' | append: product.handle | append: '.pdf'
   endif
+  assign exit_title = section.settings.title | replace: '{modelo}', product.title
 -%}
 <dialog class="brenson-exit" id="brenson-exit-intent" data-brenson-exit data-endpoint="{{ settings.brenson_services_url }}" data-pdf="{{ pdf_url }}" data-days="{{ section.settings.days }}" aria-labelledby="brenson-exit-title">
   <form method="dialog" class="brenson-exit__close"><button aria-label="Cerrar">×</button></form>
   <div class="brenson-exit__body">
     <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
-    <h2 id="brenson-exit-title" style="margin:0; font-size: var(--brenson-text-xl)">{{ section.settings.title | replace: '{modelo}', product.title }}</h2>
+    <h2 id="brenson-exit-title" style="margin:0; font-size: var(--brenson-text-xl)">{{ exit_title }}</h2>
     <p class="brenson-muted" style="margin:0; font-size: var(--brenson-text-sm)">{{ section.settings.text }}</p>
     <form class="brenson-form" data-exit-form>
       <input type="hidden" data-name="tipo" value="ficha_pdf">
@@ -55,7 +56,7 @@
 
 {% schema %}
 {
-  "name": "Brenson · Exit intent (ficha PDF)",
+  "name": "Exit intent PDF",
   "tag": "div",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Antes de irte" },
@@ -64,7 +65,7 @@
     { "type": "text", "id": "cta_label", "label": "Botón", "default": "Enviarme la ficha" },
     { "type": "range", "id": "days", "min": 1, "max": 30, "step": 1, "label": "Mostrar de nuevo después de (días)", "default": 7 }
   ],
-  "presets": [ { "name": "Brenson · Exit intent (ficha PDF)" } ],
+  "presets": [ { "name": "Exit intent PDF" } ],
   "enabled_on": { "templates": ["product"] }
 }
 {% endschema %}

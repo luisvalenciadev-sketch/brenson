@@ -4,6 +4,7 @@
     "namespace": "brenson",
     "definitions": [
       { "key": "categoria", "name": "Categoría", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"bicicleta\",\"ciclomotor\",\"motocarro\",\"cuadriciclo\"]" }], "filterable": true },
+      { "key": "descripcion_corta", "name": "Descripción corta", "type": "single_line_text_field" },
       { "key": "uso", "name": "Uso recomendado", "type": "list.single_line_text_field", "validations": [{ "name": "choices", "value": "[\"personal\",\"comercial\",\"logistica\"]" }], "filterable": true },
       { "key": "autonomia_km", "name": "Autonomía (km)", "type": "number_integer" },
       { "key": "velocidad_max_kmh", "name": "Velocidad máxima (km/h)", "type": "number_integer" },

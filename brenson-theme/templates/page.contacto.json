@@ -3,7 +3,7 @@
     "hero": {
       "type": "rich-text",
       "blocks": {
-        "heading": { "type": "heading", "settings": { "heading": "<p>Hablemos de tu próximo vehículo eléctrico</p>", "heading_size": "h1" } },
+        "heading": { "type": "heading", "settings": { "heading": "Hablemos de tu próximo vehículo eléctrico", "heading_size": "h1" } },
         "text": { "type": "text", "settings": { "text": "<p>Escríbenos por WhatsApp, déjanos tus datos o agenda una prueba de manejo en sede o a domicilio.</p>" } }
       },
       "block_order": ["heading", "text"],

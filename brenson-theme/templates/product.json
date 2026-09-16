@@ -5,7 +5,7 @@
       "blocks": {
         "certificado": { "type": "brenson_certificado" },
         "title": { "type": "title" },
-        "subtitle": { "type": "text", "settings": { "text": "{{ product.metafields.brenson.descripcion_corta }}", "text_style": "body" } },
+        "subtitle": { "type": "text", "settings": { "text": "{{ product.metafields.brenson.descripcion_corta.value }}", "text_style": "body" } },
         "specs_clave": { "type": "brenson_specs_clave" },
         "variant_picker": { "type": "variant_picker", "settings": { "picker_type": "button", "swatch_shape": "circle" } },
         "precio_cuota": { "type": "brenson_precio" },

@@ -28,20 +28,24 @@
         <h1 class="brenson-heading">Solicite acceso corporativo a precios de flota</h1>
         <p class="brenson-subheading">Diligencie la información de su empresa. Validamos NIT y documento en 24 horas hábiles y le asignamos tier y asesor.</p>
 
-        {%- if b2b_state == 'personal' -%}
-          {%- comment -%} Cliente B2C logueado: conversión a corporativo (sin crear cuenta) {%- endcomment -%}
-          <form class="brenson-form" data-brenson-b2b-convert data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
+        {%- comment -%}
+          Un solo <form> para ambas variantes (evita abrir dos <form> distintos en ramas del if,
+          que el parser de theme-check no balancea bien). 'personal' = cliente B2C logueado que
+          convierte su cuenta (sin crear una nueva); si no, es el registro completo (paso 1 B2B).
+        {%- endcomment -%}
+        <form class="brenson-form" id="BrensonB2BRegister" {% if b2b_state == 'personal' %}data-brenson-b2b-convert{% else %}method="post" action="/account" data-brenson-b2b-register{% endif %} data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" data-return-to="/pages/empresas-acceso">
+          {%- if b2b_state == 'personal' -%}
             <p class="brenson-form__hint brenson-muted" style="font-size: var(--brenson-text-sm)">Sesión iniciada como <strong>{{ customer.email }}</strong>. Convertiremos esta cuenta en corporativa.</p>
-        {%- else -%}
-          {%- form 'customer', class: 'brenson-form', id: 'BrensonB2BRegister', data-brenson-b2b-register: '', data-endpoint: settings.brenson_services_url, return_to: '/pages/empresas-acceso' -%}
-            {%- if form.errors -%}<p class="brenson-form__error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+          {%- else -%}
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="&#10003;">
             {%- comment -%}
               Shopify ignora customer[tags] desde el storefront. El tag b2b-pendiente lo asigna Shopify Flow
               al detectar la nota que empieza por "B2B {" (Fase 3, Flow #1). Mientras tanto el guard trata
               la nota como estado pendiente.
             {%- endcomment -%}
             <input type="hidden" name="customer[note]" data-b2b-note value="">
-        {%- endif -%}
+          {%- endif -%}
 
             <div class="brenson-form__row brenson-form__row--2">
               <div class="brenson-field"><label for="b2b-razon">Razón social *</label><input id="b2b-razon" type="text" data-b2b="razon_social" required placeholder="Ej. Transportes del Caribe S.A.S."></div>
@@ -113,11 +117,7 @@
             <p class="brenson-form__success" data-b2b-success hidden role="status">Solicitud enviada. Le confirmaremos la activación por correo.</p>
             <p class="brenson-form__error" data-b2b-error hidden role="alert">No pudimos enviar la solicitud. Escríbanos por WhatsApp o intente de nuevo.</p>
 
-        {%- if b2b_state == 'personal' -%}
-          </form>
-        {%- else -%}
-          {%- endform -%}
-        {%- endif -%}
+        </form>
       </div>
     {%- endif -%}
   </div>
@@ -126,10 +126,10 @@
 
 {% schema %}
 {
-  "name": "Brenson · Empresas: solicitud de acceso",
+  "name": "Empresas · Solicitud",
   "tag": "div",
   "settings": [ { "type": "paragraph", "content": "Registro corporativo en dos pasos (cuenta + documento). El tag pendiente y la nota con datos de empresa se guardan en el cliente para que Shopify Flow notifique a Brenson." } ],
-  "presets": [ { "name": "Brenson · Empresas: solicitud de acceso" } ],
+  "presets": [ { "name": "Empresas · Solicitud" } ],
   "enabled_on": { "templates": ["page"] }
 }
 {% endschema %}

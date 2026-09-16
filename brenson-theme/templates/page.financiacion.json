@@ -4,7 +4,7 @@
       "type": "rich-text",
       "blocks": {
         "caption": { "type": "caption", "settings": { "caption": "Financiación ágil y 100 % digital", "text_style": "caption-with-letter-spacing", "text_size": "medium" } },
-        "heading": { "type": "heading", "settings": { "heading": "<p>Tu vehículo eléctrico, en cuotas que sí puedes pagar.</p>", "heading_size": "h1" } },
+        "heading": { "type": "heading", "settings": { "heading": "Tu vehículo eléctrico, en cuotas que sí puedes pagar.", "heading_size": "h1" } },
         "text": { "type": "text", "settings": { "text": "<p>Simula tu cuota, ajusta tu pago inicial y solicita el estudio de crédito con nuestro aliado financiero sin papeleos ni salir de casa.</p>" } }
       },
       "block_order": ["caption", "heading", "text"],
@@ -37,7 +37,7 @@
       "settings": {
         "title": "Compara la cuota por vehículo",
         "heading_size": "h2",
-        "description": "Cuotas calculadas a 36 meses con 10 % de inicial y la tasa de referencia vigente.",
+        "description": "<p>Cuotas calculadas a 36 meses con 10 % de inicial y la tasa de referencia vigente.</p>",
         "show_description": true,
         "description_style": "body",
         "collection": "destacados",

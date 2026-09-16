@@ -1481,7 +1481,7 @@
       { "type": "header", "content": "Horario de atención" },
       { "type": "text", "id": "brenson_horario_semana", "label": "Lunes a viernes", "default": "08:00-18:00", "info": "Formato HH:MM-HH:MM, hora de Colombia." },
       { "type": "text", "id": "brenson_horario_sabado", "label": "Sábado", "default": "09:00-13:00", "info": "Vacío si no hay atención." },
-      { "type": "text", "id": "brenson_horario_domingo", "label": "Domingo", "default": "" },
+      { "type": "text", "id": "brenson_horario_domingo", "label": "Domingo" },
       { "type": "text", "id": "brenson_fuera_horario_msg", "label": "Mensaje fuera de horario", "default": "Estamos fuera de horario. Escríbenos y te respondemos al inicio de la próxima jornada." }
     ]
   },
@@ -1518,8 +1518,8 @@
     "name": "Brenson · Desarrollo",
     "settings": [
       { "type": "checkbox", "id": "brenson_modo_simulacion", "label": "Modo simulación", "default": true, "info": "Muestra el aviso 'datos de demostración' y el contenido marcado como no verificado. APAGAR antes del lanzamiento (ver docs/ESTRATEGIA_SIMULACION.md)." },
-      { "type": "text", "id": "brenson_gtm_id", "label": "ID de Google Tag Manager", "default": "", "info": "GTM-XXXXXXX. Vacío = no se carga." },
-      { "type": "text", "id": "brenson_turnstile_site_key", "label": "Cloudflare Turnstile · site key", "default": "", "info": "Anti-spam en formularios. Vacío = desactivado. El secret va en brenson-services." }
+      { "type": "text", "id": "brenson_gtm_id", "label": "ID de Google Tag Manager", "info": "GTM-XXXXXXX. Vacío = no se carga." },
+      { "type": "text", "id": "brenson_turnstile_site_key", "label": "Cloudflare Turnstile · site key", "info": "Anti-spam en formularios. Vacío = desactivado. El secret va en brenson-services." }
     ]
   }
 ]

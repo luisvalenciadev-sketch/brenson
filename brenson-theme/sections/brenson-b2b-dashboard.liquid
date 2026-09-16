@@ -171,7 +171,7 @@
           <ul class="brenson-doc-list">
             {%- for block in section.blocks -%}
               {%- if block.type == 'documento' and block.settings.file != blank -%}
-                <li {{ block.shopify_attributes }}><a href="{{ block.settings.file | file_url }}" target="_blank" rel="noopener"><span>{{ block.settings.title }}</span><span class="brenson-muted">PDF</span></a></li>
+                <li {{ block.shopify_attributes }}><a href="{{ block.settings.file }}" target="_blank" rel="noopener"><span>{{ block.settings.title }}</span><span class="brenson-muted">PDF</span></a></li>
               {%- endif -%}
             {%- endfor -%}
             {%- if settings.brenson_services_url != blank -%}
@@ -198,13 +198,13 @@
 
 {% schema %}
 {
-  "name": "Brenson · Empresas: dashboard",
+  "name": "Empresas · Dashboard",
   "tag": "div",
   "settings": [ { "type": "paragraph", "content": "Visible solo para clientes con acceso aprobado. Datos desde metafields del cliente y metaobjects de cotizaciones y unidades." } ],
   "blocks": [
-    { "type": "documento", "name": "Documento descargable", "settings": [ { "type": "text", "id": "title", "label": "Título", "default": "Catálogo de flota" }, { "type": "file", "id": "file", "label": "Archivo PDF" } ] }
+    { "type": "documento", "name": "Documento descargable", "settings": [ { "type": "text", "id": "title", "label": "Título", "default": "Catálogo de flota" }, { "type": "url", "id": "file", "label": "URL del PDF" } ] }
   ],
-  "presets": [ { "name": "Brenson · Empresas: dashboard" } ],
+  "presets": [ { "name": "Empresas · Dashboard" } ],
   "enabled_on": { "templates": ["page"] }
 }
 {% endschema %}

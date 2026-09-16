@@ -1538,8 +1538,32 @@
         }
       }
     },
+    "main-account": {
+      "name": "Cuenta"
+    },
+    "main-activate-account": {
+      "name": "Activar cuenta"
+    },
+    "main-addresses": {
+      "name": "Direcciones"
+    },
+    "main-login": {
+      "name": "Inicio de sesión",
+      "shop_login_button": {
+        "enable": "Habilitar inicio de sesión con Shop"
+      }
+    },
+    "main-order": {
+      "name": "Pedido"
+    },
+    "main-reset-password": {
+      "name": "Restablecer contraseña"
+    },
+    "main-register": {
+      "name": "Registro"
+    },
     "main-list-collections": {
-      "name": "Página de lista de colecciones",
+      "name": "Lista de colecciones",
       "settings": {
         "title": {
           "label": "Título",
@@ -1599,7 +1623,7 @@
       "name": "Página"
     },
     "main-password-footer": {
-      "name": "Pie de página de contraseña"
+      "name": "Footer de contraseña"
     },
     "main-password-header": {
       "name": "Encabezado de contraseña",
@@ -2269,7 +2293,7 @@
       }
     },
     "newsletter": {
-      "name": "Suscriptor de correo electrónico",
+      "name": "Newsletter",
       "settings": {
         "full_width": {
           "label": "Ancho completo"
@@ -2637,7 +2661,7 @@
       }
     },
     "email-signup-banner": {
-      "name": "Banner de suscripción de correo electrónico",
+      "name": "Banner de newsletter",
       "settings": {
         "paragraph": {
           "content": "Suscriptores agregados [perfiles de clientes](https://help.shopify.com/manual/customers/manage-customers)"
@@ -2773,7 +2797,7 @@
       }
     },
     "slideshow": {
-      "name": "Presentación de diapositivas",
+      "name": "Presentación",
       "settings": {
         "layout": {
           "label": "Diseño",

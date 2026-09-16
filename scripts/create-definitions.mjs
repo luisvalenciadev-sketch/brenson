@@ -25,9 +25,8 @@ for (const mo of defs.metaobjects) {
   }));
   const input = {
     type: mo.type, name: mo.name,
-    access: { storefront: mo.storefront ? 'PUBLIC_READ' : 'NONE', admin: 'MERCHANT_READ_WRITE' },
+    access: { storefront: mo.storefront ? 'PUBLIC_READ' : 'NONE' },
     capabilities: { publishable: { enabled: false }, translatable: { enabled: true } },
-    displayNameField: mo.fields.find((f) => ['nombre', 'titulo', 'label', 'numero', 'serie', 'pregunta'].includes(f.key))?.key,
     fieldDefinitions
   };
   if (mo.single_entry) input.capabilities.publishable = { enabled: false };
