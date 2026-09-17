@@ -1,20 +1,28 @@
 /*
-  Brenson Design Tokens v1
-  Fuente: Stitch "Brenson Design System v1" (assets/7471924313442223255) y manual de marca [S20: pendiente validar con manual oficial].
-  Este es el ÚNICO archivo que cambia cuando llegue el manual de marca definitivo.
+  Brenson Design Tokens v2
+  Fuente: Manual de marca corporativa oficial (DO-MKT-001, entregado 18-sep-2026, ZIP "DOC PAGINA WEB").
+  Reemplaza los valores provisionales v1 (heredados de la auditoría del tema EDrop, nunca del manual real).
+  Nombres de variable sin cambiar a propósito (evita tocar ~38 archivos que las consumen);
+  solo cambian los valores. --brenson-rojo/-hover/-suave ahora contienen el VERDE de marca —
+  pendiente de una pasada de renombrado cuando haya tiempo (no es urgente, es solo el nombre).
+  Pendiente aparte: --brenson-certificado sigue con un verde distinto al de marca (#1f8a4c);
+  evaluar si conviene unificarlo con --brenson-rojo (verde marca) en un ajuste posterior.
   Se carga en layout/theme.liquid antes de base.css. Los tokens de Dawn (--color-*) se
   puentean al final para que las secciones nativas hereden la paleta.
 */
 
 :root {
-  /* ---- Color: marca ---- */
-  --brenson-rojo: #ee0000;
-  --brenson-rojo-hover: #c50000;
-  --brenson-rojo-suave: #fdecec;
-  --brenson-carbon: #050709;
-  --brenson-carbon-80: #1c1f24;
-  --brenson-carbon-60: #4b5058;
-  --brenson-gris: #6b7280;
+  /* ---- Color: marca (manual DO-MKT-001) ---- */
+  --brenson-rojo: #29a800;             /* verde de marca (extremo oscuro del degradado) — antes rojo #ee0000 */
+  --brenson-rojo-hover: #1f7a00;
+  --brenson-rojo-suave: #eaf9d5;
+  --brenson-verde-lima: #96ed0b;       /* extremo claro del degradado de marca, para acentos/badges */
+  --brenson-turquesa: #02b2b2;         /* segundo color de marca, para acentos secundarios/links */
+  --brenson-turquesa-suave: #e0f7f7;
+  --brenson-carbon: #1e1e1e;           /* gris oscuro de marca — antes #050709 (negro EDrop) */
+  --brenson-carbon-80: #2e2e2e;
+  --brenson-carbon-60: #565656;
+  --brenson-gris: #6b7280;             /* gris de UI neutro, no es color de marca */
   --brenson-gris-claro: #f4f4f4;
   --brenson-gris-borde: #e3e5e8;
   --brenson-blanco: #ffffff;
@@ -30,8 +38,16 @@
   --brenson-error-suave: #fee2e2;
   --brenson-info: #2563eb;
 
-  /* ---- Tipografía ---- */
-  --brenson-font: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  /* ---- Tipografía (manual DO-MKT-001: Ubuntu para texto/contenido, Dancing Script solo
+     para títulos o palabras clave puntuales — nunca para el cuerpo ni para toda la jerarquía
+     de encabezados). Ubuntu se carga vía Google Fonts en layout/theme.liquid porque el font
+     picker nativo de Dawn (settings.type_body_font) sigue en Montserrat: cambiarlo ahí requiere
+     confirmar en el editor de temas que "Ubuntu" existe en la librería de Shopify antes de
+     guardar un valor a mano en settings_data.json (arriesga romper font_face/font_modify si el
+     id no es válido). --brenson-font-script queda disponible para usos puntuales de marca
+     (ninguna sección lo usa todavía; no aplicar a encabezados globales). */
+  --brenson-font: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;
+  --brenson-font-script: 'Dancing Script', cursive;
   --brenson-font-weight-regular: 400;
   --brenson-font-weight-medium: 500;
   --brenson-font-weight-semibold: 600;

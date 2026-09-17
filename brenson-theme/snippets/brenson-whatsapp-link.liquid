@@ -11,7 +11,7 @@
   Salida: solo la URL (sin etiqueta). Uso: <a href="{% render 'brenson-whatsapp-link', context: 'product', product: product %}">
 {%- endcomment -%}
 {%- liquid
-  assign wa_number = number | default: settings.brenson_whatsapp | default: '573164820543'
+  assign wa_number = number | default: settings.brenson_whatsapp | default: '573012915915'
   assign wa_number = wa_number | replace: '+', '' | replace: ' ', '' | replace: '-', ''
   assign ctx = context | default: 'default'
 

@@ -1,7 +1,15 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "logo_width": 140,
-    "customer_account_menu": "customer-account-main-menu",
     "type_header_font": "montserrat_n7",
     "heading_scale": 100,
     "type_body_font": "montserrat_n5",
@@ -35,33 +43,33 @@
     "inputs_shadow_blur": 0,
     "card_style": "card",
     "card_image_padding": 0,
-    "card_corner_radius": 12,
     "card_text_alignment": "left",
     "card_color_scheme": "scheme-1",
     "card_border_thickness": 1,
     "card_border_opacity": 10,
+    "card_corner_radius": 12,
     "card_shadow_opacity": 0,
     "card_shadow_horizontal_offset": 0,
     "card_shadow_vertical_offset": 0,
     "card_shadow_blur": 0,
     "collection_card_style": "card",
     "collection_card_image_padding": 0,
-    "collection_card_corner_radius": 12,
     "collection_card_text_alignment": "left",
     "collection_card_color_scheme": "scheme-1",
     "collection_card_border_thickness": 1,
     "collection_card_border_opacity": 10,
+    "collection_card_corner_radius": 12,
     "collection_card_shadow_opacity": 0,
     "collection_card_shadow_horizontal_offset": 0,
     "collection_card_shadow_vertical_offset": 0,
     "collection_card_shadow_blur": 0,
     "blog_card_style": "card",
     "blog_card_image_padding": 0,
-    "blog_card_corner_radius": 12,
     "blog_card_text_alignment": "left",
     "blog_card_color_scheme": "scheme-1",
     "blog_card_border_thickness": 1,
     "blog_card_border_opacity": 10,
+    "blog_card_corner_radius": 12,
     "blog_card_shadow_opacity": 0,
     "blog_card_shadow_horizontal_offset": 0,
     "blog_card_shadow_vertical_offset": 0,
@@ -117,7 +125,8 @@
     "show_cart_note": true,
     "cart_drawer_collection": "destacados",
     "cart_color_scheme": "scheme-1",
-    "brenson_whatsapp": "573164820543",
+    "customer_account_menu": "customer-account-main-menu",
+    "brenson_whatsapp": "573012915915",
     "brenson_whatsapp_label": "Hablar con un asesor",
     "brenson_whatsapp_msg_default": "Hola Brenson, quiero más información sobre sus vehículos eléctricos.",
     "brenson_whatsapp_msg_product": "Hola Brenson, me interesa el {modelo}. ¿Me dan más información?",
@@ -136,7 +145,7 @@
     "brenson_envio_cafetero": "5 a 8 días hábiles",
     "brenson_envio_pacifico": "8 a 12 días hábiles",
     "brenson_envio_otros": "Cotización especial",
-    "brenson_sede_direccion": "Barranquilla, Colombia [BORRADOR]",
+    "brenson_sede_direccion": "Calle 29 #4B-28, Barrio Porvenir, Cali, Colombia",
     "brenson_prueba_ciudades": "Barranquilla, Santa Marta, Cartagena",
     "brenson_b2b_tag": "cliente-corporativo",
     "brenson_b2b_tag_pendiente": "b2b-pendiente",
@@ -147,6 +156,104 @@
     "brenson_modo_simulacion": true,
     "brenson_gtm_id": "",
     "brenson_turnstile_site_key": "",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo_position": "middle-left",
+          "menu": "main-menu",
+          "menu_type_desktop": "dropdown",
+          "sticky_header_type": "on-scroll-up",
+          "brenson_show_whatsapp": true,
+          "show_line_separator": true,
+          "color_scheme": "scheme-1",
+          "menu_color_scheme": "scheme-1",
+          "enable_country_selector": false,
+          "enable_language_selector": false,
+          "margin_bottom": 0,
+          "padding_top": 12,
+          "padding_bottom": 12
+        }
+      },
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "blocks": {
+          "a1": {
+            "type": "announcement",
+            "settings": {
+              "text": "Financia tu vehículo eléctrico desde $ 129.000/mes · Envíos a toda Colombia",
+              "link": "shopify://pages/financiacion"
+            }
+          }
+        },
+        "block_order": [
+          "a1"
+        ],
+        "settings": {
+          "auto_rotate": false,
+          "change_slides_speed": 5,
+          "color_scheme": "scheme-4",
+          "show_line_separator": false,
+          "show_social": false,
+          "enable_country_selector": false,
+          "enable_language_selector": false
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "f1": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Vehículos",
+              "menu": "footer-vehiculos"
+            }
+          },
+          "f2": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Empresa",
+              "menu": "footer-empresa"
+            }
+          },
+          "f3": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Ayuda",
+              "menu": "footer-ayuda"
+            }
+          },
+          "f4": {
+            "type": "text",
+            "settings": {
+              "heading": "Contacto",
+              "subtext": "<p>WhatsApp +57 301 291 5915<br>ventas@brenson.co<br>Cali, Colombia</p>"
+            }
+          }
+        },
+        "block_order": [
+          "f1",
+          "f2",
+          "f3",
+          "f4"
+        ],
+        "settings": {
+          "color_scheme": "scheme-4",
+          "newsletter_enable": true,
+          "newsletter_heading": "Recibe ofertas y novedades",
+          "enable_follow_on_shop": false,
+          "show_social": true,
+          "enable_country_selector": false,
+          "enable_language_selector": false,
+          "payment_enable": true,
+          "show_policy": true,
+          "margin_top": 0,
+          "padding_top": 48,
+          "padding_bottom": 24
+        }
+      }
+    },
+    "content_for_index": [],
     "color_schemes": {
       "scheme-1": {
         "settings": {
@@ -203,48 +310,7 @@
           "shadow": "#050709"
         }
       }
-    },
-    "sections": {
-      "header": {
-        "type": "header",
-        "settings": {
-          "logo_position": "middle-left",
-          "menu": "main-menu",
-          "menu_type_desktop": "dropdown",
-          "sticky_header_type": "on-scroll-up",
-          "show_line_separator": true,
-          "color_scheme": "scheme-1",
-          "menu_color_scheme": "scheme-1",
-          "enable_country_selector": false,
-          "enable_language_selector": false,
-          "brenson_show_whatsapp": true,
-          "margin_bottom": 0,
-          "padding_top": 12,
-          "padding_bottom": 12
-        }
-      },
-      "announcement-bar": {
-        "type": "announcement-bar",
-        "blocks": {
-          "a1": { "type": "announcement", "settings": { "text": "Financia tu vehículo eléctrico desde $ 129.000/mes · Envíos a toda Colombia", "link": "shopify://pages/financiacion" } }
-        },
-        "block_order": ["a1"],
-        "settings": { "color_scheme": "scheme-4", "show_line_separator": false, "show_social": false, "auto_rotate": false, "change_slides_speed": 5, "enable_country_selector": false, "enable_language_selector": false }
-      },
-      "brenson_whatsapp_float": { "type": "brenson-whatsapp-float", "settings": {} },
-      "footer": {
-        "type": "footer",
-        "blocks": {
-          "f1": { "type": "link_list", "settings": { "heading": "Vehículos", "menu": "footer-vehiculos" } },
-          "f2": { "type": "link_list", "settings": { "heading": "Empresa", "menu": "footer-empresa" } },
-          "f3": { "type": "link_list", "settings": { "heading": "Ayuda", "menu": "footer-ayuda" } },
-          "f4": { "type": "text", "settings": { "heading": "Contacto", "subtext": "<p>WhatsApp +57 316 482 0543<br>ventas@brenson.co<br>Barranquilla, Colombia</p>" } }
-        },
-        "block_order": ["f1", "f2", "f3", "f4"],
-        "settings": { "color_scheme": "scheme-4", "newsletter_enable": true, "newsletter_heading": "Recibe ofertas y novedades", "enable_follow_on_shop": false, "show_social": true, "enable_country_selector": false, "enable_language_selector": false, "payment_enable": true, "show_policy": true, "margin_top": 0, "padding_top": 48, "padding_bottom": 24 }
-      }
-    },
-    "content_for_index": []
+    }
   },
   "presets": {}
 }

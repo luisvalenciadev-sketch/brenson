@@ -1471,7 +1471,7 @@
     "name": "Brenson · Contacto y WhatsApp",
     "settings": [
       { "type": "paragraph", "content": "Datos de contacto usados por el botón flotante, la sticky bar y los formularios. El número va en formato internacional sin espacios ni signo +." },
-      { "type": "text", "id": "brenson_whatsapp", "label": "WhatsApp principal", "default": "573164820543", "info": "Confirmado como número oficial (decisión E1)." },
+      { "type": "text", "id": "brenson_whatsapp", "label": "WhatsApp principal", "default": "573012915915", "info": "Confirmado 18-sep-2026 contra material oficial de garantías 2026 (reemplaza el número de la decisión E1)." },
       { "type": "text", "id": "brenson_whatsapp_label", "label": "Texto del botón", "default": "Hablar con un asesor" },
       { "type": "textarea", "id": "brenson_whatsapp_msg_default", "label": "Mensaje por defecto", "default": "Hola Brenson, quiero más información sobre sus vehículos eléctricos." },
       { "type": "textarea", "id": "brenson_whatsapp_msg_product", "label": "Mensaje desde ficha", "default": "Hola Brenson, me interesa el {modelo}. ¿Me dan más información?", "info": "Usa {modelo} para insertar el nombre del vehículo." },
@@ -1498,7 +1498,7 @@
       { "type": "text", "id": "brenson_envio_pacifico", "label": "Pacífico y Llanos", "default": "8 a 12 días hábiles" },
       { "type": "text", "id": "brenson_envio_otros", "label": "Amazonía e insular", "default": "Cotización especial" },
       { "type": "header", "content": "Prueba de manejo (decisión I6)" },
-      { "type": "textarea", "id": "brenson_sede_direccion", "label": "Dirección de la sede", "default": "Barranquilla, Colombia [BORRADOR]" },
+      { "type": "textarea", "id": "brenson_sede_direccion", "label": "Dirección de la sede", "default": "Calle 29 #4B-28, Barrio Porvenir, Cali, Colombia", "info": "Confirmado 18-sep-2026 contra material oficial de garantías (área 602 = Cali)." },
       { "type": "text", "id": "brenson_prueba_ciudades", "label": "Ciudades con prueba a domicilio", "default": "Barranquilla, Santa Marta, Cartagena", "info": "Separadas por coma." }
     ]
   },

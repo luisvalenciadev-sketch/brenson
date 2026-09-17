@@ -14,7 +14,7 @@
   "url": {{ shop.url | json }},
   {%- if settings.logo -%}"logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }},{%- endif -%}
   "contactPoint": [{ "@type": "ContactPoint", "telephone": "+{{ settings.brenson_whatsapp }}", "contactType": "sales", "areaServed": "CO", "availableLanguage": ["es"] }],
-  "address": { "@type": "PostalAddress", "addressCountry": "CO", "addressLocality": "Barranquilla" }
+  "address": { "@type": "PostalAddress", "addressCountry": "CO", "addressLocality": "Cali", "streetAddress": "Calle 29 #4B-28, B/ Porvenir" }
 }
 </script>
 {%- if request.page_type == 'product' -%}

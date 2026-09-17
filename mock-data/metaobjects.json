@@ -20,10 +20,10 @@
   ],
 
   "asesores": [
-    { "handle": "asesor-ventas-b2c", "nombre": "Laura Martínez", "cargo": "Asesora comercial", "canal": "b2c", "whatsapp": "573164820543", "email": "ventas@brenson.co", "horario": "Lun a vie 8:00 a 18:00 · Sáb 9:00 a 13:00", "foto": null },
-    { "handle": "asesor-ventas-b2b", "nombre": "Andrés Gómez", "cargo": "Ejecutivo de cuentas corporativas", "canal": "b2b", "whatsapp": "573164820543", "email": "empresas@brenson.co", "horario": "Lun a vie 8:00 a 18:00", "foto": null },
-    { "handle": "asesor-servicio", "nombre": "Camilo Ruiz", "cargo": "Coordinador de servicio técnico", "canal": "servicio", "whatsapp": "573164820543", "email": "servicio@brenson.co", "horario": "Lun a vie 8:00 a 17:00", "foto": null },
-    { "handle": "asesor-garantias", "nombre": "Diana Torres", "cargo": "Gestora de garantías", "canal": "garantias", "whatsapp": "573164820543", "email": "garantias@brenson.co", "horario": "Lun a vie 8:00 a 17:00", "foto": null }
+    { "handle": "asesor-ventas-b2c", "nombre": "Laura Martínez", "cargo": "Asesora comercial", "canal": "b2c", "whatsapp": "573012915915", "email": "ventas@brenson.co", "horario": "Lun a vie 8:00 a 18:00 · Sáb 9:00 a 13:00", "foto": null },
+    { "handle": "asesor-ventas-b2b", "nombre": "Andrés Gómez", "cargo": "Ejecutivo de cuentas corporativas", "canal": "b2b", "whatsapp": "573012915915", "email": "empresas@brenson.co", "horario": "Lun a vie 8:00 a 18:00", "foto": null },
+    { "handle": "asesor-servicio", "nombre": "Camilo Ruiz", "cargo": "Coordinador de servicio técnico", "canal": "servicio", "whatsapp": "573012915915", "email": "servicio@brenson.co", "horario": "Lun a vie 8:00 a 17:00", "foto": null },
+    { "handle": "asesor-garantias", "nombre": "Diana Torres", "cargo": "Gestora de garantías", "canal": "garantias", "whatsapp": "573012915915", "email": "garantias@brenson.co", "horario": "Lun a vie 8:00 a 17:00", "foto": null }
   ],
 
   "horario_atencion": {

@@ -5,9 +5,9 @@ compatibility_flags = ["nodejs_compat"]
 
 # Variables públicas (las secretas van con `wrangler secret put`)
 [vars]
-ENVIRONMENT = "development"
-ALLOWED_ORIGINS = "https://brenson.co,https://www.brenson.co,https://brenson-co.myshopify.com,http://127.0.0.1:9292"
-SHOPIFY_SHOP = "brenson-co.myshopify.com"
+ENVIRONMENT = "staging"
+ALLOWED_ORIGINS = "https://brenson.co,https://www.brenson.co,https://brenson-0.myshopify.com,http://127.0.0.1:9292"
+SHOPIFY_SHOP = "brenson-0.myshopify.com"
 SHOPIFY_API_VERSION = "2025-07"
 
 # Proveedores: mock | real. Ver docs/ESTRATEGIA_SIMULACION.md (S10, S16)
@@ -33,13 +33,18 @@ UPLOAD_MAX_BYTES = "5242880"
 
 [[kv_namespaces]]
 binding = "KV"
-id = "REEMPLAZAR_KV_ID"
-preview_id = "REEMPLAZAR_KV_PREVIEW_ID"
+id = "88e78f93015e46d8b5c439b52c6b2cec"
+preview_id = "4b7852d761e74571a968971728059e90"
 
-[[r2_buckets]]
-binding = "DOCS"
-bucket_name = "brenson-b2b-docs"
-preview_bucket_name = "brenson-b2b-docs-dev"
+# R2 requiere habilitarse manualmente en el Dashboard de Cloudflare (Account Home → R2 → habilitar,
+# pide método de pago aunque el uso quede en el tier gratis). Mientras STORAGE_PROVIDER = "local",
+# el binding no se usa en tiempo de ejecución. Descomentar y correr
+# `wrangler r2 bucket create brenson-b2b-docs` + `brenson-b2b-docs-dev` cuando se habilite,
+# y cambiar STORAGE_PROVIDER a "r2".
+# [[r2_buckets]]
+# binding = "DOCS"
+# bucket_name = "brenson-b2b-docs"
+# preview_bucket_name = "brenson-b2b-docs-dev"
 
 [observability]
 enabled = true
