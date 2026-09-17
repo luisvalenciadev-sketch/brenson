@@ -410,9 +410,10 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 .brenson-field label { display: block; font-size: var(--brenson-text-sm); font-weight: var(--brenson-font-weight-semibold); margin-bottom: 0.56rem; }
 .brenson-field input, .brenson-field select, .brenson-field textarea {
   width: 100%; min-height: 4.8rem; padding: 1.2rem 1.6rem;
-  border: 1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius);
+  border: 1.5px solid #8a8f99; border-radius: var(--brenson-radius);
   font-family: var(--brenson-font); font-size: var(--brenson-text-md); background: #fff; color: var(--brenson-carbon);
 }
+.brenson-field input::placeholder, .brenson-field textarea::placeholder { color: var(--brenson-gris); opacity: 1; }
 .brenson-field input:focus, .brenson-field select:focus, .brenson-field textarea:focus { outline: 2px solid var(--brenson-carbon); outline-offset: 1px; border-color: var(--brenson-carbon); }
 .brenson-field__hint { font-size: var(--brenson-text-xs); color: var(--brenson-on-surface-muted); margin-top: 0.4rem; }
 .brenson-form__success { padding: var(--brenson-space-4); border-radius: var(--brenson-radius); background: var(--brenson-certificado-suave); color: var(--brenson-certificado); font-weight: var(--brenson-font-weight-semibold); }

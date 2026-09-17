@@ -59,8 +59,8 @@
               </div>
             </div>
             <div class="brenson-form__row brenson-form__row--2">
-              <div class="brenson-field"><label for="b2b-nombre">Nombre del contacto *</label><input id="b2b-nombre" type="text" {% if b2b_state == 'anon' %}name="customer[first_name]"{% endif %} data-b2b="nombre" required autocomplete="given-name"></div>
-              <div class="brenson-field"><label for="b2b-apellido">Apellido *</label><input id="b2b-apellido" type="text" {% if b2b_state == 'anon' %}name="customer[last_name]"{% endif %} data-b2b="apellido" required autocomplete="family-name"></div>
+              <div class="brenson-field"><label for="b2b-nombre">Nombre del contacto *</label><input id="b2b-nombre" type="text" {% if b2b_state == 'anon' %}name="customer[first_name]"{% endif %} data-b2b="nombre" required autocomplete="given-name" placeholder="Ej. Carlos"></div>
+              <div class="brenson-field"><label for="b2b-apellido">Apellido *</label><input id="b2b-apellido" type="text" {% if b2b_state == 'anon' %}name="customer[last_name]"{% endif %} data-b2b="apellido" required autocomplete="family-name" placeholder="Ej. Rodríguez"></div>
             </div>
             <div class="brenson-form__row brenson-form__row--2">
               <div class="brenson-field"><label for="b2b-cargo">Cargo *</label><input id="b2b-cargo" type="text" data-b2b="cargo" required placeholder="Ej. Gerente de operaciones"></div>
@@ -69,7 +69,7 @@
             {%- if b2b_state == 'anon' -%}
               <div class="brenson-form__row brenson-form__row--2">
                 <div class="brenson-field"><label for="b2b-email">Correo corporativo *</label><input id="b2b-email" type="email" name="customer[email]" data-b2b="email" required autocomplete="email" placeholder="compras@suempresa.com.co"></div>
-                <div class="brenson-field"><label for="b2b-pass">Contraseña *</label><input id="b2b-pass" type="password" name="customer[password]" required minlength="8" autocomplete="new-password"><p class="brenson-field__hint">Mínimo 8 caracteres.</p></div>
+                <div class="brenson-field"><label for="b2b-pass">Contraseña *</label><input id="b2b-pass" type="password" name="customer[password]" required minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres"><p class="brenson-field__hint">Mínimo 8 caracteres.</p></div>
               </div>
             {%- endif -%}
             <div class="brenson-form__row brenson-form__row--2">
@@ -84,7 +84,7 @@
                   <option value="otro">Otro</option>
                 </select>
               </div>
-              <div class="brenson-field"><label for="b2b-ciudad">Ciudad principal de operación *</label><input id="b2b-ciudad" type="text" data-b2b="ciudad" required autocomplete="address-level2"></div>
+              <div class="brenson-field"><label for="b2b-ciudad">Ciudad principal de operación *</label><input id="b2b-ciudad" type="text" data-b2b="ciudad" required autocomplete="address-level2" placeholder="Ej. Bogotá"></div>
             </div>
             <fieldset class="brenson-field">
               <legend style="font-weight:600; font-size: var(--brenson-text-sm); margin-bottom:0.56rem">Volumen estimado de flota a electrificar *</legend>

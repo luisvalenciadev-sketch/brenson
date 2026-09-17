@@ -101,8 +101,8 @@
           <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0 0 1.6rem">Consulte sus cotizaciones y precios de flota vigentes.</p>
           {%- form 'customer_login', class: 'brenson-form', return_to: '/pages/empresas' -%}
             {%- if form.errors -%}<p class="brenson-form__error">{{ form.errors | default_errors }}</p>{%- endif -%}
-            <div class="brenson-field"><label for="b2b-email">Correo corporativo</label><input id="b2b-email" type="email" name="customer[email]" autocomplete="email" required></div>
-            <div class="brenson-field"><label for="b2b-pass">Contraseña</label><input id="b2b-pass" type="password" name="customer[password]" autocomplete="current-password" required></div>
+            <div class="brenson-field"><label for="b2b-email">Correo corporativo</label><input id="b2b-email" type="email" name="customer[email]" autocomplete="email" placeholder="compras@suempresa.com.co" required></div>
+            <div class="brenson-field"><label for="b2b-pass">Contraseña</label><input id="b2b-pass" type="password" name="customer[password]" autocomplete="current-password" placeholder="········" required></div>
             <button class="brenson-btn brenson-btn--carbon brenson-btn--block" type="submit">Ingresar</button>
             <p style="text-align:center; font-size: var(--brenson-text-sm); margin:0"><a class="link" href="{{ routes.account_recover_url }}">¿Olvidó su contraseña?</a></p>
             <hr style="border:0; border-top:1px solid var(--brenson-gris-borde); margin: 0.8rem 0">

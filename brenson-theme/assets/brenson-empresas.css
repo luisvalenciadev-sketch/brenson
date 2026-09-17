@@ -17,8 +17,8 @@ body.brenson-empresas .brenson-trust__text { color: rgba(255,255,255,.6); }
   display: flex; flex-direction: column; gap: var(--brenson-space-3);
   box-shadow: var(--brenson-shadow);
 }
-.brenson-b2b-card .brenson-heading { color: var(--brenson-carbon); }
-.brenson-b2b-card .brenson-subheading { color: var(--brenson-gris); }
+body.brenson-empresas .brenson-b2b-card .brenson-heading { color: var(--brenson-carbon); }
+body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brenson-gris); }
 .brenson-b2b-card--center { max-width: 640px; margin: 0 auto; text-align: center; align-items: center; padding: var(--brenson-space-10) var(--brenson-space-8); }
 
 .brenson-b2b-hero { display: grid; gap: var(--brenson-space-8); align-items: center; padding-block: var(--brenson-space-8); }
