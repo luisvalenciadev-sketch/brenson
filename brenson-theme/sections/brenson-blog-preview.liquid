@@ -2,23 +2,44 @@
   brenson-blog-preview — Pantalla Stitch 14 (Página B) / Home. Artículo destacado (el más reciente)
   en tarjeta grande de 2 columnas + grid de artículos restantes. El tiempo de lectura se calcula
   (no se inventa): palabras del cuerpo / 200 ppm, redondeado hacia arriba.
+
+  Fuente de artículos: en la plantilla `blog` usamos el objeto global `blog`, que Shopify ya
+  entrega filtrado cuando la URL es /blogs/{handle}/tagged/{tag}. Usar `section.settings.blog`
+  ahí devolvía SIEMPRE el blog completo, por eso los chips no filtraban nada.
 {%- endcomment -%}
-<section class="brenson-section brenson-blog-preview">
+{%- liquid
+  assign source_blog = section.settings.blog
+  if template.name == 'blog' and blog != blank
+    assign source_blog = blog
+  endif
+  assign active_tag = current_tags | first
+-%}
+<section
+  class="brenson-section brenson-blog-preview"
+  style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
   <div class="brenson-container">
     <header class="brenson-section__head" style="display:flex; justify-content:space-between; align-items:flex-end; gap: var(--brenson-space-4); flex-wrap:wrap;">
       <div>
         <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
-        <h2 class="brenson-heading" style="margin-bottom:0">{{ section.settings.title }}</h2>
+        <h2 class="brenson-heading" style="margin-bottom:0">
+          {%- if active_tag != blank -%}{{ active_tag }}{%- else -%}{{ section.settings.title }}{%- endif -%}
+        </h2>
       </div>
-      {%- if section.settings.blog != blank -%}
-        <a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ section.settings.blog.url }}">Ver todos los artículos →</a>
+      {%- if source_blog != blank -%}
+        <a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ source_blog.url }}">
+          {%- if active_tag != blank -%}Ver todos los artículos →{%- else -%}Ver todos los artículos →{%- endif -%}
+        </a>
       {%- endif -%}
     </header>
 
-    {%- if section.settings.blog != blank -%}
-      {%- assign articles = section.settings.blog.articles -%}
+    {%- if source_blog != blank -%}
+      {%- assign articles = source_blog.articles -%}
+      {%- comment -%} Con un filtro activo no hay "destacado": todos los resultados van al grid. {%- endcomment -%}
+      {%- assign show_featured = section.settings.show_featured -%}
+      {%- if active_tag != blank -%}{%- assign show_featured = false -%}{%- endif -%}
       {%- assign featured = articles.first -%}
-      {%- if featured and section.settings.show_featured -%}
+      {%- if featured and show_featured -%}
         {%- liquid
           assign category = ''
           for t in featured.tags
@@ -57,8 +78,23 @@
         {%- assign articles = articles | slice: 1, 11 -%}
       {%- endif -%}
 
+      {%- liquid
+        assign grid_limit = section.settings.post_limit
+        if template.name == 'blog'
+          assign grid_limit = 50
+        endif
+      -%}
+
+      {%- if articles.size == 0 -%}
+        <div class="brenson-blog-empty">
+          <p class="brenson-blog-empty__title">Aún no hay artículos en esta categoría.</p>
+          <p class="brenson-muted">Estamos publicando contenido nuevo cada semana. Mientras tanto, revisa el resto de la biblioteca.</p>
+          <a class="brenson-btn brenson-btn--carbon brenson-btn--sm" href="{{ source_blog.url }}">Ver todos los artículos →</a>
+        </div>
+      {%- endif -%}
+
       <ul class="brenson-grid brenson-grid--3" role="list">
-        {%- for article in articles limit: section.settings.post_limit -%}
+        {%- for article in articles limit: grid_limit -%}
           {%- liquid
             assign category = ''
             for t in article.tags
@@ -118,6 +154,10 @@
   .brenson-blog-card__title a { color: var(--brenson-carbon); text-decoration:none; }
   .brenson-blog-card__title a:hover { color: var(--brenson-rojo); }
   .brenson-blog-card__excerpt { margin:0; font-size: var(--brenson-text-sm); flex:1; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+  .brenson-blog-empty { text-align:center; padding: var(--brenson-space-12) var(--brenson-space-6); border:1px dashed var(--brenson-gris-borde); border-radius: var(--brenson-radius-xl); margin: var(--brenson-space-8) 0; background: var(--brenson-gris-claro); }
+  .brenson-blog-empty__title { margin:0 0 var(--brenson-space-2); font-size: var(--brenson-text-lg); font-weight:800; color: var(--brenson-carbon); }
+  .brenson-blog-empty .brenson-btn { margin-top: var(--brenson-space-5); }
+
   .brenson-blog-card__link { margin-top:0.4rem; font-size: var(--brenson-text-sm); font-weight:700; color: var(--brenson-rojo); text-decoration:none; display:flex; align-items:center; gap:0.4rem; padding-top: var(--brenson-space-3); border-top: 1px solid var(--brenson-gris-borde); justify-content:space-between; }
 </style>
 
@@ -130,7 +170,9 @@
     { "type": "text", "id": "title", "label": "Título", "default": "Guías y novedades de movilidad eléctrica" },
     { "type": "blog", "id": "blog", "label": "Blog" },
     { "type": "checkbox", "id": "show_featured", "label": "Destacar el artículo más reciente", "default": true },
-    { "type": "range", "id": "post_limit", "min": 3, "max": 9, "step": 3, "label": "Artículos a mostrar en el grid", "default": 3 }
+    { "type": "range", "id": "post_limit", "min": 3, "max": 9, "step": 3, "label": "Artículos a mostrar en el grid", "default": 3 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Espacio superior", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Espacio inferior", "default": 64 }
   ],
   "presets": [ { "name": "Home · Blog" } ],
   "enabled_on": { "templates": ["index", "blog"] }

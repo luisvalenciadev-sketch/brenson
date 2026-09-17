@@ -1,4 +1,253 @@
 {{ 'section-blog-post.css' | asset_url | stylesheet_tag }}
+{{ 'brenson-article.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Vista de lectura Brenson. Se mantienen los bloques nativos de Dawn (featured_image, title,
+  content, share) para que el editor de temas siga funcionando, pero el layout se compone en
+  un orden fijo pensado para lectura: encabezado → imagen → cuerpo en columna angosta → pie.
+{%- endcomment -%}
+{%- liquid
+  assign has_image_block = false
+  assign has_title_block = false
+  assign has_content_block = false
+  assign has_share_block = false
+  assign show_date = true
+  assign show_author = false
+
+  for block in section.blocks
+    case block.type
+      when 'featured_image'
+        assign has_image_block = true
+      when 'title'
+        assign has_title_block = true
+        assign show_date = block.settings.blog_show_date
+        assign show_author = block.settings.blog_show_author
+      when 'content'
+        assign has_content_block = true
+      when 'share'
+        assign has_share_block = true
+    endcase
+  endfor
+
+  assign category = ''
+  for t in article.tags
+    unless t == 'mock'
+      assign category = t
+      break
+    endunless
+  endfor
+
+  assign words = article.content | strip_html | split: ' ' | size
+  assign read_min = words | divided_by: 200 | plus: 1
+
+  assign share_url = request.origin | append: article.url
+  assign share_title = article.title | strip_html | url_encode
+  assign author_name = article.author | default: 'Equipo Editorial Brenson'
+-%}
+
+<div class="brenson-read-progress" aria-hidden="true">
+  <div class="brenson-read-progress__bar" data-read-progress-bar></div>
+</div>
+
+<article class="brenson-article" data-brenson-article>
+  <header class="brenson-article__head">
+    <div class="brenson-container">
+      <div class="brenson-article__measure">
+        <nav class="brenson-article__breadcrumb" aria-label="Migas de pan">
+          <a href="{{ routes.root_url }}">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="{{ blog.url }}">{{ blog.title }}</a>
+          {%- if category != blank -%}
+            <span aria-hidden="true">/</span>
+            <a href="{{ blog.url }}/tagged/{{ category | handle }}">{{ category }}</a>
+          {%- endif -%}
+        </nav>
+
+        {%- if category != blank -%}
+          <a class="brenson-article__tag" href="{{ blog.url }}/tagged/{{ category | handle }}">{{ category }}</a>
+        {%- endif -%}
+
+        {%- if has_title_block -%}
+          <h1 class="brenson-article__title">{{ article.title | escape }}</h1>
+        {%- endif -%}
+
+        {%- assign lede = article.excerpt | strip_html | strip -%}
+        {%- if lede != blank -%}
+          <p class="brenson-article__excerpt">{{ lede | truncate: 260 }}</p>
+        {%- endif -%}
+
+        <div class="brenson-article__meta">
+          <span class="brenson-article__author">
+            <span class="brenson-article__avatar" aria-hidden="true">BR</span>
+            <span>
+              {%- if show_author -%}
+                <strong>{{ author_name }}</strong>
+              {%- else -%}
+                <strong>Equipo Editorial Brenson</strong>
+              {%- endif -%}
+              <span>Movilidad sostenible Colombia</span>
+            </span>
+          </span>
+
+          {%- if show_date -%}
+            <span class="brenson-article__meta-sep" aria-hidden="true">·</span>
+            <span class="brenson-article__meta-item">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              {{ article.published_at | date: '%d %b %Y' }}
+            </span>
+          {%- endif -%}
+
+          <span class="brenson-article__meta-sep" aria-hidden="true">·</span>
+          <span class="brenson-article__meta-item">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {{ read_min }} min de lectura
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {%- if has_image_block and article.image -%}
+    <div class="brenson-container">
+      <figure class="brenson-article__hero">
+        <img
+          srcset="
+            {% if article.image.width >= 750 %}{{ article.image | image_url: width: 750 }} 750w,{% endif %}
+            {% if article.image.width >= 1100 %}{{ article.image | image_url: width: 1100 }} 1100w,{% endif %}
+            {% if article.image.width >= 1500 %}{{ article.image | image_url: width: 1500 }} 1500w,{% endif %}
+            {{ article.image | image_url }} {{ article.image.width }}w
+          "
+          sizes="(min-width: 990px) 960px, 100vw"
+          src="{{ article.image | image_url: width: 1100 }}"
+          loading="eager"
+          fetchpriority="high"
+          width="{{ article.image.width }}"
+          height="{{ article.image.height }}"
+          alt="{{ article.image.alt | default: article.title | escape }}"
+        >
+      </figure>
+    </div>
+  {%- endif -%}
+
+  <div class="brenson-container">
+    <div class="brenson-article__measure">
+      {%- if has_content_block -%}
+        <div class="brenson-article__body rte">
+          {{ article.content }}
+        </div>
+      {%- endif -%}
+
+      <div class="brenson-article__foot">
+        {%- if has_share_block -%}
+          <div class="brenson-article__share">
+            <span>Compartir</span>
+            <div class="brenson-article__share-links">
+              <a
+                class="brenson-article__share-link"
+                href="https://api.whatsapp.com/send?text={{ share_title }}%20{{ share_url | url_encode }}"
+                target="_blank"
+                rel="noopener"
+                aria-label="Compartir por WhatsApp"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.48 1.34 5L2 22l5.2-1.36a9.9 9.9 0 0 0 4.84 1.24h.01c5.5 0 9.96-4.46 9.96-9.96 0-2.66-1.04-5.16-2.92-7.04A9.88 9.88 0 0 0 12.04 2Zm0 18.13h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.09.81.82-3.01-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.55 3.7-8.25 8.25-8.25 2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.84c0 4.55-3.7 8.21-8.26 8.21Zm4.53-6.16c-.25-.13-1.47-.72-1.7-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.78.97-.14.16-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.09-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.84-.2-.48-.4-.42-.55-.43h-.47c-.16 0-.43.06-.65.31-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.12.17 1.73 2.64 4.19 3.7.59.26 1.04.4 1.4.52.59.19 1.12.16 1.55.1.47-.07 1.47-.6 1.67-1.19.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29Z"/></svg>
+              </a>
+              <a
+                class="brenson-article__share-link"
+                href="https://www.linkedin.com/sharing/share-offsite/?url={{ share_url | url_encode }}"
+                target="_blank"
+                rel="noopener"
+                aria-label="Compartir en LinkedIn"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5ZM3 9.75h4v11.5H3zM9.5 9.75h3.83v1.57h.05c.53-.95 1.84-1.95 3.78-1.95 4.04 0 4.79 2.5 4.79 5.76v6.12h-4v-5.43c0-1.3-.02-2.96-1.9-2.96-1.9 0-2.2 1.4-2.2 2.87v5.52h-4z"/></svg>
+              </a>
+              <a
+                class="brenson-article__share-link"
+                href="https://www.facebook.com/sharer/sharer.php?u={{ share_url | url_encode }}"
+                target="_blank"
+                rel="noopener"
+                aria-label="Compartir en Facebook"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.99A10 10 0 0 0 22 12Z"/></svg>
+              </a>
+              <button
+                type="button"
+                class="brenson-article__share-link"
+                data-copy-link="{{ share_url }}"
+                aria-label="Copiar enlace del artículo"
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L10.7 5.24" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M14 11a5 5 0 0 0-7.07 0L4.8 13.12a5 5 0 0 0 7.07 7.07l1.41-1.41" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+            <span class="brenson-article__copied" data-copy-feedback hidden>¡Enlace copiado!</span>
+          </div>
+        {%- endif -%}
+
+        <a class="brenson-article__back" href="{{ blog.url }}">
+          <span aria-hidden="true">←</span>
+          Volver a {{ blog.title }}
+        </a>
+      </div>
+
+      {%- if blog.previous_article or blog.next_article -%}
+        <nav class="brenson-article__nav" aria-label="Navegación entre artículos">
+          {%- if blog.previous_article -%}
+            <a class="brenson-article__nav-card" href="{{ blog.previous_article.url }}">
+              <span>← Artículo anterior</span>
+              <strong>{{ blog.previous_article.title }}</strong>
+            </a>
+          {%- endif -%}
+          {%- if blog.next_article -%}
+            <a class="brenson-article__nav-card brenson-article__nav-card--next" href="{{ blog.next_article.url }}">
+              <span>Artículo siguiente →</span>
+              <strong>{{ blog.next_article.title }}</strong>
+            </a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    </div>
+  </div>
+</article>
+
+<script>
+  (() => {
+    // Barra de progreso: porcentaje leído del cuerpo del artículo, no de la página completa.
+    const article = document.querySelector('[data-brenson-article]');
+    const bar = document.querySelector('[data-read-progress-bar]');
+    if (article && bar) {
+      const update = () => {
+        const rect = article.getBoundingClientRect();
+        const total = rect.height - window.innerHeight;
+        const pct = total <= 0 ? 100 : Math.min(100, Math.max(0, (-rect.top / total) * 100));
+        bar.style.width = pct + '%';
+      };
+      update();
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update, { passive: true });
+    }
+
+    const copyBtn = document.querySelector('[data-copy-link]');
+    const feedback = document.querySelector('[data-copy-feedback]');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const url = copyBtn.getAttribute('data-copy-link');
+        try {
+          await navigator.clipboard.writeText(url);
+        } catch (e) {
+          const tmp = document.createElement('input');
+          tmp.value = url;
+          document.body.appendChild(tmp);
+          tmp.select();
+          document.execCommand('copy');
+          tmp.remove();
+        }
+        if (feedback) {
+          feedback.hidden = false;
+          setTimeout(() => { feedback.hidden = true; }, 2200);
+        }
+      });
+    }
+  })();
+</script>
 
 <article class="article-template">
   {%- for block in section.blocks -%}
@@ -7,91 +256,8 @@
         <div class="page-width page-width--narrow">
           {% render block %}
         </div>
-      {%- when 'featured_image' -%}
-        {%- if article.image -%}
-          <div
-            class="article-template__hero-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
-            {{ block.shopify_attributes }}
-          >
-            <div
-              class="article-template__hero-{{ block.settings.image_height }} media"
-              {% if block.settings.image_height == 'adapt' and article.image %}
-                style="padding-bottom: {{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%;"
-              {% endif %}
-            >
-              <img
-                srcset="
-                  {% if article.image.width >= 350 %}{{ article.image | image_url: width: 350 }} 350w,{% endif %}
-                  {% if article.image.width >= 750 %}{{ article.image | image_url: width: 750 }} 750w,{% endif %}
-                  {% if article.image.width >= 1100 %}{{ article.image | image_url: width: 1100 }} 1100w,{% endif %}
-                  {% if article.image.width >= 1500 %}{{ article.image | image_url: width: 1500 }} 1500w,{% endif %}
-                  {% if article.image.width >= 2200 %}{{ article.image | image_url: width: 2200 }} 2200w,{% endif %}
-                  {% if article.image.width >= 3000 %}{{ article.image | image_url: width: 3000 }} 3000w,{% endif %}
-                  {{ article.image | image_url }} {{ article.image.width }}w
-                "
-                sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw"
-                src="{{ article.image | image_url: width: 1100 }}"
-                loading="eager"
-                fetchpriority="high"
-                width="{{ article.image.width }}"
-                height="{{ article.image.height }}"
-                alt="{{ article.image.alt | escape }}"
-              >
-            </div>
-          </div>
-        {%- endif -%}
-
-      {%- when 'title' -%}
-        <header
-          class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
-          {{ block.shopify_attributes }}
-        >
-          <h1
-            class="article-template__title"
-          >
-            {{ article.title | escape }}
-          </h1>
-          {%- if block.settings.blog_show_date -%}
-            <span class="circle-divider caption-with-letter-spacing">
-              {{- article.published_at | time_tag: format: 'date' -}}
-            </span>
-          {%- endif -%}
-          {%- if block.settings.blog_show_author -%}
-            <span class="caption-with-letter-spacing">
-              <span>{{ article.author }}</span>
-            </span>
-          {%- endif -%}
-        </header>
-
-      {%- when 'content' -%}
-        <div
-          class="article-template__content page-width page-width--narrow rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {{ block.shopify_attributes }}
-        >
-          {{ article.content }}
-        </div>
-
-      {%- when 'share' -%}
-        <div
-          class="article-template__social-sharing page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {{ block.shopify_attributes }}
-        >
-          {% assign share_url = request.origin | append: article.url %}
-          {% render 'share-button', block: block, share_link: share_url %}
-        </div>
     {%- endcase -%}
   {%- endfor -%}
-
-  <div class="article-template__back element-margin-top center{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-    <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
-      <span class="icon-wrap">
-        <span class="svg-wrapper">
-          {{- 'icon-arrow.svg' | inline_asset_content -}}
-        </span>
-      </span>
-      {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
-    </a>
-  </div>
   {%- if blog.comments_enabled? -%}
     <div class="article-template__comment-wrapper background-secondary">
       <div

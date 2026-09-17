@@ -1,32 +1,118 @@
 {%- comment -%}
   brenson-blog-filters — Pantalla Stitch 14 (Página B). Chips de categoría del blog.
   Usa el tag nativo de Shopify (cada artículo ya trae su categoría como tag, ver scripts/import-blog.mjs)
-  y enlaza a /blogs/{handle}/tagged/{tag}, sin JS: filtrado nativo de Shopify.
+  y enlaza a /blogs/{handle}/tagged/{tag}: filtrado nativo de Shopify, sin JS.
+  El estado activo se resuelve con `current_tags` (no con el path), que es lo que Shopify
+  expone realmente en plantillas de blog filtradas.
 {%- endcomment -%}
 {%- liquid
-  assign current_tag = request.path | split: '/tagged/' | last
-  if current_tag == request.path
-    assign current_tag = ''
-  endif
+  assign active_tag = current_tags | first
+  assign alignment = section.settings.alignment
 -%}
-<div class="brenson-container" style="padding-top: var(--brenson-space-2); padding-bottom: var(--brenson-space-6)">
-  <div class="brenson-chips" role="list">
-    <a class="brenson-chip {% if current_tag == blank %}is-active{% endif %}" href="{{ blog.url }}">Todos</a>
-    {%- for t in blog.all_tags -%}
-      {%- if t == 'mock' -%}{%- continue -%}{%- endif -%}
-      <a class="brenson-chip {% if current_tag == t %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ t | handle }}">{{ t }}</a>
-    {%- endfor -%}
-  </div>
+<div class="brenson-container brenson-blog-filters" style="--bfilters-align: {% if alignment == 'center' %}center{% else %}flex-start{% endif %}">
+  <nav class="brenson-blog-filters__bar" aria-label="{{ section.settings.aria_label | default: 'Filtrar artículos por categoría' }}">
+    {%- if section.settings.label != blank -%}
+      <span class="brenson-blog-filters__label">{{ section.settings.label }}</span>
+    {%- endif -%}
+    <div class="brenson-chips brenson-blog-filters__chips">
+      <a
+        class="brenson-chip{% if active_tag == blank %} is-active{% endif %}"
+        href="{{ blog.url }}"
+        {% if active_tag == blank %}aria-current="page"{% endif %}
+      >{{ section.settings.all_label | default: 'Todos' }}</a>
+      {%- for t in blog.all_tags -%}
+        {%- if t == 'mock' -%}{%- continue -%}{%- endif -%}
+        {%- assign is_active = false -%}
+        {%- if active_tag and active_tag == t -%}{%- assign is_active = true -%}{%- endif -%}
+        <a
+          class="brenson-chip{% if is_active %} is-active{% endif %}"
+          href="{{ blog.url }}/tagged/{{ t | handle }}"
+          {% if is_active %}aria-current="page"{% endif %}
+        >{{ t }}</a>
+      {%- endfor -%}
+    </div>
+  </nav>
+
+  {%- if active_tag != blank -%}
+    <p class="brenson-blog-filters__status" role="status">
+      Mostrando <strong>{{ blog.articles_count }}</strong>
+      {% if blog.articles_count == 1 %}artículo{% else %}artículos{% endif %}
+      en <strong>{{ active_tag }}</strong>
+      · <a href="{{ blog.url }}">Quitar filtro</a>
+    </p>
+  {%- endif -%}
 </div>
+
 <style>
-  .brenson-chip.is-active { background: var(--brenson-carbon); color:#fff; border-color: var(--brenson-carbon); }
+  .brenson-blog-filters {
+    padding-top: var(--brenson-space-5);
+    padding-bottom: var(--brenson-space-5);
+    border-bottom: 1px solid var(--brenson-gris-borde);
+  }
+  .brenson-blog-filters__bar {
+    display: flex;
+    align-items: center;
+    justify-content: var(--bfilters-align, center);
+    gap: var(--brenson-space-4);
+    flex-wrap: wrap;
+  }
+  .brenson-blog-filters__label {
+    font-size: var(--brenson-text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--brenson-carbon-60);
+  }
+  .brenson-blog-filters__chips {
+    justify-content: var(--bfilters-align, center);
+  }
+  .brenson-blog-filters__status {
+    margin: var(--brenson-space-4) 0 0;
+    text-align: center;
+    font-size: var(--brenson-text-sm);
+    color: var(--brenson-carbon-60);
+  }
+  .brenson-blog-filters__status strong { color: var(--brenson-carbon); }
+  .brenson-blog-filters__status a { color: var(--brenson-rojo); font-weight: 700; }
+
+  /* En móvil los chips se vuelven un carrusel horizontal en vez de apilarse en 4 filas. */
+  @media (max-width: 749px) {
+    .brenson-blog-filters__bar { justify-content: flex-start; }
+    .brenson-blog-filters__chips {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 0.4rem;
+      margin-inline: calc(var(--brenson-space-4) * -1);
+      padding-inline: var(--brenson-space-4);
+    }
+    .brenson-blog-filters__chips::-webkit-scrollbar { display: none; }
+    .brenson-blog-filters__chips .brenson-chip { flex: 0 0 auto; scroll-snap-align: start; }
+  }
 </style>
 
 {% schema %}
 {
   "name": "Blog · Categorías",
   "tag": "div",
-  "settings": [],
+  "settings": [
+    { "type": "text", "id": "label", "label": "Etiqueta previa", "default": "" },
+    { "type": "text", "id": "all_label", "label": "Texto del chip \"todos\"", "default": "Todos" },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alineación",
+      "options": [
+        { "value": "center", "label": "Centrado" },
+        { "value": "left", "label": "Izquierda" }
+      ],
+      "default": "center"
+    },
+    { "type": "text", "id": "aria_label", "label": "Etiqueta accesible", "default": "Filtrar artículos por categoría" }
+  ],
   "presets": [ { "name": "Blog · Categorías" } ],
   "enabled_on": { "templates": ["blog"] }
 }

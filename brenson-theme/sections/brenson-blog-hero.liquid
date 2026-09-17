@@ -1,0 +1,95 @@
+{%- comment -%}
+  brenson-blog-hero — Encabezado de la portada del blog.
+  Reemplaza al `rich-text` genérico: centra de verdad (eyebrow + título + bajada en una sola
+  columna con medida de lectura acotada) y respeta el header sticky con su propio padding.
+{%- endcomment -%}
+{%- liquid
+  assign active_tag = current_tags | first
+-%}
+<section
+  class="brenson-blog-hero"
+  style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="brenson-container">
+    <div class="brenson-blog-hero__inner">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="brenson-eyebrow brenson-blog-hero__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+
+      <h1 class="brenson-blog-hero__title">
+        {%- if active_tag != blank -%}
+          {{ active_tag }}
+        {%- else -%}
+          {{ section.settings.heading }}
+        {%- endif -%}
+      </h1>
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="brenson-blog-hero__sub">
+          {%- if active_tag != blank -%}
+            Artículos de la categoría <strong>{{ active_tag }}</strong> en el blog de movilidad eléctrica de Brenson.
+          {%- else -%}
+            {{ section.settings.subheading }}
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .brenson-blog-hero {
+    background: var(--brenson-gris-claro);
+    text-align: center;
+  }
+  .brenson-blog-hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--brenson-space-3);
+    max-width: 78rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+  /* El eyebrow trae un ::before decorativo; como flex-item se centra con el texto. */
+  .brenson-blog-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+  .brenson-blog-hero__title {
+    margin: 0;
+    font-size: clamp(3.2rem, 5vw, 5.2rem);
+    line-height: 1.12;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--brenson-carbon);
+    text-wrap: balance;
+  }
+  .brenson-blog-hero__sub {
+    margin: 0;
+    max-width: 62rem;
+    font-size: var(--brenson-text-md);
+    line-height: 1.6;
+    color: var(--brenson-carbon-60);
+    text-wrap: pretty;
+  }
+  .brenson-blog-hero__sub strong { color: var(--brenson-carbon); }
+</style>
+
+{% schema %}
+{
+  "name": "Blog · Encabezado",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Blog de movilidad" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Guías y novedades de movilidad eléctrica" },
+    { "type": "textarea", "id": "subheading", "label": "Bajada", "default": "Normativa, ahorro, mantenimiento y casos reales en Colombia. Información clara para tomar mejores decisiones en la vía y en tu bolsillo." },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Espacio superior", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Espacio inferior", "default": 40 }
+  ],
+  "presets": [ { "name": "Blog · Encabezado" } ],
+  "enabled_on": { "templates": ["blog"] }
+}
+{% endschema %}

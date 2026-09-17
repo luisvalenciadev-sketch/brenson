@@ -32,9 +32,18 @@
         "share",
         "content"
       ]
+    },
+    "relacionados": {
+      "type": "brenson-article-related",
+      "settings": {
+        "eyebrow": "Sigue leyendo",
+        "title": "Artículos relacionados",
+        "limit": 3
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "relacionados"
   ]
 }
