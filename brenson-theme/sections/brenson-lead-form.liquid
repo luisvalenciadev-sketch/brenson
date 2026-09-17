@@ -45,7 +45,7 @@
         <div class="brenson-form__row brenson-form__row--2">
           <div class="brenson-field">
             <label for="lead-nombre">Nombre</label>
-            <input id="lead-nombre" type="text" name="contact[name]" data-name="nombre" required autocomplete="name">
+            <input id="lead-nombre" type="text" name="contact[name]" data-name="nombre" required placeholder="Ej. Ana Ramírez" autocomplete="name">
           </div>
           <div class="brenson-field">
             <label for="lead-whatsapp">WhatsApp</label>
@@ -55,17 +55,18 @@
         <div class="brenson-form__row brenson-form__row--2">
           <div class="brenson-field">
             <label for="lead-email">Correo (opcional)</label>
-            <input id="lead-email" type="email" name="contact[email]" data-name="email" autocomplete="email">
+            <input id="lead-email" type="email" name="contact[email]" data-name="email" placeholder="tucorreo@ejemplo.com" autocomplete="email">
           </div>
           <div class="brenson-field">
             <label for="lead-ciudad">Ciudad</label>
-            <input id="lead-ciudad" type="text" name="contact[ciudad]" data-name="ciudad" required autocomplete="address-level2">
+            <input id="lead-ciudad" type="text" name="contact[ciudad]" data-name="ciudad" required placeholder="Ej. Bogotá D.C." autocomplete="address-level2">
           </div>
         </div>
         <div class="brenson-form__row brenson-form__row--2">
           <div class="brenson-field">
             <label for="lead-uso">Uso previsto</label>
             <select id="lead-uso" name="contact[uso]" data-name="uso" required>
+              <option value="" disabled selected>Selecciona el uso</option>
               <option value="personal">Personal</option>
               <option value="comercial">Comercial</option>
               <option value="logistica">Logística / flota</option>

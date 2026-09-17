@@ -75,6 +75,7 @@
               <div class="brenson-field">
                 <label for="soporte-modelo">Modelo de vehículo *</label>
                 <select id="soporte-modelo" name="contact[vehiculo]" data-name="vehiculo" required>
+                  <option value="" disabled selected>Selecciona tu modelo</option>
                   {%- for p in section.settings.collection.products limit: 12 -%}<option>{{ p.title }}</option>{%- endfor -%}
                 </select>
               </div>

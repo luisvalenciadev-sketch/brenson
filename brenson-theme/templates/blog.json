@@ -21,7 +21,7 @@
     },
     "filtros": {
       "type": "brenson-blog-filters",
-      "settings": { "label": "", "all_label": "Todos", "alignment": "center", "aria_label": "Filtrar artículos por categoría" }
+      "settings": { "all_label": "Todos", "alignment": "center", "aria_label": "Filtrar artículos por categoría" }
     },
     "main": {
       "type": "brenson-blog-preview",
