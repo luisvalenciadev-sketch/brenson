@@ -1,0 +1,251 @@
+{%- comment -%}
+  brenson-b2b-flotas — Pantalla Stitch 17 "Brenson Empresas · Flotas & Catálogo Industrial".
+  Página pública /pages/empresas-flotas (layout theme.empresas).
+
+  Contenido: hero con homologación, filtro por categoría, gama industrial, CTA de ingeniería
+  a la medida, comparativa técnica homologada y equipamiento de fábrica.
+
+  Datos: el catálogo y la tabla comparativa se alimentan de productos REALES de la colección
+  corporativa (settings.brenson_b2b_collection) y de sus metafields brenson.*. No se codifican
+  modelos ni especificaciones: si un metafield está vacío, la celda muestra un guion.
+
+  Precios: nunca se muestran en público. El precio neto corporativo exige validación de NIT.
+
+  Visibilidad: contenido comercial. Se oculta a empresas ya aprobadas.
+  theme-check-disable ConvertIncludeToRender
+{%- endcomment -%}
+{%- include 'brenson-b2b-guard' -%}
+{%- if b2b_state != 'aprobado' -%}
+{%- liquid
+  assign s = section.settings
+  assign fleet = s.coleccion | default: settings.brenson_b2b_collection
+  assign productos = fleet.products
+  assign equipamiento = section.blocks | where: 'type', 'equipamiento'
+-%}
+
+<section id="flotas" class="brenson-section brenson-b2b-flotas" data-b2b-flotas>
+  <div class="brenson-container">
+
+    {%- comment -%} ── Hero ── {%- endcomment -%}
+    <header class="brenson-b2b-flotas__hero">
+      <span class="brenson-badge brenson-badge--sm">{{ s.homologacion }}</span>
+      <h1 class="brenson-heading" style="font-size: clamp(3.2rem, 4vw, 5.2rem)">{{ s.title }}</h1>
+      <p class="brenson-subheading">{{ s.text }}</p>
+    </header>
+
+    {%- if productos.size > 0 -%}
+      {%- comment -%} ── Filtro por categoría ── {%- endcomment -%}
+      {%- liquid
+        assign categorias = ''
+        for p in productos
+          assign cat = p.metafields.brenson.categoria.value
+          unless cat == blank or categorias contains cat
+            assign categorias = categorias | append: cat | append: ','
+          endunless
+        endfor
+        assign categorias = categorias | split: ','
+      -%}
+      {%- if categorias.size > 1 -%}
+        <div class="brenson-chips brenson-b2b-flotas__filtros" role="group" aria-label="Filtrar por categoría">
+          <button type="button" class="brenson-chip is-active" data-flota-filtro="todas" aria-pressed="true">Todas las unidades</button>
+          {%- for c in categorias -%}
+            <button type="button" class="brenson-chip" data-flota-filtro="{{ c | handle }}" aria-pressed="false">{{ c | capitalize }}</button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ── Gama industrial ── {%- endcomment -%}
+      <div class="brenson-b2b-block">
+        <header class="brenson-section__head">
+          <span class="brenson-eyebrow" style="color:#ff6b6b">{{ s.gama_eyebrow }}</span>
+          <h2 class="brenson-heading">{{ s.gama_title }}</h2>
+        </header>
+        <ul class="brenson-grid brenson-grid--3" role="list" data-flota-grid>
+          {%- for p in productos -%}
+            {%- assign pm = p.metafields.brenson -%}
+            <li class="brenson-b2b-card brenson-b2b-flotas__card" data-flota-cat="{{ pm.categoria.value | handle }}">
+              <div class="brenson-card__media">
+                {%- if p.featured_image -%}
+                  {{ p.featured_image | image_url: width: 640 | image_tag: loading: 'lazy', alt: p.title }}
+                {%- endif -%}
+                <div class="brenson-card__badges">
+                  {%- if pm.exclusivo_flota.value -%}
+                    <span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Exclusivo flota</span>
+                  {%- elsif pm.badge.value != blank -%}
+                    <span class="brenson-badge brenson-badge--carbon brenson-badge--sm">{{ pm.badge.value }}</span>
+                  {%- endif -%}
+                </div>
+              </div>
+              <div class="brenson-card__body">
+                <h3 class="brenson-card__title">{{ p.title }}</h3>
+                {%- if pm.descripcion_corta.value != blank -%}
+                  <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ pm.descripcion_corta.value }}</p>
+                {%- endif -%}
+                <dl class="brenson-b2b-flotas__specs">
+                  {%- if pm.autonomia_km.value -%}<div><dt>Autonomía</dt><dd>{{ pm.autonomia_km.value }} km</dd></div>{%- endif -%}
+                  {%- if pm.capacidad_carga_kg.value -%}<div><dt>Carga</dt><dd>{{ pm.capacidad_carga_kg.value }} kg</dd></div>{%- endif -%}
+                  {%- if pm.potencia_motor_w.value -%}<div><dt>Motor</dt><dd>{{ pm.potencia_motor_w.value }} W</dd></div>{%- endif -%}
+                </dl>
+                {%- if pm.b2b_minimo_unidades.value -%}
+                  <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin:0">Desde {{ pm.b2b_minimo_unidades.value }} unidades</p>
+                {%- endif -%}
+                <p class="brenson-b2b-flotas__locked">
+                  <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V7a4 4 0 0 1 8 0v4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                  Precio corporativo tras validación de NIT
+                </p>
+                <div class="brenson-b2b-flotas__actions">
+                  <a class="brenson-btn brenson-btn--carbon brenson-btn--sm brenson-btn--block" href="/pages/empresas-acceso">Cotizar modelo</a>
+                  {%- if pm.ficha_tecnica_pdf.value != blank -%}
+                    <a class="brenson-btn brenson-btn--outline brenson-btn--sm brenson-btn--block" href="{{ pm.ficha_tecnica_pdf.value.url }}" target="_blank" rel="noopener">Ficha técnica</a>
+                  {%- endif -%}
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <p class="brenson-b2b-flotas__vacio" data-flota-vacio hidden role="status">No hay unidades en esa categoría. Muestre todas las unidades o consulte con su asesor.</p>
+      </div>
+
+      {%- comment -%} ── Comparativa técnica ── {%- endcomment -%}
+      <div class="brenson-b2b-block" id="comparativa">
+        <header class="brenson-section__head brenson-section__head--center">
+          <span class="brenson-eyebrow" style="color:#ff6b6b">Ficha comparativa</span>
+          <h2 class="brenson-heading">{{ s.tabla_title }}</h2>
+          <p class="brenson-subheading">{{ s.tabla_text }}</p>
+        </header>
+        <div class="brenson-b2b-card brenson-table-wrap">
+          <table class="brenson-table">
+            <caption class="brenson-visually-hidden">Comparativa técnica de la gama industrial Brenson</caption>
+            <thead>
+              <tr>
+                <th scope="col">Modelo</th>
+                <th scope="col">Carga útil</th>
+                <th scope="col">Autonomía</th>
+                <th scope="col">Potencia</th>
+                <th scope="col">Batería</th>
+                <th scope="col">Tiempo de carga</th>
+                <th scope="col">Licencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for p in productos -%}
+                {%- assign pm = p.metafields.brenson -%}
+                <tr>
+                  <th scope="row">{{ p.title }}</th>
+                  <td>{% if pm.capacidad_carga_kg.value %}{{ pm.capacidad_carga_kg.value }} kg{% else %}—{% endif %}</td>
+                  <td>{% if pm.autonomia_km.value %}{{ pm.autonomia_km.value }} km{% else %}—{% endif %}</td>
+                  <td>{% if pm.potencia_motor_w.value %}{{ pm.potencia_motor_w.value }} W{% else %}—{% endif %}</td>
+                  <td>{{ pm.bateria_tipo.value | default: '—' }}</td>
+                  <td>{% if pm.tiempo_carga_h.value %}{{ pm.tiempo_carga_h.value }} h{% else %}—{% endif %}</td>
+                  <td>{% if pm.requiere_licencia.value %}Requiere licencia{% else %}No requiere{% endif %}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="brenson-b2b-card brenson-b2b-card--center">
+        <h2 class="brenson-heading">Catálogo corporativo en preparación</h2>
+        <p class="brenson-subheading">Asigne la colección corporativa en la configuración del tema para publicar la gama industrial.</p>
+        <a class="brenson-btn brenson-btn--primary" href="/pages/empresas-acceso">Solicitar acceso corporativo</a>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── Ingeniería a la medida ── {%- endcomment -%}
+    <div class="brenson-b2b-block">
+      <div class="brenson-b2b-card brenson-b2b-flotas__medida">
+        <div>
+          <span class="brenson-eyebrow">Ingeniería a la medida</span>
+          <h2 class="brenson-heading">{{ s.medida_title }}</h2>
+          <p class="brenson-subheading">{{ s.medida_text }}</p>
+        </div>
+        <a class="brenson-btn brenson-btn--whatsapp brenson-btn--lg" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">Hablar con un ingeniero de flota</a>
+      </div>
+    </div>
+
+    {%- comment -%} ── Equipamiento de fábrica ── {%- endcomment -%}
+    {%- if equipamiento.size > 0 -%}
+      <div class="brenson-b2b-block" id="equipamiento">
+        <header class="brenson-section__head brenson-section__head--center">
+          <span class="brenson-eyebrow" style="color:#ff6b6b">Ecosistema integral B2B</span>
+          <h2 class="brenson-heading">{{ s.equipo_title }}</h2>
+          <p class="brenson-subheading">{{ s.equipo_text }}</p>
+        </header>
+        <ul class="brenson-grid brenson-grid--3" role="list">
+          {%- for block in equipamiento -%}
+            <li class="brenson-b2b-card" {{ block.shopify_attributes }}>
+              <h3 style="margin:0; font-size: var(--brenson-text-lg)">{{ block.settings.titulo }}</h3>
+              <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ block.settings.texto }}</p>
+              {%- if block.settings.nota != blank -%}
+                <p class="brenson-b2b-respaldo__pill">
+                  <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  {{ block.settings.nota }}
+                </p>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── Cierre hacia el cotizador ── {%- endcomment -%}
+    <div class="brenson-b2b-block">
+      <div class="brenson-b2b-card brenson-b2b-card--center">
+        <span class="brenson-eyebrow">Política de escala</span>
+        <h2 class="brenson-heading">{{ s.cierre_title }}</h2>
+        <p class="brenson-subheading">{{ s.cierre_text }}</p>
+        <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="/pages/empresas-acceso">Solicitar acceso al cotizador</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+<script src="{{ 'brenson-b2b-flotas.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Empresas · Flotas",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "homologacion", "label": "Sello de homologación", "default": "Homologación RUNT · MinTransporte" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Vehículos eléctricos para trabajo pesado y reparto intensivo" },
+    { "type": "textarea", "id": "text", "label": "Texto de entrada", "default": "Soluciones de movilidad cero emisiones para gerencias de logística, última milla y suministros en Colombia." },
+    { "type": "collection", "id": "coleccion", "label": "Colección corporativa" },
+
+    { "type": "header", "content": "Gama industrial" },
+    { "type": "text", "id": "gama_eyebrow", "label": "Antetítulo", "default": "Gama industrial Brenson" },
+    { "type": "text", "id": "gama_title", "label": "Título", "default": "Modelos comerciales con garantía de fábrica" },
+
+    { "type": "header", "content": "Comparativa técnica" },
+    { "type": "text", "id": "tabla_title", "label": "Título", "default": "Comparativa homologada para flotas" },
+    { "type": "textarea", "id": "tabla_text", "label": "Texto", "default": "Datos de ficha técnica con carga real en ciclo urbano colombiano y cumplimiento de normativa de seguridad vial." },
+
+    { "type": "header", "content": "Ingeniería a la medida" },
+    { "type": "text", "id": "medida_title", "label": "Título", "default": "¿Requiere una configuración técnica particular?" },
+    { "type": "textarea", "id": "medida_text", "label": "Texto", "default": "Desarrollamos adaptaciones de chasis, furgones isotérmicos, sistemas de carga rápida e integraciones con su plataforma de gestión de flota." },
+
+    { "type": "header", "content": "Equipamiento de fábrica" },
+    { "type": "text", "id": "equipo_title", "label": "Título", "default": "Personalización y equipamiento de fábrica" },
+    { "type": "textarea", "id": "equipo_text", "label": "Texto", "default": "Entregamos su flota lista para operar, con la imagen de su compañía y monitoreo telemático en tiempo real." },
+
+    { "type": "header", "content": "Cierre" },
+    { "type": "text", "id": "cierre_title", "label": "Título", "default": "Descuentos por tamaño de flota" },
+    { "type": "textarea", "id": "cierre_text", "label": "Texto", "default": "La escala de descuentos se aplica sobre el precio de lista de unidades y accesorios técnicos. Habilite su cuenta corporativa para cotizar en línea." }
+  ],
+  "blocks": [
+    {
+      "type": "equipamiento",
+      "name": "Equipamiento",
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Branding institucional" },
+        { "type": "textarea", "id": "texto", "label": "Texto", "default": "Pintura electrostática con el código de color corporativo o vinilado de grado automotriz resistente a la intemperie." },
+        { "type": "text", "id": "nota", "label": "Nota", "default": "Manual de marca aplicado" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Empresas · Flotas" }],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

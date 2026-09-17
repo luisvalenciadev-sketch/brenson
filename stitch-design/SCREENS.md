@@ -21,3 +21,10 @@ Completas: 14 pantallas. Correcciones a aplicar en `REVIEWS.md`.
 | 12 | Catálogo mobile + drawer de filtros | 67a98ead68e24a0990a2e5faa323a089 | 12-catalogo-mobile |
 | 13 | Cotizador de flota mobile | 7d8d3cd90ad34ba78f21d124134909b7 | 13-cotizador-mobile |
 | 14 | Garantía + Blog desktop | efc98c29606840bfb0c0f9f6e48f33af | 14-garantia-blog |
+| 15 | Empresas · Beneficios & ROI de flota | 3118931f94ea4dc098655d95a0304400 | 15-empresas-beneficios |
+| 16 | Empresas · Cómo funciona & Respaldo B2B | 5820d7d2ced0454a8e85ee5ccc465e74 | 16-empresas-proceso |
+| 17 | Empresas · Flotas & Catálogo industrial | bffc7973fd744900b20fc685d212863d | 17-empresas-flotas |
+
+Pantallas 15-17 descargadas vía MCP de Stitch (`stitch.googleapis.com/mcp`, herramienta `get_screen`).
+Implementadas como `brenson-b2b-roi`, `brenson-b2b-respaldo` y `brenson-b2b-flotas` en
+`/pages/empresas-beneficios`, `/pages/empresas-proceso` y `/pages/empresas-flotas`.

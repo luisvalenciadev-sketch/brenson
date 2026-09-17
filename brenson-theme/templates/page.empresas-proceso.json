@@ -1,0 +1,82 @@
+{
+  "layout": "theme.empresas",
+  "sections": {
+    "respaldo": {
+      "type": "brenson-b2b-respaldo",
+      "blocks": {
+        "e1": {
+          "type": "etapa",
+          "settings": {
+            "titulo": "Diagnóstico de rutas y operación",
+            "texto": "Analizamos kilómetros diarios, perfil topográfico, cargas útiles y esquemas de turnos para seleccionar el vehículo y el torque adecuados.",
+            "garantia": "Estudio de viabilidad sin costo"
+          }
+        },
+        "e2": {
+          "type": "etapa",
+          "settings": {
+            "titulo": "Habilitación fiscal y cotización",
+            "texto": "Con su NIT y el certificado de existencia aplicamos la escala de descuentos corporativos y estructuramos los beneficios tributarios.",
+            "garantia": "Exención de IVA Ley 1715"
+          }
+        },
+        "e3": {
+          "type": "etapa",
+          "settings": {
+            "titulo": "Prueba piloto en vía real",
+            "texto": "Asignamos una o dos unidades de prueba en sus rutas comerciales. Sus propios conductores validan autonomía y tiempos de recarga.",
+            "garantia": "7 días de validación en sitio"
+          }
+        },
+        "e4": {
+          "type": "etapa",
+          "settings": {
+            "titulo": "Despacho, RUNT y capacitación",
+            "texto": "Entrega formal con matrícula RUNT, placa y SOAT tramitados cuando aplique. Dictamos la inducción técnico-preventiva presencial.",
+            "garantia": "Certificación técnica de conductores"
+          }
+        },
+        "s1": {
+          "type": "sla",
+          "settings": {
+            "titulo": "Garantía de 24 meses",
+            "texto": "Respaldo en motor sincrónico, controlador inteligente y celdas de batería contra degradación acelerada."
+          }
+        },
+        "s2": {
+          "type": "sla",
+          "settings": {
+            "titulo": "Stock crítico de repuestos",
+            "texto": "Bodegas abastecidas con discos y pastillas de freno, llantas industriales, convertidores DC-DC y conectores."
+          }
+        },
+        "s3": {
+          "type": "sla",
+          "settings": {
+            "titulo": "Mantenimiento móvil",
+            "texto": "Unidades de taller móvil visitan sus centros de distribución sin desviar los vehículos a talleres externos."
+          }
+        },
+        "s4": {
+          "type": "sla",
+          "settings": {
+            "titulo": "Unidad de reemplazo",
+            "texto": "Para flotas corporativas garantizamos vehículo sustituto temporal ante fallas mecánicas mayores."
+          }
+        }
+      },
+      "block_order": ["e1", "e2", "e3", "e4", "s1", "s2", "s3", "s4"],
+      "settings": {}
+    },
+    "casos": {
+      "type": "brenson-case-studies",
+      "settings": {
+        "eyebrow": "Casos de éxito en Colombia",
+        "title": "Validado en condiciones de operación exigentes",
+        "subtitle": "",
+        "limit": 2
+      }
+    }
+  },
+  "order": ["respaldo", "casos"]
+}

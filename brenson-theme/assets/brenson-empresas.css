@@ -120,3 +120,79 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 .brenson-progress { height: 0.8rem; border-radius: 999px; background: rgba(255,255,255,.15); overflow: hidden; }
 .brenson-progress > span { display: block; height: 100%; background: var(--brenson-rojo); border-radius: 999px; transition: width 300ms var(--brenson-ease); }
 @media (max-width: 749px) { .brenson-quoter__row { grid-template-columns: 72px 1fr; } .brenson-quoter__row > :last-child { grid-column: 1 / -1; } }
+
+/* ── Empresas · ROI de flota (pantalla 15) ───────────────────────────────── */
+.brenson-b2b-roi__kpis { list-style: none; margin: var(--brenson-space-6) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--brenson-space-8); }
+.brenson-b2b-roi__kpis li { display: grid; gap: 0.2rem; }
+.brenson-b2b-roi__kpis strong { font-size: var(--brenson-text-3xl); font-weight: 800; line-height: 1; color: var(--brenson-rojo); }
+.brenson-b2b-roi__kpis span { font-size: var(--brenson-text-xs); color: rgba(255,255,255,.65); }
+.brenson-b2b-roi__featured-img { width: 100%; border-radius: var(--brenson-radius-lg); aspect-ratio: 4 / 3; object-fit: cover; background: var(--brenson-gris-claro); }
+.brenson-b2b-roi__specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--brenson-space-3); margin: 0; }
+.brenson-b2b-roi__specs dt { font-size: var(--brenson-text-xs); color: var(--brenson-gris); text-transform: uppercase; letter-spacing: .04em; }
+.brenson-b2b-roi__specs dd { margin: 0; font-weight: 700; font-size: var(--brenson-text-sm); }
+
+.brenson-b2b-roi__slider { display: grid; gap: var(--brenson-space-3); margin-bottom: var(--brenson-space-6); }
+.brenson-b2b-roi__slider label { font-weight: 700; font-size: var(--brenson-text-sm); }
+.brenson-b2b-roi__slider input[type="range"] { width: 100%; accent-color: var(--brenson-rojo); min-height: auto; }
+.brenson-b2b-roi__slider output { font-size: var(--brenson-text-3xl); font-weight: 800; line-height: 1; color: var(--brenson-rojo); }
+
+.brenson-b2b-roi__cols { display: grid; gap: var(--brenson-space-4); }
+@media (min-width: 990px) { .brenson-b2b-roi__cols { grid-template-columns: repeat(3, 1fr); } }
+.brenson-b2b-roi__col header { display: flex; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); flex-wrap: wrap; }
+.brenson-b2b-roi__col h3 { margin: 0; font-size: var(--brenson-text-lg); }
+.brenson-b2b-roi__col dl { display: grid; gap: var(--brenson-space-3); margin: 0; }
+.brenson-b2b-roi__col dl > div { display: flex; justify-content: space-between; gap: var(--brenson-space-3); font-size: var(--brenson-text-sm); border-bottom: 1px solid var(--brenson-gris-borde); padding-bottom: 0.64rem; }
+.brenson-b2b-roi__col dt { color: var(--brenson-gris); }
+.brenson-b2b-roi__col dd { margin: 0; font-weight: 700; text-align: right; }
+.brenson-b2b-roi__total { display: grid; gap: 0.2rem; margin: auto 0 0; padding-top: var(--brenson-space-3); }
+.brenson-b2b-roi__total span { font-size: var(--brenson-text-xs); color: var(--brenson-gris); text-transform: uppercase; letter-spacing: .04em; }
+.brenson-b2b-roi__total strong { font-size: var(--brenson-text-2xl); font-weight: 800; line-height: 1.1; }
+.brenson-b2b-roi__col--gas .brenson-b2b-roi__total strong { color: var(--brenson-carbon-60); }
+.brenson-b2b-roi__col--ele { outline: 2px solid var(--brenson-certificado); }
+.brenson-b2b-roi__col--ele .brenson-b2b-roi__total strong { color: var(--brenson-certificado); }
+.brenson-b2b-roi__col--saving { background: var(--brenson-carbon); color: #fff; }
+.brenson-b2b-roi__col--saving h3 { color: #fff; }
+.brenson-b2b-roi__col--saving .brenson-muted { color: rgba(255,255,255,.6); }
+.brenson-b2b-roi__col--saving .brenson-checklist li { color: rgba(255,255,255,.85); }
+.brenson-b2b-roi__saving-figure { font-size: var(--brenson-text-3xl); font-weight: 800; line-height: 1; margin: 0; color: var(--brenson-certificado); }
+.brenson-b2b-roi__disclaimer { display: flex; gap: var(--brenson-space-3); align-items: flex-start; margin: var(--brenson-space-6) 0 0; font-size: var(--brenson-text-xs); color: rgba(255,255,255,.6); }
+.brenson-b2b-roi__disclaimer svg { flex-shrink: 0; margin-top: 0.16rem; }
+.brenson-b2b-roi__tags { display: flex; flex-wrap: wrap; gap: 0.48rem; margin-top: auto; }
+.brenson-b2b-roi__continuidad { display: grid; gap: var(--brenson-space-8); align-items: center; }
+@media (min-width: 990px) { .brenson-b2b-roi__continuidad { grid-template-columns: 1.4fr 1fr; } }
+
+/* ── Empresas · Cómo funciona y respaldo (pantalla 16) ───────────────────── */
+.brenson-b2b-respaldo__hero { text-align: center; max-width: 820px; margin: 0 auto; padding-block: var(--brenson-space-12) var(--brenson-space-8); }
+.brenson-b2b-respaldo__hero .brenson-eyebrow { justify-content: center; width: 100%; }
+.brenson-b2b-respaldo__kpis { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--brenson-space-4); }
+@media (min-width: 990px) { .brenson-b2b-respaldo__kpis { grid-template-columns: repeat(4, 1fr); } }
+.brenson-b2b-respaldo__kpis li { display: grid; gap: 0.4rem; padding: var(--brenson-space-5); border: 1px solid rgba(255,255,255,.12); border-radius: var(--brenson-radius-xl); }
+.brenson-b2b-respaldo__kpis strong { font-size: var(--brenson-text-2xl); font-weight: 800; line-height: 1; color: #fff; }
+.brenson-b2b-respaldo__kpis > li > span:last-child { font-size: var(--brenson-text-xs); color: rgba(255,255,255,.6); }
+.brenson-b2b-respaldo__pill { display: flex; align-items: center; gap: 0.48rem; margin: auto 0 0; padding-top: var(--brenson-space-3); font-size: var(--brenson-text-xs); font-weight: 600; color: var(--brenson-certificado); }
+.brenson-b2b-respaldo__pill svg { flex-shrink: 0; }
+.brenson-b2b-respaldo__recarga { display: grid; gap: var(--brenson-space-8); align-items: start; }
+@media (min-width: 990px) { .brenson-b2b-respaldo__recarga { grid-template-columns: 1.3fr 1fr; } }
+.brenson-b2b-respaldo__recarga-modos { display: grid; gap: var(--brenson-space-4); margin-top: var(--brenson-space-6); }
+@media (min-width: 750px) { .brenson-b2b-respaldo__recarga-modos { grid-template-columns: repeat(2, 1fr); } }
+.brenson-b2b-respaldo__comparativa-fila { display: flex; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); padding: var(--brenson-space-4); border-radius: var(--brenson-radius-lg); background: var(--brenson-gris-claro); font-size: var(--brenson-text-sm); }
+.brenson-b2b-respaldo__comparativa-fila strong { font-size: var(--brenson-text-xl); font-weight: 800; }
+.brenson-b2b-respaldo__comparativa-fila--ok { background: var(--brenson-certificado-suave); }
+.brenson-b2b-respaldo__comparativa-fila--ok strong { color: var(--brenson-certificado); }
+.brenson-b2b-respaldo__cierre { display: grid; gap: var(--brenson-space-6); align-items: center; }
+@media (min-width: 990px) { .brenson-b2b-respaldo__cierre { grid-template-columns: 1.5fr 1fr; } }
+
+/* ── Empresas · Flotas y catálogo industrial (pantalla 17) ───────────────── */
+.brenson-b2b-flotas__hero { text-align: center; max-width: 880px; margin: 0 auto; padding-block: var(--brenson-space-12) var(--brenson-space-6); display: grid; gap: var(--brenson-space-4); justify-items: center; }
+.brenson-b2b-flotas__filtros { justify-content: center; flex-wrap: wrap; }
+.brenson-b2b-flotas__card { padding: 0; overflow: hidden; }
+.brenson-b2b-flotas__card[hidden] { display: none; }
+.brenson-b2b-flotas__specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--brenson-space-2); margin: 0; }
+.brenson-b2b-flotas__specs dt { font-size: var(--brenson-text-xs); color: var(--brenson-gris); text-transform: uppercase; letter-spacing: .04em; }
+.brenson-b2b-flotas__specs dd { margin: 0; font-weight: 700; font-size: var(--brenson-text-sm); }
+.brenson-b2b-flotas__locked { display: flex; gap: 0.64rem; align-items: center; margin: 0; font-size: var(--brenson-text-xs); color: var(--brenson-gris); }
+.brenson-b2b-flotas__locked svg { flex-shrink: 0; }
+.brenson-b2b-flotas__actions { display: grid; gap: 0.8rem; margin-top: auto; }
+.brenson-b2b-flotas__vacio { margin: var(--brenson-space-6) 0 0; text-align: center; color: rgba(255,255,255,.6); font-size: var(--brenson-text-sm); }
+.brenson-b2b-flotas__medida { display: grid; gap: var(--brenson-space-6); align-items: center; }
+@media (min-width: 990px) { .brenson-b2b-flotas__medida { grid-template-columns: 2fr auto; } }

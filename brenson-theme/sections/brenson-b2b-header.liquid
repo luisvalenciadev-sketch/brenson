@@ -39,9 +39,9 @@
       </div>
     {%- else -%}
       <nav class="brenson-b2b-nav" aria-label="Brenson Empresas">
-        <a href="/pages/empresas#beneficios">Beneficios</a>
-        <a href="/pages/empresas#flotas">Flotas</a>
-        <a href="/pages/empresas#como-funciona">Cómo funciona</a>
+        <a href="/pages/empresas-beneficios" {% if page.handle == 'empresas-beneficios' %}aria-current="page"{% endif %}>Beneficios</a>
+        <a href="/pages/empresas-flotas" {% if page.handle == 'empresas-flotas' %}aria-current="page"{% endif %}>Flotas</a>
+        <a href="/pages/empresas-proceso" {% if page.handle == 'empresas-proceso' %}aria-current="page"{% endif %}>Cómo funciona</a>
         <a href="{{ routes.root_url }}">Sitio principal</a>
       </nav>
       <div class="brenson-b2b-header__user">

@@ -1,0 +1,37 @@
+{
+  "layout": "theme.empresas",
+  "sections": {
+    "flotas": {
+      "type": "brenson-b2b-flotas",
+      "blocks": {
+        "q1": {
+          "type": "equipamiento",
+          "settings": {
+            "titulo": "Branding institucional y vinilado",
+            "texto": "Pintura electrostática con el código de color corporativo o vinilado de grado automotriz resistente a intemperie, rayos UV y fricción urbana.",
+            "nota": "Manual de marca aplicado"
+          }
+        },
+        "q2": {
+          "type": "equipamiento",
+          "settings": {
+            "titulo": "Adaptaciones especiales de carrocería",
+            "texto": "Furgones isotérmicos, compuertas tipo persiana, platones con baranda de estacas y baúles modulares con apertura digital o RFID.",
+            "nota": "Certificación de cargas"
+          }
+        },
+        "q3": {
+          "type": "equipamiento",
+          "settings": {
+            "titulo": "Telemetría y gestión de baterías",
+            "texto": "GPS integrado con inmovilizador remoto, diagnóstico del estado de salud de la batería, rutas y alertas de geocerca.",
+            "nota": "API para integración con su TMS"
+          }
+        }
+      },
+      "block_order": ["q1", "q2", "q3"],
+      "settings": {}
+    }
+  },
+  "order": ["flotas"]
+}

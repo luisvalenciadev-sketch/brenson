@@ -1,0 +1,234 @@
+{%- comment -%}
+  brenson-b2b-respaldo — Pantalla Stitch 16 "Brenson Empresas · Cómo Funciona & Respaldo B2B".
+  Página pública /pages/empresas-proceso (layout theme.empresas).
+
+  Contenido: hero con 4 indicadores, ruta de implementación en 4 etapas, SLA y soporte de fábrica,
+  recarga a 110 V con su comparativa de costo, y cierre con el asesor corporativo.
+
+  Los casos de éxito NO se duplican aquí: se añaden a la plantilla con la sección
+  brenson-case-studies, que ya lee los metaobjects.
+
+  Visibilidad: contenido comercial. Se oculta a empresas ya aprobadas.
+  theme-check-disable ConvertIncludeToRender
+{%- endcomment -%}
+{%- include 'brenson-b2b-guard' -%}
+{%- if b2b_state != 'aprobado' -%}
+{%- liquid
+  assign s = section.settings
+  assign etapas = section.blocks | where: 'type', 'etapa'
+  assign slas = section.blocks | where: 'type', 'sla'
+-%}
+
+<section id="como-funciona" class="brenson-section brenson-b2b-respaldo">
+  <div class="brenson-container">
+
+    {%- comment -%} ── Hero ── {%- endcomment -%}
+    <header class="brenson-b2b-respaldo__hero">
+      <span class="brenson-eyebrow" style="color:#ff6b6b">{{ s.eyebrow }}</span>
+      <h1 class="brenson-heading" style="font-size: clamp(3.2rem, 4vw, 5.2rem)">{{ s.title }}</h1>
+      <p class="brenson-subheading">{{ s.text }}</p>
+      <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap; justify-content:center">
+        <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="#etapas">Explorar las etapas</a>
+        <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="/pages/empresas-acceso">Agendar sesión con un especialista</a>
+      </div>
+    </header>
+
+    <ul class="brenson-b2b-respaldo__kpis" role="list">
+      <li><span class="brenson-eyebrow">{{ s.kpi1_label }}</span><strong class="brenson-num">{{ s.kpi1_valor }}</strong><span>{{ s.kpi1_nota }}</span></li>
+      <li><span class="brenson-eyebrow">{{ s.kpi2_label }}</span><strong class="brenson-num">{{ s.kpi2_valor }}</strong><span>{{ s.kpi2_nota }}</span></li>
+      <li><span class="brenson-eyebrow">{{ s.kpi3_label }}</span><strong class="brenson-num">{{ s.kpi3_valor }}</strong><span>{{ s.kpi3_nota }}</span></li>
+      <li><span class="brenson-eyebrow">{{ s.kpi4_label }}</span><strong class="brenson-num">{{ s.kpi4_valor }}</strong><span>{{ s.kpi4_nota }}</span></li>
+    </ul>
+
+    {%- comment -%} ── Ruta de implementación ── {%- endcomment -%}
+    {%- if etapas.size > 0 -%}
+      <div class="brenson-b2b-block" id="etapas">
+        <header class="brenson-section__head brenson-section__head--center">
+          <span class="brenson-eyebrow" style="color:#ff6b6b">Ruta de implementación</span>
+          <h2 class="brenson-heading">{{ s.etapas_title }}</h2>
+          <p class="brenson-subheading">{{ s.etapas_text }}</p>
+        </header>
+        <ol class="brenson-grid brenson-grid--4 brenson-steps" role="list">
+          {%- for block in etapas -%}
+            <li class="brenson-b2b-card" {{ block.shopify_attributes }}>
+              <span class="brenson-steps__n">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              <h3>{{ block.settings.titulo }}</h3>
+              <p>{{ block.settings.texto }}</p>
+              {%- if block.settings.garantia != blank -%}
+                <p class="brenson-b2b-respaldo__pill">
+                  <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  {{ block.settings.garantia }}
+                </p>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ol>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── SLA y soporte ── {%- endcomment -%}
+    {%- if slas.size > 0 -%}
+      <div class="brenson-b2b-block" id="sla">
+        <header class="brenson-section__head brenson-section__head--center">
+          <span class="brenson-eyebrow" style="color:#ff6b6b">Respaldo de fábrica</span>
+          <h2 class="brenson-heading">{{ s.sla_title }}</h2>
+          <p class="brenson-subheading">{{ s.sla_text }}</p>
+        </header>
+        <ul class="brenson-grid brenson-grid--4" role="list">
+          {%- for block in slas -%}
+            <li class="brenson-b2b-card" {{ block.shopify_attributes }}>
+              <h3 style="margin:0; font-size: var(--brenson-text-lg)">{{ block.settings.titulo }}</h3>
+              <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ block.settings.texto }}</p>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── Recarga a 110 V ── {%- endcomment -%}
+    <div class="brenson-b2b-block brenson-b2b-respaldo__recarga" id="recarga">
+      <div>
+        <span class="brenson-eyebrow" style="color:#ff6b6b">Sin obra eléctrica</span>
+        <h2 class="brenson-heading">{{ s.recarga_title }}</h2>
+        <p class="brenson-subheading">{{ s.recarga_text }}</p>
+        <div class="brenson-b2b-respaldo__recarga-modos">
+          <div class="brenson-b2b-card">
+            <h3 style="margin:0; font-size: var(--brenson-text-md)">{{ s.recarga_modo1_titulo }}</h3>
+            <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ s.recarga_modo1_texto }}</p>
+          </div>
+          <div class="brenson-b2b-card">
+            <h3 style="margin:0; font-size: var(--brenson-text-md)">{{ s.recarga_modo2_titulo }}</h3>
+            <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ s.recarga_modo2_texto }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="brenson-b2b-card brenson-b2b-respaldo__comparativa">
+        <span class="brenson-eyebrow">Comparativa de costo de recarga</span>
+        <div class="brenson-b2b-respaldo__comparativa-fila brenson-b2b-respaldo__comparativa-fila--ok">
+          <span>{{ s.recarga_a_label }}</span>
+          <strong class="brenson-num">{{ s.recarga_a_costo | times: 100 | money_without_trailing_zeros }}</strong>
+        </div>
+        <div class="brenson-b2b-respaldo__comparativa-fila">
+          <span>{{ s.recarga_b_label }}</span>
+          <strong class="brenson-num">{{ s.recarga_b_costo | times: 100 | money_without_trailing_zeros }}</strong>
+        </div>
+        <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin:0">{{ s.recarga_nota }}</p>
+      </div>
+    </div>
+
+    {%- comment -%} ── Cierre con asesor ── {%- endcomment -%}
+    {%- liquid
+      assign asesor = b2b_asesor
+      if asesor == blank
+        for a in shop.metaobjects.brenson_asesor.values
+          if a.canal.value == 'b2b'
+            assign asesor = a
+            break
+          endif
+        endfor
+      endif
+    -%}
+    <div class="brenson-b2b-block" id="contacto">
+      <div class="brenson-b2b-card brenson-b2b-respaldo__cierre">
+        <div>
+          <span class="brenson-eyebrow">Atención consultiva</span>
+          <h2 class="brenson-heading">{{ s.cierre_title }}</h2>
+          <p class="brenson-subheading">{{ s.cierre_text }}</p>
+          <div style="display:flex; gap: var(--brenson-space-3); flex-wrap:wrap">
+            <a class="brenson-btn brenson-btn--primary" href="/pages/empresas-acceso">Agendar sesión técnica</a>
+            <a class="brenson-btn brenson-btn--whatsapp" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">Hablar por WhatsApp</a>
+          </div>
+        </div>
+        {%- if asesor -%}
+          <div class="brenson-advisor">
+            {%- if asesor.foto.value -%}
+              {{ asesor.foto.value | image_url: width: 128 | image_tag: class: 'brenson-advisor__avatar', loading: 'lazy', alt: asesor.nombre.value }}
+            {%- else -%}
+              <span class="brenson-advisor__avatar" aria-hidden="true">{{ asesor.nombre.value | slice: 0 }}</span>
+            {%- endif -%}
+            <div>
+              <strong>{{ asesor.nombre.value }}</strong>
+              {%- if asesor.cargo.value != blank -%}<br><span class="brenson-muted" style="font-size: var(--brenson-text-sm)">{{ asesor.cargo.value }}</span>{%- endif -%}
+              {%- if settings.brenson_email_empresas != blank -%}<br><a class="link" href="mailto:{{ settings.brenson_email_empresas }}">{{ settings.brenson_email_empresas }}</a>{%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Empresas · Respaldo",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Metodología de electrificación B2B" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Cómo funciona la electrificación de su flota con Brenson" },
+    { "type": "textarea", "id": "text", "label": "Texto de entrada", "default": "Acompañamiento llave en mano: del estudio técnico de viabilidad a la homologación, la matrícula en el RUNT, la entrega de unidades y el soporte posventa." },
+
+    { "type": "header", "content": "Indicadores del encabezado" },
+    { "type": "text", "id": "kpi1_label", "label": "Indicador 1 · etiqueta", "default": "Ahorro promedio" },
+    { "type": "text", "id": "kpi1_valor", "label": "Indicador 1 · valor", "default": "78 %" },
+    { "type": "text", "id": "kpi1_nota", "label": "Indicador 1 · nota", "default": "Reducción de TCO frente a combustión" },
+    { "type": "text", "id": "kpi2_label", "label": "Indicador 2 · etiqueta", "default": "Disponibilidad" },
+    { "type": "text", "id": "kpi2_valor", "label": "Indicador 2 · valor", "default": "98 %" },
+    { "type": "text", "id": "kpi2_nota", "label": "Indicador 2 · nota", "default": "Stock de repuestos críticos" },
+    { "type": "text", "id": "kpi3_label", "label": "Indicador 3 · etiqueta", "default": "Prueba real" },
+    { "type": "text", "id": "kpi3_valor", "label": "Indicador 3 · valor", "default": "7 días" },
+    { "type": "text", "id": "kpi3_nota", "label": "Indicador 3 · nota", "default": "Piloto en sus propias rutas" },
+    { "type": "text", "id": "kpi4_label", "label": "Indicador 4 · etiqueta", "default": "Garantía" },
+    { "type": "text", "id": "kpi4_valor", "label": "Indicador 4 · valor", "default": "24 meses" },
+    { "type": "text", "id": "kpi4_nota", "label": "Indicador 4 · nota", "default": "Motor, batería y controlador" },
+
+    { "type": "header", "content": "Ruta de implementación" },
+    { "type": "text", "id": "etapas_title", "label": "Título", "default": "El proceso de adopción en cuatro etapas" },
+    { "type": "textarea", "id": "etapas_text", "label": "Texto", "default": "Diseñado para gerencias de operaciones, finanzas y sostenibilidad que necesitan previsibilidad sin interrumpir el servicio." },
+
+    { "type": "header", "content": "SLA y soporte" },
+    { "type": "text", "id": "sla_title", "label": "Título", "default": "SLA y soporte técnico de fábrica" },
+    { "type": "textarea", "id": "sla_text", "label": "Texto", "default": "Los vehículos comerciales Brenson están cubiertos por un acuerdo de nivel de servicio orientado a evitar el lucro cesante." },
+
+    { "type": "header", "content": "Recarga" },
+    { "type": "text", "id": "recarga_title", "label": "Título", "default": "Recarga a 110 V convencional, sin adaptaciones costosas" },
+    { "type": "textarea", "id": "recarga_text", "label": "Texto", "default": "A diferencia del transporte pesado, que exige transformadores y acometidas trifásicas, los vehículos Brenson cargan en una toma corriente estándar." },
+    { "type": "text", "id": "recarga_modo1_titulo", "label": "Modo 1 · título", "default": "Enchufe 110 V doméstico" },
+    { "type": "text", "id": "recarga_modo1_texto", "label": "Modo 1 · texto", "default": "Carga completa de 4 a 6 horas durante la noche." },
+    { "type": "text", "id": "recarga_modo2_titulo", "label": "Modo 2 · título", "default": "Baterías extraíbles" },
+    { "type": "text", "id": "recarga_modo2_texto", "label": "Modo 2 · texto", "default": "Intercambio de paquete en menos de 90 segundos para turnos continuos." },
+    { "type": "text", "id": "recarga_a_label", "label": "Comparativa · opción A", "default": "Motocarro Brenson (110 V)" },
+    { "type": "number", "id": "recarga_a_costo", "label": "Comparativa · costo A (COP)", "default": 2100 },
+    { "type": "text", "id": "recarga_b_label", "label": "Comparativa · opción B", "default": "Van o utilitario diésel" },
+    { "type": "number", "id": "recarga_b_costo", "label": "Comparativa · costo B (COP)", "default": 32000 },
+    { "type": "text", "id": "recarga_nota", "label": "Nota de la comparativa", "default": "Costo por recarga completa equivalente. Valores de referencia sujetos a la tarifa de energía vigente." },
+
+    { "type": "header", "content": "Cierre" },
+    { "type": "text", "id": "cierre_title", "label": "Título", "default": "¿Listo para estructurar el piloto de su organización?" },
+    { "type": "textarea", "id": "cierre_text", "label": "Texto", "default": "Agende una reunión técnica de 30 minutos sin compromiso. Evaluamos el TCO de su flota actual y coordinamos la prueba piloto en sus rutas." }
+  ],
+  "blocks": [
+    {
+      "type": "etapa",
+      "name": "Etapa del proceso",
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Diagnóstico de rutas y operación" },
+        { "type": "textarea", "id": "texto", "label": "Texto", "default": "Analizamos kilómetros diarios, perfil topográfico, cargas útiles y turnos para seleccionar el vehículo adecuado." },
+        { "type": "text", "id": "garantia", "label": "Etiqueta de respaldo", "default": "Estudio de viabilidad sin costo" }
+      ]
+    },
+    {
+      "type": "sla",
+      "name": "Compromiso de servicio",
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Garantía de 24 meses" },
+        { "type": "textarea", "id": "texto", "label": "Texto", "default": "Respaldo en motor, controlador y celdas de batería contra degradación acelerada." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Empresas · Respaldo" }],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

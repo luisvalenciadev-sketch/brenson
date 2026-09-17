@@ -33,6 +33,7 @@ Regla: **todo lo que no dependía de accesos externos está hecho.** Lo pendient
 | 06 Confianza | ✅ | Sello, checklist, garantía, envíos, contadores, aliados, testimonios (solo verificados en producción) |
 | 07 Cuentas | ✅ | Templates clásicos (Dawn 14); header con enlace clásico; `main-register` (Persona/Empresa, ciudad, uso); `main-account` (unidades); `brenson-b2b-request-access` con NIT |
 | 08 Empresas | ✅ | `theme.empresas.liquid`; `brenson-b2b-gate` (4 estados), `-dashboard`, `-header`, `-footer`, `-collection-grid`, `-quoter` (+ `?add`, `?duplicar`); templates `page.empresas`, `page.empresas-acceso`, `page.cotizador`, `collection.empresas` |
+| 08b Empresas · landing pública | ✅ | Pantallas Stitch 15-17. `brenson-b2b-roi`, `-respaldo`, `-flotas` (+ assets `brenson-b2b-roi.js`, `-flotas.js`); templates `page.empresas-beneficios`, `page.empresas-proceso`, `page.empresas-flotas`; páginas creadas con `scripts/create-empresas-pages.mjs`. Solo visibles cuando `b2b_state != 'aprobado'` |
 | 09 Leads | ✅ | `brenson-lead-form` + JS, exit intent, Turnstile opcional |
 | 10 WhatsApp | ✅ | `brenson-whatsapp-link`, `-float` con horario, CTA en header, mensajes por contexto |
 | 11 CRM | ✅ backend | Adaptadores mock/GHL en `brenson-services` |

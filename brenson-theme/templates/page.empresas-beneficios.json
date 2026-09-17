@@ -1,0 +1,49 @@
+{
+  "layout": "theme.empresas",
+  "sections": {
+    "roi": {
+      "type": "brenson-b2b-roi",
+      "blocks": {
+        "i1": {
+          "type": "incentivo",
+          "settings": {
+            "titulo": "Deducción del 50 % en renta líquida",
+            "texto": "Su compañía puede deducir hasta el 50 % del valor de la inversión en activos de movilidad eléctrica de la renta líquida gravable, durante los 15 años siguientes.",
+            "norma": "Art. 11 Ley 1715",
+            "etiqueta": "Aprobación UPME"
+          }
+        },
+        "i2": {
+          "type": "incentivo",
+          "settings": {
+            "titulo": "Exclusión o exención de IVA",
+            "texto": "Los vehículos de logística ligera 100 % eléctricos y los sistemas de carga calificados están amparados por tarifas preferenciales o exclusión de IVA.",
+            "norma": "Art. 12 Ley 1715",
+            "etiqueta": "Sin sobrecosto"
+          }
+        },
+        "i3": {
+          "type": "incentivo",
+          "settings": {
+            "titulo": "Depreciación acelerada de activos",
+            "texto": "Tasa de depreciación acelerada de hasta el 33,33 % anual, con recuperación en 3 años frente a los 5 habituales para maquinaria rodante.",
+            "norma": "Art. 14 Ley 1715",
+            "etiqueta": "Escudo fiscal"
+          }
+        },
+        "i4": {
+          "type": "incentivo",
+          "settings": {
+            "titulo": "Acompañamiento jurídico llave en mano",
+            "texto": "Emitimos las fichas técnicas homologadas y estructuramos el radicado ante la UPME junto a su equipo contable.",
+            "norma": "Gestión Brenson",
+            "etiqueta": "Soporte documental"
+          }
+        }
+      },
+      "block_order": ["i1", "i2", "i3", "i4"],
+      "settings": {}
+    }
+  },
+  "order": ["roi"]
+}

@@ -1,0 +1,317 @@
+{%- comment -%}
+  brenson-b2b-roi — Pantalla Stitch 15 "Brenson Empresas · Beneficios & ROI de Flota Eléctrica".
+  Página pública /pages/empresas-beneficios (layout theme.empresas).
+
+  Contenido: hero con KPIs, auditoría TCO gasolina vs eléctrico con simulador de unidades,
+  incentivos de Ley 1715/2099, escala de tiers (metaobjects) y continuidad sin pico y placa.
+
+  Datos: todas las cifras del comparativo son EDITABLES desde el schema y se muestran con el
+  aviso de "cifras de referencia" (principio del proyecto: sin datos inventados sin marcar).
+  El cálculo real por operación lo entrega el equipo comercial con la corrida TCO oficial.
+
+  Visibilidad: contenido comercial. Se oculta a empresas ya aprobadas, que entran al dashboard.
+  theme-check-disable ConvertIncludeToRender
+{%- endcomment -%}
+{%- include 'brenson-b2b-guard' -%}
+{%- if b2b_state != 'aprobado' -%}
+{%- liquid
+  assign s = section.settings
+  assign u = s.unidades_default
+  assign gas_mes = s.gas_combustible | plus: s.gas_mantenimiento
+  assign ele_mes = s.ele_energia | plus: s.ele_mantenimiento
+  assign gas_anual_u = gas_mes | times: 12 | plus: s.gas_soat
+  assign ele_anual_u = ele_mes | times: 12 | plus: s.ele_soat
+  assign gas_total = gas_anual_u | times: u
+  assign ele_total = ele_anual_u | times: u
+  assign ahorro_total = gas_total | minus: ele_total
+  assign tiers = shop.metaobjects.brenson_tier_b2b.values
+-%}
+
+<section
+  id="beneficios"
+  class="brenson-section brenson-b2b-roi"
+  data-b2b-roi
+  data-gas-unidad="{{ gas_anual_u }}"
+  data-ele-unidad="{{ ele_anual_u }}"
+>
+  <div class="brenson-container">
+
+    {%- comment -%} ── Hero ── {%- endcomment -%}
+    <div class="brenson-b2b-hero">
+      <div>
+        <span class="brenson-eyebrow" style="color:#ff6b6b">{{ s.eyebrow }}</span>
+        <h1 class="brenson-heading" style="font-size: clamp(3.2rem, 4vw, 5.2rem)">{{ s.title }}</h1>
+        <p class="brenson-subheading">{{ s.text }}</p>
+        <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap;">
+          <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="#tco">Calcular ROI de flota</a>
+          {%- if s.dossier_url != blank -%}
+            <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{{ s.dossier_url }}" target="_blank" rel="noopener">Descargar dossier corporativo</a>
+          {%- else -%}
+            <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="/pages/empresas-acceso">Solicitar acceso corporativo</a>
+          {%- endif -%}
+        </div>
+        <ul class="brenson-b2b-roi__kpis" role="list">
+          <li><strong class="brenson-num">{{ s.kpi1_valor }}</strong><span>{{ s.kpi1_label }}</span></li>
+          <li><strong class="brenson-num">{{ s.kpi2_valor }}</strong><span>{{ s.kpi2_label }}</span></li>
+          <li><strong class="brenson-num">{{ s.kpi3_valor }}</strong><span>{{ s.kpi3_label }}</span></li>
+        </ul>
+      </div>
+
+      {%- comment -%} Unidad destacada: producto real de la colección corporativa {%- endcomment -%}
+      {%- assign destacado = s.producto_destacado -%}
+      {%- if destacado != blank -%}
+        {%- assign dm = destacado.metafields.brenson -%}
+        <div class="brenson-b2b-card brenson-b2b-roi__featured">
+          <span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Unidad comercial destacada</span>
+          {%- if destacado.featured_image -%}
+            {{ destacado.featured_image | image_url: width: 640 | image_tag: loading: 'lazy', alt: destacado.title, class: 'brenson-b2b-roi__featured-img' }}
+          {%- endif -%}
+          <h2 style="margin:0; font-size: var(--brenson-text-xl)">{{ destacado.title }}</h2>
+          {%- if dm.descripcion_corta.value != blank -%}
+            <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ dm.descripcion_corta.value }}</p>
+          {%- endif -%}
+          <dl class="brenson-b2b-roi__specs">
+            {%- if dm.autonomia_km.value -%}<div><dt>Autonomía</dt><dd>{{ dm.autonomia_km.value }} km</dd></div>{%- endif -%}
+            {%- if dm.capacidad_carga_kg.value -%}<div><dt>Capacidad</dt><dd>{{ dm.capacidad_carga_kg.value }} kg</dd></div>{%- endif -%}
+            {%- if dm.bateria_tipo.value != blank -%}<div><dt>Batería</dt><dd>{{ dm.bateria_tipo.value }}</dd></div>{%- endif -%}
+          </dl>
+          <a class="brenson-btn brenson-btn--carbon brenson-btn--block" href="/pages/empresas-flotas">Ver la gama industrial</a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ── Auditoría TCO ── {%- endcomment -%}
+    <div class="brenson-b2b-block" id="tco">
+      <header class="brenson-section__head brenson-section__head--center">
+        <span class="brenson-eyebrow" style="color:#ff6b6b">Auditoría financiera de costo total (TCO)</span>
+        <h2 class="brenson-heading">{{ s.tco_title }}</h2>
+        <p class="brenson-subheading">{{ s.tco_text }}</p>
+      </header>
+
+      <div class="brenson-b2b-card brenson-b2b-roi__slider">
+        <label for="roi-unidades">Unidades activas en su operación</label>
+        <input
+          id="roi-unidades"
+          type="range"
+          min="{{ s.unidades_min }}"
+          max="{{ s.unidades_max }}"
+          step="1"
+          value="{{ u }}"
+          data-roi-input
+          aria-describedby="roi-unidades-valor"
+        >
+        <output id="roi-unidades-valor" class="brenson-num" data-roi-unidades>{{ u }}</output>
+      </div>
+
+      <div class="brenson-b2b-roi__cols">
+        <div class="brenson-b2b-card brenson-b2b-roi__col brenson-b2b-roi__col--gas">
+          <header>
+            <h3>{{ s.gas_title }}</h3>
+            <span class="brenson-status brenson-status--muted">Convencional</span>
+          </header>
+          <dl>
+            <div><dt>Combustible / unidad / mes</dt><dd>{{ s.gas_combustible | times: 100 | money_without_trailing_zeros }}</dd></div>
+            <div><dt>Mantenimiento preventivo / mes</dt><dd>{{ s.gas_mantenimiento | times: 100 | money_without_trailing_zeros }}</dd></div>
+            <div><dt>SOAT anual obligatorio</dt><dd>{{ s.gas_soat | times: 100 | money_without_trailing_zeros }}</dd></div>
+            <div><dt>Restricción pico y placa</dt><dd>{{ s.gas_restriccion }}</dd></div>
+          </dl>
+          <p class="brenson-b2b-roi__total">
+            <span>Costo operativo anual estimado</span>
+            <strong class="brenson-num" data-roi-gas>{{ gas_total | times: 100 | money_without_trailing_zeros }}</strong>
+          </p>
+        </div>
+
+        <div class="brenson-b2b-card brenson-b2b-roi__col brenson-b2b-roi__col--ele">
+          <header>
+            <h3>{{ s.ele_title }}</h3>
+            <span class="brenson-status brenson-status--ok">Cero emisiones</span>
+          </header>
+          <dl>
+            <div><dt>Carga eléctrica / unidad / mes</dt><dd>{{ s.ele_energia | times: 100 | money_without_trailing_zeros }}</dd></div>
+            <div><dt>Mantenimiento predictivo / mes</dt><dd>{{ s.ele_mantenimiento | times: 100 | money_without_trailing_zeros }}</dd></div>
+            <div><dt>SOAT / descuentos de ley</dt><dd>{{ s.ele_soat | times: 100 | money_without_trailing_zeros }}</dd></div>
+            <div><dt>Restricción pico y placa</dt><dd>{{ s.ele_restriccion }}</dd></div>
+          </dl>
+          <p class="brenson-b2b-roi__total">
+            <span>Costo operativo anual estimado</span>
+            <strong class="brenson-num" data-roi-ele>{{ ele_total | times: 100 | money_without_trailing_zeros }}</strong>
+          </p>
+        </div>
+
+        <div class="brenson-b2b-card brenson-b2b-roi__col brenson-b2b-roi__col--saving">
+          <span class="brenson-eyebrow">Impacto en flujo de caja</span>
+          <h3>Ahorro anual consolidado</h3>
+          <p class="brenson-b2b-roi__saving-figure brenson-num" data-roi-ahorro>{{ ahorro_total | times: 100 | money_without_trailing_zeros }}</p>
+          <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">Proyección para <span data-roi-unidades>{{ u }}</span> unidades durante 12 meses.</p>
+          <ul class="brenson-checklist" style="grid-template-columns:1fr">
+            {%- for i in (1..3) -%}
+              {%- liquid
+                case i
+                  when 1
+                    assign beneficio = s.ahorro_b1
+                  when 2
+                    assign beneficio = s.ahorro_b2
+                  when 3
+                    assign beneficio = s.ahorro_b3
+                endcase
+              -%}
+              {%- if beneficio != blank -%}
+                <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ beneficio }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+          <a class="brenson-btn brenson-btn--primary brenson-btn--block" href="/pages/empresas-acceso">Solicitar corrida TCO oficial</a>
+        </div>
+      </div>
+
+      <p class="brenson-b2b-roi__disclaimer">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        {{ s.tco_disclaimer }}
+      </p>
+    </div>
+
+    {%- comment -%} ── Incentivos tributarios ── {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="brenson-b2b-block" id="incentivos">
+        <header class="brenson-section__head brenson-section__head--center">
+          <span class="brenson-eyebrow" style="color:#ff6b6b">Marco normativo colombiano</span>
+          <h2 class="brenson-heading">{{ s.ley_title }}</h2>
+          <p class="brenson-subheading">{{ s.ley_text }}</p>
+        </header>
+        <ul class="brenson-grid brenson-grid--4" role="list">
+          {%- for block in section.blocks -%}
+            <li class="brenson-b2b-card" {{ block.shopify_attributes }}>
+              <h3 style="margin:0; font-size: var(--brenson-text-lg)">{{ block.settings.titulo }}</h3>
+              <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ block.settings.texto }}</p>
+              <div class="brenson-b2b-roi__tags">
+                {%- if block.settings.norma != blank -%}<span class="brenson-badge brenson-badge--sm">{{ block.settings.norma }}</span>{%- endif -%}
+                {%- if block.settings.etiqueta != blank -%}<span class="brenson-badge brenson-badge--carbon brenson-badge--sm">{{ block.settings.etiqueta }}</span>{%- endif -%}
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── Escala de descuentos por volumen ── {%- endcomment -%}
+    {%- if tiers.size > 0 -%}
+      <div class="brenson-b2b-block" id="escala">
+        <header class="brenson-section__head brenson-section__head--center">
+          <span class="brenson-eyebrow" style="color:#ff6b6b">Escalabilidad de adquisición B2B</span>
+          <h2 class="brenson-heading">Escala de descuentos comerciales por volumen</h2>
+          <p class="brenson-subheading">Condiciones contractuales para empresas legalmente constituidas en Colombia.</p>
+        </header>
+        <ul class="brenson-grid brenson-grid--3" role="list">
+          {%- for t in tiers -%}
+            <li class="brenson-b2b-card brenson-tier {% if forloop.index == 2 %}brenson-tier--featured{% endif %}">
+              {%- if forloop.index == 2 -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm brenson-tier__tag">Más elegido</span>{%- endif -%}
+              <span class="brenson-eyebrow">Tier {{ forloop.index }} · {{ t.minimo_unidades.value }}+ unidades</span>
+              <h3 style="margin:0; font-size: var(--brenson-text-xl)">{{ t.nombre.value }}</h3>
+              <div class="brenson-tier__pct brenson-num">{{ t.descuento_pct.value | round }} %<small> de descuento</small></div>
+              <p class="brenson-muted" style="font-size: var(--brenson-text-sm)">{{ t.descripcion.value }}</p>
+              <ul class="brenson-checklist" style="grid-template-columns:1fr">
+                {%- for b in t.beneficios.value -%}
+                  <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ b }}</li>
+                {%- endfor -%}
+              </ul>
+              <a class="brenson-btn {% if forloop.index == 2 %}brenson-btn--primary{% else %}brenson-btn--outline{% endif %} brenson-btn--block" href="/pages/empresas-acceso">Cotizar {{ t.nombre.value }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── Continuidad operativa sin pico y placa ── {%- endcomment -%}
+    <div class="brenson-b2b-block brenson-b2b-roi__continuidad">
+      <div>
+        <span class="brenson-eyebrow" style="color:#ff6b6b">Continuidad operativa</span>
+        <h2 class="brenson-heading">{{ s.pico_title }}</h2>
+        <p class="brenson-subheading">{{ s.pico_text }}</p>
+        {%- assign ciudades = s.pico_ciudades | split: ',' -%}
+        <ul class="brenson-b2b-hero__chips" role="list">
+          {%- for c in ciudades -%}
+            <li><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ c | strip }}</li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      <div class="brenson-b2b-card brenson-b2b-card--center">
+        <p class="brenson-b2b-roi__saving-figure brenson-num" style="color: var(--brenson-certificado)">0</p>
+        <p style="margin:0; font-weight:700">Días de paro al año</p>
+        <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">Garantía de cumplimiento en entregas los 365 días.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+<script src="{{ 'brenson-b2b-roi.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Empresas · ROI flota",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Rentabilidad de flota eléctrica" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Rentabilidad, ahorro operativo y ventajas tributarias para su flota" },
+    { "type": "textarea", "id": "text", "label": "Texto de entrada", "default": "Optimice el flujo de caja de su operación logística y de última milla, y acceda a los incentivos de la Ley 1715 para movilidad de cero emisiones." },
+    { "type": "url", "id": "dossier_url", "label": "Enlace al dossier corporativo (PDF)" },
+    { "type": "product", "id": "producto_destacado", "label": "Unidad comercial destacada" },
+
+    { "type": "header", "content": "Indicadores del encabezado" },
+    { "type": "text", "id": "kpi1_valor", "label": "KPI 1 · valor", "default": "78 %" },
+    { "type": "text", "id": "kpi1_label", "label": "KPI 1 · etiqueta", "default": "Ahorro energético" },
+    { "type": "text", "id": "kpi2_valor", "label": "KPI 2 · valor", "default": "50 %" },
+    { "type": "text", "id": "kpi2_label", "label": "KPI 2 · etiqueta", "default": "Deducción en renta" },
+    { "type": "text", "id": "kpi3_valor", "label": "KPI 3 · valor", "default": "100 %" },
+    { "type": "text", "id": "kpi3_label", "label": "KPI 3 · etiqueta", "default": "Operación continua" },
+
+    { "type": "header", "content": "Comparativo TCO" },
+    { "type": "text", "id": "tco_title", "label": "Título del comparativo", "default": "Gasolina vs. eléctrico: los números de su operación" },
+    { "type": "textarea", "id": "tco_text", "label": "Texto del comparativo", "default": "Comparativa calculada sobre un kilometraje urbano promedio de 2.200 km mensuales por unidad operativa." },
+    { "type": "range", "id": "unidades_default", "label": "Unidades por defecto", "min": 5, "max": 100, "step": 5, "default": 15 },
+    { "type": "range", "id": "unidades_min", "label": "Unidades mínimas del simulador", "min": 1, "max": 20, "step": 1, "default": 5 },
+    { "type": "range", "id": "unidades_max", "label": "Unidades máximas del simulador", "min": 30, "max": 300, "step": 10, "default": 100 },
+
+    { "type": "header", "content": "Costos de flota a combustión (COP)" },
+    { "type": "text", "id": "gas_title", "label": "Título de la columna", "default": "Flota combustión (125-150 cc)" },
+    { "type": "number", "id": "gas_combustible", "label": "Combustible por unidad al mes", "default": 380000 },
+    { "type": "number", "id": "gas_mantenimiento", "label": "Mantenimiento por unidad al mes", "default": 120000 },
+    { "type": "number", "id": "gas_soat", "label": "SOAT anual por unidad", "default": 702000 },
+    { "type": "text", "id": "gas_restriccion", "label": "Restricción de circulación", "default": "1 día por semana (20 % de paro)" },
+
+    { "type": "header", "content": "Costos de flota eléctrica (COP)" },
+    { "type": "text", "id": "ele_title", "label": "Título de la columna", "default": "Flota Brenson 100 % eléctrica" },
+    { "type": "number", "id": "ele_energia", "label": "Carga eléctrica por unidad al mes", "default": 35000 },
+    { "type": "number", "id": "ele_mantenimiento", "label": "Mantenimiento por unidad al mes", "default": 48000 },
+    { "type": "number", "id": "ele_soat", "label": "SOAT anual por unidad", "default": 70000 },
+    { "type": "text", "id": "ele_restriccion", "label": "Restricción de circulación", "default": "Sin restricción (365 días)" },
+    { "type": "text", "id": "ahorro_b1", "label": "Beneficio 1", "default": "Sin bujías, correas ni cambios de aceite" },
+    { "type": "text", "id": "ahorro_b2", "label": "Beneficio 2", "default": "Menos horas de taller por unidad" },
+    { "type": "text", "id": "ahorro_b3", "label": "Beneficio 3", "default": "Recuperación de inversión proyectada a 14 meses" },
+    { "type": "textarea", "id": "tco_disclaimer", "label": "Aviso sobre las cifras", "default": "Cifras de referencia sobre promedios de operación urbana en Colombia. El ahorro real depende de ruta, carga y tarifa de energía: su asesor entrega la corrida TCO oficial de su compañía." },
+
+    { "type": "header", "content": "Incentivos tributarios" },
+    { "type": "text", "id": "ley_title", "label": "Título", "default": "Incentivos de la Ley 1715 de 2014 y la Ley 2099 de 2021" },
+    { "type": "textarea", "id": "ley_text", "label": "Texto", "default": "La legislación colombiana premia la electrificación corporativa. Brenson estructura y valida la documentación requerida ante la UPME." },
+
+    { "type": "header", "content": "Continuidad operativa" },
+    { "type": "text", "id": "pico_title", "label": "Título", "default": "Continuidad urbana sin restricciones de pico y placa" },
+    { "type": "textarea", "id": "pico_text", "label": "Texto", "default": "Las contingencias ambientales paralizan buena parte de las flotas convencionales. Los vehículos eléctricos están exentos de esas medidas." },
+    { "type": "text", "id": "pico_ciudades", "label": "Ciudades (separadas por coma)", "default": "Bogotá D.C., Medellín, Cali, Barranquilla" }
+  ],
+  "blocks": [
+    {
+      "type": "incentivo",
+      "name": "Incentivo",
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Deducción del 50 % en renta líquida" },
+        { "type": "textarea", "id": "texto", "label": "Texto", "default": "Su compañía puede deducir parte del valor de la inversión en activos de movilidad eléctrica de la renta líquida gravable." },
+        { "type": "text", "id": "norma", "label": "Norma", "default": "Art. 11 Ley 1715" },
+        { "type": "text", "id": "etiqueta", "label": "Etiqueta", "default": "Aprobación UPME" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Empresas · ROI flota" }],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}
