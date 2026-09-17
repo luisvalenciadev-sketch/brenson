@@ -240,7 +240,8 @@ body.brenson-empresas .brenson-b2b-contacto .brenson-b2b-card .brenson-subheadin
 
 /* ── Empresas · Flotas y catálogo industrial (pantalla 17) ───────────────── */
 .brenson-b2b-flotas__hero { text-align: center; max-width: 880px; margin: 0 auto; padding-block: var(--brenson-space-12) var(--brenson-space-6); display: grid; gap: var(--brenson-space-4); justify-items: center; }
-.brenson-b2b-flotas__filtros { justify-content: center; flex-wrap: wrap; }
+.brenson-b2b-flotas__filtros { justify-content: center; flex-wrap: wrap; margin-bottom: var(--brenson-space-12); }
+@media (max-width: 749px) { .brenson-b2b-flotas__filtros { margin-bottom: var(--brenson-space-8); } }
 .brenson-b2b-flotas__card { padding: 0; overflow: hidden; }
 .brenson-b2b-flotas__card[hidden] { display: none; }
 .brenson-b2b-flotas__specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--brenson-space-2); margin: 0; }
