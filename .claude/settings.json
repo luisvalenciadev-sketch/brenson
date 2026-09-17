@@ -48,7 +48,12 @@
       "Bash(cat '/c/Users/USER/AppData/Local/Temp/claude/c--Users-USER-OneDrive-Documentos-X-SOLUTION-brenson/d9fe457e-9ddc-44de-81fc-bf2d8f1fa7ca/tasks/bnelrp5ms.output' 2>&1 | tail -40)",
       "Read(//c/Users/USER/AppData/Local/Temp/claude/c--Users-USER-OneDrive-Documentos-X-SOLUTION-brenson/d9fe457e-9ddc-44de-81fc-bf2d8f1fa7ca/tasks/**)",
       "Bash(SHOPIFY_SHOP=brenson-0.myshopify.com SHOPIFY_API_VERSION=2025-07 SHOPIFY_ADMIN_TOKEN=$SHOPIFY_ADMIN_TOKEN node scripts/clear-badges.mjs)",
-      "Bash(grep -c \"cuota_raw\\\\|exclusivo_flota$\" brenson-theme/sections/brenson-financing-compare.liquid)"
+      "Bash(grep -c \"cuota_raw\\\\|exclusivo_flota$\" brenson-theme/sections/brenson-financing-compare.liquid)",
+      "Bash(git push *)",
+      "Bash(git filter-branch -f --tree-filter ' *)",
+      "Bash(git stash *)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --tree-filter ' *)",
+      "Bash(git add *)"
     ]
   }
 }
