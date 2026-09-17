@@ -1,0 +1,63 @@
+{%- comment -%}
+  brenson-warranty-lookup — Pantalla Stitch 14. Consulta pública del estado de garantía por número de serie/chasis.
+  Sin backend configurado (settings.brenson_services_url vacío) → modo simulación: mensaje informativo local.
+  Con backend: POST a {brenson_services_url}/warranty-lookup?serie=… (brenson-services consulta el metaobject
+  brenson_unidad vía Admin API; nunca se expone la lista completa de unidades al cliente).
+{%- endcomment -%}
+<section class="brenson-section brenson-warranty-lookup" id="brenson-warranty-lookup-{{ section.id }}">
+  <div class="brenson-container" style="max-width: 640px">
+    <div class="brenson-b2b-card" style="box-shadow: var(--brenson-shadow-sm)">
+      <div style="display:flex; align-items:center; gap:0.8rem">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <h3 style="margin:0; font-size: var(--brenson-text-lg)">{{ section.settings.title }}</h3>
+      </div>
+      <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin: 0.4rem 0 0">{{ section.settings.text }}</p>
+      <form data-brenson-warranty-lookup data-endpoint="{{ settings.brenson_services_url }}" style="display:flex; gap:0.8rem; margin-top: var(--brenson-space-4); flex-wrap:wrap">
+        <input type="text" name="serie" required placeholder="Número de serie o chasis (ej. BRN-2024-X)" style="flex:1; min-width: 22.4rem; min-height:4.4rem; padding:0 1.6rem; border:1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius); font-family: var(--brenson-font-mono, monospace); font-size: var(--brenson-text-sm)">
+        <button type="submit" class="brenson-btn brenson-btn--carbon">Consultar</button>
+      </form>
+      <p class="brenson-form__success" data-lookup-success hidden role="status"></p>
+      <p class="brenson-form__error" data-lookup-error hidden role="alert">No pudimos verificar ese número. Revísalo o contáctanos por WhatsApp.</p>
+    </div>
+  </div>
+</section>
+<script>
+  (function(){
+    var root = document.getElementById('brenson-warranty-lookup-{{ section.id }}');
+    if (!root) return;
+    var form = root.querySelector('[data-brenson-warranty-lookup]');
+    var success = root.querySelector('[data-lookup-success]');
+    var error = root.querySelector('[data-lookup-error]');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      error.hidden = true; success.hidden = true;
+      var serie = form.serie.value.trim();
+      var endpoint = form.dataset.endpoint;
+      if (!endpoint) {
+        success.hidden = false;
+        success.textContent = 'Modo demostración: la consulta en vivo se activa cuando brenson-services queda conectado. Mientras tanto, escríbenos por WhatsApp con el número ' + serie + ' y te confirmamos el estado.';
+        return;
+      }
+      fetch(endpoint + '/warranty-lookup?serie=' + encodeURIComponent(serie))
+        .then(function(r){ if (!r.ok) throw new Error('not found'); return r.json(); })
+        .then(function(data){
+          success.hidden = false;
+          success.textContent = data.mensaje || ('Garantía vigente hasta ' + data.fin_garantia + ' para ' + (data.vehiculo || 'este vehículo') + '.');
+        })
+        .catch(function(){ error.hidden = false; });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Garantía · Consulta",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Título", "default": "Consulta el estado de tu garantía" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Ingresa el código alfanumérico que encuentras en tu tarjeta de propiedad o factura de compra." }
+  ],
+  "presets": [ { "name": "Garantía · Consulta" } ],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

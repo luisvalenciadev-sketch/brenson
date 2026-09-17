@@ -1,5 +1,16 @@
 {
   "sections": {
+    "hero": {
+      "type": "rich-text",
+      "blocks": {
+        "caption": { "type": "caption", "settings": { "caption": "Blog de movilidad", "text_style": "caption-with-letter-spacing", "text_size": "medium" } },
+        "heading": { "type": "heading", "settings": { "heading": "Guías y novedades de movilidad eléctrica", "heading_size": "h1" } },
+        "text": { "type": "text", "settings": { "text": "<p>Normativa, ahorro, mantenimiento y casos reales en Colombia. Información clara para tomar mejores decisiones en la vía y en tu bolsillo.</p>" } }
+      },
+      "block_order": ["caption", "heading", "text"],
+      "settings": { "desktop_content_position": "center", "content_alignment": "center", "color_scheme": "scheme-2", "full_width": true, "padding_top": 56, "padding_bottom": 8 }
+    },
+    "filtros": { "type": "brenson-blog-filters", "settings": {} },
     "main": {
       "type": "main-blog",
       "settings": {
@@ -14,6 +25,8 @@
     }
   },
   "order": [
+    "hero",
+    "filtros",
     "main"
   ]
 }

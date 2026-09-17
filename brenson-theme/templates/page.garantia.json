@@ -20,6 +20,13 @@
       "type": "brenson-product-certification",
       "settings": { "eyebrow": "Certificación Brenson", "title": "Los 12 puntos de inspección antes de cada entrega", "text": "Revisamos batería, motor, frenos, estructura y hacemos una prueba de ruta. Entregamos el vehículo con su reporte de inspección." }
     },
+    "consulta": {
+      "type": "brenson-warranty-lookup",
+      "settings": {
+        "title": "Consulta el estado de tu garantía",
+        "text": "Ingresa el código alfanumérico que encuentras en tu tarjeta de propiedad o factura de compra."
+      }
+    },
     "terminos": {
       "type": "collapsible-content",
       "blocks": {
@@ -38,5 +45,5 @@
     },
     "faq": { "type": "brenson-faq", "settings": { "eyebrow": "Dudas frecuentes", "title": "Garantía y servicio", "categoria": "garantia", "limit": 6, "show_cta": true } }
   },
-  "order": ["hero", "trust", "certificacion", "terminos", "lead", "faq"]
+  "order": ["hero", "trust", "certificacion", "consulta", "terminos", "lead", "faq"]
 }

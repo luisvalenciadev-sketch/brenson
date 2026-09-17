@@ -1,0 +1,33 @@
+{%- comment -%}
+  brenson-blog-filters — Pantalla Stitch 14 (Página B). Chips de categoría del blog.
+  Usa el tag nativo de Shopify (cada artículo ya trae su categoría como tag, ver scripts/import-blog.mjs)
+  y enlaza a /blogs/{handle}/tagged/{tag}, sin JS: filtrado nativo de Shopify.
+{%- endcomment -%}
+{%- liquid
+  assign current_tag = request.path | split: '/tagged/' | last
+  if current_tag == request.path
+    assign current_tag = ''
+  endif
+-%}
+<div class="brenson-container" style="padding-top: var(--brenson-space-2); padding-bottom: var(--brenson-space-6)">
+  <div class="brenson-chips" role="list">
+    <a class="brenson-chip {% if current_tag == blank %}is-active{% endif %}" href="{{ blog.url }}">Todos</a>
+    {%- for t in blog.all_tags -%}
+      {%- if t == 'mock' -%}{%- continue -%}{%- endif -%}
+      <a class="brenson-chip {% if current_tag == t %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ t | handle }}">{{ t }}</a>
+    {%- endfor -%}
+  </div>
+</div>
+<style>
+  .brenson-chip.is-active { background: var(--brenson-carbon); color:#fff; border-color: var(--brenson-carbon); }
+</style>
+
+{% schema %}
+{
+  "name": "Blog · Categorías",
+  "tag": "div",
+  "settings": [],
+  "presets": [ { "name": "Blog · Categorías" } ],
+  "enabled_on": { "templates": ["blog"] }
+}
+{% endschema %}
