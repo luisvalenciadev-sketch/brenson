@@ -11,6 +11,20 @@
   margin-inline: auto;
   padding-inline: var(--brenson-gutter);
 }
+@media (min-width: 750px) {
+  .brenson-container { padding-inline: 5rem; }
+}
+/* El banner de colección de Dawn estira la imagen (align-self:stretch) a la altura del texto
+   de al lado; con el copy corto de las categorías Brenson eso da una caja demasiado ancha y
+   baja, forzando un recorte agresivo (object-fit:cover) que corta la foto del vehículo. Se fija
+   una proporción mínima para que la imagen respire sin importar qué tan corto sea el texto. */
+@media (min-width: 750px) {
+  /* !important: component-collection-hero.css se carga desde dentro de la sección (más tarde
+     en el documento que este archivo, incluido en el <head>), así que gana por orden de
+     cascada a igual especificidad si no se fuerza aquí. */
+  .collection-hero__image-container { aspect-ratio: 4 / 3 !important; height: auto !important; align-self: center !important; }
+}
+
 .brenson-section {
   padding-block: var(--brenson-space-12);
 }

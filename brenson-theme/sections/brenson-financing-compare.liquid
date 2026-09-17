@@ -52,7 +52,8 @@
               assign pow_minus_1 = pow | minus: 1.0
               assign cuota = 0
               if pow_minus_1 > 0
-                assign cuota = principal | times: i | times: pow | divided_by: pow_minus_1 | round
+                assign cuota_raw = principal | times: i | times: pow | divided_by: pow_minus_1
+                assign cuota = cuota_raw | divided_by: 100 | round | times: 100
               endif
               assign variant = p.selected_or_first_available_variant
               assign is_bestseller = false
@@ -62,7 +63,7 @@
 
               assign estado_label = 'Entrega inmediata'
               assign estado_mod = 'ok'
-              if pm.exclusivo_flota.value or pm.b2b_minimo_unidades.value
+              if pm.exclusivo_flota.value
                 assign estado_label = 'Portal Empresas B2B'
                 assign estado_mod = 'muted'
               elsif p.available == false
@@ -119,6 +120,13 @@
   .brenson-financing-compare__icon svg { width:1.8rem; height:1.8rem; }
   @media (min-width: 750px) { .brenson-financing-compare__icon { display:flex; } }
   .brenson-financing-compare__row--featured { background: var(--brenson-rojo-suave); }
+  .brenson-financing-compare .brenson-table th { padding: var(--brenson-space-4) var(--brenson-space-5); font-size: var(--brenson-text-xs); }
+  .brenson-financing-compare .brenson-table td { padding: var(--brenson-space-5); }
+  .brenson-financing-compare .brenson-table-wrap { border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); overflow: hidden; }
+  .brenson-financing-compare .brenson-table thead { background: var(--brenson-gris-claro); }
+  .brenson-financing-compare .brenson-table tbody tr:hover { background: var(--brenson-gris-claro); }
+  .brenson-financing-compare .brenson-table tbody tr.brenson-financing-compare__row--featured:hover { background: var(--brenson-rojo-suave); }
+  .brenson-financing-compare .brenson-table tbody tr:last-child td { border-bottom: 0; }
 </style>
 <script>
   (function(){

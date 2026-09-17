@@ -1,15 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "breadcrumb": { "type": "brenson-breadcrumb" },
+    "breadcrumb": {
+      "type": "brenson-breadcrumb",
+      "settings": {}
+    },
     "banner": {
-      "type": "main-collection-banner",
-      "settings": { "show_collection_description": true, "show_collection_image": true, "color_scheme": "scheme-1" }
+      "type": "brenson-collection-banner",
+      "settings": { "eyebrow": "100 % movilidad eléctrica", "show_collection_description": true }
     },
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
         "products_per_page": 12,
         "columns_desktop": 3,
+        "columns_mobile": "1",
         "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
@@ -20,7 +33,6 @@
         "enable_filtering": true,
         "filter_type": "vertical",
         "enable_sorting": true,
-        "columns_mobile": "1",
         "padding_top": 24,
         "padding_bottom": 36
       }
@@ -39,14 +51,59 @@
     },
     "trust": {
       "type": "brenson-trust-bar",
-      "blocks": { "t1": { "type": "certificado" }, "t2": { "type": "garantia", "settings": { "text": "Respaldo directo de Brenson en Colombia" } }, "t3": { "type": "envios", "settings": { "title": "Envíos a toda Colombia", "text": "Tiempos estimados por región en cada ficha" } }, "t4": { "type": "financiacion", "settings": { "title": "Financiación con aliado", "text": "Simula tu cuota en cada ficha" } } },
-      "block_order": ["t1", "t2", "t3", "t4"],
-      "settings": { "padding": 24 }
+      "blocks": {
+        "t1": {
+          "type": "certificado",
+          "settings": {}
+        },
+        "t2": {
+          "type": "garantia",
+          "settings": {
+            "text": "Respaldo directo de Brenson en Colombia"
+          }
+        },
+        "t3": {
+          "type": "envios",
+          "settings": {
+            "title": "Envíos a toda Colombia",
+            "text": "Tiempos estimados por región en cada ficha"
+          }
+        },
+        "t4": {
+          "type": "financiacion",
+          "settings": {
+            "title": "Financiación con aliado",
+            "text": "Simula tu cuota en cada ficha"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "padding": 24
+      }
     },
     "faq": {
       "type": "brenson-faq",
-      "settings": { "eyebrow": "Respaldo normativo y técnico", "title": "Preguntas frecuentes", "categoria": "general", "limit": 4, "show_cta": true }
+      "settings": {
+        "eyebrow": "Respaldo normativo y técnico",
+        "title": "Preguntas frecuentes",
+        "categoria": "general",
+        "limit": 4,
+        "show_cta": true
+      }
     }
   },
-  "order": ["breadcrumb", "banner", "product-grid", "asesor", "trust", "faq"]
+  "order": [
+    "breadcrumb",
+    "banner",
+    "product-grid",
+    "asesor",
+    "trust",
+    "faq"
+  ]
 }

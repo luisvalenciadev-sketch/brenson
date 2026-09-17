@@ -70,8 +70,11 @@
   --brenson-space-12: 4.8rem;  /* 48px */
   --brenson-space-16: 6.4rem;  /* 64px */
   --brenson-space-20: 8rem;    /* 80px */
-  --brenson-gutter: clamp(1.6rem, 4vw, 4rem);
-  --brenson-container: 1280px;
+  /* Igual al contenedor nativo de Dawn (--page-width, config. en 1400px, con su mismo padding
+     de 1.5rem/5rem) para que ninguna sección Brenson quede desalineada junto a una sección
+     nativa del tema (ej. rich-text de un hero seguido de un bloque Brenson). */
+  --brenson-gutter: 1.5rem;
+  --brenson-container: var(--page-width, 1400px);
 
   /* ---- Forma ---- */
   --brenson-radius-sm: 4px;
