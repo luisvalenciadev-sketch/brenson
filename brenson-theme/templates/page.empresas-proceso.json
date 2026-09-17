@@ -76,7 +76,11 @@
         "subtitle": "",
         "limit": 2
       }
+    },
+    "contacto": {
+      "type": "brenson-b2b-contacto",
+      "settings": {}
     }
   },
-  "order": ["respaldo", "casos"]
+  "order": ["respaldo", "casos", "contacto"]
 }

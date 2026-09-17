@@ -1,0 +1,140 @@
+{%- comment -%}
+  brenson-b2b-contacto — Cierre de las pantallas Stitch 15 y 16:
+  "Dedicated Corporate B2B Contact / Assessment CTA" + "Account Director Bio Card"
+  + "Fast Executive Contact Form" (máximo 5 campos, según el design system).
+
+  Se usa al final de /pages/empresas-beneficios y /pages/empresas-proceso.
+  Envía al mismo endpoint de leads que el resto del sitio (data-brenson-lead-form),
+  con respaldo al formulario de contacto nativo de Shopify si no hay JS.
+
+  Visibilidad: contenido comercial. Se oculta a empresas ya aprobadas.
+  theme-check-disable ConvertIncludeToRender
+{%- endcomment -%}
+{%- include 'brenson-b2b-guard' -%}
+{%- if b2b_state != 'aprobado' -%}
+{%- liquid
+  assign s = section.settings
+  assign asesor = b2b_asesor
+  if asesor == blank
+    for a in shop.metaobjects.brenson_asesor.values
+      if a.canal.value == 'b2b'
+        assign asesor = a
+        break
+      endif
+    endfor
+  endif
+  assign rangos = s.rangos | split: ','
+-%}
+
+<section id="contacto" class="brenson-section brenson-b2b-contacto">
+  <div class="brenson-container">
+    <div class="brenson-b2b-contacto__grid">
+
+      {%- comment -%} ── Asesor + propuesta de valor ── {%- endcomment -%}
+      <div class="brenson-b2b-card brenson-b2b-contacto__bio">
+        {%- if asesor -%}
+          <div class="brenson-advisor">
+            {%- if asesor.foto.value -%}
+              {{ asesor.foto.value | image_url: width: 128 | image_tag: class: 'brenson-advisor__avatar', loading: 'lazy', alt: asesor.nombre.value }}
+            {%- else -%}
+              <span class="brenson-advisor__avatar" aria-hidden="true">{{ asesor.nombre.value | slice: 0 }}</span>
+            {%- endif -%}
+            <div>
+              <span class="brenson-eyebrow">Asesoría senior B2B</span>
+              <strong style="display:block; font-size: var(--brenson-text-lg)">{{ asesor.nombre.value }}</strong>
+              {%- if asesor.cargo.value != blank -%}
+                <span class="brenson-muted" style="font-size: var(--brenson-text-sm)">{{ asesor.cargo.value }}</span>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <h2 class="brenson-heading" style="font-size: var(--brenson-text-2xl)">{{ s.title }}</h2>
+        <p class="brenson-subheading">{{ s.text }}</p>
+
+        <a class="brenson-btn brenson-btn--whatsapp brenson-btn--block" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">Hablar directamente por WhatsApp</a>
+
+        <ul class="brenson-doc-list" role="list" style="margin-top: var(--brenson-space-2)">
+          {%- if settings.brenson_email_empresas != blank -%}
+            <li><a href="mailto:{{ settings.brenson_email_empresas }}">Correo corporativo<span>{{ settings.brenson_email_empresas }}</span></a></li>
+          {%- endif -%}
+          {%- if asesor.whatsapp.value != blank -%}
+            <li><a href="https://wa.me/{{ asesor.whatsapp.value | replace: '+', '' | replace: ' ', '' }}" target="_blank" rel="noopener">Línea directa<span>{{ asesor.whatsapp.value }}</span></a></li>
+          {%- endif -%}
+        </ul>
+      </div>
+
+      {%- comment -%} ── Formulario ejecutivo (5 campos) ── {%- endcomment -%}
+      <div class="brenson-b2b-card">
+        <h3 style="margin:0; font-size: var(--brenson-text-xl)">{{ s.form_title }}</h3>
+        <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ s.form_text }}</p>
+
+        {%- form 'contact', id: 'BrensonB2BContacto', class: 'brenson-form', data-brenson-lead-form: '', data-endpoint: settings.brenson_services_url -%}
+          {%- if form.posted_successfully? -%}
+            <p class="brenson-form__success" role="status">Recibimos su solicitud. Un ejecutivo la contactará en horario hábil.</p>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <p class="brenson-form__error" role="alert">{{ form.errors | default_errors }}</p>
+          {%- endif -%}
+
+          <input type="hidden" name="contact[tipo]" data-name="tipo" value="b2b">
+          <input type="hidden" name="contact[fuente]" data-name="fuente" value="empresas-contacto">
+          <input type="hidden" name="contact[url]" data-name="url" value="{{ request.origin }}{{ request.path }}">
+          <input type="text" name="contact[website]" tabindex="-1" autocomplete="off" class="brenson-visually-hidden" aria-hidden="true">
+
+          <div class="brenson-field">
+            <label for="b2bc-empresa">Nombre de la empresa o razón social</label>
+            <input id="b2bc-empresa" type="text" name="contact[empresa]" data-name="empresa" required placeholder="Ej. Logística Nacional S.A.S." autocomplete="organization">
+          </div>
+          <div class="brenson-field">
+            <label for="b2bc-nit">NIT de la empresa</label>
+            <input id="b2bc-nit" type="text" name="contact[nit]" data-name="nit" required placeholder="900.000.000-1" inputmode="numeric">
+          </div>
+          <div class="brenson-field">
+            <label for="b2bc-nombre">Nombre y cargo del solicitante</label>
+            <input id="b2bc-nombre" type="text" name="contact[name]" data-name="nombre" required placeholder="Ej. Juan Pérez · Director financiero" autocomplete="name">
+          </div>
+          <div class="brenson-field">
+            <label for="b2bc-tel">Celular o WhatsApp corporativo</label>
+            <input id="b2bc-tel" type="tel" name="contact[phone]" data-name="whatsapp" required placeholder="310 000 0000" inputmode="tel" autocomplete="tel">
+          </div>
+          <div class="brenson-field">
+            <label for="b2bc-rango">Rango de unidades requeridas</label>
+            <select id="b2bc-rango" name="contact[rango_unidades]" data-name="rango_unidades" required>
+              <option value="" disabled selected>Seleccione el rango</option>
+              {%- for r in rangos -%}
+                <option value="{{ r | strip | escape }}">{{ r | strip }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+
+          <div data-turnstile-slot></div>
+
+          <button type="submit" class="brenson-btn brenson-btn--primary brenson-btn--lg brenson-btn--block" data-lead-submit>{{ s.form_cta }}</button>
+          <p class="brenson-form__success" data-lead-success hidden role="status">Recibimos su solicitud. Un ejecutivo la contactará en horario hábil.</p>
+          <p class="brenson-form__error" data-lead-error hidden role="alert">No pudimos enviar su solicitud. Escríbanos por WhatsApp o intente de nuevo.</p>
+        {%- endform -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+<script src="{{ 'brenson-lead-form.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Empresas · Contacto",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Título", "default": "Hablemos de los números de su operación" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Analizamos sin costo la ruta, el peso de carga y los requerimientos de recarga de su compañía para entregarle una corrida financiera formal con TCO proyectado a 36 meses." },
+    { "type": "text", "id": "form_title", "label": "Título del formulario", "default": "Solicitar diagnóstico y simulación de flota" },
+    { "type": "textarea", "id": "form_text", "label": "Texto del formulario", "default": "Respuesta técnica y comercial en menos de 2 horas hábiles." },
+    { "type": "text", "id": "form_cta", "label": "Texto del botón", "default": "Agendar sesión técnica con un especialista" },
+    { "type": "text", "id": "rangos", "label": "Rangos de unidades (separados por coma)", "default": "10 a 19 unidades, 20 a 49 unidades, 50 o más unidades" }
+  ],
+  "presets": [{ "name": "Empresas · Contacto" }],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

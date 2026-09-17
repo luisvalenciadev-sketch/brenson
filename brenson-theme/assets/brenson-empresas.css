@@ -121,6 +121,67 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 .brenson-progress > span { display: block; height: 100%; background: var(--brenson-rojo); border-radius: 999px; transition: width 300ms var(--brenson-ease); }
 @media (max-width: 749px) { .brenson-quoter__row { grid-template-columns: 72px 1fr; } .brenson-quoter__row > :last-child { grid-column: 1 / -1; } }
 
+/* ── Superficie oscura de tarjeta (pantallas Stitch 15-17) ───────────────────
+   El design system de Stitch define surface-dark-card #0F1318 para las landings
+   públicas del portal. El gate y el dashboard conservan la tarjeta blanca.
+   ────────────────────────────────────────────────────────────────────────── */
+:root { --brenson-superficie-card: #0f1318; --brenson-sobre-superficie: #9ca3af; }
+
+.brenson-b2b-roi .brenson-b2b-card,
+.brenson-b2b-respaldo .brenson-b2b-card,
+.brenson-b2b-flotas .brenson-b2b-card,
+.brenson-b2b-contacto .brenson-b2b-card {
+  background: var(--brenson-superficie-card);
+  color: #fff;
+  box-shadow: var(--brenson-shadow-lg);
+}
+body.brenson-empresas .brenson-b2b-roi .brenson-b2b-card .brenson-heading,
+body.brenson-empresas .brenson-b2b-respaldo .brenson-b2b-card .brenson-heading,
+body.brenson-empresas .brenson-b2b-flotas .brenson-b2b-card .brenson-heading,
+body.brenson-empresas .brenson-b2b-contacto .brenson-b2b-card .brenson-heading { color: #fff; }
+body.brenson-empresas .brenson-b2b-roi .brenson-b2b-card .brenson-subheading,
+body.brenson-empresas .brenson-b2b-respaldo .brenson-b2b-card .brenson-subheading,
+body.brenson-empresas .brenson-b2b-flotas .brenson-b2b-card .brenson-subheading,
+body.brenson-empresas .brenson-b2b-contacto .brenson-b2b-card .brenson-subheading { color: var(--brenson-sobre-superficie); }
+
+.brenson-b2b-roi .brenson-b2b-card h2,
+.brenson-b2b-roi .brenson-b2b-card h3,
+.brenson-b2b-respaldo .brenson-b2b-card h3,
+.brenson-b2b-flotas .brenson-b2b-card h3,
+.brenson-b2b-contacto .brenson-b2b-card h3 { color: #fff; }
+
+.brenson-b2b-roi .brenson-b2b-card .brenson-muted,
+.brenson-b2b-respaldo .brenson-b2b-card .brenson-muted,
+.brenson-b2b-flotas .brenson-b2b-card .brenson-muted,
+.brenson-b2b-contacto .brenson-b2b-card .brenson-muted { color: var(--brenson-sobre-superficie); }
+
+.brenson-b2b-roi .brenson-card__title,
+.brenson-b2b-flotas .brenson-card__title { color: #fff; }
+
+.brenson-b2b-roi .brenson-checklist li,
+.brenson-b2b-respaldo .brenson-checklist li,
+.brenson-b2b-flotas .brenson-checklist li { color: rgba(255,255,255,.85); }
+
+/* Tabla comparativa sobre superficie oscura */
+.brenson-b2b-flotas .brenson-table th,
+.brenson-b2b-flotas .brenson-table td { border-bottom-color: rgba(255,255,255,.08); }
+.brenson-b2b-flotas .brenson-table thead th { color: var(--brenson-sobre-superficie); }
+.brenson-b2b-flotas .brenson-table tbody th { color: #fff; font-weight: 700; text-align: left; }
+.brenson-b2b-flotas .brenson-table td { color: rgba(255,255,255,.82); }
+.brenson-b2b-flotas .brenson-table tbody tr:hover { background: rgba(255,255,255,.03); }
+
+/* Chips de filtro sobre superficie oscura */
+.brenson-b2b-flotas .brenson-chip {
+  background: var(--brenson-superficie-card);
+  color: var(--brenson-sobre-superficie);
+  border-color: transparent;
+}
+.brenson-b2b-flotas .brenson-chip:hover { color: #fff; }
+.brenson-b2b-flotas .brenson-chip.is-active,
+.brenson-b2b-flotas .brenson-chip[aria-pressed="true"] {
+  background: var(--brenson-rojo); color: #fff; border-color: var(--brenson-rojo);
+}
+
 /* ── Empresas · ROI de flota (pantalla 15) ───────────────────────────────── */
 .brenson-b2b-roi__kpis { list-style: none; margin: var(--brenson-space-6) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--brenson-space-8); }
 .brenson-b2b-roi__kpis li { display: grid; gap: 0.2rem; }
@@ -128,8 +189,8 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 .brenson-b2b-roi__kpis span { font-size: var(--brenson-text-xs); color: rgba(255,255,255,.65); }
 .brenson-b2b-roi__featured-img { width: 100%; border-radius: var(--brenson-radius-lg); aspect-ratio: 4 / 3; object-fit: cover; background: var(--brenson-gris-claro); }
 .brenson-b2b-roi__specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--brenson-space-3); margin: 0; }
-.brenson-b2b-roi__specs dt { font-size: var(--brenson-text-xs); color: var(--brenson-gris); text-transform: uppercase; letter-spacing: .04em; }
-.brenson-b2b-roi__specs dd { margin: 0; font-weight: 700; font-size: var(--brenson-text-sm); }
+.brenson-b2b-roi__specs dt { font-size: var(--brenson-text-xs); color: var(--brenson-sobre-superficie); text-transform: uppercase; letter-spacing: .04em; }
+.brenson-b2b-roi__specs dd { margin: 0; font-weight: 700; font-size: var(--brenson-text-sm); color: #fff; }
 
 .brenson-b2b-roi__slider { display: grid; gap: var(--brenson-space-3); margin-bottom: var(--brenson-space-6); }
 .brenson-b2b-roi__slider label { font-weight: 700; font-size: var(--brenson-text-sm); }
@@ -141,19 +202,16 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 .brenson-b2b-roi__col header { display: flex; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); flex-wrap: wrap; }
 .brenson-b2b-roi__col h3 { margin: 0; font-size: var(--brenson-text-lg); }
 .brenson-b2b-roi__col dl { display: grid; gap: var(--brenson-space-3); margin: 0; }
-.brenson-b2b-roi__col dl > div { display: flex; justify-content: space-between; gap: var(--brenson-space-3); font-size: var(--brenson-text-sm); border-bottom: 1px solid var(--brenson-gris-borde); padding-bottom: 0.64rem; }
-.brenson-b2b-roi__col dt { color: var(--brenson-gris); }
-.brenson-b2b-roi__col dd { margin: 0; font-weight: 700; text-align: right; }
+.brenson-b2b-roi__col dl > div { display: flex; justify-content: space-between; gap: var(--brenson-space-3); font-size: var(--brenson-text-sm); border-bottom: 1px solid rgba(255,255,255,.08); padding-bottom: 0.64rem; }
+.brenson-b2b-roi__col dt { color: var(--brenson-sobre-superficie); }
+.brenson-b2b-roi__col dd { margin: 0; font-weight: 700; text-align: right; color: #fff; }
 .brenson-b2b-roi__total { display: grid; gap: 0.2rem; margin: auto 0 0; padding-top: var(--brenson-space-3); }
-.brenson-b2b-roi__total span { font-size: var(--brenson-text-xs); color: var(--brenson-gris); text-transform: uppercase; letter-spacing: .04em; }
+.brenson-b2b-roi__total span { font-size: var(--brenson-text-xs); color: var(--brenson-sobre-superficie); text-transform: uppercase; letter-spacing: .04em; }
 .brenson-b2b-roi__total strong { font-size: var(--brenson-text-2xl); font-weight: 800; line-height: 1.1; }
-.brenson-b2b-roi__col--gas .brenson-b2b-roi__total strong { color: var(--brenson-carbon-60); }
-.brenson-b2b-roi__col--ele { outline: 2px solid var(--brenson-certificado); }
+.brenson-b2b-roi__col--gas .brenson-b2b-roi__total strong { color: #fff; }
+.brenson-b2b-roi__col--ele { border-left: 4px solid var(--brenson-certificado); }
 .brenson-b2b-roi__col--ele .brenson-b2b-roi__total strong { color: var(--brenson-certificado); }
-.brenson-b2b-roi__col--saving { background: var(--brenson-carbon); color: #fff; }
-.brenson-b2b-roi__col--saving h3 { color: #fff; }
-.brenson-b2b-roi__col--saving .brenson-muted { color: rgba(255,255,255,.6); }
-.brenson-b2b-roi__col--saving .brenson-checklist li { color: rgba(255,255,255,.85); }
+.brenson-b2b-roi__col--saving { border-left: 4px solid var(--brenson-rojo); }
 .brenson-b2b-roi__saving-figure { font-size: var(--brenson-text-3xl); font-weight: 800; line-height: 1; margin: 0; color: var(--brenson-certificado); }
 .brenson-b2b-roi__disclaimer { display: flex; gap: var(--brenson-space-3); align-items: flex-start; margin: var(--brenson-space-6) 0 0; font-size: var(--brenson-text-xs); color: rgba(255,255,255,.6); }
 .brenson-b2b-roi__disclaimer svg { flex-shrink: 0; margin-top: 0.16rem; }
@@ -175,12 +233,10 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 @media (min-width: 990px) { .brenson-b2b-respaldo__recarga { grid-template-columns: 1.3fr 1fr; } }
 .brenson-b2b-respaldo__recarga-modos { display: grid; gap: var(--brenson-space-4); margin-top: var(--brenson-space-6); }
 @media (min-width: 750px) { .brenson-b2b-respaldo__recarga-modos { grid-template-columns: repeat(2, 1fr); } }
-.brenson-b2b-respaldo__comparativa-fila { display: flex; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); padding: var(--brenson-space-4); border-radius: var(--brenson-radius-lg); background: var(--brenson-gris-claro); font-size: var(--brenson-text-sm); }
-.brenson-b2b-respaldo__comparativa-fila strong { font-size: var(--brenson-text-xl); font-weight: 800; }
-.brenson-b2b-respaldo__comparativa-fila--ok { background: var(--brenson-certificado-suave); }
-.brenson-b2b-respaldo__comparativa-fila--ok strong { color: var(--brenson-certificado); }
-.brenson-b2b-respaldo__cierre { display: grid; gap: var(--brenson-space-6); align-items: center; }
-@media (min-width: 990px) { .brenson-b2b-respaldo__cierre { grid-template-columns: 1.5fr 1fr; } }
+.brenson-b2b-respaldo__comparativa-fila { display: flex; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); padding: var(--brenson-space-4); border-radius: var(--brenson-radius-lg); background: rgba(255,255,255,.05); font-size: var(--brenson-text-sm); }
+.brenson-b2b-respaldo__comparativa-fila strong { font-size: var(--brenson-text-xl); font-weight: 800; color: #fff; }
+.brenson-b2b-respaldo__comparativa-fila--ok { background: rgba(31,138,76,.16); }
+.brenson-b2b-respaldo__comparativa-fila--ok strong { color: #34d17f; }
 
 /* ── Empresas · Flotas y catálogo industrial (pantalla 17) ───────────────── */
 .brenson-b2b-flotas__hero { text-align: center; max-width: 880px; margin: 0 auto; padding-block: var(--brenson-space-12) var(--brenson-space-6); display: grid; gap: var(--brenson-space-4); justify-items: center; }
@@ -188,11 +244,41 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 .brenson-b2b-flotas__card { padding: 0; overflow: hidden; }
 .brenson-b2b-flotas__card[hidden] { display: none; }
 .brenson-b2b-flotas__specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--brenson-space-2); margin: 0; }
-.brenson-b2b-flotas__specs dt { font-size: var(--brenson-text-xs); color: var(--brenson-gris); text-transform: uppercase; letter-spacing: .04em; }
-.brenson-b2b-flotas__specs dd { margin: 0; font-weight: 700; font-size: var(--brenson-text-sm); }
-.brenson-b2b-flotas__locked { display: flex; gap: 0.64rem; align-items: center; margin: 0; font-size: var(--brenson-text-xs); color: var(--brenson-gris); }
+.brenson-b2b-flotas__specs { border-block: 1px solid rgba(255,255,255,.08); padding-block: var(--brenson-space-3); }
+.brenson-b2b-flotas__specs dt { font-size: var(--brenson-text-xs); color: var(--brenson-sobre-superficie); text-transform: uppercase; letter-spacing: .04em; }
+.brenson-b2b-flotas__specs dd { margin: 0; font-weight: 700; font-size: var(--brenson-text-sm); color: #fff; }
+.brenson-b2b-flotas__locked { display: flex; gap: 0.64rem; align-items: center; margin: 0; font-size: var(--brenson-text-xs); color: var(--brenson-sobre-superficie); }
 .brenson-b2b-flotas__locked svg { flex-shrink: 0; }
 .brenson-b2b-flotas__actions { display: grid; gap: 0.8rem; margin-top: auto; }
 .brenson-b2b-flotas__vacio { margin: var(--brenson-space-6) 0 0; text-align: center; color: rgba(255,255,255,.6); font-size: var(--brenson-text-sm); }
-.brenson-b2b-flotas__medida { display: grid; gap: var(--brenson-space-6); align-items: center; }
-@media (min-width: 990px) { .brenson-b2b-flotas__medida { grid-template-columns: 2fr auto; } }
+
+/* Tarjeta 6 de la grilla: solución personalizada (no es un bloque aparte) */
+.brenson-b2b-flotas__card--medida { border: 1.5px dashed rgba(255,255,255,.22); box-shadow: none; padding: var(--brenson-space-6); justify-content: center; text-align: center; align-items: center; gap: var(--brenson-space-4); }
+
+/* Franja de indicadores bajo el encabezado */
+.brenson-b2b-flotas__trust { list-style: none; margin: 0 0 var(--brenson-space-8); padding: 0; display: grid; gap: var(--brenson-space-4); }
+@media (min-width: 750px) { .brenson-b2b-flotas__trust { grid-template-columns: repeat(3, 1fr); } }
+.brenson-b2b-flotas__trust li { display: grid; gap: 0.32rem; padding: var(--brenson-space-5); background: var(--brenson-superficie-card); border-radius: var(--brenson-radius-xl); border-left: 4px solid var(--brenson-rojo); }
+.brenson-b2b-flotas__trust .brenson-eyebrow { color: var(--brenson-sobre-superficie); }
+.brenson-b2b-flotas__trust strong { font-size: var(--brenson-text-2xl); font-weight: 800; line-height: 1; color: #fff; }
+.brenson-b2b-flotas__trust span:last-child { font-size: var(--brenson-text-xs); color: var(--brenson-sobre-superficie); }
+
+/* Barra fija de borrador de cotización */
+.brenson-b2b-flotas__barra { position: sticky; bottom: 0; z-index: 40; margin-top: var(--brenson-space-8); display: flex; flex-wrap: wrap; align-items: center; gap: var(--brenson-space-4); padding: var(--brenson-space-4) var(--brenson-space-6); border-radius: var(--brenson-radius-xl) var(--brenson-radius-xl) 0 0; background: rgba(15,19,24,.96); backdrop-filter: blur(12px); box-shadow: 0 -8px 32px rgba(0,0,0,.5); }
+.brenson-b2b-flotas__barra-resumen { display: grid; gap: 0.16rem; margin-right: auto; }
+.brenson-b2b-flotas__barra-resumen span { font-size: var(--brenson-text-xs); color: var(--brenson-sobre-superficie); text-transform: uppercase; letter-spacing: .04em; }
+.brenson-b2b-flotas__barra-resumen strong { font-size: var(--brenson-text-xl); font-weight: 800; color: #fff; }
+@media (max-width: 749px) { .brenson-b2b-flotas__barra { flex-direction: column; align-items: stretch; } .brenson-b2b-flotas__barra-resumen { margin-right: 0; } }
+
+/* ── Empresas · Contacto y asesoría (cierre de pantallas 15 y 16) ────────── */
+.brenson-b2b-contacto__grid { display: grid; gap: var(--brenson-space-6); align-items: start; }
+@media (min-width: 990px) { .brenson-b2b-contacto__grid { grid-template-columns: 1fr 1fr; } }
+.brenson-b2b-contacto__bio { display: grid; gap: var(--brenson-space-4); }
+.brenson-b2b-contacto .brenson-field label { color: #fff; }
+.brenson-b2b-contacto .brenson-field input,
+.brenson-b2b-contacto .brenson-field select {
+  background: var(--brenson-carbon); color: #fff; border: 1px solid rgba(255,255,255,.14);
+}
+.brenson-b2b-contacto .brenson-field input::placeholder { color: rgba(255,255,255,.38); }
+.brenson-b2b-contacto .brenson-field input:focus,
+.brenson-b2b-contacto .brenson-field select:focus { border-color: var(--brenson-rojo); outline: 2px solid rgba(238,0,0,.25); outline-offset: 1px; }

@@ -33,6 +33,13 @@
       <p class="brenson-subheading">{{ s.text }}</p>
     </header>
 
+    {%- comment -%} ── Indicadores rápidos de confianza ── {%- endcomment -%}
+    <ul class="brenson-b2b-flotas__trust" role="list">
+      <li><span class="brenson-eyebrow">{{ s.trust1_label }}</span><strong class="brenson-num">{{ s.trust1_valor }}</strong><span>{{ s.trust1_nota }}</span></li>
+      <li><span class="brenson-eyebrow">{{ s.trust2_label }}</span><strong class="brenson-num">{{ s.trust2_valor }}</strong><span>{{ s.trust2_nota }}</span></li>
+      <li><span class="brenson-eyebrow">{{ s.trust3_label }}</span><strong class="brenson-num">{{ s.trust3_valor }}</strong><span>{{ s.trust3_nota }}</span></li>
+    </ul>
+
     {%- if productos.size > 0 -%}
       {%- comment -%} ── Filtro por categoría ── {%- endcomment -%}
       {%- liquid
@@ -94,7 +101,7 @@
                   Precio corporativo tras validación de NIT
                 </p>
                 <div class="brenson-b2b-flotas__actions">
-                  <a class="brenson-btn brenson-btn--carbon brenson-btn--sm brenson-btn--block" href="/pages/empresas-acceso">Cotizar modelo</a>
+                  <button type="button" class="brenson-btn brenson-btn--primary brenson-btn--sm brenson-btn--block" data-flota-add data-titulo="{{ p.title | escape }}">Cotizar modelo</button>
                   {%- if pm.ficha_tecnica_pdf.value != blank -%}
                     <a class="brenson-btn brenson-btn--outline brenson-btn--sm brenson-btn--block" href="{{ pm.ficha_tecnica_pdf.value.url }}" target="_blank" rel="noopener">Ficha técnica</a>
                   {%- endif -%}
@@ -102,6 +109,14 @@
               </div>
             </li>
           {%- endfor -%}
+
+          {%- comment -%} Tarjeta final de la grilla: solución personalizada (diseño: CARD 6) {%- endcomment -%}
+          <li class="brenson-b2b-card brenson-b2b-flotas__card--medida">
+            <span class="brenson-eyebrow">Ingeniería a la medida</span>
+            <h3 style="margin:0; font-size: var(--brenson-text-lg)">{{ s.medida_title }}</h3>
+            <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ s.medida_text }}</p>
+            <a class="brenson-btn brenson-btn--whatsapp brenson-btn--block" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">Hablar con un ingeniero de flota</a>
+          </li>
         </ul>
         <p class="brenson-b2b-flotas__vacio" data-flota-vacio hidden role="status">No hay unidades en esa categoría. Muestre todas las unidades o consulte con su asesor.</p>
       </div>
@@ -152,18 +167,6 @@
       </div>
     {%- endif -%}
 
-    {%- comment -%} ── Ingeniería a la medida ── {%- endcomment -%}
-    <div class="brenson-b2b-block">
-      <div class="brenson-b2b-card brenson-b2b-flotas__medida">
-        <div>
-          <span class="brenson-eyebrow">Ingeniería a la medida</span>
-          <h2 class="brenson-heading">{{ s.medida_title }}</h2>
-          <p class="brenson-subheading">{{ s.medida_text }}</p>
-        </div>
-        <a class="brenson-btn brenson-btn--whatsapp brenson-btn--lg" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">Hablar con un ingeniero de flota</a>
-      </div>
-    </div>
-
     {%- comment -%} ── Equipamiento de fábrica ── {%- endcomment -%}
     {%- if equipamiento.size > 0 -%}
       <div class="brenson-b2b-block" id="equipamiento">
@@ -189,14 +192,32 @@
       </div>
     {%- endif -%}
 
-    {%- comment -%} ── Cierre hacia el cotizador ── {%- endcomment -%}
-    <div class="brenson-b2b-block">
+    {%- comment -%} ── Escala de descuentos + cierre hacia el cotizador ── {%- endcomment -%}
+    <div class="brenson-b2b-block" id="escala">
       <div class="brenson-b2b-card brenson-b2b-card--center">
         <span class="brenson-eyebrow">Política de escala</span>
         <h2 class="brenson-heading">{{ s.cierre_title }}</h2>
         <p class="brenson-subheading">{{ s.cierre_text }}</p>
+        {%- assign tiers = shop.metaobjects.brenson_tier_b2b.values -%}
+        {%- if tiers.size > 0 -%}
+          <ul class="brenson-checklist" style="grid-template-columns:1fr; text-align:left">
+            {%- for t in tiers -%}
+              <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Desde {{ t.minimo_unidades.value }} unidades · {{ t.descuento_pct.value | round }} % de descuento</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
         <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="/pages/empresas-acceso">Solicitar acceso al cotizador</a>
       </div>
+    </div>
+
+    {%- comment -%} ── Barra fija de borrador de cotización (diseño: sticky B2B) ── {%- endcomment -%}
+    <div class="brenson-b2b-flotas__barra" data-flota-barra hidden>
+      <div class="brenson-b2b-flotas__barra-resumen">
+        <span>Borrador de propuesta B2B</span>
+        <strong><span data-flota-conteo>0</span> unidades seleccionadas</strong>
+      </div>
+      <button type="button" class="brenson-btn brenson-btn--outline brenson-btn--sm" style="color:#fff; border-color: rgba(255,255,255,.4)" data-flota-limpiar>Limpiar</button>
+      <a class="brenson-btn brenson-btn--primary" href="/pages/empresas-acceso">Ir al cotizador corporativo</a>
     </div>
 
   </div>
@@ -213,6 +234,17 @@
     { "type": "text", "id": "title", "label": "Título", "default": "Vehículos eléctricos para trabajo pesado y reparto intensivo" },
     { "type": "textarea", "id": "text", "label": "Texto de entrada", "default": "Soluciones de movilidad cero emisiones para gerencias de logística, última milla y suministros en Colombia." },
     { "type": "collection", "id": "coleccion", "label": "Colección corporativa" },
+
+    { "type": "header", "content": "Indicadores de confianza" },
+    { "type": "text", "id": "trust1_label", "label": "Indicador 1 · etiqueta", "default": "Disponibilidad inmediata" },
+    { "type": "text", "id": "trust1_valor", "label": "Indicador 1 · valor", "default": "+180 unidades" },
+    { "type": "text", "id": "trust1_nota", "label": "Indicador 1 · nota", "default": "Bodegas en Bogotá y Medellín" },
+    { "type": "text", "id": "trust2_label", "label": "Indicador 2 · etiqueta", "default": "Ley 1715 / 2099" },
+    { "type": "text", "id": "trust2_valor", "label": "Indicador 2 · valor", "default": "Hasta 50 %" },
+    { "type": "text", "id": "trust2_nota", "label": "Indicador 2 · nota", "default": "Deducción en renta líquida" },
+    { "type": "text", "id": "trust3_label", "label": "Indicador 3 · etiqueta", "default": "Garantía de fábrica" },
+    { "type": "text", "id": "trust3_valor", "label": "Indicador 3 · valor", "default": "24 meses" },
+    { "type": "text", "id": "trust3_nota", "label": "Indicador 3 · nota", "default": "Motor, batería y controlador" },
 
     { "type": "header", "content": "Gama industrial" },
     { "type": "text", "id": "gama_eyebrow", "label": "Antetítulo", "default": "Gama industrial Brenson" },

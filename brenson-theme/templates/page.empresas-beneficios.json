@@ -43,7 +43,11 @@
       },
       "block_order": ["i1", "i2", "i3", "i4"],
       "settings": {}
+    },
+    "contacto": {
+      "type": "brenson-b2b-contacto",
+      "settings": {}
     }
   },
-  "order": ["roi"]
+  "order": ["roi", "contacto"]
 }

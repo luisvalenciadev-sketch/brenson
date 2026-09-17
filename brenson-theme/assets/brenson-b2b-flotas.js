@@ -36,4 +36,46 @@
       filtrar(evento.currentTarget.dataset.flotaFiltro);
     });
   }
+
+  /* ── Borrador de propuesta B2B (barra fija) ──────────────────────────────
+     Solo acumula la intención de cotizar: el precio corporativo exige NIT
+     validado, así que la barra lleva al flujo de acceso, no a un carrito. */
+  var barra = root.querySelector('[data-flota-barra]');
+  var conteo = root.querySelector('[data-flota-conteo]');
+  var limpiar = root.querySelector('[data-flota-limpiar]');
+  var añadir = root.querySelectorAll('[data-flota-add]');
+  if (!barra || !conteo || !añadir.length) return;
+
+  var seleccion = [];
+
+  function pintarBarra() {
+    conteo.textContent = String(seleccion.length);
+    barra.hidden = seleccion.length === 0;
+
+    for (var i = 0; i < añadir.length; i++) {
+      var elegido = seleccion.indexOf(añadir[i].dataset.titulo) !== -1;
+      añadir[i].textContent = elegido ? 'Quitar de la propuesta' : 'Cotizar modelo';
+      añadir[i].classList.toggle('brenson-btn--primary', !elegido);
+      añadir[i].classList.toggle('brenson-btn--outline', elegido);
+    }
+  }
+
+  for (var m = 0; m < añadir.length; m++) {
+    añadir[m].addEventListener('click', function (evento) {
+      var titulo = evento.currentTarget.dataset.titulo;
+      var pos = seleccion.indexOf(titulo);
+      if (pos === -1) seleccion.push(titulo);
+      else seleccion.splice(pos, 1);
+      pintarBarra();
+    });
+  }
+
+  if (limpiar) {
+    limpiar.addEventListener('click', function () {
+      seleccion = [];
+      pintarBarra();
+    });
+  }
+
+  pintarBarra();
 })();

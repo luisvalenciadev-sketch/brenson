@@ -117,46 +117,6 @@
       </div>
     </div>
 
-    {%- comment -%} ── Cierre con asesor ── {%- endcomment -%}
-    {%- liquid
-      assign asesor = b2b_asesor
-      if asesor == blank
-        for a in shop.metaobjects.brenson_asesor.values
-          if a.canal.value == 'b2b'
-            assign asesor = a
-            break
-          endif
-        endfor
-      endif
-    -%}
-    <div class="brenson-b2b-block" id="contacto">
-      <div class="brenson-b2b-card brenson-b2b-respaldo__cierre">
-        <div>
-          <span class="brenson-eyebrow">Atención consultiva</span>
-          <h2 class="brenson-heading">{{ s.cierre_title }}</h2>
-          <p class="brenson-subheading">{{ s.cierre_text }}</p>
-          <div style="display:flex; gap: var(--brenson-space-3); flex-wrap:wrap">
-            <a class="brenson-btn brenson-btn--primary" href="/pages/empresas-acceso">Agendar sesión técnica</a>
-            <a class="brenson-btn brenson-btn--whatsapp" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">Hablar por WhatsApp</a>
-          </div>
-        </div>
-        {%- if asesor -%}
-          <div class="brenson-advisor">
-            {%- if asesor.foto.value -%}
-              {{ asesor.foto.value | image_url: width: 128 | image_tag: class: 'brenson-advisor__avatar', loading: 'lazy', alt: asesor.nombre.value }}
-            {%- else -%}
-              <span class="brenson-advisor__avatar" aria-hidden="true">{{ asesor.nombre.value | slice: 0 }}</span>
-            {%- endif -%}
-            <div>
-              <strong>{{ asesor.nombre.value }}</strong>
-              {%- if asesor.cargo.value != blank -%}<br><span class="brenson-muted" style="font-size: var(--brenson-text-sm)">{{ asesor.cargo.value }}</span>{%- endif -%}
-              {%- if settings.brenson_email_empresas != blank -%}<br><a class="link" href="mailto:{{ settings.brenson_email_empresas }}">{{ settings.brenson_email_empresas }}</a>{%- endif -%}
-            </div>
-          </div>
-        {%- endif -%}
-      </div>
-    </div>
-
   </div>
 </section>
 {%- endif -%}
@@ -204,10 +164,7 @@
     { "type": "text", "id": "recarga_b_label", "label": "Comparativa · opción B", "default": "Van o utilitario diésel" },
     { "type": "number", "id": "recarga_b_costo", "label": "Comparativa · costo B (COP)", "default": 32000 },
     { "type": "text", "id": "recarga_nota", "label": "Nota de la comparativa", "default": "Costo por recarga completa equivalente. Valores de referencia sujetos a la tarifa de energía vigente." },
-
-    { "type": "header", "content": "Cierre" },
-    { "type": "text", "id": "cierre_title", "label": "Título", "default": "¿Listo para estructurar el piloto de su organización?" },
-    { "type": "textarea", "id": "cierre_text", "label": "Texto", "default": "Agende una reunión técnica de 30 minutos sin compromiso. Evaluamos el TCO de su flota actual y coordinamos la prueba piloto en sus rutas." }
+    { "type": "paragraph", "content": "El cierre con el asesor y el formulario ejecutivo viven en la sección «Empresas · Contacto», que se añade al final de la plantilla." }
   ],
   "blocks": [
     {

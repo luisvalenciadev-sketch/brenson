@@ -57,8 +57,19 @@
         </ul>
       </div>
 
-      {%- comment -%} Unidad destacada: producto real de la colección corporativa {%- endcomment -%}
-      {%- assign destacado = s.producto_destacado -%}
+      {%- comment -%}
+        Unidad destacada: el producto elegido en el ajuste; si está vacío, el primero
+        de la colección corporativa, para que la tarjeta del diseño nunca falte.
+      {%- endcomment -%}
+      {%- liquid
+        assign destacado = s.producto_destacado
+        if destacado == blank
+          assign fleet_col = settings.brenson_b2b_collection
+          if fleet_col != blank and fleet_col.products.size > 0
+            assign destacado = fleet_col.products.first
+          endif
+        endif
+      -%}
       {%- if destacado != blank -%}
         {%- assign dm = destacado.metafields.brenson -%}
         <div class="brenson-b2b-card brenson-b2b-roi__featured">
