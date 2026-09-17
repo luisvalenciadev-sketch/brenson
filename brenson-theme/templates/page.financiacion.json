@@ -1,14 +1,24 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
-      "type": "rich-text",
-      "blocks": {
-        "caption": { "type": "caption", "settings": { "caption": "Financiación ágil y 100 % digital", "text_style": "caption-with-letter-spacing", "text_size": "medium" } },
-        "heading": { "type": "heading", "settings": { "heading": "Tu vehículo eléctrico, en cuotas que sí puedes pagar.", "heading_size": "h1" } },
-        "text": { "type": "text", "settings": { "text": "<p>Simula tu cuota, ajusta tu pago inicial y solicita el estudio de crédito con nuestro aliado financiero sin papeleos ni salir de casa.</p>" } }
-      },
-      "block_order": ["caption", "heading", "text"],
-      "settings": { "desktop_content_position": "center", "content_alignment": "center", "color_scheme": "scheme-2", "full_width": true, "padding_top": 56, "padding_bottom": 24 }
+      "type": "brenson-financing-hero",
+      "settings": {
+        "eyebrow": "Financiación ágil y 100 % digital",
+        "title": "Tu vehículo eléctrico, en cuotas que",
+        "title_highlight": "sí puedes pagar",
+        "text": "Simula tu cuota mensual en segundos, ajusta tu pago inicial y solicita el estudio de crédito con nuestro aliado financiero sin papeleos ni salir de casa.",
+        "product": "brenson-city-1500",
+        "collection": "destacados"
+      }
     },
     "simulador": {
       "type": "brenson-simulator",
@@ -18,6 +28,7 @@
         "subtitle": "Ajusta los parámetros para adaptar la cuota exacta a tu presupuesto mensual.",
         "cta_label": "Solicitar financiamiento",
         "collection": "destacados",
+        "default_product": "brenson-city-1500",
         "dark": false
       }
     },
@@ -48,10 +59,13 @@
         "eyebrow": "Economía de bolsillo real en Colombia",
         "title_pre": "Lo que ahorras:",
         "title_highlight": "La cuota se paga sola.",
-        "text": "En una ciudad colombiana promedio, rodar 40 km al día en moto a gasolina cuesta más de $380.000 COP al mes entre combustible corriente, cambios periódicos de aceite y desgaste de bujes. Con Brenson, recargas en casa a 110V como lo harías con cualquier celular, por una fracción.",
+        "text": "En una ciudad colombiana promedio, rodar 40 km al día en moto a gasolina cuesta más de $380.000 COP al mes entre combustible corriente, cambios periódicos de aceite y desgaste de bujes. Con Brenson, recargas con el tomacorriente común de tu casa por una fracción.",
+        "amount_note": "Ahorro suficiente para cubrir tu cuota Brenson y guardar saldo a tu favor.",
         "costo_gasolina": 380000,
+        "text_gasolina": "Gasolina corriente + cambios de aceite de motor + kit de arrastre frecuente.",
         "costo_electrico": 35000,
-        "kwh_mes": 20
+        "text_electrico": "Recargas estándar en casa a 110V (estrato 3/4) · Cero aceite · Cero filtros.",
+        "disclaimer": "Dato ilustrativo para recorrido diario urbano típico de 40 km en Colombia. Tarifa promedio residencial de kWh regulada."
       }
     },
     "lead": {

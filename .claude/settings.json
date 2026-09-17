@@ -41,7 +41,8 @@
       "Bash(curl -s -D - -o /tmp/home2.html \"https://brenson-0.myshopify.com/?preview_theme_id=143001354315\")",
       "Bash(curl -sL \"https://brenson.co/?preview_theme_id=143001354315\" -o /tmp/home3.html)",
       "Bash(grep -n \"^h1\\\\|^h2\\\\|, h2\\\\|h2,\\\\|h2 {\" assets/base.css)",
-      "Bash(SHOPIFY_SHOP=brenson-0.myshopify.com SHOPIFY_API_VERSION=2025-07 SHOPIFY_ADMIN_TOKEN=$SHOPIFY_ADMIN_TOKEN node scripts/import-blog-images.mjs)"
+      "Bash(SHOPIFY_SHOP=brenson-0.myshopify.com SHOPIFY_API_VERSION=2025-07 SHOPIFY_ADMIN_TOKEN=$SHOPIFY_ADMIN_TOKEN node scripts/import-blog-images.mjs)",
+      "Bash(SHOPIFY_SHOP=brenson-0.myshopify.com SHOPIFY_API_VERSION=2025-07 SHOPIFY_ADMIN_TOKEN=$SHOPIFY_ADMIN_TOKEN node scripts/set-financing-faq.mjs)"
     ]
   }
 }

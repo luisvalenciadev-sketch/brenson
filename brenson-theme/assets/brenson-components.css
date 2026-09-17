@@ -289,21 +289,29 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 /* ---------- Simulador ---------- */
 .brenson-simulator { display: grid; gap: var(--brenson-space-6); }
 @media (min-width: 990px) { .brenson-simulator { grid-template-columns: 1.2fr 1fr; align-items: start; } }
-.brenson-simulator__controls { display: grid; gap: var(--brenson-space-5); }
+.brenson-simulator__controls {
+  display: grid; gap: var(--brenson-space-5);
+  background: var(--brenson-gris-claro); border: 1px solid var(--brenson-gris-borde);
+  border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-6);
+}
 .brenson-simulator__field > label, .brenson-simulator__legend { display: block; font-size: var(--brenson-text-sm); font-weight: var(--brenson-font-weight-semibold); margin-bottom: var(--brenson-space-2); }
 .brenson-simulator__result {
   background: var(--brenson-surface-card); color: var(--brenson-carbon);
   border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-6);
-  box-shadow: var(--brenson-shadow); border: 1px solid var(--brenson-gris-borde);
+  box-shadow: var(--brenson-shadow-lg); border: 2px solid var(--brenson-carbon);
   display: grid; gap: var(--brenson-space-3);
 }
+.brenson-simulator__badge { display:inline-flex; align-items:center; gap:0.4rem; background: var(--brenson-rojo-suave, #fee2e2); color: var(--brenson-rojo); font-size: var(--brenson-text-xs); font-weight:700; padding: 0.48rem 1.12rem; border-radius: 999px; margin-bottom: var(--brenson-space-2); }
 .brenson-simulator__result-label { font-size: var(--brenson-text-xs); text-transform: uppercase; letter-spacing: var(--brenson-tracking-wide); color: var(--brenson-on-surface-muted); font-weight: var(--brenson-font-weight-semibold); }
 .brenson-simulator__cuota { font-size: var(--brenson-text-cuota); font-weight: var(--brenson-font-weight-black); color: var(--brenson-rojo); line-height: 1; }
 .brenson-simulator__cuota small { font-size: 0.4em; color: var(--brenson-on-surface-muted); font-weight: var(--brenson-font-weight-semibold); }
-.brenson-simulator__rows { display: grid; gap: 0.56rem; font-size: var(--brenson-text-sm); color: var(--brenson-on-surface-muted); }
-.brenson-simulator__rows div { display: flex; justify-content: space-between; gap: var(--brenson-space-4); }
+.brenson-simulator__rows { display: grid; gap: 0; font-size: var(--brenson-text-sm); color: var(--brenson-on-surface-muted); border-top: 1px solid var(--brenson-gris-borde); }
+.brenson-simulator__rows div { display: flex; justify-content: space-between; gap: var(--brenson-space-4); padding: 0.8rem 0; border-bottom: 1px solid var(--brenson-gris-borde); }
 .brenson-simulator__rows strong { color: var(--brenson-carbon); }
 .brenson-simulator__disclaimer { font-size: var(--brenson-text-xs); color: var(--brenson-on-surface-muted); line-height: 1.45; margin: 0; }
+.brenson-simulator__notice { display:flex; gap:0.8rem; align-items:flex-start; background:#fffbeb; border:1px solid #fde68a; border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-4); font-size: var(--brenson-text-xs); color: var(--brenson-carbon-60); }
+.brenson-simulator__notice svg { flex-shrink:0; color:#b45309; margin-top:0.16rem; }
+.brenson-simulator__notice strong { display:block; color:#78350f; font-size: var(--brenson-text-xs); margin-bottom: 0.24rem; }
 
 /* ---------- Spec table ---------- */
 .brenson-spec-groups { display: grid; gap: var(--brenson-space-6); }

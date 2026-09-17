@@ -34,7 +34,7 @@
       assign inicial_default = params.inicial_default.value
     endif
     if params.disclaimer.value
-      assign disclaimer = params.disclaimer.value
+      assign disclaimer = params.disclaimer.value | metafield_tag | strip_html
     endif
     if params.aliado_nombre.value
       assign aliado = params.aliado_nombre.value
@@ -52,11 +52,21 @@
       assign financiable = false
     endif
   endif
+
+  assign default_vehicle = section.settings.default_product
+  if default_vehicle == blank and section.settings.collection != blank
+    for p in section.settings.collection.products
+      unless p.metafields.brenson.financiable.value == false
+        assign default_vehicle = p
+        break
+      endunless
+    endfor
+  endif
 -%}
 {%- if is_product and financiable == false -%}
   {%- comment -%} Producto no financiable: no se muestra el simulador (decisión C7) {%- endcomment -%}
 {%- else -%}
-<section id="brenson-simulator" class="brenson-section {% if section.settings.dark %}brenson-section--dark{% else %}brenson-section--alt{% endif %}" data-brenson-simulator-section>
+<section id="brenson-simulator" class="brenson-section {% if section.settings.dark %}brenson-section--dark{% endif %}" data-brenson-simulator-section>
   <div class="brenson-container">
     <header class="brenson-section__head">
       <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
@@ -69,7 +79,7 @@
       data-tasa="{{ tasa }}"
       data-plazo="{{ plazo_default }}"
       data-inicial="{{ inicial_default }}"
-      {% if is_product %}data-price="{{ product.selected_or_first_available_variant.price }}" data-product-title="{{ product.title | escape }}" data-product-handle="{{ product.handle }}"{% endif %}
+      {% if is_product %}data-price="{{ product.selected_or_first_available_variant.price }}" data-product-title="{{ product.title | escape }}" data-product-handle="{{ product.handle }}"{% elsif default_vehicle %}data-price="{{ default_vehicle.price_min }}" data-product-title="{{ default_vehicle.title | escape }}" data-product-handle="{{ default_vehicle.handle }}"{% endif %}
       data-currency="COP"
     >
       <div class="brenson-simulator__controls">
@@ -81,7 +91,7 @@
               {%- if section.settings.collection != blank -%}
                 {%- for p in section.settings.collection.products limit: 50 -%}
                   {%- unless p.metafields.brenson.financiable.value == false -%}
-                    <option value="{{ p.price_min }}" data-handle="{{ p.handle }}">{{ p.title }} · {{ p.price_min | money_without_trailing_zeros }}</option>
+                    <option value="{{ p.price_min }}" data-handle="{{ p.handle }}" {% if default_vehicle and p.handle == default_vehicle.handle %}selected{% endif %}>{{ p.title }} · {{ p.price_min | money_without_trailing_zeros }}</option>
                   {%- endunless -%}
                 {%- endfor -%}
               {%- endif -%}
@@ -89,7 +99,7 @@
           </div>
           <div class="brenson-simulator__field">
             <label for="sim-precio">Precio del vehículo (COP)</label>
-            <input id="sim-precio" type="text" inputmode="numeric" data-sim-price-input placeholder="7.990.000" autocomplete="off">
+            <input id="sim-precio" type="text" inputmode="numeric" data-sim-price-input placeholder="7.990.000" autocomplete="off" {% if default_vehicle %}value="{{ default_vehicle.price_min | money_without_currency }}"{% endif %}>
           </div>
         {%- endunless -%}
 
@@ -114,15 +124,19 @@
         </fieldset>
 
         {%- if costos.size > 0 -%}
-          <p class="brenson-simulator__disclaimer">No incluye: {{ costos | join: ' · ' }}.</p>
+          <div class="brenson-simulator__notice">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <div><strong>Transparencia en costos adicionales:</strong>No incluye: {{ costos | join: ' · ' }}.</div>
+          </div>
         {%- endif -%}
       </div>
 
       <div class="brenson-simulator__result" aria-live="polite">
+        <span class="brenson-simulator__badge"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="currentColor"/></svg>Aprobación 100 % digital</span>
         <span class="brenson-simulator__result-label">Tu cuota mensual estimada</span>
         <div class="brenson-simulator__cuota brenson-num"><span data-sim-cuota>—</span> <small>/mes</small></div>
         <div class="brenson-simulator__rows">
-          <div><span>Vehículo</span><strong data-sim-vehicle-name>{% if is_product %}{{ product.title }}{% else %}—{% endif %}</strong></div>
+          <div><span>Vehículo</span><strong data-sim-vehicle-name>{% if is_product %}{{ product.title }}{% elsif default_vehicle %}{{ default_vehicle.title }}{% else %}—{% endif %}</strong></div>
           <div><span>Precio</span><strong class="brenson-num" data-sim-price-out>—</strong></div>
           <div><span>Cuota inicial</span><strong class="brenson-num" data-sim-inicial-out>—</strong></div>
           <div><span>Monto a financiar</span><strong class="brenson-num" data-sim-principal>—</strong></div>
@@ -150,6 +164,7 @@
     { "type": "text", "id": "subtitle", "label": "Subtítulo", "default": "La cuota mensual se calcula con la tasa de referencia de nuestro aliado financiero." },
     { "type": "text", "id": "cta_label", "label": "Texto del botón", "default": "Solicitar financiamiento" },
     { "type": "collection", "id": "collection", "label": "Colección de vehículos (solo en página Financiación)" },
+    { "type": "product", "id": "default_product", "label": "Vehículo preseleccionado al cargar", "info": "Por defecto, el primero financiable de la colección." },
     { "type": "checkbox", "id": "dark", "label": "Fondo oscuro", "default": false },
     { "type": "paragraph", "content": "Tasa, plazos, iniciales, aliado y disclaimer se editan en Contenido → Metaobjects → Parámetros de financiación." }
   ],

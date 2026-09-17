@@ -7,45 +7,77 @@
   assign max_costo = section.settings.costo_gasolina
   assign pct_gasolina = 100
   assign pct_electrico = section.settings.costo_electrico | times: 100 | divided_by: max_costo
+  assign pct_ahorro = 100 | minus: pct_electrico
 -%}
 <section class="brenson-section brenson-section--dark brenson-savings">
-  <div class="brenson-container brenson-savings__grid">
-    <div>
-      <span class="brenson-eyebrow" style="color: var(--brenson-certificado)">{{ section.settings.eyebrow }}</span>
-      <h2 class="brenson-heading" style="color:#fff">{{ section.settings.title_pre }} <span style="color: var(--brenson-certificado)">{{ section.settings.title_highlight }}</span></h2>
-      <p class="brenson-subheading" style="color: rgba(255,255,255,.75)">{{ section.settings.text }}</p>
-      <div class="brenson-savings__amount">
-        <span class="brenson-muted" style="color: rgba(255,255,255,.6); font-size: var(--brenson-text-sm)">Ahorro neto estimado</span>
-        <strong class="brenson-num">{{ ahorro | times: 100 | money_without_trailing_zeros }} COP</strong>
-        <span class="brenson-muted" style="color: rgba(255,255,255,.6); font-size: var(--brenson-text-xs)">al mes frente a una cuota de gasolina equivalente. Lo que ahorras cada mes puedes destinarlo a tu cuota Brenson.</span>
+  <div class="brenson-container">
+    <div class="brenson-savings__card">
+      <div class="brenson-savings__grid">
+        <div>
+          <span class="brenson-savings__eyebrow"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 21c-3 0-5-2-5-5 0-2 1-3.5 2-5 .5 1 1 1.5 1.5 1.5C11 10 10.5 7 12 4c1 2.5 2.5 3.5 4 5.5 1.2 1.6 2 3.2 2 5.5 0 3-2 6-6 6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>{{ section.settings.eyebrow }}</span>
+          <h2 class="brenson-heading" style="color:#fff; margin-top: var(--brenson-space-3)">{{ section.settings.title_pre }}<br><span style="color: var(--brenson-certificado)">{{ section.settings.title_highlight }}</span></h2>
+          <p class="brenson-subheading" style="color: rgba(255,255,255,.75)">{{ section.settings.text }}</p>
+          <div class="brenson-savings__amount">
+            <span>Ahorro neto mensual estimado:</span>
+            <strong class="brenson-num">{{ ahorro | times: 100 | money_without_trailing_zeros }} COP</strong>
+            <p>{{ section.settings.amount_note }}</p>
+          </div>
+        </div>
+        <div class="brenson-savings__bars">
+          <div class="brenson-savings__bar">
+            <div class="brenson-savings__bar-head">
+              <span><span class="brenson-savings__icon brenson-savings__icon--gas" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h8v8H6zM6 11v9h8v-9M14 8h2a2 2 0 0 1 2 2v6a1.5 1.5 0 0 0 3 0V9l-2-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>Moto a gasolina convencional</span>
+              <strong class="brenson-num" style="color:#ef4444">{{ section.settings.costo_gasolina | times: 100 | money_without_trailing_zeros }} <small>/mes</small></strong>
+            </div>
+            <p class="brenson-muted">{{ section.settings.text_gasolina }}</p>
+            <div class="brenson-savings__track"><div class="brenson-savings__fill brenson-savings__fill--gas" style="width: {{ pct_gasolina }}%"></div></div>
+          </div>
+          <div class="brenson-savings__bar brenson-savings__bar--electrico">
+            {%- if pct_ahorro > 0 -%}<span class="brenson-savings__tag">{{ pct_ahorro | round }} % de ahorro energético</span>{%- endif -%}
+            <div class="brenson-savings__bar-head">
+              <span><span class="brenson-savings__icon brenson-savings__icon--electrico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="currentColor"/></svg></span>Vehículo Eléctrico Brenson</span>
+              <strong class="brenson-num" style="color: var(--brenson-certificado)">{{ section.settings.costo_electrico | times: 100 | money_without_trailing_zeros }} <small>/mes</small></strong>
+            </div>
+            <p class="brenson-muted">{{ section.settings.text_electrico }}</p>
+            <div class="brenson-savings__track"><div class="brenson-savings__fill brenson-savings__fill--electrico" style="width: {{ pct_electrico }}%"></div></div>
+          </div>
+          <div class="brenson-savings__notice">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 21h6M10 18h4M12 3a6 6 0 0 0-3.6 10.8c.6.44.6 1.03.6 1.7V16h6v-.5c0-.67 0-1.26.6-1.7A6 6 0 0 0 12 3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <span>{{ section.settings.disclaimer }}</span>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="brenson-savings__bars">
-      <div class="brenson-savings__bar">
-        <div class="brenson-savings__bar-head"><span>⛽ Moto a gasolina convencional</span><strong class="brenson-num">{{ section.settings.costo_gasolina | times: 100 | money_without_trailing_zeros }} /mes</strong></div>
-        <div class="brenson-savings__track"><div class="brenson-savings__fill brenson-savings__fill--gas" style="width: {{ pct_gasolina }}%"></div></div>
-        <p class="brenson-muted" style="color: rgba(255,255,255,.5); font-size: var(--brenson-text-xs); margin:0.32rem 0 0">Gasolina corriente + cambios de aceite de motor y kit de arrastre frecuente.</p>
-      </div>
-      <div class="brenson-savings__bar">
-        <div class="brenson-savings__bar-head"><span>⚡ Vehículo Eléctrico Brenson</span><strong class="brenson-num" style="color: var(--brenson-certificado)">{{ section.settings.costo_electrico | times: 100 | money_without_trailing_zeros }} /mes</strong></div>
-        <div class="brenson-savings__track"><div class="brenson-savings__fill brenson-savings__fill--electrico" style="width: {{ pct_electrico }}%"></div></div>
-        <p class="brenson-muted" style="color: rgba(255,255,255,.5); font-size: var(--brenson-text-xs); margin:0.32rem 0 0">Recargas estándar en casa a 110V (aprox. {{ section.settings.kwh_mes }} kWh/mes). Cero aceite, cero filtros.</p>
-      </div>
-      <p class="brenson-muted" style="color: rgba(255,255,255,.4); font-size: var(--brenson-text-xs); margin-top: var(--brenson-space-2)">Dato ilustrativo para recorrido urbano típico de 40 km/día en Colombia. Tarifa promedio residencial de kWh regulada. {{ section.settings.disclaimer }}</p>
     </div>
   </div>
 </section>
 <style>
+  .brenson-savings__card { background: linear-gradient(to bottom right, #171717, #0a0a0a); border: 1px solid rgba(255,255,255,.1); border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-8); }
   .brenson-savings__grid { display: grid; gap: var(--brenson-space-8); }
   @media (min-width: 990px) { .brenson-savings__grid { grid-template-columns: 1fr 1fr; align-items: center; } }
-  .brenson-savings__amount { margin-top: var(--brenson-space-6); background: rgba(255,255,255,.06); border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-5); display: flex; flex-direction: column; gap: 0.32rem; }
-  .brenson-savings__amount strong { font-size: var(--brenson-text-3xl); font-weight: 800; color: #fff; }
-  .brenson-savings__bar + .brenson-savings__bar { margin-top: var(--brenson-space-5); }
-  .brenson-savings__bar-head { display: flex; justify-content: space-between; gap: var(--brenson-space-3); font-size: var(--brenson-text-sm); color: #fff; margin-bottom: 0.4rem; }
+  .brenson-savings__eyebrow { display:inline-flex; align-items:center; gap:0.48rem; padding: 0.4rem 1.12rem; border-radius: 999px; background: rgba(31,138,76,.15); border: 1px solid rgba(31,138,76,.4); color: var(--brenson-certificado); font-size: var(--brenson-text-xs); font-weight: 700; }
+  .brenson-savings__amount { margin-top: var(--brenson-space-6); background: rgba(255,255,255,.05); border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-5); }
+  .brenson-savings__amount { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap: 0.8rem 1.6rem; }
+  .brenson-savings__amount > span:first-child { font-size: var(--brenson-text-sm); font-weight:700; color: rgba(255,255,255,.6); }
+  .brenson-savings__amount strong { font-size: var(--brenson-text-2xl); font-weight: 800; color: var(--brenson-certificado); }
+  .brenson-savings__amount p { flex-basis: 100%; margin: 0; font-size: var(--brenson-text-xs); color: rgba(255,255,255,.5); }
+  .brenson-savings__bar { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-5); position: relative; }
+  .brenson-savings__bar--electrico { border-color: rgba(31,138,76,.3); }
+  .brenson-savings__bar + .brenson-savings__bar { margin-top: var(--brenson-space-4); }
+  .brenson-savings__bar-head { display: flex; justify-content: space-between; align-items:center; gap: var(--brenson-space-3); font-size: var(--brenson-text-sm); font-weight:700; color: #fff; margin-bottom: 0.56rem; }
+  .brenson-savings__bar-head > span:first-child { display:flex; align-items:center; gap: 0.64rem; }
+  .brenson-savings__bar-head strong small { font-size: var(--brenson-text-xs); font-weight:600; color: rgba(255,255,255,.5); }
+  .brenson-savings__icon { width: 2.8rem; height: 2.8rem; border-radius: 50%; display:grid; place-items:center; flex-shrink:0; }
+  .brenson-savings__icon svg { width: 1.6rem; height: 1.6rem; }
+  .brenson-savings__icon--gas { background: rgba(239,68,68,.15); color: #ef4444; }
+  .brenson-savings__icon--electrico { background: rgba(31,138,76,.15); color: var(--brenson-certificado); }
+  .brenson-savings__bar p.brenson-muted { margin: 0 0 var(--brenson-space-3); font-size: var(--brenson-text-xs); color: rgba(255,255,255,.5); }
   .brenson-savings__track { background: rgba(255,255,255,.1); border-radius: 999px; height: 0.8rem; overflow: hidden; }
   .brenson-savings__fill { height: 100%; border-radius: 999px; }
   .brenson-savings__fill--gas { background: #ef4444; }
   .brenson-savings__fill--electrico { background: var(--brenson-certificado); }
+  .brenson-savings__tag { position:absolute; top: var(--brenson-space-4); right: var(--brenson-space-5); background: rgba(31,138,76,.2); color: var(--brenson-certificado); font-size: var(--brenson-text-xs); font-weight:700; padding: 0.32rem 0.96rem; border-radius: 999px; }
+  .brenson-savings__notice { display:flex; gap: var(--brenson-space-3); align-items:flex-start; margin-top: var(--brenson-space-4); padding: var(--brenson-space-4); background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: var(--brenson-radius-lg); font-size: var(--brenson-text-xs); color: rgba(255,255,255,.5); }
+  .brenson-savings__notice svg { flex-shrink:0; color: #f59e0b; margin-top:0.08rem; }
 </style>
 
 {% schema %}
@@ -56,11 +88,13 @@
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Economía de bolsillo real en Colombia" },
     { "type": "text", "id": "title_pre", "label": "Título (parte 1)", "default": "Lo que ahorras:" },
     { "type": "text", "id": "title_highlight", "label": "Título (resaltado)", "default": "La cuota se paga sola." },
-    { "type": "textarea", "id": "text", "label": "Texto", "default": "En una ciudad colombiana promedio, rodar 40 km al día en moto a gasolina cuesta más de $380.000 COP al mes entre combustible corriente, cambios periódicos de aceite y desgaste de bujes. Con Brenson, recargas en casa a 110V como lo harías con cualquier celular, por una fracción." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "En una ciudad colombiana promedio, rodar 40 km al día en moto a gasolina cuesta más de $380.000 COP al mes entre combustible corriente, cambios periódicos de aceite y desgaste de bujes. Con Brenson, recargas con el tomacorriente común de tu casa por una fracción." },
+    { "type": "text", "id": "amount_note", "label": "Nota bajo el ahorro", "default": "Ahorro suficiente para cubrir tu cuota Brenson y guardar saldo a tu favor." },
     { "type": "number", "id": "costo_gasolina", "label": "Costo mensual gasolina (COP)", "default": 380000 },
+    { "type": "text", "id": "text_gasolina", "label": "Detalle gasolina", "default": "Gasolina corriente + cambios de aceite de motor + kit de arrastre frecuente." },
     { "type": "number", "id": "costo_electrico", "label": "Costo mensual recarga eléctrica (COP)", "default": 35000 },
-    { "type": "number", "id": "kwh_mes", "label": "Consumo eléctrico estimado (kWh/mes)", "default": 20 },
-    { "type": "text", "id": "disclaimer", "label": "Disclaimer adicional", "default": "Cifras de referencia; el consumo real varía según el modelo, el kilometraje y la tarifa local." }
+    { "type": "text", "id": "text_electrico", "label": "Detalle eléctrico", "default": "Recargas estándar en casa a 110V (estrato 3/4) · Cero aceite · Cero filtros." },
+    { "type": "text", "id": "disclaimer", "label": "Disclaimer", "default": "Dato ilustrativo para recorrido diario urbano típico de 40 km en Colombia. Tarifa promedio residencial de kWh regulada." }
   ],
   "presets": [ { "name": "Financiación · Ahorro" } ],
   "enabled_on": { "templates": ["page"] }

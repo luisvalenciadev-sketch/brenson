@@ -1,0 +1,74 @@
+{%- comment -%}
+  brenson-financing-hero — Pantalla Stitch 06. Hero de /pages/financiacion: copy + chips de confianza
+  a la izquierda, tarjeta del vehículo de referencia (con cuota real calculada) a la derecha.
+{%- endcomment -%}
+{%- liquid
+  assign ref = section.settings.product
+  if ref == blank and section.settings.collection != blank
+    for p in section.settings.collection.products
+      unless p.metafields.brenson.financiable.value == false
+        assign ref = p
+        break
+      endunless
+    endfor
+  endif
+-%}
+<section class="brenson-section brenson-financing-hero">
+  <div class="brenson-container">
+    <div class="brenson-financing-hero__grid">
+      <div>
+        <span class="brenson-badge brenson-badge--rojo brenson-badge--sm" style="display:inline-flex; gap:0.4rem; align-items:center;">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="currentColor"/></svg>
+          {{ section.settings.eyebrow }}
+        </span>
+        <h1 class="brenson-heading" style="margin-top: var(--brenson-space-3); font-size: clamp(3.2rem, 4vw, 5.2rem)">{{ section.settings.title }} <span style="color: var(--brenson-rojo); text-decoration: underline; text-decoration-color: var(--brenson-gris-borde); text-underline-offset: 0.48rem;">{{ section.settings.title_highlight }}</span>.</h1>
+        <p class="brenson-subheading">{{ section.settings.text }}</p>
+        <ul class="brenson-financing-hero__chips" role="list">
+          <li><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="color:#f59e0b"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="currentColor"/></svg>Respuesta rápida</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="color: var(--brenson-certificado)"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Sin cuota de manejo</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="color: var(--brenson-rojo)"><path d="m12 2 2.5 6.5L21 9l-5 4.5L17.5 21 12 17.5 6.5 21 8 13.5 3 9l6.5-.5Z" fill="currentColor"/></svg>0 % de inicial disponible</li>
+        </ul>
+      </div>
+      {%- if ref -%}
+        <div class="brenson-financing-hero__card">
+          <span class="brenson-badge brenson-badge--certificado brenson-badge--sm" style="position:absolute; top: var(--brenson-space-4); left: var(--brenson-space-4); z-index:1;"><svg class="brenson-badge__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Certificado Brenson</span></span>
+          {%- if ref.featured_image -%}{{ ref.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: ref.title, style: 'width:100%; aspect-ratio:4/3; object-fit:contain; background: var(--brenson-gris-claro); border-radius: var(--brenson-radius-lg);' }}{%- endif -%}
+          <div class="brenson-financing-hero__card-foot">
+            <div>
+              <span class="brenson-muted" style="font-size: var(--brenson-text-xs); font-weight:700; text-transform:uppercase; letter-spacing:.04em;">Modelo insignia</span>
+              <h3 style="margin:0; font-size: var(--brenson-text-lg)">{{ ref.title }}</h3>
+            </div>
+            {%- render 'brenson-price', product: ref, layout: 'card' -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+  .brenson-financing-hero { background: var(--brenson-gris-claro); border-bottom: 1px solid var(--brenson-gris-borde); }
+  .brenson-financing-hero__grid { display: grid; gap: var(--brenson-space-8); align-items: center; }
+  @media (min-width: 990px) { .brenson-financing-hero__grid { grid-template-columns: 1.4fr 1fr; } }
+  .brenson-financing-hero__chips { list-style:none; margin: var(--brenson-space-5) 0 0; padding:0; display:flex; flex-wrap:wrap; gap: var(--brenson-space-3); }
+  .brenson-financing-hero__chips li { display:flex; align-items:center; gap:0.48rem; background:#fff; padding: 0.64rem 1.28rem; border-radius: 999px; border: 1px solid var(--brenson-gris-borde); box-shadow: var(--brenson-shadow-sm); font-size: var(--brenson-text-sm); font-weight:600; }
+  .brenson-financing-hero__card { position:relative; background:#fff; border:1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-5); box-shadow: var(--brenson-shadow-lg); }
+  .brenson-financing-hero__card-foot { display:flex; justify-content:space-between; align-items:flex-end; gap: var(--brenson-space-4); margin-top: var(--brenson-space-4); }
+  .brenson-financing-hero__card-foot .brenson-price--card { text-align:right; }
+</style>
+
+{% schema %}
+{
+  "name": "Financiación · Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Financiación ágil y 100 % digital" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Tu vehículo eléctrico, en cuotas que" },
+    { "type": "text", "id": "title_highlight", "label": "Título (resaltado en rojo)", "default": "sí puedes pagar" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Simula tu cuota mensual en segundos, ajusta tu pago inicial y solicita el estudio de crédito con nuestro aliado financiero sin papeleos ni salir de casa." },
+    { "type": "product", "id": "product", "label": "Vehículo destacado" },
+    { "type": "collection", "id": "collection", "label": "O primer producto financiable de esta colección" }
+  ],
+  "presets": [ { "name": "Financiación · Hero" } ],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

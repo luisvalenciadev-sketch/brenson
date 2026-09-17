@@ -35,9 +35,9 @@
     </header>
 
     <div class="brenson-table-wrap">
-      <table class="brenson-table">
+      <table class="brenson-table brenson-financing-compare__table">
         <thead>
-          <tr><th>Vehículo y tipo</th><th>Precio contado</th><th>Cuota estimada</th><th>Estado</th><th></th></tr>
+          <tr><th>Vehículo y tipo</th><th>Precio contado</th><th>Cuota estimada</th><th style="text-align:center">Estado</th><th style="text-align:right">Acción</th></tr>
         </thead>
         <tbody>
           {%- for p in section.settings.collection.products limit: 12 -%}
@@ -49,12 +49,16 @@
               for x in (1..plazo_default)
                 assign pow = pow | times: one_plus_i
               endfor
-              assign factor = 1.0 | minus: 1.0 | divided_by: pow
+              assign pow_minus_1 = pow | minus: 1.0
               assign cuota = 0
-              if factor > 0
-                assign cuota = principal | times: i | divided_by: factor | round
+              if pow_minus_1 > 0
+                assign cuota = principal | times: i | times: pow | divided_by: pow_minus_1 | round
               endif
               assign variant = p.selected_or_first_available_variant
+              assign is_bestseller = false
+              if pm.badge.value == 'mas_vendido'
+                assign is_bestseller = true
+              endif
 
               assign estado_label = 'Entrega inmediata'
               assign estado_mod = 'ok'
@@ -68,21 +72,40 @@
                 assign estado_label = 'En bodega'
                 assign estado_mod = 'pending'
               endif
+
+              assign categoria = pm.categoria.value
             -%}
-            <tr>
+            <tr {% if is_bestseller %}class="brenson-financing-compare__row--featured"{% endif %}>
               <td>
                 <div style="display:flex; align-items:center; gap: var(--brenson-space-3)">
+                  <span class="brenson-financing-compare__icon" aria-hidden="true">
+                    {%- case categoria -%}
+                      {%- when 'bicicleta' -%}<svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 17 10 8h4l4 9M10 8l3 5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                      {%- when 'motocarro' -%}<svg viewBox="0 0 24 24"><rect x="3" y="10" width="8" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="18" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="18" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 13h4l3 3v2h-2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                      {%- when 'cuadriciclo' -%}<svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="7" cy="18" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="18" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                      {%- else -%}<svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 17h5l3-8h4M11 17l3-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    {%- endcase -%}
+                  </span>
                   {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 96 | image_tag: loading: 'lazy', alt: p.title, style: 'width:4.8rem; height:4.8rem; object-fit:cover; border-radius: var(--brenson-radius); background: var(--brenson-gris-claro)' }}{%- endif -%}
                   <div>
-                    <a class="link" style="font-weight:700; color: var(--brenson-carbon)" href="{{ p.url }}">{{ p.title }}</a>
-                    {%- if pm.badge.value != blank -%}<div>{% render 'brenson-badge', product: p, type: 'catalogo', size: 'sm' %}</div>{%- endif -%}
+                    <div style="display:flex; align-items:center; gap:0.56rem;">
+                      <a class="link" style="font-weight:700; color: var(--brenson-carbon)" href="{{ p.url }}">{{ p.title }}</a>
+                      {%- if pm.badge.value != blank -%}{% render 'brenson-badge', product: p, type: 'catalogo', size: 'sm' %}{%- endif -%}
+                    </div>
+                    {%- if pm.descripcion_corta.value -%}<p class="brenson-muted" style="margin:0.16rem 0 0; font-size: var(--brenson-text-xs)">{{ pm.descripcion_corta.value }}</p>{%- endif -%}
                   </div>
                 </div>
               </td>
-              <td class="brenson-num">{{ p.price_min | money_without_trailing_zeros }}</td>
-              <td class="brenson-num"><strong>Desde {{ cuota | times: 100 | money_without_trailing_zeros }}</strong><span class="brenson-muted" style="display:block; font-size: var(--brenson-text-xs)">/mes</span></td>
-              <td><span class="brenson-status brenson-status--{{ estado_mod }}">{{ estado_label }}</span></td>
-              <td style="text-align:right; white-space:nowrap"><a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ p.url }}">Ver vehículo →</a></td>
+              <td class="brenson-num">{{ p.price_min | money_without_trailing_zeros }} <span class="brenson-muted" style="font-size:var(--brenson-text-xs); font-weight:400;">COP</span></td>
+              <td class="brenson-num"><span class="brenson-muted" style="display:block; font-size: var(--brenson-text-xs); font-weight:400;">Desde</span><strong style="color: var(--brenson-rojo); font-size: {% if is_bestseller %}var(--brenson-text-lg){% else %}var(--brenson-text-md){% endif %};">{{ cuota | money_without_trailing_zeros }}</strong> <span class="brenson-muted" style="font-size: var(--brenson-text-xs)">/mes</span></td>
+              <td style="text-align:center"><span class="brenson-status brenson-status--{{ estado_mod }}">{{ estado_label }}</span></td>
+              <td style="text-align:right; white-space:nowrap">
+                {%- if is_bestseller -%}
+                  <a class="brenson-btn brenson-btn--carbon brenson-btn--sm" href="#brenson-simulator" data-sim-select-price="{{ p.price_min }}" data-sim-select-title="{{ p.title | escape }}">Simular este →</a>
+                {%- else -%}
+                  <a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ p.url }}">Ver vehículo →</a>
+                {%- endif -%}
+              </td>
             </tr>
           {%- endfor -%}
         </tbody>
@@ -91,6 +114,30 @@
     <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin-top: var(--brenson-space-3)">* Cuota estimada a {{ plazo_default }} meses con {{ inicial_default }} % de inicial y la tasa referencial vigente ({{ tasa }} % mensual). Sujeta a estudio y aprobación crediticia.</p>
   </div>
 </section>
+<style>
+  .brenson-financing-compare__icon { flex-shrink:0; width:3.2rem; height:3.2rem; border-radius:50%; background: var(--brenson-gris-claro); color: var(--brenson-carbon-60); display:none; align-items:center; justify-content:center; }
+  .brenson-financing-compare__icon svg { width:1.8rem; height:1.8rem; }
+  @media (min-width: 750px) { .brenson-financing-compare__icon { display:flex; } }
+  .brenson-financing-compare__row--featured { background: var(--brenson-rojo-suave); }
+</style>
+<script>
+  (function(){
+    document.querySelectorAll('[data-sim-select-price]').forEach(function(link){
+      link.addEventListener('click', function(e){
+        var sim = document.querySelector('#brenson-simulator brenson-simulator');
+        var priceInput = document.getElementById('sim-precio');
+        var select = document.getElementById('sim-vehiculo');
+        if (sim && priceInput) {
+          e.preventDefault();
+          if (select) select.value = '';
+          priceInput.value = new Intl.NumberFormat('es-CO').format(parseInt(link.dataset.simSelectPrice, 10));
+          priceInput.dispatchEvent(new Event('input', { bubbles: true }));
+          document.getElementById('brenson-simulator').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  })();
+</script>
 
 {% schema %}
 {
