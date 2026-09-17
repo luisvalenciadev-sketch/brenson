@@ -1,0 +1,103 @@
+{%- comment -%}
+  brenson-announcement-bar — Barra de anuncios superior (Stitch 01, bloque 1).
+  Reemplaza a la `announcement-bar` de Dawn, que no admite ni el sello de ícono ni el
+  segundo mensaje secundario separado por divisor.
+{%- endcomment -%}
+{%- liquid
+  assign has_link = false
+  if section.settings.link != blank
+    assign has_link = true
+  endif
+-%}
+<aside class="brenson-announce" aria-label="Anuncios">
+  <div class="brenson-container brenson-announce__inner">
+    {%- if has_link -%}<a class="brenson-announce__link" href="{{ section.settings.link }}">{%- endif -%}
+
+      {%- if section.settings.show_icon -%}
+        <span class="brenson-announce__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.2a.6.6 0 0 0 .48.96H10l-1 8.84 8.5-11.2a.6.6 0 0 0-.48-.96H12z"/></svg>
+        </span>
+      {%- endif -%}
+
+      <span class="brenson-announce__text">{{ section.settings.text }}</span>
+
+      {%- if section.settings.secondary_text != blank -%}
+        <span class="brenson-announce__aside">{{ section.settings.secondary_text }}</span>
+      {%- endif -%}
+
+    {%- if has_link -%}</a>{%- endif -%}
+  </div>
+</aside>
+
+<style>
+  .brenson-announce {
+    background: var(--brenson-carbon);
+    color: #fff;
+    font-size: var(--brenson-text-xs);
+    font-weight: var(--brenson-font-weight-medium);
+    letter-spacing: 0.01em;
+    padding-block: 1rem;
+  }
+  .brenson-announce__inner,
+  .brenson-announce__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    text-align: center;
+    flex-wrap: wrap;
+  }
+  .brenson-announce__link { color: inherit; text-decoration: none; }
+  .brenson-announce__link:hover .brenson-announce__text { text-decoration: underline; text-underline-offset: 3px; }
+  .brenson-announce__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--brenson-rojo);
+    color: #fff;
+  }
+  .brenson-announce__icon svg { width: 1.2rem; height: 1.2rem; }
+  .brenson-announce__text strong,
+  .brenson-announce__text b { font-weight: var(--brenson-font-weight-bold); color: #fff; }
+  .brenson-announce__aside {
+    padding-left: 1.2rem;
+    margin-left: 0.4rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.24);
+    font-size: 1.1rem;
+    font-weight: var(--brenson-font-weight-regular);
+    color: rgba(255, 255, 255, 0.62);
+  }
+  /* En móvil el mensaje secundario sobra: dejaría la barra en tres renglones. */
+  @media (max-width: 989px) {
+    .brenson-announce__aside { display: none; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Brenson · Anuncios",
+  "tag": "div",
+  "class": "brenson-announcement-bar-section",
+  "settings": [
+    { "type": "checkbox", "id": "show_icon", "label": "Mostrar sello de rayo", "default": true },
+    {
+      "type": "inline_richtext",
+      "id": "text",
+      "label": "Mensaje principal",
+      "default": "Financia tu vehículo eléctrico desde <b>$ 129.000/mes</b> · Envíos asegurados a toda Colombia"
+    },
+    {
+      "type": "text",
+      "id": "secondary_text",
+      "label": "Mensaje secundario (oculto en móvil)",
+      "default": "Entrega inmediata en Barranquilla, Cali y Medellín"
+    },
+    { "type": "url", "id": "link", "label": "Enlace" }
+  ],
+  "presets": [ { "name": "Brenson · Anuncios" } ]
+}
+{% endschema %}

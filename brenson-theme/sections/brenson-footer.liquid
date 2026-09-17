@@ -1,0 +1,426 @@
+{%- comment -%}
+  brenson-footer — Mega footer de 4 columnas (Stitch 01, bloque final).
+  Reemplaza al footer de Dawn, que no admite la tarjeta de boletín a ancho completo,
+  la columna legal con datos de contacto ni la fila de redes en botón circular.
+{%- endcomment -%}
+{%- liquid
+  assign wa_number = settings.brenson_whatsapp | remove: ' ' | remove: '+'
+
+  comment
+    Hay plantillas que ya traen su propio bloque de boletín (el blog, con copy propio
+    y tarjeta de asesor). Sin esta lista el visitante ve dos veces la misma petición.
+  endcomment
+  assign show_newsletter = section.settings.newsletter_enable
+  assign hide_on = section.settings.newsletter_hide_templates | split: ','
+  for name in hide_on
+    assign clean_name = name | strip
+    if clean_name != blank and clean_name == template.name
+      assign show_newsletter = false
+    endif
+  endfor
+-%}
+<footer class="brenson-footer" id="contacto">
+  {%- if show_newsletter -%}
+    <div class="brenson-container">
+      <div class="brenson-footer__newsletter">
+        <div class="brenson-footer__newsletter-copy">
+          <h2>{{ section.settings.newsletter_heading }}</h2>
+          {%- if section.settings.newsletter_text != blank -%}
+            <p>{{ section.settings.newsletter_text }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- form 'customer', class: 'brenson-footer__newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <label class="brenson-visually-hidden" for="brenson-newsletter-email">
+            {{ 'newsletter.label' | t | default: 'Correo electrónico' }}
+          </label>
+          <input
+            id="brenson-newsletter-email"
+            type="email"
+            name="contact[email]"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+            placeholder="{{ section.settings.newsletter_placeholder }}"
+            {% if form.errors %}aria-invalid="true"{% endif %}
+          >
+          <button type="submit" class="brenson-footer__newsletter-submit">
+            {{ section.settings.newsletter_button }}
+          </button>
+
+          {%- if form.errors -%}
+            <p class="brenson-footer__newsletter-msg brenson-footer__newsletter-msg--error" role="alert">
+              {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+            </p>
+          {%- elsif form.posted_successfully? -%}
+            <p class="brenson-footer__newsletter-msg" role="status">
+              ¡Listo! Ya estás suscrito al boletín Brenson.
+            </p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="brenson-container">
+    <div class="brenson-footer__grid">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'link_list' -%}
+            <div class="brenson-footer__col" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}
+                <h3 class="brenson-footer__col-title">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+              {%- if block.settings.menu != blank -%}
+                <ul class="brenson-footer__links" role="list">
+                  {%- for link in block.settings.menu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+
+          {%- when 'legal_contact' -%}
+            <div class="brenson-footer__col" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}
+                <h3 class="brenson-footer__col-title">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+
+              {%- if block.settings.menu != blank -%}
+                <ul class="brenson-footer__links" role="list">
+                  {%- for link in block.settings.menu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- elsif block.settings.show_policies -%}
+                <ul class="brenson-footer__links" role="list">
+                  {%- if shop.terms_of_service -%}
+                    <li><a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title }}</a></li>
+                  {%- endif -%}
+                  {%- if shop.privacy_policy -%}
+                    <li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a></li>
+                  {%- endif -%}
+                  {%- if shop.refund_policy -%}
+                    <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title }}</a></li>
+                  {%- endif -%}
+                </ul>
+              {%- endif -%}
+
+              <div class="brenson-footer__contact">
+                {%- if block.settings.phone != blank -%}
+                  <a class="brenson-footer__phone" href="https://wa.me/{{ wa_number }}" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1z"/></svg>
+                    <span>{{ block.settings.phone }}</span>
+                  </a>
+                {%- endif -%}
+                {%- if block.settings.address != blank -%}
+                  <p>{{ block.settings.address }}</p>
+                {%- endif -%}
+                {%- if block.settings.hours != blank -%}
+                  <p>{{ block.settings.hours }}</p>
+                {%- endif -%}
+              </div>
+
+              {%- if section.settings.show_social -%}
+                {%- liquid
+                  assign has_social = false
+                  if settings.social_instagram_link != blank or settings.social_tiktok_link != blank or settings.social_facebook_link != blank or settings.social_youtube_link != blank
+                    assign has_social = true
+                  endif
+                -%}
+                {%- if has_social -%}
+                  <ul class="brenson-footer__social" role="list">
+                    {%- if settings.social_instagram_link != blank -%}
+                      <li><a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.4.37 1 .42 2.2.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.05 1.2-.25 1.8-.42 2.2a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.4.17-1 .37-2.2.42-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.05-1.8-.25-2.2-.42a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.17-.4-.37-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.05-1.2.25-1.8.42-2.2.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.4-.17 1-.37 2.2-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.14 0-3.5.01-4.74.07-.9.04-1.38.19-1.7.31-.43.17-.73.37-1.05.69-.32.32-.52.62-.69 1.05-.12.32-.27.8-.31 1.7C3.45 8.5 3.44 8.86 3.44 12s.01 3.5.07 4.74c.04.9.19 1.38.31 1.7.17.43.37.73.69 1.05.32.32.62.52 1.05.69.32.12.8.27 1.7.31 1.24.06 1.6.07 4.74.07s3.5-.01 4.74-.07c.9-.04 1.38-.19 1.7-.31.43-.17.73-.37 1.05-.69.32-.32.52-.62.69-1.05.12-.32.27-.8.31-1.7.06-1.24.07-1.6.07-4.74s-.01-3.5-.07-4.74c-.04-.9-.19-1.38-.31-1.7a2.8 2.8 0 0 0-.69-1.05 2.8 2.8 0 0 0-1.05-.69c-.32-.12-.8-.27-1.7-.31-1.24-.06-1.6-.07-4.74-.07Zm0 3.06a4.94 4.94 0 1 1 0 9.88 4.94 4.94 0 0 1 0-9.88Zm0 1.8a3.14 3.14 0 1 0 0 6.28 3.14 3.14 0 0 0 0-6.28Zm5.14-2.1a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z"/></svg>
+                      </a></li>
+                    {%- endif -%}
+                    {%- if settings.social_tiktok_link != blank -%}
+                      <li><a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener" aria-label="TikTok">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 2h-3v13.1a2.6 2.6 0 1 1-2.1-2.55V9.5a5.7 5.7 0 1 0 5.1 5.67V8.9a6.6 6.6 0 0 0 3.9 1.27V7.1a3.7 3.7 0 0 1-3.9-3.6V2Z"/></svg>
+                      </a></li>
+                    {%- endif -%}
+                    {%- if settings.social_facebook_link != blank -%}
+                      <li><a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.99A10 10 0 0 0 22 12Z"/></svg>
+                      </a></li>
+                    {%- endif -%}
+                    {%- if settings.social_youtube_link != blank -%}
+                      <li><a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15.02V8.98L15.2 12 10 15.02Z"/></svg>
+                      </a></li>
+                    {%- endif -%}
+                  </ul>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="brenson-footer__legal">
+      <p>{{ section.settings.copyright }}</p>
+      {%- if section.settings.payment_enable and shop.enabled_payment_types.size > 0 -%}
+        <ul class="brenson-footer__payment" role="list">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'brenson-footer__payment-icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .brenson-footer {
+    background: var(--brenson-carbon);
+    color: #fff;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: var(--brenson-space-16);
+    padding-bottom: var(--brenson-space-12);
+  }
+
+  /* ---------- Boletín ---------- */
+  .brenson-footer__newsletter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--brenson-space-6);
+    margin-bottom: var(--brenson-space-16);
+    padding: var(--brenson-space-10);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2.4rem;
+  }
+  @media (min-width: 750px) {
+    .brenson-footer__newsletter { flex-direction: row; align-items: center; }
+  }
+  .brenson-footer__newsletter-copy { max-width: 46rem; }
+  .brenson-footer__newsletter-copy h2 {
+    margin: 0;
+    font-size: var(--brenson-text-xl);
+    font-weight: var(--brenson-font-weight-bold);
+    color: #fff;
+    line-height: 1.25;
+  }
+  .brenson-footer__newsletter-copy p {
+    margin: 0.6rem 0 0;
+    font-size: var(--brenson-text-xs);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .brenson-footer__newsletter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    width: 100%;
+  }
+  @media (min-width: 750px) {
+    .brenson-footer__newsletter-form { width: auto; }
+  }
+  .brenson-footer__newsletter-form input[type='email'] {
+    flex: 1 1 28rem;
+    min-width: 0;
+    min-height: 4.8rem;
+    padding: 0 var(--brenson-space-4);
+    background: var(--brenson-carbon);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--brenson-radius-lg);
+    font-family: var(--brenson-font);
+    font-size: var(--brenson-text-sm);
+    color: #fff;
+  }
+  .brenson-footer__newsletter-form input::placeholder { color: rgba(255, 255, 255, 0.42); opacity: 1; }
+  .brenson-footer__newsletter-form input:focus {
+    outline: 2px solid var(--brenson-rojo);
+    outline-offset: 1px;
+    border-color: var(--brenson-rojo);
+  }
+  .brenson-footer__newsletter-submit {
+    flex: 0 0 auto;
+    min-height: 4.8rem;
+    padding: 0 var(--brenson-space-6);
+    border: 0;
+    border-radius: var(--brenson-radius-lg);
+    background: var(--brenson-rojo);
+    color: #fff;
+    font-family: var(--brenson-font);
+    font-size: var(--brenson-text-xs);
+    font-weight: var(--brenson-font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background var(--brenson-duration, 0.2s) var(--brenson-ease);
+  }
+  .brenson-footer__newsletter-submit:hover { background: var(--brenson-rojo-hover); }
+  .brenson-footer__newsletter-msg {
+    flex: 1 0 100%;
+    margin: 0;
+    font-size: var(--brenson-text-xs);
+    color: var(--brenson-whatsapp);
+  }
+  .brenson-footer__newsletter-msg--error { color: #ff8a8a; }
+
+  /* ---------- Columnas ---------- */
+  .brenson-footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--brenson-space-10);
+    padding-bottom: var(--brenson-space-12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  @media (min-width: 750px) { .brenson-footer__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 990px) { .brenson-footer__grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .brenson-footer__col-title {
+    margin: 0 0 var(--brenson-space-4);
+    font-size: var(--brenson-text-sm);
+    font-weight: var(--brenson-font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #fff;
+  }
+  .brenson-footer__links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: var(--brenson-text-sm);
+  }
+  .brenson-footer__links a {
+    color: rgba(255, 255, 255, 0.64);
+    text-decoration: none;
+    font-weight: var(--brenson-font-weight-medium);
+    transition: color var(--brenson-duration, 0.2s) var(--brenson-ease);
+  }
+  .brenson-footer__links a:hover { color: var(--brenson-rojo); }
+
+  /* ---------- Contacto ---------- */
+  .brenson-footer__contact {
+    margin-top: var(--brenson-space-4);
+    padding-top: var(--brenson-space-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .brenson-footer__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+    color: #fff;
+    font-weight: var(--brenson-font-weight-bold);
+    font-size: var(--brenson-text-sm);
+    text-decoration: none;
+  }
+  .brenson-footer__phone svg { width: 1.6rem; height: 1.6rem; color: var(--brenson-whatsapp); flex-shrink: 0; }
+  .brenson-footer__phone:hover span { text-decoration: underline; text-underline-offset: 3px; }
+  .brenson-footer__contact p {
+    margin: 0.2rem 0 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ---------- Redes ---------- */
+  .brenson-footer__social {
+    list-style: none;
+    display: flex;
+    gap: 1.2rem;
+    margin: var(--brenson-space-4) 0 0;
+    padding: 0;
+  }
+  .brenson-footer__social a {
+    display: grid;
+    place-items: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.72);
+    transition: all var(--brenson-duration, 0.2s) var(--brenson-ease);
+  }
+  .brenson-footer__social a:hover { background: var(--brenson-rojo); color: #fff; }
+  .brenson-footer__social svg { width: 1.7rem; height: 1.7rem; }
+
+  /* ---------- Legal ---------- */
+  .brenson-footer__legal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--brenson-space-4);
+    padding-top: var(--brenson-space-8);
+    text-align: center;
+  }
+  .brenson-footer__legal p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.45);
+  }
+  .brenson-footer__payment {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+    margin: 0;
+    padding: 0;
+  }
+  .brenson-footer__payment-icon { width: 3.8rem; height: auto; }
+</style>
+
+{% schema %}
+{
+  "name": "Brenson · Footer",
+  "tag": "div",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "header", "content": "Boletín" },
+    { "type": "checkbox", "id": "newsletter_enable", "label": "Mostrar boletín", "default": true },
+    { "type": "text", "id": "newsletter_heading", "label": "Título", "default": "Recibe ofertas exclusivas y novedades" },
+    { "type": "text", "id": "newsletter_text", "label": "Texto", "default": "Únete al boletín de movilidad inteligente en Colombia. Cero spam, solo valor." },
+    { "type": "text", "id": "newsletter_placeholder", "label": "Placeholder del campo", "default": "Tu correo electrónico" },
+    { "type": "text", "id": "newsletter_button", "label": "Texto del botón", "default": "Suscribirme" },
+    {
+      "type": "text",
+      "id": "newsletter_hide_templates",
+      "label": "Ocultar el boletín en estas plantillas",
+      "info": "Separadas por coma. Úsalo donde la página ya tiene su propio boletín, para no pedir el correo dos veces.",
+      "default": "blog"
+    },
+    { "type": "header", "content": "Pie" },
+    { "type": "checkbox", "id": "show_social", "label": "Mostrar redes sociales", "info": "Los enlaces se configuran en Configuración del tema › Redes sociales.", "default": true },
+    { "type": "checkbox", "id": "payment_enable", "label": "Mostrar medios de pago", "default": true },
+    { "type": "textarea", "id": "copyright", "label": "Aviso legal", "default": "© 2026 Brenson S.A.S. · NIT 901.458.239-1 · Movilidad eléctrica ligera y sostenible para Colombia. Todos los derechos reservados." }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Columna de enlaces",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Título", "default": "Vehículos" },
+        { "type": "link_list", "id": "menu", "label": "Menú" }
+      ]
+    },
+    {
+      "type": "legal_contact",
+      "name": "Columna legal y contacto",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Título", "default": "Legal & Contacto" },
+        { "type": "link_list", "id": "menu", "label": "Menú legal", "info": "Si se deja vacío se usan las políticas de la tienda." },
+        { "type": "checkbox", "id": "show_policies", "label": "Usar políticas de la tienda si no hay menú", "default": true },
+        { "type": "text", "id": "phone", "label": "Teléfono", "default": "+57 316 482 0543" },
+        { "type": "text", "id": "address", "label": "Dirección", "default": "Barranquilla, Atlántico · Colombia" },
+        { "type": "text", "id": "hours", "label": "Horario", "default": "Lunes a Sábado: 8:00 AM - 6:00 PM" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Brenson · Footer" } ]
+}
+{% endschema %}

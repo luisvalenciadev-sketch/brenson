@@ -3,27 +3,33 @@
   "type": "footer",
   "sections": {
     "footer": {
-      "type": "footer",
+      "type": "brenson-footer",
       "blocks": {
         "f1": { "type": "link_list", "settings": { "heading": "Vehículos", "menu": "footer-vehiculos" } },
         "f2": { "type": "link_list", "settings": { "heading": "Empresa", "menu": "footer-empresa" } },
-        "f3": { "type": "link_list", "settings": { "heading": "Ayuda", "menu": "footer-ayuda" } },
-        "f4": { "type": "text", "settings": { "heading": "Contacto", "subtext": "<p>WhatsApp +57 316 482 0543<br>ventas@brenson.co<br>Barranquilla, Colombia</p>" } }
+        "f3": { "type": "link_list", "settings": { "heading": "Ayuda & Soporte", "menu": "footer-ayuda" } },
+        "f4": {
+          "type": "legal_contact",
+          "settings": {
+            "heading": "Legal & Contacto",
+            "show_policies": true,
+            "phone": "+57 316 482 0543",
+            "address": "Barranquilla, Atlántico · Colombia",
+            "hours": "Lunes a Sábado: 8:00 AM - 6:00 PM"
+          }
+        }
       },
       "block_order": ["f1", "f2", "f3", "f4"],
       "settings": {
-        "color_scheme": "scheme-4",
         "newsletter_enable": true,
         "newsletter_heading": "Recibe ofertas exclusivas y novedades",
-        "enable_follow_on_shop": false,
+        "newsletter_text": "Únete al boletín de movilidad inteligente en Colombia. Cero spam, solo valor.",
+        "newsletter_placeholder": "Tu correo electrónico",
+        "newsletter_button": "Suscribirme",
+        "newsletter_hide_templates": "blog",
         "show_social": true,
-        "enable_country_selector": false,
-        "enable_language_selector": false,
         "payment_enable": true,
-        "show_policy": true,
-        "margin_top": 0,
-        "padding_top": 48,
-        "padding_bottom": 24
+        "copyright": "© 2026 Brenson S.A.S. · NIT 901.458.239-1 · Movilidad eléctrica ligera y sostenible para Colombia. Todos los derechos reservados."
       }
     }
   },

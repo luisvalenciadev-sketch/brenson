@@ -3,30 +3,13 @@
   "type": "header",
   "sections": {
     "announcement-bar": {
-      "type": "announcement-bar",
+      "type": "brenson-announcement-bar",
       "settings": {
-        "color_scheme": "scheme-4",
-        "show_line_separator": false,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      },
-      "blocks": {
-        "a1": {
-          "type": "announcement",
-          "settings": {
-            "text": "Financia tu vehículo eléctrico desde $ 129.000/mes · Envíos a toda Colombia",
-            "text_alignment": "center",
-            "color_scheme": "scheme-4",
-            "link": "shopify://pages/financiacion"
-          }
-        }
-      },
-      "block_order": [
-        "a1"
-      ]
+        "show_icon": true,
+        "text": "Financia tu vehículo eléctrico desde <b>$ 129.000\/mes<\/b> · Envíos asegurados a toda Colombia",
+        "secondary_text": "Entrega inmediata en Barranquilla, Cali y Medellín",
+        "link": "shopify:\/\/pages\/financiacion"
+      }
     },
     "header": {
       "type": "header",
