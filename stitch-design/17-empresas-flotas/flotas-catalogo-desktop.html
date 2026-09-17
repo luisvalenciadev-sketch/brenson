@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={theme:{extend:{colors:{primary:"#EE0000","on-primary":"#FFFFFF","surface-dark":"#050709","surface-dark-card":"#0F1318","surface-light":"#F4F4F4","on-surface-dark":"#FFFFFF","on-surface-variant-dark":"#9CA3AF","cert-green":"#1F8A4C","whatsapp":"#25D366","amber-pending":"#F59E0B","error-red":"#B91C1C"},fontFamily:{body:["Montserrat","sans-serif"],headline:["Montserrat","sans-serif"]}}}}</script></head><body class="bg-surface-dark font-body text-on-surface-dark"><header class="fixed top-0 w-full z-50 bg-surface-dark/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.5)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-6"><div class="flex items-center gap-4"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-2xl">bolt</span><span class="text-xl font-headline font-extrabold tracking-tight uppercase text-white">Brenson <span class="text-primary font-medium tracking-normal text-sm uppercase px-2 py-0.5 rounded bg-primary/10 border border-primary/20">Empresas</span></span></div></div><nav class="hidden lg:flex items-center gap-7" data-active-classes="text-white font-semibold"><a class="text-sm font-medium text-on-surface-variant-dark hover:text-white transition-colors" data-path="beneficios" href="#">Beneficios</a><a aria-current="page" class="transition-colors text-white font-semibold" data-path="flotas" href="#">Flotas</a><a class="text-sm font-medium text-on-surface-variant-dark hover:text-white transition-colors" data-path="como-funciona" href="#">Cómo funciona</a><a class="text-sm font-medium text-on-surface-variant-dark hover:text-white transition-colors" data-path="cotizador" href="#">Cotizador</a><a class="text-sm font-medium text-on-surface-variant-dark hover:text-white transition-colors" data-path="contacto" href="#">Contacto</a></nav><div class="flex items-center gap-3"><a class="hidden sm:inline-flex text-sm font-semibold text-white px-4 py-2 rounded-lg hover:bg-surface-dark-card transition-colors" data-path="login" href="#">Iniciar sesión</a><a class="inline-flex items-center justify-center text-sm font-bold bg-primary text-on-primary px-4 py-2.5 rounded-lg hover:bg-primary/90 transition-colors shadow-sm" data-path="agendar-demo" href="#">Solicitar acceso / Agendar demo</a><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UdTsFEqyAc0jobD_ddU4VEDtwJXAtC7jI3FeBSte2C4CFHnJHb-HxCU6Uu-HKCwHXsv6iTbMcp_nlqjKN31qbixoqbnl0M4vkiEj45YUJI_SJZQvC4Sa3oPSFI9QgTAW6teC6Z14Uxef5TC5VT01lTCHiqKrK70_hBNBmvKuJDHg91n0cLlvuN2Il--zshQSE8CfxidaxZ3kAEc15yKAd9kiXl6zmU8nyV72moBaYZYZs3-nl1D9oJwjo"/></div></div></header><main class="w-full pt-20 bg-surface-dark min-h-screen"><div class="flex flex-col w-full">
+<!-- Sección Encabezado Técnico / Portada Flotas -->
+<section class="relative w-full overflow-hidden bg-surface-dark py-14 lg:py-20">
+<div class="absolute -top-32 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-10">
+<div class="max-w-3xl space-y-4">
+<div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-cert-green/10 text-cert-green text-xs font-semibold tracking-wide uppercase">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span>Homologación RUNT · MinTransporte Colombia</span>
+</div>
+<h1 class="text-3xl md:text-5xl lg:text-6xl font-headline font-extrabold text-white tracking-tight leading-[1.15]">
+            Vehículos eléctricos para <span class="text-primary">trabajo pesado</span> y reparto intensivo
+          </h1>
+<p class="text-base md:text-lg text-on-surface-variant-dark font-normal leading-relaxed max-w-2xl">
+            Soluciones de movilidad cero emisiones diseñadas para gerencias de logística, última milla y suministros en Colombia. Rendimiento industrial probado, telemetría IoT activa y respaldo posventa en sitio.
+          </p>
+</div>
+<!-- Indicadores Rápidos de Confianza B2B -->
+<div class="flex flex-row lg:flex-col gap-4 bg-surface-dark-card p-6 rounded-2xl shadow-xl border-l-4 border-l-primary">
+<div>
+<div class="text-xs uppercase tracking-wider text-on-surface-variant-dark">Disponibilidad Inmediata</div>
+<div class="text-2xl font-headline font-extrabold text-white tracking-tight tabular-nums">+180 unds</div>
+<div class="text-[11px] text-cert-green font-medium flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-xs">check_circle</span> Bodegas Bogotá y Medellín
+            </div>
+</div>
+<div class="hidden sm:block pt-3 border-t border-white/5">
+<div class="text-xs uppercase tracking-wider text-on-surface-variant-dark">Ley 1715 / 2099</div>
+<div class="text-sm font-semibold text-white">Deducción de hasta 50% Renta</div>
+</div>
+</div>
+</div>
+<!-- Barra de Filtros Segmentados por Aplicación -->
+<div class="pt-6 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="filter-container">
+<button class="filter-btn active-filter px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap bg-primary text-white shadow-md" onclick="filterFleet('all')">
+          Todas las Unidades
+        </button>
+<button class="filter-btn px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap bg-surface-dark-card text-on-surface-variant-dark hover:text-white" onclick="filterFleet('last-mile')">
+          Última Milla &amp; Domicilios
+        </button>
+<button class="filter-btn px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap bg-surface-dark-card text-on-surface-variant-dark hover:text-white" onclick="filterFleet('mid-cargo')">
+          Carga Media Industrial
+        </button>
+<button class="filter-btn px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap bg-surface-dark-card text-on-surface-variant-dark hover:text-white" onclick="filterFleet('quad-work')">
+          Supervisión &amp; Cuadriciclos
+        </button>
+</div>
+</div>
+</section>
+<!-- Grilla Principal del Catálogo de Flotas -->
+<section class="w-full bg-surface-light text-surface-dark py-16 lg:py-24">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+<div>
+<span class="text-xs font-headline font-bold text-primary tracking-widest uppercase">Gama Industrial Brenson 2025</span>
+<h2 class="text-2xl md:text-4xl font-headline font-extrabold text-surface-dark tracking-tight mt-1">
+            Modelos Comerciales con Garantía de Fábrica
+          </h2>
+</div>
+<div class="flex items-center gap-2 text-xs font-medium text-stone-600 bg-white px-4 py-2.5 rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-cert-green text-base">verified</span>
+          Todos los precios incluyen IVA y aplican descuentos por escala corporativa
+        </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="fleet-grid">
+<!-- CARD 1: Delivery 2000 -->
+<div class="fleet-card last-mile flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+<div class="relative w-full aspect-[4/3] bg-stone-100 p-4 overflow-hidden">
+<span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-md text-[11px] font-bold tracking-wider uppercase bg-primary text-white shadow-sm">
+              Más Cotizado
+            </span>
+<span class="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase bg-cert-green/10 text-cert-green flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">shield</span> 24 Meses Garantía
+            </span>
+<img class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" data-alt="High quality studio shot of a vibrant glossy red commercial electric cargo scooter designed for city delivery logistics with a heavy-duty reinforced rear luggage rack and insulated cargo box, side 45 degree angle, white seamless cyclorama background, crisp lighting showing brushed metallic accents and front disc brakes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAprQ80VXzvXxYRe4KmFmOx042468olphieb-iPfSLo1NfdiOJ95Dh6NnI2qyD2w-sh5GntcL8GXaleHZ82GBqajg1lzW0vjkP1WGBKaEJAcpuK-MHxJ2HyChdfnAzuRwysd3QbXznNAuf90vSi7MmCr0C1BLseK1VUWZwX_lzqCKKYoZCLWu2OOBP8J5EC2XTh36-7eqpt6fI3zOQCWDCpWj1j2vLkNNV6tlXYYxhbiIyJQ5aD7xV"/>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between gap-5">
+<div>
+<div class="text-xs font-semibold tracking-wider text-stone-500 uppercase">Ciclomotor Utilitario Heavy-Duty</div>
+<h3 class="text-xl font-headline font-extrabold text-surface-dark tracking-tight mt-0.5">
+                Brenson Delivery 2000
+              </h3>
+<p class="text-xs text-stone-600 mt-2 line-clamp-2">
+                Doble batería LiFePO4 extraíble para ciclos 24/7 sin detención de recarga. Parrilla trasera reforzada de calibre industrial.
+              </p>
+</div>
+<!-- Specs Grid -->
+<div class="grid grid-cols-3 gap-2 py-3 px-3.5 bg-stone-100 rounded-xl text-center">
+<div>
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">battery_charging_full</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">160 km</div>
+<div class="text-[10px] text-stone-500 font-medium">Autonomía</div>
+</div>
+<div class="border-l border-stone-300">
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">weight</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">180 kg</div>
+<div class="text-[10px] text-stone-500 font-medium">Carga Máx</div>
+</div>
+<div class="border-l border-stone-300">
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">120 L</div>
+<div class="text-[10px] text-stone-500 font-medium">Caja Térmica</div>
+</div>
+</div>
+<!-- Bloque de Precio y CTA B2B -->
+<div class="pt-2">
+<div class="text-stone-500 text-[11px] font-medium">Precio volumen (desde 10 unds):</div>
+<div class="text-2xl font-headline font-extrabold text-surface-dark tabular-nums tracking-tight">
+                $ 9.935.200 <span class="text-xs font-semibold text-stone-500 font-body">COP /u</span>
+</div>
+<div class="text-[11px] text-stone-500 font-medium mt-0.5">
+                O leasing estimado: <strong class="text-surface-dark font-bold tabular-nums">$ 348.000 /mes</strong>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-3 px-4 rounded-xl bg-surface-dark hover:bg-primary text-white font-headline text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 shadow-md" onclick="addToQuote('Delivery 2000', 9935200)">
+<span class="material-symbols-outlined text-base">add_shopping_cart</span>
+<span>Cotizar Modelo</span>
+</button>
+<button class="p-3 rounded-xl bg-stone-200 hover:bg-stone-300 text-surface-dark transition-colors" title="Descargar Ficha Técnica">
+<span class="material-symbols-outlined text-base">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 2: Carga 500 -->
+<div class="fleet-card mid-cargo flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+<div class="relative w-full aspect-[4/3] bg-stone-100 p-4 overflow-hidden">
+<span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-md text-[11px] font-bold tracking-wider uppercase bg-surface-dark text-white shadow-sm">
+              Industrial Platón
+            </span>
+<span class="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase bg-cert-green/10 text-cert-green flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">landscape</span> 22% Pendiente
+            </span>
+<img class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" data-alt="Industrial 3-wheel electric flatbed cargo trike motocarro Brenson Carga 500 in clean white and red accents, hydraulic tilting bed elevated slightly, heavy duty tubular chassis, industrial lighting, clean warehouse backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA22C_rHhs0JdLIvqRPidttMuEUU-mvmtKryew1x_Y2i6L1Wi9rAuGOwzf8n0BPj3p9iCUYUGTG2A292jpum3SH1cg2rpyIvK10xnoExmPLBKCyY7ZcbF7mdmKzt1d6zzW80YV0oVNtoCfzvjCsYCb4KcuKuK4IGMZjRKeyro3tnfVcW90J2qOo3L_Gos8dIL2mW_fy0tbvkK3BwFjlxEelMm33mGDWrlU37BlWCE-zN9rmgSXTmx7"/>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between gap-5">
+<div>
+<div class="text-xs font-semibold tracking-wider text-stone-500 uppercase">Motocarro Industrial Cero Emisiones</div>
+<h3 class="text-xl font-headline font-extrabold text-surface-dark tracking-tight mt-0.5">
+                Brenson Carga 500
+              </h3>
+<p class="text-xs text-stone-600 mt-2 line-clamp-2">
+                Platón basculante con compuertas laterales abatibles. Relación de torque reducida para pendientes críticas en topografía andina.
+              </p>
+</div>
+<!-- Specs Grid -->
+<div class="grid grid-cols-3 gap-2 py-3 px-3.5 bg-stone-100 rounded-xl text-center">
+<div>
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">battery_charging_full</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">110 km</div>
+<div class="text-[10px] text-stone-500 font-medium">Autonomía</div>
+</div>
+<div class="border-l border-stone-300">
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">weight</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">500 kg</div>
+<div class="text-[10px] text-stone-500 font-medium">Carga Útil</div>
+</div>
+<div class="border-l border-stone-300">
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">speed</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">45 km/h</div>
+<div class="text-[10px] text-stone-500 font-medium">Vel. Regulada</div>
+</div>
+</div>
+<!-- Bloque de Precio y CTA B2B -->
+<div class="pt-2">
+<div class="text-stone-500 text-[11px] font-medium">Precio volumen (desde 5 unds):</div>
+<div class="text-2xl font-headline font-extrabold text-surface-dark tabular-nums tracking-tight">
+                $ 21.912.000 <span class="text-xs font-semibold text-stone-500 font-body">COP /u</span>
+</div>
+<div class="text-[11px] text-stone-500 font-medium mt-0.5">
+                O leasing estimado: <strong class="text-surface-dark font-bold tabular-nums">$ 760.000 /mes</strong>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-3 px-4 rounded-xl bg-surface-dark hover:bg-primary text-white font-headline text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 shadow-md" onclick="addToQuote('Carga 500', 21912000)">
+<span class="material-symbols-outlined text-base">add_shopping_cart</span>
+<span>Cotizar Modelo</span>
+</button>
+<button class="p-3 rounded-xl bg-stone-200 hover:bg-stone-300 text-surface-dark transition-colors" title="Descargar Ficha Técnica">
+<span class="material-symbols-outlined text-base">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 3: Carga 800 Pro Furgón -->
+<div class="fleet-card mid-cargo flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+<div class="relative w-full aspect-[4/3] bg-stone-100 p-4 overflow-hidden">
+<span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-md text-[11px] font-bold tracking-wider uppercase bg-cert-green text-white shadow-sm">
+              Cadena de Frío / Farma
+            </span>
+<span class="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase bg-stone-900 text-white flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">local_shipping</span> 3.8 m³
+            </span>
+<img class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" data-alt="Commercial electric delivery trike with an enclosed aerodynamic white isothermal box truck body, dual rear doors, Brenson corporate logos, parked in a modern pharmaceutical logistics center, high key professional lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgVHk0KSe-hysukcdRGtbrD5_k_1WMGqMk0tZSz5nE3T9a5y6RCkDCtZA54I37P23OciQ7_ikDMQcdkXIwhwifpIcV7Hibmbbf9m3Rm9aP7NjFNA01qyVbIKJWZHmeUtqERAZnBmh4Fdic5pRbgC0rOhdbGEtNu0oUAdrsFxB3nM8QIYYWblB1B54yejTL9as151tLxNTUU4KaLz9Awi11x4DTLrgdd69WBUwPcTEp8UmC7cX6EfzN"/>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between gap-5">
+<div>
+<div class="text-xs font-semibold tracking-wider text-stone-500 uppercase">Furgón Cerrado Isotérmico</div>
+<h3 class="text-xl font-headline font-extrabold text-surface-dark tracking-tight mt-0.5">
+                Brenson Carga 800 Pro
+              </h3>
+<p class="text-xs text-stone-600 mt-2 line-clamp-2">
+                Caja cerrada hermética con aislante térmico en poliuretano inyectado. Certificable para traslado de alimentos y medicamentos.
+              </p>
+</div>
+<!-- Specs Grid -->
+<div class="grid grid-cols-3 gap-2 py-3 px-3.5 bg-stone-100 rounded-xl text-center">
+<div>
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">battery_charging_full</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">140 km</div>
+<div class="text-[10px] text-stone-500 font-medium">Autonomía</div>
+</div>
+<div class="border-l border-stone-300">
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">weight</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">850 kg</div>
+<div class="text-[10px] text-stone-500 font-medium">Capacidad</div>
+</div>
+<div class="border-l border-stone-300">
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">IoT Lock</div>
+<div class="text-[10px] text-stone-500 font-medium">Seguridad</div>
+</div>
+</div>
+<!-- Bloque de Precio y CTA B2B -->
+<div class="pt-2">
+<div class="text-stone-500 text-[11px] font-medium">Precio volumen (desde 3 unds):</div>
+<div class="text-2xl font-headline font-extrabold text-surface-dark tabular-nums tracking-tight">
+                $ 28.952.000 <span class="text-xs font-semibold text-stone-500 font-body">COP /u</span>
+</div>
+<div class="text-[11px] text-stone-500 font-medium mt-0.5">
+                O leasing estimado: <strong class="text-surface-dark font-bold tabular-nums">$ 995.000 /mes</strong>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-3 px-4 rounded-xl bg-surface-dark hover:bg-primary text-white font-headline text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 shadow-md" onclick="addToQuote('Carga 800 Pro', 28952000)">
+<span class="material-symbols-outlined text-base">add_shopping_cart</span>
+<span>Cotizar Modelo</span>
+</button>
+<button class="p-3 rounded-xl bg-stone-200 hover:bg-stone-300 text-surface-dark transition-colors" title="Descargar Ficha Técnica">
+<span class="material-symbols-outlined text-base">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 4: Cargo Bike E350 -->
+<div class="fleet-card last-mile flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+<div class="relative w-full aspect-[4/3] bg-stone-100 p-4 overflow-hidden">
+<span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-md text-[11px] font-bold tracking-wider uppercase bg-surface-dark text-white shadow-sm">
+              Centros Históricos
+            </span>
+<span class="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase bg-cert-green/10 text-cert-green flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">no_accounts</span> Sin SOAT ni RUNT
+            </span>
+<img class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" data-alt="Modern heavy duty front-loading electric cargo bike long john style with a sturdy lockable cargo box mounted in front of handlebars, matte black and signal red paint, parked on a paved colonial street pedestrian zone, bright natural sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpWhjYlc_-l70Jy7PygRgtb5IFixaa6-OV9oHrNAW_DmsV7Abz9t9gIH2pbER4QsVkIjqAcZvtJ6ew7kXn13Rigg14qvFXkqk7uVMvlIK2IrwbuAcQm37re4TssxOfyrhELUCW0StQUd7AEpbmd3wPyAO9FHi9WU0LjKwUGKksxlNeWkGqF-voT3ExeFKU29mFIJzJGrJsfzVUKisMMC2N_8hXBMPz9gOFpENyAlLiw8PZlp8DBr3N"/>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between gap-5">
+<div>
+<div class="text-xs font-semibold tracking-wider text-stone-500 uppercase">Ciclo-Logística de Alta Densidad</div>
+<h3 class="text-xl font-headline font-extrabold text-surface-dark tracking-tight mt-0.5">
+                Brenson Cargo Bike E350
+              </h3>
+<p class="text-xs text-stone-600 mt-2 line-clamp-2">
+                Bicicleta asistida de carga delantera con cajón frontal de polímero de alto impacto. Acceso irrestricto a vías peatonales.
+              </p>
+</div>
+<!-- Specs Grid -->
+<div class="grid grid-cols-3 gap-2 py-3 px-3.5 bg-stone-100 rounded-xl text-center">
+<div>
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">battery_charging_full</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">75 km</div>
+<div class="text-[10px] text-stone-500 font-medium">Autonomía</div>
+</div>
+<div class="border-l border-stone-300">
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">weight</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">140 kg</div>
+<div class="text-[10px] text-stone-500 font-medium">Carga Frontal</div>
+</div>
+<div class="border-l border-stone-300">
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">pedal_bike</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">Bafang M600</div>
+<div class="text-[10px] text-stone-500 font-medium">Motor Central</div>
+</div>
+</div>
+<!-- Bloque de Precio y CTA B2B -->
+<div class="pt-2">
+<div class="text-stone-500 text-[11px] font-medium">Precio volumen (desde 5 unds):</div>
+<div class="text-2xl font-headline font-extrabold text-surface-dark tabular-nums tracking-tight">
+                $ 6.151.200 <span class="text-xs font-semibold text-stone-500 font-body">COP /u</span>
+</div>
+<div class="text-[11px] text-stone-500 font-medium mt-0.5">
+                O leasing estimado: <strong class="text-surface-dark font-bold tabular-nums">$ 210.000 /mes</strong>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-3 px-4 rounded-xl bg-surface-dark hover:bg-primary text-white font-headline text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 shadow-md" onclick="addToQuote('Cargo Bike E350', 6151200)">
+<span class="material-symbols-outlined text-base">add_shopping_cart</span>
+<span>Cotizar Modelo</span>
+</button>
+<button class="p-3 rounded-xl bg-stone-200 hover:bg-stone-300 text-surface-dark transition-colors" title="Descargar Ficha Técnica">
+<span class="material-symbols-outlined text-base">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 5: Quad Work 4x2 -->
+<div class="fleet-card quad-work flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+<div class="relative w-full aspect-[4/3] bg-stone-100 p-4 overflow-hidden">
+<span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-md text-[11px] font-bold tracking-wider uppercase bg-primary text-white shadow-sm">
+              Campus &amp; CDIs
+            </span>
+<span class="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase bg-stone-900 text-white flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">tune</span> Cabina Modular
+            </span>
+<img class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" data-alt="Heavy duty electric utility 4-wheel vehicle UTV side by side with open steel roll cage, winch mounted on front bumper, rear cargo cargo dump bed, high ground clearance, photographed on smooth polished industrial concrete floor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtCLxrE9QQqavIzOSlSBaACMUZ61in-xAp4H33cSANsAG3PbtN1UUS4zlQTNtIIrC5Ezaj_7oJbOlwLrvVn-34-afCEckhA1SbQe6E4W7pYsZ5-_U1SXE86ARe0ewmygB4HyXeH1ssnUKsfXcEci4L5R3_FzIJxkc_7elpMGMOz2h8MTqPtpfEoYIHj8fi00BVRma1twtdg9MSWqJmPKg0YdaYk39kLdp6udX6XS9B7h7QHIpWV4Bd"/>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between gap-5">
+<div>
+<div class="text-xs font-semibold tracking-wider text-stone-500 uppercase">Cuadriciclo Utilitario de Operaciones</div>
+<h3 class="text-xl font-headline font-extrabold text-surface-dark tracking-tight mt-0.5">
+                Brenson Quad Work 4x2
+              </h3>
+<p class="text-xs text-stone-600 mt-2 line-clamp-2">
+                Cuadriciclo con platón trasero, winche de arrastre de 2.500 lbs y suspensión reforzada para puertos, zonas francas y campus industriales.
+              </p>
+</div>
+<!-- Specs Grid -->
+<div class="grid grid-cols-3 gap-2 py-3 px-3.5 bg-stone-100 rounded-xl text-center">
+<div>
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">battery_charging_full</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">95 km</div>
+<div class="text-[10px] text-stone-500 font-medium">Autonomía</div>
+</div>
+<div class="border-l border-stone-300">
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">weight</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">600 kg</div>
+<div class="text-[10px] text-stone-500 font-medium">Arrastre / Carga</div>
+</div>
+<div class="border-l border-stone-300">
+<div class="flex items-center justify-center gap-1 text-primary text-xs mb-0.5">
+<span class="material-symbols-outlined text-sm">bolt</span>
+</div>
+<div class="text-xs font-headline font-extrabold text-surface-dark tabular-nums">5.0 kW</div>
+<div class="text-[10px] text-stone-500 font-medium">Motor AC</div>
+</div>
+</div>
+<!-- Bloque de Precio y CTA B2B -->
+<div class="pt-2">
+<div class="text-stone-500 text-[11px] font-medium">Precio corporativo base:</div>
+<div class="text-2xl font-headline font-extrabold text-surface-dark tabular-nums tracking-tight">
+                $ 34.200.000 <span class="text-xs font-semibold text-stone-500 font-body">COP /u</span>
+</div>
+<div class="text-[11px] text-stone-500 font-medium mt-0.5">
+                O leasing estimado: <strong class="text-surface-dark font-bold tabular-nums">$ 1.180.000 /mes</strong>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-3 px-4 rounded-xl bg-surface-dark hover:bg-primary text-white font-headline text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 shadow-md" onclick="addToQuote('Quad Work 4x2', 34200000)">
+<span class="material-symbols-outlined text-base">add_shopping_cart</span>
+<span>Cotizar Modelo</span>
+</button>
+<button class="p-3 rounded-xl bg-stone-200 hover:bg-stone-300 text-surface-dark transition-colors" title="Descargar Ficha Técnica">
+<span class="material-symbols-outlined text-base">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 6: Solución Personalizada B2B -->
+<div class="fleet-card mid-cargo quad-work last-mile flex flex-col bg-surface-dark text-white rounded-2xl overflow-hidden shadow-lg p-8 justify-between relative">
+<div class="absolute -bottom-16 -right-16 w-56 h-56 bg-primary/20 rounded-full blur-2xl"></div>
+<div>
+<div class="w-12 h-12 rounded-xl bg-primary/20 text-primary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-2xl">precision_manufacturing</span>
+</div>
+<span class="text-xs font-headline font-bold text-primary uppercase tracking-widest">Ingeniería a la Medida</span>
+<h3 class="text-2xl font-headline font-extrabold tracking-tight mt-2 text-white">
+              ¿Requiere una configuración técnica particular?
+            </h3>
+<p class="text-xs text-on-surface-variant-dark mt-4 leading-relaxed">
+              Desarrollamos adaptaciones especiales de chasis, furgones con enfriamiento eutéctico, sistemas de carga rápida trifásica o integraciones API directas a su ERP/TMS logístico.
+            </p>
+</div>
+<div class="pt-8 space-y-3 relative z-10">
+<a class="w-full py-3.5 px-4 rounded-xl bg-whatsapp text-surface-dark font-headline text-xs font-bold uppercase tracking-wider transition-opacity hover:opacity-90 flex items-center justify-center gap-2 shadow-lg" href="https://wa.me/573000000000?text=Hola%2C%20requiero%20asesor%C3%ADa%20para%20un%20proyecto%20de%20flota%20especializada" target="_blank">
+<span class="material-symbols-outlined text-lg">chat</span>
+<span>Hablar con un Ingeniero de Flota</span>
+</a>
+<p class="text-[11px] text-center text-on-surface-variant-dark">Atención directa para gerentes de logística</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tabla Comparativa Técnica B2B -->
+<section class="w-full bg-surface-dark py-20">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="max-w-3xl mb-12">
+<span class="text-xs font-headline font-bold text-cert-green uppercase tracking-widest flex items-center gap-1.5 mb-2">
+<span class="material-symbols-outlined text-sm">fact_check</span> Hoja de Especificaciones Industriales
+        </span>
+<h2 class="text-3xl md:text-4xl font-headline font-extrabold text-white tracking-tight">
+          Comparativa Homologada para Flotas
+        </h2>
+<p class="text-sm text-on-surface-variant-dark mt-3">
+          Datos auditados con carga real en ciclo urbano colombiano. Cumplimiento de normativas de peso por eje y seguridad vial.
+        </p>
+</div>
+<!-- Tabla Responsive -->
+<div class="w-full overflow-x-auto rounded-2xl bg-surface-dark-card shadow-2xl">
+<table class="w-full text-left text-xs border-collapse">
+<thead>
+<tr class="bg-white/5 text-white uppercase text-[11px] tracking-wider font-headline font-bold">
+<th class="py-4 px-6">Modelo</th>
+<th class="py-4 px-6">Carga Útil / Vol.</th>
+<th class="py-4 px-6">Autonomía (Full Carga)</th>
+<th class="py-4 px-6">Potencia Motor</th>
+<th class="py-4 px-6">Química de Batería</th>
+<th class="py-4 px-6">Tiempo Carga 100%</th>
+<th class="py-4 px-6">RUNT / Licencia</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5 text-on-surface-variant-dark font-medium">
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="py-4 px-6 font-headline font-bold text-white">Delivery 2000</td>
+<td class="py-4 px-6 text-white font-semibold">180 kg · 120 L</td>
+<td class="py-4 px-6">160 km (Dual LiFePO4)</td>
+<td class="py-4 px-6">2.0 kW nominal (3.2 kW pico)</td>
+<td class="py-4 px-6"><span class="px-2 py-0.5 rounded bg-cert-green/10 text-cert-green font-bold">LiFePO4 (&gt;2.500 ciclos)</span></td>
+<td class="py-4 px-6">3.5 h (Cargador 15A)</td>
+<td class="py-4 px-6 text-white font-semibold">Placa ciclomotor · A2</td>
+</tr>
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="py-4 px-6 font-headline font-bold text-white">Carga 500</td>
+<td class="py-4 px-6 text-white font-semibold">500 kg · Platón 1.6m²</td>
+<td class="py-4 px-6">110 km</td>
+<td class="py-4 px-6">3.0 kW con caja de reducción</td>
+<td class="py-4 px-6"><span class="px-2 py-0.5 rounded bg-cert-green/10 text-cert-green font-bold">LiFePO4 (&gt;2.000 ciclos)</span></td>
+<td class="py-4 px-6">5.0 h (Toma 110V/220V)</td>
+<td class="py-4 px-6 text-white font-semibold">Placa motocarro · C1/C2</td>
+</tr>
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="py-4 px-6 font-headline font-bold text-white">Carga 800 Pro</td>
+<td class="py-4 px-6 text-white font-semibold">850 kg · 3.8 m³ furgón</td>
+<td class="py-4 px-6">140 km</td>
+<td class="py-4 px-6">4.5 kW motor sincrónico</td>
+<td class="py-4 px-6"><span class="px-2 py-0.5 rounded bg-cert-green/10 text-cert-green font-bold">LiFePO4 Modular 10kWh</span></td>
+<td class="py-4 px-6">4.0 h (Carga Rápida Nivel 2)</td>
+<td class="py-4 px-6 text-white font-semibold">Placa motocarro · C1/C2</td>
+</tr>
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="py-4 px-6 font-headline font-bold text-white">Cargo Bike E350</td>
+<td class="py-4 px-6 text-white font-semibold">140 kg frontal · 220 L</td>
+<td class="py-4 px-6">75 km con pedaleo asistido</td>
+<td class="py-4 px-6">350W Bafang Central</td>
+<td class="py-4 px-6"><span class="px-2 py-0.5 rounded bg-cert-green/10 text-cert-green font-bold">Li-Ion 48V 17.5Ah</span></td>
+<td class="py-4 px-6">3.0 h (Toma estándar 110V)</td>
+<td class="py-4 px-6 text-cert-green font-bold">Exento (Bicicleta)</td>
+</tr>
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="py-4 px-6 font-headline font-bold text-white">Quad Work 4x2</td>
+<td class="py-4 px-6 text-white font-semibold">600 kg arrastre / platón</td>
+<td class="py-4 px-6">95 km</td>
+<td class="py-4 px-6">5.0 kW AC de alta eficiencia</td>
+<td class="py-4 px-6"><span class="px-2 py-0.5 rounded bg-cert-green/10 text-cert-green font-bold">LiFePO4 Heavy Cycle</span></td>
+<td class="py-4 px-6">5.5 h</td>
+<td class="py-4 px-6 text-white font-semibold">Uso en predio / RUNT opcional</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Opciones de Personalización Corporativa de Flota -->
+<section class="w-full bg-stone-100 text-surface-dark py-20">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<span class="text-xs font-headline font-bold text-primary tracking-widest uppercase">Ecosistema Integral B2B</span>
+<h2 class="text-3xl md:text-4xl font-headline font-extrabold text-surface-dark tracking-tight mt-2">
+          Personalización y Equipamiento de Fábrica
+        </h2>
+<p class="text-sm text-stone-600 mt-3">
+          Entregamos su flota lista para operar desde el primer día, homologada con la imagen de su compañía y monitoreo telemático en tiempo real.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1: Branding -->
+<div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-2xl">palette</span>
+</div>
+<h3 class="text-lg font-headline font-bold text-surface-dark">
+              Branding Institucional y Vinilado 3M
+            </h3>
+<p class="text-xs text-stone-600 mt-3 leading-relaxed">
+              Pintura electrostática con código de color corporativo o vinilado de grado automotriz de alta resistencia a intemperie, rayos UV y fricción urbana.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-stone-100 flex items-center gap-2 text-xs font-semibold text-surface-dark">
+<span class="material-symbols-outlined text-cert-green text-sm">done_all</span>
+<span>Manual de marca aplicado con precisión</span>
+</div>
+</div>
+<!-- Feature 2: Carrocerías -->
+<div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-2xl">rv_hookup</span>
+</div>
+<h3 class="text-lg font-headline font-bold text-surface-dark">
+              Adaptaciones Especiales de Carrocería
+            </h3>
+<p class="text-xs text-stone-600 mt-3 leading-relaxed">
+              Furgones isotérmicos, compuertas tipo persiana, platones con baranda de estacas, y baúles modulares con apertura mediante teclado digital o RFID.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-stone-100 flex items-center gap-2 text-xs font-semibold text-surface-dark">
+<span class="material-symbols-outlined text-cert-green text-sm">done_all</span>
+<span>Certificación de cargas por IDU / MinTransporte</span>
+</div>
+</div>
+<!-- Feature 3: IoT y Telemetría -->
+<div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-2xl">sensors</span>
+</div>
+<h3 class="text-lg font-headline font-bold text-surface-dark">
+              Telemetría IoT &amp; Gestión de Baterías
+            </h3>
+<p class="text-xs text-stone-600 mt-3 leading-relaxed">
+              Dispositivo GPS 4G integrado con inmovilizador remoto, diagnóstico en vivo del estado de salud de la batería (SOH), rutas y alertas de geo-cerca.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-stone-100 flex items-center gap-2 text-xs font-semibold text-surface-dark">
+<span class="material-symbols-outlined text-cert-green text-sm">done_all</span>
+<span>API disponible para integración SAP / TMS</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Escala de Descuentos B2B por Volumen -->
+<section class="w-full bg-surface-dark-card py-16 text-white">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
+<div class="space-y-2">
+<span class="text-xs font-headline font-bold text-primary uppercase tracking-widest">Política de Escala</span>
+<h3 class="text-2xl font-headline font-extrabold tracking-tight">Descuentos por Tamaño de Flota</h3>
+<p class="text-xs text-on-surface-variant-dark">Aplicables directamente sobre el precio de lista de unidades y accesorios técnicos.</p>
+</div>
+<div class="p-6 rounded-2xl bg-white/5 flex flex-col justify-between">
+<div class="text-xs text-on-surface-variant-dark font-semibold uppercase">Nivel 1 · Inicial</div>
+<div class="text-3xl font-headline font-extrabold text-white my-2 tabular-nums">8% OFF</div>
+<div class="text-xs text-on-surface-variant-dark">A partir de <strong>5 a 19 unidades</strong></div>
+</div>
+<div class="p-6 rounded-2xl bg-white/5 flex flex-col justify-between border-l-2 border-primary">
+<div class="text-xs text-primary font-bold uppercase">Nivel 2 · Consolidado</div>
+<div class="text-3xl font-headline font-extrabold text-white my-2 tabular-nums">12% OFF</div>
+<div class="text-xs text-on-surface-variant-dark">A partir de <strong>20 a 49 unidades</strong></div>
+</div>
+<div class="p-6 rounded-2xl bg-white/5 flex flex-col justify-between border-l-2 border-cert-green">
+<div class="text-xs text-cert-green font-bold uppercase">Nivel 3 · Corporativo</div>
+<div class="text-3xl font-headline font-extrabold text-white my-2 tabular-nums">18% OFF</div>
+<div class="text-xs text-on-surface-variant-dark">Flotas de <strong>50+ unidades</strong> + SLA Premium</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Barra Flotante / Sticky de Cotización B2B -->
+<div class="sticky bottom-0 z-40 w-full bg-surface-dark/95 backdrop-blur-xl py-4 shadow-[0_-8px_20px_rgba(0,0,0,0.4)]" id="quote-drawer">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-4 w-full sm:w-auto">
+<div class="w-10 h-10 rounded-xl bg-primary/20 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-xl">calculate</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-white uppercase tracking-wider">Borrador de Propuesta B2B:</span>
+<span class="px-2 py-0.5 rounded-full bg-primary text-white text-[10px] font-extrabold tabular-nums" id="quote-count">0 unidades</span>
+</div>
+<div class="text-xs text-on-surface-variant-dark mt-0.5">
+            Valor estimado pre-descuento: <span class="text-white font-bold tabular-nums" id="quote-total">$ 0 COP</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<button class="hidden sm:inline-flex text-xs font-semibold text-on-surface-variant-dark hover:text-white px-3 py-2 transition-colors" onclick="resetQuote()">
+          Limpiar
+        </button>
+<a class="w-full sm:w-auto px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-headline text-xs font-extrabold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-primary/30" data-path="cotizador" href="#">
+<span>Ir al Cotizador Corporativo</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<script>
+    // Micro-interacción: Filtrado de unidades
+    function filterFleet(category) {
+      const cards = document.querySelectorAll('.fleet-card');
+      const buttons = document.querySelectorAll('.filter-btn');
+
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-primary', 'text-white', 'shadow-md');
+        btn.classList.add('bg-surface-dark-card', 'text-on-surface-variant-dark');
+      });
+
+      event.currentTarget.classList.remove('bg-surface-dark-card', 'text-on-surface-variant-dark');
+      event.currentTarget.classList.add('bg-primary', 'text-white', 'shadow-md');
+
+      cards.forEach(card => {
+        if (category === 'all' || card.classList.contains(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Micro-interacción: Agregador al Cotizador B2B
+    let totalUnits = 0;
+    let totalPrice = 0;
+
+    function addToQuote(modelName, price) {
+      totalUnits += 1;
+      totalPrice += price;
+      
+      const countEl = document.getElementById('quote-count');
+      const totalEl = document.getElementById('quote-total');
+
+      countEl.innerText = `${totalUnits} ${totalUnits === 1 ? 'unidad' : 'unidades'}`;
+      totalEl.innerText = `$ ${totalPrice.toLocaleString('es-CO')} COP`;
+
+      // Toast feedback sutil
+      countEl.classList.add('scale-125', 'transition-transform');
+      setTimeout(() => countEl.classList.remove('scale-125'), 200);
+    }
+
+    function resetQuote() {
+      totalUnits = 0;
+      totalPrice = 0;
+      document.getElementById('quote-count').innerText = '0 unidades';
+      document.getElementById('quote-total').innerText = '$ 0 COP';
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-dark-card py-16 text-on-surface-variant-dark text-sm"><div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-10"><div class="md:col-span-2 flex flex-col gap-3"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">bolt</span><span class="font-headline font-bold text-white text-base uppercase">Brenson S.A.S.</span></div><p class="text-xs leading-relaxed text-on-surface-variant-dark max-w-md">Ecosistema B2B líder en movilidad eléctrica empresarial en Colombia. Soluciones de flotas comerciales, ciclo-logística y cuadriciclos con respaldo integral y certificación técnica de fábrica.</p><div class="text-xs text-on-surface-variant-dark/80 pt-2 space-y-1"><p>NIT 901.482.391-4 • Bogotá D.C. • Cobertura nacional</p><p class="text-[11px] text-on-surface-variant-dark/60">Incentivos tributarios conforme a la Ley 1715 de 2014 y Ley 2099 de 2021 para proyectos de movilidad de cero emisiones.</p></div></div><div class="flex flex-col gap-2"><span class="font-semibold text-white uppercase text-xs tracking-wider mb-2">Soporte y Operaciones</span><a class="hover:text-white transition-colors text-xs" href="#">Garantía y Certificado Brenson</a><a class="hover:text-white transition-colors text-xs" href="#">Mantenimiento en sitio (SLA)</a><a class="hover:text-white transition-colors text-xs" href="#">Financiación de Flotas</a><a class="hover:text-white transition-colors text-xs" href="#">Portal de Telemetría</a></div><div class="flex flex-col gap-3"><span class="font-semibold text-white uppercase text-xs tracking-wider mb-1">Línea Directa Corporativa</span><a class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-whatsapp/10 text-whatsapp font-medium hover:bg-whatsapp/20 transition-colors w-fit text-xs" href="#"><span class="material-symbols-outlined text-base">chat</span>WhatsApp Corporativo</a><p class="text-xs text-on-surface-variant-dark">Lunes a Viernes 8:00 AM - 6:00 PM COT<br/>empresas@brenson.co</p></div></div><div class="max-w-7xl mx-auto px-6 lg:px-12 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-on-surface-variant-dark/70 gap-4"><p>© 2025 Brenson S.A.S. Todos los derechos reservados.</p><div class="flex gap-6"><a class="hover:text-white transition-colors" href="#">Términos B2B</a><a class="hover:text-white transition-colors" href="#">Política de Privacidad</a><a class="hover:text-white transition-colors" href="#">Habeas Data</a></div></div></footer></body></html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={theme:{extend:{colors:{primary:"#EE0000","on-primary":"#FFFFFF","surface-dark":"#050709","surface-dark-card":"#0F1318","surface-light":"#F4F4F4","on-surface-dark":"#FFFFFF","on-surface-variant-dark":"#9CA3AF","cert-green":"#1F8A4C","whatsapp":"#25D366","amber-pending":"#F59E0B","error-red":"#B91C1C"},fontFamily:{body:["Montserrat","sans-serif"],headline:["Montserrat","sans-serif"]}}}}</script></head><body class="bg-surface-dark font-body text-on-surface-dark"><header class="fixed top-0 w-full z-50 bg-surface-dark/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.5)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-6"><div class="flex items-center gap-4"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-2xl">bolt</span><span class="text-xl font-headline font-extrabold tracking-tight uppercase text-white">Brenson <span class="text-primary font-medium tracking-normal text-sm uppercase px-2 py-0.5 rounded bg-primary/10 border border-primary/20">Empresas</span></span></div></div><nav class="hidden lg:flex items-center gap-7" data-active-classes="text-white font-semibold"><a aria-current="page" class="transition-colors text-white font-semibold" data-path="beneficios" href="#">Beneficios</a><a class="text-sm font-medium text-on-surface-variant-dark hover:text-white transition-colors" data-path="flotas" href="#">Flotas</a><a class="text-sm font-medium text-on-surface-variant-dark hover:text-white transition-colors" data-path="como-funciona" href="#">Cómo funciona</a><a class="text-sm font-medium text-on-surface-variant-dark hover:text-white transition-colors" data-path="cotizador" href="#">Cotizador</a><a class="text-sm font-medium text-on-surface-variant-dark hover:text-white transition-colors" data-path="contacto" href="#">Contacto</a></nav><div class="flex items-center gap-3"><a class="hidden sm:inline-flex text-sm font-semibold text-white px-4 py-2 rounded-lg hover:bg-surface-dark-card transition-colors" data-path="login" href="#">Iniciar sesión</a><a class="inline-flex items-center justify-center text-sm font-bold bg-primary text-on-primary px-4 py-2.5 rounded-lg hover:bg-primary/90 transition-colors shadow-sm" data-path="agendar-demo" href="#">Solicitar acceso / Agendar demo</a><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UdTsFEqyAc0jobD_ddU4VEDtwJXAtC7jI3FeBSte2C4CFHnJHb-HxCU6Uu-HKCwHXsv6iTbMcp_nlqjKN31qbixoqbnl0M4vkiEj45YUJI_SJZQvC4Sa3oPSFI9QgTAW6teC6Z14Uxef5TC5VT01lTCHiqKrK70_hBNBmvKuJDHg91n0cLlvuN2Il--zshQSE8CfxidaxZ3kAEc15yKAd9kiXl6zmU8nyV72moBaYZYZs3-nl1D9oJwjo"/></div></div></header><main class="w-full pt-20 bg-surface-dark min-h-screen"><div class="flex flex-col w-full text-white bg-surface-dark selection:bg-primary selection:text-white">
+<!-- Hero Section -->
+<section class="relative w-full overflow-hidden bg-surface-dark py-16 lg:py-24">
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(238,0,0,0.18),rgba(5,7,9,0))] pointer-events-none"></div>
+<div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-7 flex flex-col items-start gap-6">
+<div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-cert-green/10 text-cert-green text-xs font-bold tracking-wide uppercase">
+<span class="material-symbols-outlined text-base">verified</span>
+            Ley 1715 &amp; Cero Pico y Placa en Colombia
+          </div>
+<h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-headline text-white leading-[1.15]">
+            Rentabilidad, ahorro operativo y <span class="text-primary">ventajas tributarias</span> para su flota empresarial.
+          </h1>
+<p class="text-on-surface-variant-dark text-base sm:text-lg max-w-2xl font-normal leading-relaxed">
+            Optimice el flujo de caja de su operación logística y de última milla. Reduzca hasta un 78% el gasto energético y acceda a deducciones del 50% en renta con respaldo técnico nacional certificado por Brenson S.A.S.
+          </p>
+<div class="flex flex-wrap items-center gap-4 pt-2 w-full sm:w-auto">
+<a class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-primary text-white font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20" href="#calculadora-tco">
+<span class="material-symbols-outlined text-lg">calculate</span>
+              Calcular ROI de flota
+            </a>
+<a class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-surface-dark-card text-white font-semibold text-sm hover:bg-surface-dark-card/80 transition-all" href="#dossier-download">
+<span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+              Descargar dossier corporativo (PDF)
+            </a>
+</div>
+<!-- Quick Trust Metrics Strip -->
+<div class="grid grid-cols-3 gap-6 pt-6 w-full max-w-xl">
+<div class="flex flex-col">
+<span class="text-2xl lg:text-3xl font-extrabold font-headline text-white">78%</span>
+<span class="text-xs text-on-surface-variant-dark uppercase tracking-wider font-semibold mt-1">Ahorro energético</span>
+</div>
+<div class="flex flex-col">
+<span class="text-2xl lg:text-3xl font-extrabold font-headline text-white">50%</span>
+<span class="text-xs text-on-surface-variant-dark uppercase tracking-wider font-semibold mt-1">Deducción en renta</span>
+</div>
+<div class="flex flex-col">
+<span class="text-2xl lg:text-3xl font-extrabold font-headline text-white">100%</span>
+<span class="text-xs text-on-surface-variant-dark uppercase tracking-wider font-semibold mt-1">Operación continua</span>
+</div>
+</div>
+</div>
+<!-- Hero Feature Card with Vehicle Visual -->
+<div class="lg:col-span-5 relative">
+<div class="relative rounded-2xl bg-surface-dark-card p-6 shadow-2xl overflow-hidden flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<span class="text-xs uppercase tracking-widest text-on-surface-variant-dark font-bold">Unidad Comercial Destacada</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cert-green/15 text-cert-green text-xs font-bold">
+<span class="material-symbols-outlined text-sm">bolt</span> Certificado Brenson
+              </span>
+</div>
+<!-- Vehicle Visual Container -->
+<div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gradient-to-b from-[#1c222b] to-[#0a0d12] flex items-center justify-center p-4">
+<img class="w-full h-full object-contain filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.8)]" data-alt="Electric commercial scooter Brenson Velocity E-R7 in vibrant corporate red, parked in clean industrial studio setting with bright neutral floor, side profile view showing cargo trunk and technical build" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAi4KsSHwCShO5CuGGDHlbH-RAl1auFfE4snlLw0y841w1xg1uBb_HhYnS49rM4ANlHwF6PRPPTcSrLk5j3r1wBqK7JOaeJvgKQ5yp12E1uo-yYKWGOIZRc02i4ovGt4CoKDgprZuAJrV3Xc_TJhqB2cf4h4E8IPBEwbOSqQQKApXTuGlxxW7t5SLOUNUTaFQvYI29LI728s_g_WrkEeZ_csJsbeUmSwXLmkEAia7pXTYTNsg3QVXUZ"/>
+<div class="absolute bottom-3 left-3 bg-surface-dark/80 backdrop-blur-md px-3 py-1.5 rounded-md flex items-center gap-2 text-xs">
+<span class="material-symbols-outlined text-primary text-sm">battery_charging_full</span>
+<span class="text-white font-medium">Batería Litio Extraíble 60V/32Ah</span>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-baseline justify-between">
+<div>
+<h3 class="text-lg font-bold font-headline text-white">Brenson Delivery 2000 Pro</h3>
+<p class="text-xs text-on-surface-variant-dark">Configuración reforzada ciclo-logística B2B</p>
+</div>
+<div class="text-right">
+<span class="text-xs text-on-surface-variant-dark block">Desde</span>
+<span class="text-lg font-extrabold font-headline text-white">$ 319.000 <span class="text-xs font-medium text-on-surface-variant-dark">/mes</span></span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 bg-surface-dark/60 p-3 rounded-lg text-center">
+<div>
+<span class="text-xs text-on-surface-variant-dark block">Autonomía</span>
+<span class="text-sm font-bold text-white">85 km</span>
+</div>
+<div>
+<span class="text-xs text-on-surface-variant-dark block">Capacidad</span>
+<span class="text-sm font-bold text-white">180 kg</span>
+</div>
+<div>
+<span class="text-xs text-on-surface-variant-dark block">Carga 100%</span>
+<span class="text-sm font-bold text-white">$ 1.200 COP</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive TCO Calculator & Comparative Section -->
+<section class="w-full py-16 bg-[#0B0F15]" id="calculadora-tco">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-12">
+<div class="flex flex-col max-w-3xl">
+<span class="text-primary text-xs font-extrabold uppercase tracking-widest font-headline">Auditoría Financiera de Costo Total (TCO)</span>
+<h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-headline text-white mt-2">
+          Gasolina vs. Eléctrico: los números reales de su operación en Colombia
+        </h2>
+<p class="text-on-surface-variant-dark text-sm sm:text-base mt-3 leading-relaxed">
+          Comparativa calculada sobre un kilometraje promedio urbano de 2.200 km mensuales por unidad operativa en Bogotá, Medellín o Cali.
+        </p>
+</div>
+<!-- Fleet Size Dynamic Slider -->
+<div class="bg-surface-dark-card rounded-2xl p-6 lg:p-8 flex flex-col gap-8 shadow-xl">
+<div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 pb-6 bg-surface-dark/40 p-5 rounded-xl">
+<div>
+<label class="text-sm font-semibold text-white block" for="fleet-range">Tamaño proyectado de su flota:</label>
+<span class="text-xs text-on-surface-variant-dark">Desplace para calcular el retorno inmediato de su inversión</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-3xl font-extrabold font-headline text-primary" id="fleet-count-display">15</span>
+<span class="text-sm text-on-surface-variant-dark uppercase font-semibold">Unidades activas</span>
+</div>
+</div>
+<input class="w-full accent-primary h-2 bg-surface-dark rounded-lg cursor-pointer" id="fleet-range" max="100" min="1" step="1" type="range" value="15"/>
+<!-- Comparative Side by Side Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+<!-- Conventional Combustion Card -->
+<div class="bg-surface-dark/80 rounded-xl p-6 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-pending text-xl">local_gas_station</span>
+<h4 class="text-base font-bold font-headline text-white">Flota Combustión (125-150cc)</h4>
+</div>
+<span class="text-[11px] uppercase tracking-wider text-amber-pending bg-amber-pending/10 px-2.5 py-0.5 rounded font-semibold">Convencional</span>
+</div>
+<div class="space-y-4 py-4">
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant-dark">Gasto combustible / unidad / mes:</span>
+<span class="font-bold font-headline text-white" id="gas-unit-fuel">$ 380.000</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant-dark">Mantenimiento preventivo / mes:</span>
+<span class="font-bold font-headline text-white" id="gas-unit-maint">$ 120.000</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant-dark">SOAT anual obligatorio (por moto):</span>
+<span class="font-bold font-headline text-white">$ 702.000</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant-dark">Restricción Pico y Placa:</span>
+<span class="font-bold text-error-red">1 día / semana (20% paro)</span>
+</div>
+</div>
+</div>
+<div class="pt-6 bg-surface-dark/90 -mx-6 -mb-6 p-6 rounded-b-xl mt-4">
+<span class="text-xs text-on-surface-variant-dark block">Costo total operativo anual estimado:</span>
+<span class="text-2xl font-extrabold font-headline text-white mt-1 block" id="gas-total-cost">$ 90.000.000 COP</span>
+</div>
+</div>
+<!-- Brenson Fleet Card -->
+<div class="bg-surface-dark-card rounded-xl p-6 flex flex-col justify-between shadow-2xl relative">
+<div class="absolute -top-3.5 right-6 px-3 py-1 bg-primary text-white text-[11px] font-extrabold uppercase tracking-wider rounded-full shadow-md">
+              Recomendación Brenson
+            </div>
+<div>
+<div class="flex items-center justify-between pb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-xl">electric_bolt</span>
+<h4 class="text-base font-bold font-headline text-white">Flota Brenson 100% Eléctrica</h4>
+</div>
+<span class="text-[11px] uppercase tracking-wider text-cert-green bg-cert-green/10 px-2.5 py-0.5 rounded font-semibold">Cero Emisiones</span>
+</div>
+<div class="space-y-4 py-4">
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant-dark">Carga eléctrica / unidad / mes:</span>
+<span class="font-bold font-headline text-cert-green" id="elec-unit-fuel">$ 35.000</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant-dark">Mantenimiento predictivo / mes:</span>
+<span class="font-bold font-headline text-white" id="elec-unit-maint">$ 48.000</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant-dark">SOAT / Descuentos de ley:</span>
+<span class="font-bold font-headline text-white">Exento o 10% tarifa baja</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant-dark">Restricción Pico y Placa:</span>
+<span class="font-bold text-cert-green">0% Restricciones (365 días)</span>
+</div>
+</div>
+</div>
+<div class="pt-6 bg-surface-dark/90 -mx-6 -mb-6 p-6 rounded-b-xl mt-4">
+<span class="text-xs text-on-surface-variant-dark block">Costo total operativo anual estimado:</span>
+<span class="text-2xl font-extrabold font-headline text-cert-green mt-1 block" id="elec-total-cost">$ 27.600.000 COP</span>
+</div>
+</div>
+<!-- Total Executive Financial Impact Card -->
+<div class="bg-gradient-to-br from-surface-dark to-[#161f2c] rounded-xl p-6 flex flex-col justify-between shadow-2xl">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl">trending_up</span>
+<span class="text-xs font-bold uppercase tracking-wider text-white">Impacto en Flujo de Caja</span>
+</div>
+<h4 class="text-xl font-headline font-bold text-white">Ahorro anual consolidado</h4>
+<div class="p-4 bg-cert-green/10 rounded-xl">
+<span class="text-xs text-cert-green font-semibold uppercase tracking-wider block">Ahorro neto proyectado</span>
+<span class="text-3xl font-extrabold font-headline text-white mt-1 block" id="net-annual-savings">+$ 62.400.000 COP</span>
+<span class="text-xs text-on-surface-variant-dark mt-1 block">Ahorro mensual directo de combustible del 78%</span>
+</div>
+<div class="space-y-2 text-xs text-on-surface-variant-dark pt-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-sm">check_circle</span>
+<span>Sin bujías, correas ni cambios de aceite</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-sm">check_circle</span>
+<span>Disminución del 60% en horas taller</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-sm">check_circle</span>
+<span>Recuperación estimada de inversión: 14 meses</span>
+</div>
+</div>
+</div>
+<div class="pt-6">
+<a class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary text-white font-bold text-xs uppercase tracking-wider hover:bg-primary/90 transition-colors" href="#contacto-b2b">
+                Solicitar corrida TCO oficial
+              </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Colombian Tax Framework Section (Ley 1715 & DIAN) -->
+<section class="w-full py-16 lg:py-24 bg-surface-dark">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-12">
+<div class="flex flex-col max-w-3xl">
+<div class="inline-flex items-center gap-2 text-cert-green text-xs font-bold uppercase tracking-widest font-headline mb-2">
+<span class="material-symbols-outlined text-base">gavel</span>
+          Régimen Especial Tributario Colombia
+        </div>
+<h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-headline text-white">
+          Incentivos de Ley 1715 de 2014 y Ley 2099 de 2021 para su empresa
+        </h2>
+<p class="text-on-surface-variant-dark text-sm sm:text-base mt-3 leading-relaxed">
+          La legislación colombiana premia activamente la electrificación corporativa. El equipo jurídico de Brenson estructura y valida toda la documentación requerida ante la UPME y la DIAN.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Benefit 1 -->
+<div class="bg-surface-dark-card p-6 rounded-xl flex flex-col justify-between hover:-translate-y-1 transition-transform">
+<div class="flex flex-col gap-4">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl">percent</span>
+</div>
+<h3 class="text-lg font-bold font-headline text-white">Deducción del 50% en Renta Líquida</h3>
+<p class="text-xs text-on-surface-variant-dark leading-relaxed">
+              Su compañía puede deducir hasta el 50% del valor total de la inversión en activos de movilidad eléctrica directamente de su renta líquida gravable durante los primeros 15 años.
+            </p>
+</div>
+<div class="pt-6 mt-4 bg-surface-dark/40 -mx-6 -mb-6 p-4 rounded-b-xl flex items-center justify-between text-[11px] text-on-surface-variant-dark font-medium">
+<span>Art. 11 Ley 1715</span>
+<span class="text-cert-green font-bold">Aprobación UPME</span>
+</div>
+</div>
+<!-- Benefit 2 -->
+<div class="bg-surface-dark-card p-6 rounded-xl flex flex-col justify-between hover:-translate-y-1 transition-transform">
+<div class="flex flex-col gap-4">
+<div class="w-12 h-12 rounded-lg bg-cert-green/10 flex items-center justify-center text-cert-green">
+<span class="material-symbols-outlined text-2xl">money_off</span>
+</div>
+<h3 class="text-lg font-bold font-headline text-white">Exclusión / Exención de IVA</h3>
+<p class="text-xs text-on-surface-variant-dark leading-relaxed">
+              Los vehículos de logística ligera 100% eléctricos y sistemas de carga calificados están amparados por tarifas preferenciales o exclusión plena de IVA comercial según la subpartida arancelaria.
+            </p>
+</div>
+<div class="pt-6 mt-4 bg-surface-dark/40 -mx-6 -mb-6 p-4 rounded-b-xl flex items-center justify-between text-[11px] text-on-surface-variant-dark font-medium">
+<span>Art. 12 Ley 1715</span>
+<span class="text-cert-green font-bold">Cero sobrecosto</span>
+</div>
+</div>
+<!-- Benefit 3 -->
+<div class="bg-surface-dark-card p-6 rounded-xl flex flex-col justify-between hover:-translate-y-1 transition-transform">
+<div class="flex flex-col gap-4">
+<div class="w-12 h-12 rounded-lg bg-amber-pending/10 flex items-center justify-center text-amber-pending">
+<span class="material-symbols-outlined text-2xl">fast_forward</span>
+</div>
+<h3 class="text-lg font-bold font-headline text-white">Depreciación Acelerada de Activos</h3>
+<p class="text-xs text-on-surface-variant-dark leading-relaxed">
+              Tasa de depreciación acelerada global de hasta el 33.33% anual (recuperación en 3 años frente a los 5 habituales para maquinaria rodante), optimizando sustancialmente el balance fiscal.
+            </p>
+</div>
+<div class="pt-6 mt-4 bg-surface-dark/40 -mx-6 -mb-6 p-4 rounded-b-xl flex items-center justify-between text-[11px] text-on-surface-variant-dark font-medium">
+<span>Art. 14 Ley 1715</span>
+<span class="text-cert-green font-bold">Escudo fiscal</span>
+</div>
+</div>
+<!-- Benefit 4 -->
+<div class="bg-surface-dark-card p-6 rounded-xl flex flex-col justify-between hover:-translate-y-1 transition-transform">
+<div class="flex flex-col gap-4">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl">verified_user</span>
+</div>
+<h3 class="text-lg font-bold font-headline text-white">Acompañamiento Jurídico Llave en Mano</h3>
+<p class="text-xs text-on-surface-variant-dark leading-relaxed">
+              Brenson S.A.S. no entrega simplemente vehículos: emitimos las fichas técnicas homologadas y estructuramos el radicado expedito ante la UPME sin costos de consultoría externa.
+            </p>
+</div>
+<div class="pt-6 mt-4 bg-surface-dark/40 -mx-6 -mb-6 p-4 rounded-b-xl flex items-center justify-between text-[11px] text-on-surface-variant-dark font-medium">
+<span>Gestión Brenson</span>
+<span class="text-cert-green font-bold">Soporte 100%</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Commercial Volume Discount Tiers -->
+<section class="w-full py-16 bg-[#090C10]">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-10">
+<div class="flex flex-col max-w-3xl">
+<span class="text-primary text-xs font-extrabold uppercase tracking-widest font-headline">Escalabilidad de Adquisición B2B</span>
+<h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-headline text-white mt-2">
+          Escala de descuentos comerciales por volumen
+        </h2>
+<p class="text-on-surface-variant-dark text-sm sm:text-base mt-2">
+          Condiciones formales y contractuales para empresas legalmente constituidas en Colombia.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Tier 1 -->
+<div class="bg-surface-dark-card rounded-xl p-8 flex flex-col justify-between relative shadow-lg">
+<div>
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold tracking-wider uppercase text-on-surface-variant-dark">Tier 1 • Pymes</span>
+<span class="text-xs bg-surface-dark px-2.5 py-1 rounded font-semibold text-white">10 - 19 Unidades</span>
+</div>
+<div class="my-6">
+<div class="text-4xl font-extrabold font-headline text-white">8% <span class="text-sm font-semibold text-on-surface-variant-dark">OFF</span></div>
+<p class="text-xs text-on-surface-variant-dark mt-1">Descuento directo sobre lista catálogo comercial</p>
+</div>
+<ul class="space-y-3 text-xs text-on-surface-variant-dark">
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span>Certificado de Garantía Brenson 24 meses</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span>Capacitación técnico-operativa para conductores</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span>Línea directa de atención de repuestos</span>
+</li>
+</ul>
+</div>
+<div class="pt-8">
+<a class="w-full inline-flex items-center justify-center py-3 rounded-lg bg-surface-dark text-white font-semibold text-xs hover:bg-surface-dark/70 transition-colors" href="#contacto-b2b">
+              Cotizar Tier 1
+            </a>
+</div>
+</div>
+<!-- Tier 2 -->
+<div class="bg-surface-dark-card rounded-xl p-8 flex flex-col justify-between relative shadow-xl">
+<div>
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold tracking-wider uppercase text-primary">Tier 2 • Logística Media</span>
+<span class="text-xs bg-primary/15 text-primary px-2.5 py-1 rounded font-bold">20 - 49 Unidades</span>
+</div>
+<div class="my-6">
+<div class="text-4xl font-extrabold font-headline text-white">12% <span class="text-sm font-semibold text-on-surface-variant-dark">OFF</span></div>
+<p class="text-xs text-on-surface-variant-dark mt-1">Descuento directo + prioridad en despachos</p>
+</div>
+<ul class="space-y-3 text-xs text-on-surface-variant-dark">
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span class="text-white font-medium">Todo lo incluido en Tier 1</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span>Despacho prioritario de piezas de recambio (SLA 24h)</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span>Kit de cargadores rápidos para estación base corporativa</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span>Línea de crédito comercial previa aprobación financiera</span>
+</li>
+</ul>
+</div>
+<div class="pt-8">
+<a class="w-full inline-flex items-center justify-center py-3 rounded-lg bg-primary text-white font-bold text-xs uppercase tracking-wider hover:bg-primary/90 transition-colors shadow-md shadow-primary/20" href="#contacto-b2b">
+              Cotizar Tier 2
+            </a>
+</div>
+</div>
+<!-- Tier 3 -->
+<div class="bg-surface-dark-card rounded-xl p-8 flex flex-col justify-between relative shadow-lg">
+<div>
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold tracking-wider uppercase text-cert-green">Tier 3 • Gran Flota</span>
+<span class="text-xs bg-cert-green/15 text-cert-green px-2.5 py-1 rounded font-bold">50+ Unidades</span>
+</div>
+<div class="my-6">
+<div class="text-4xl font-extrabold font-headline text-white">18% <span class="text-sm font-semibold text-on-surface-variant-dark">OFF</span></div>
+<p class="text-xs text-on-surface-variant-dark mt-1">Tarifa institucional para corporativos y operadores 3PL</p>
+</div>
+<ul class="space-y-3 text-xs text-on-surface-variant-dark">
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span class="text-white font-medium">Todo lo incluido en Tier 2</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span>Telemetría GPS integrada sin costo durante 1 año</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span>Mantenimiento móvil in-situ y auditorías técnicas trimestrales</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cert-green text-base">check</span>
+<span>Ejecutivo de cuenta técnico asignado con SLA estricto</span>
+</li>
+</ul>
+</div>
+<div class="pt-8">
+<a class="w-full inline-flex items-center justify-center py-3 rounded-lg bg-surface-dark text-white font-semibold text-xs hover:bg-surface-dark/70 transition-colors" href="#contacto-b2b">
+              Cotizar Gran Flota
+            </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Urban Operational Continuity -->
+<section class="w-full py-16 bg-surface-dark">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="bg-gradient-to-r from-surface-dark-card to-[#121922] rounded-2xl p-8 lg:p-12 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8">
+<div class="flex flex-col gap-4 max-w-2xl">
+<div class="inline-flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">traffic</span>
+            Eficiencia Logística Sin Fricción
+          </div>
+<h3 class="text-2xl sm:text-3xl font-bold font-headline text-white">
+            100% de continuidad urbana sin restricciones de Pico y Placa
+          </h3>
+<p class="text-sm text-on-surface-variant-dark leading-relaxed">
+            Las contingencias ambientales y las alertas por calidad del aire paralizan el 20% de las flotas convencionales en Bogotá, Medellín, Cali y Barranquilla. Las unidades eléctricas Brenson operan las 24 horas del día, los 7 días de la semana, garantizando los acuerdos de nivel de servicio (SLA) frente a sus clientes finales.
+          </p>
+<div class="flex flex-wrap items-center gap-6 pt-2">
+<div class="flex items-center gap-2 text-xs font-medium text-white">
+<span class="material-symbols-outlined text-cert-green text-lg">check_circle</span>
+<span>Bogotá D.C.</span>
+</div>
+<div class="flex items-center gap-2 text-xs font-medium text-white">
+<span class="material-symbols-outlined text-cert-green text-lg">check_circle</span>
+<span>Medellín (Área Met.)</span>
+</div>
+<div class="flex items-center gap-2 text-xs font-medium text-white">
+<span class="material-symbols-outlined text-cert-green text-lg">check_circle</span>
+<span>Cali</span>
+</div>
+<div class="flex items-center gap-2 text-xs font-medium text-white">
+<span class="material-symbols-outlined text-cert-green text-lg">check_circle</span>
+<span>Barranquilla</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-dark/90 p-6 rounded-xl text-center min-w-[260px] flex flex-col items-center gap-2">
+<span class="text-5xl font-extrabold font-headline text-white">0</span>
+<span class="text-xs uppercase tracking-wider font-bold text-cert-green">Días de paro al año</span>
+<span class="text-[11px] text-on-surface-variant-dark mt-1">Garantía total de cumplimiento en entregas</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Dedicated Corporate B2B Contact / Assessment CTA -->
+<section class="w-full py-16 lg:py-24 bg-[#0A0D12]" id="contacto-b2b">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<!-- Account Director Bio Card -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<div class="flex items-center gap-4 bg-surface-dark-card p-6 rounded-2xl shadow-xl">
+<div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden flex-shrink-0 bg-surface-dark">
+<img alt="Andrés Gómez, Director de Cuentas Corporativas Brenson" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UdTsFEqyAc0jobD_ddU4VEDtwJXAtC7jI3FeBSte2C4CFHnJHb-HxCU6Uu-HKCwHXsv6iTbMcp_nlqjKN31qbixoqbnl0M4vkiEj45YUJI_SJZQvC4Sa3oPSFI9QgTAW6teC6Z14Uxef5TC5VT01lTCHiqKrK70_hBNBmvKuJDHg91n0cLlvuN2Il--zshQSE8CfxidaxZ3kAEc15yKAd9kiXl6zmU8nyV72moBaYZYZs3-nl1D9oJwjo"/>
+<span class="absolute bottom-1 right-1 w-3.5 h-3.5 bg-cert-green rounded-full shadow-md"></span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold uppercase tracking-wider text-primary">Asesoría Senior B2B</span>
+<h4 class="text-lg font-bold font-headline text-white mt-0.5">Andrés Gómez</h4>
+<p class="text-xs text-on-surface-variant-dark">Director de Soluciones Corporativas y Flotas</p>
+<div class="flex items-center gap-2 mt-3">
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-cert-green bg-cert-green/10 px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-xs">verified</span> Disponible hoy
+                </span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="text-2xl font-extrabold font-headline text-white">
+              Hablemos de los números de su operación
+            </h3>
+<p class="text-sm text-on-surface-variant-dark leading-relaxed">
+              Analicemos sin costo la ruta, peso de carga y requerimientos de recarga de su compañía para entregarle una corrida financiera formal con TCO proyectado a 36 meses.
+            </p>
+<div class="pt-2">
+<a class="inline-flex items-center gap-3 px-5 py-3 rounded-lg bg-whatsapp text-white font-bold text-sm hover:opacity-95 transition-opacity shadow-lg shadow-whatsapp/20" href="https://wa.me/573000000000?text=Hola%20Andr%C3%A9s,%20deseo%20una%20evaluaci%C3%B3n%20de%20flota%20Brenson%20Empresas" rel="noopener" target="_blank">
+<span class="material-symbols-outlined text-xl">chat</span>
+                Hablar directamente por WhatsApp
+              </a>
+</div>
+</div>
+</div>
+<!-- Fast Executive Contact Form (Max 5 Fields as per DS) -->
+<div class="lg:col-span-7">
+<div class="bg-surface-dark-card rounded-2xl p-8 shadow-2xl">
+<div class="pb-6">
+<h4 class="text-lg font-bold font-headline text-white">Solicitar diagnóstico y simulación de flota</h4>
+<p class="text-xs text-on-surface-variant-dark mt-1">Respuesta técnica y comercial formal en menos de 2 horas hábiles.</p>
+</div>
+<form class="space-y-5" id="b2b-form" onsubmit="handleFormSubmit(event)">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-semibold text-on-surface-variant-dark" for="company-name">Nombre de la Empresa / Razón Social *</label>
+<input class="w-full bg-surface-dark text-white text-sm px-4 py-3 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary" id="company-name" placeholder="Ej: Logística Nacional S.A.S." required="" type="text"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-semibold text-on-surface-variant-dark" for="nit-input">NIT de la Empresa *</label>
+<input class="w-full bg-surface-dark text-white text-sm px-4 py-3 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary" id="nit-input" placeholder="900.000.000-1" required="" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-semibold text-on-surface-variant-dark" for="contact-name">Nombre y Cargo del Solicitante *</label>
+<input class="w-full bg-surface-dark text-white text-sm px-4 py-3 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary" id="contact-name" placeholder="Ej: Juan Pérez - Director Financiero" required="" type="text"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-semibold text-on-surface-variant-dark" for="contact-phone">Teléfono Celular / WhatsApp Corporativo *</label>
+<input class="w-full bg-surface-dark text-white text-sm px-4 py-3 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary" id="contact-phone" placeholder="310 000 0000" required="" type="tel"/>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-semibold text-on-surface-variant-dark" for="fleet-target">Rango de Unidades Requeridas *</label>
+<select class="w-full bg-surface-dark text-white text-sm px-4 py-3 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary" id="fleet-target" required="">
+<option value="10-19">Tier 1: 10 a 19 unidades (8% OFF)</option>
+<option selected="" value="20-49">Tier 2: 20 a 49 unidades (12% OFF + Despacho Prioritario)</option>
+<option value="50+">Tier 3: 50+ unidades (18% OFF + Telemetría GPS)</option>
+</select>
+</div>
+<button class="w-full py-3.5 rounded-lg bg-primary text-white font-bold text-sm uppercase tracking-wider hover:bg-primary/90 transition-all shadow-md shadow-primary/25 mt-2" type="submit">
+                Agendar sesión técnica con especialista B2B
+              </button>
+<div class="hidden p-3 rounded-lg bg-cert-green/10 text-cert-green text-xs text-center font-medium" id="form-feedback">
+                Solicitud radicada con éxito. Andrés Gómez o un asesor asignado se comunicará a la brevedad.
+              </div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Dynamic Calculator Micro-Interaction Script -->
+<script>
+    const fleetInput = document.getElementById('fleet-range');
+    const fleetDisplay = document.getElementById('fleet-count-display');
+    const gasTotalCost = document.getElementById('gas-total-cost');
+    const elecTotalCost = document.getElementById('elec-total-cost');
+    const netSavingsDisplay = document.getElementById('net-annual-savings');
+
+    function formatCOP(num) {
+      return '$ ' + num.toLocaleString('es-CO') + ' COP';
+    }
+
+    function updateCalculations() {
+      if (!fleetInput) return;
+      const units = parseInt(fleetInput.value, 10);
+      fleetDisplay.textContent = units;
+
+      // Base metrics:
+      // Gasolina: Fuel $380,000 + Maint $120,000 = $500,000 / month / unit ($6,000,000/yr)
+      // Brenson: Elec $35,000 + Maint $48,000 = $83,000 / month / unit ($996,000/yr)
+      const annualGasPerUnit = 6000000;
+      const annualElecPerUnit = 996000;
+
+      const totalGas = units * annualGasPerUnit;
+      const totalElec = units * annualElecPerUnit;
+      const annualSavings = totalGas - totalElec;
+
+      gasTotalCost.textContent = formatCOP(totalGas);
+      elecTotalCost.textContent = formatCOP(totalElec);
+      netSavingsDisplay.textContent = '+ ' + formatCOP(annualSavings);
+    }
+
+    if (fleetInput) {
+      fleetInput.addEventListener('input', updateCalculations);
+      updateCalculations();
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const feedback = document.getElementById('form-feedback');
+      if (feedback) {
+        feedback.classList.remove('hidden');
+      }
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-dark-card py-16 text-on-surface-variant-dark text-sm"><div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-10"><div class="md:col-span-2 flex flex-col gap-3"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">bolt</span><span class="font-headline font-bold text-white text-base uppercase">Brenson S.A.S.</span></div><p class="text-xs leading-relaxed text-on-surface-variant-dark max-w-md">Ecosistema B2B líder en movilidad eléctrica empresarial en Colombia. Soluciones de flotas comerciales, ciclo-logística y cuadriciclos con respaldo integral y certificación técnica de fábrica.</p><div class="text-xs text-on-surface-variant-dark/80 pt-2 space-y-1"><p>NIT 901.482.391-4 • Bogotá D.C. • Cobertura nacional</p><p class="text-[11px] text-on-surface-variant-dark/60">Incentivos tributarios conforme a la Ley 1715 de 2014 y Ley 2099 de 2021 para proyectos de movilidad de cero emisiones.</p></div></div><div class="flex flex-col gap-2"><span class="font-semibold text-white uppercase text-xs tracking-wider mb-2">Soporte y Operaciones</span><a class="hover:text-white transition-colors text-xs" href="#">Garantía y Certificado Brenson</a><a class="hover:text-white transition-colors text-xs" href="#">Mantenimiento en sitio (SLA)</a><a class="hover:text-white transition-colors text-xs" href="#">Financiación de Flotas</a><a class="hover:text-white transition-colors text-xs" href="#">Portal de Telemetría</a></div><div class="flex flex-col gap-3"><span class="font-semibold text-white uppercase text-xs tracking-wider mb-1">Línea Directa Corporativa</span><a class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-whatsapp/10 text-whatsapp font-medium hover:bg-whatsapp/20 transition-colors w-fit text-xs" href="#"><span class="material-symbols-outlined text-base">chat</span>WhatsApp Corporativo</a><p class="text-xs text-on-surface-variant-dark">Lunes a Viernes 8:00 AM - 6:00 PM COT<br/>empresas@brenson.co</p></div></div><div class="max-w-7xl mx-auto px-6 lg:px-12 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-on-surface-variant-dark/70 gap-4"><p>© 2025 Brenson S.A.S. Todos los derechos reservados.</p><div class="flex gap-6"><a class="hover:text-white transition-colors" href="#">Términos B2B</a><a class="hover:text-white transition-colors" href="#">Política de Privacidad</a><a class="hover:text-white transition-colors" href="#">Habeas Data</a></div></div></footer></body></html>
