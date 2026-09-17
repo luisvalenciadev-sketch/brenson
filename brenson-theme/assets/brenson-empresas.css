@@ -270,11 +270,76 @@ body.brenson-empresas .brenson-b2b-contacto .brenson-b2b-card .brenson-subheadin
 .brenson-b2b-flotas__barra-resumen strong { font-size: var(--brenson-text-xl); font-weight: 800; color: #fff; }
 @media (max-width: 749px) { .brenson-b2b-flotas__barra { flex-direction: column; align-items: stretch; } .brenson-b2b-flotas__barra-resumen { margin-right: 0; } }
 
+/* ── Bandas de fondo alternas ────────────────────────────────────────────────
+   Stitch alterna la superficie base #050709 con bandas #0A0D12. La banda se
+   pinta a todo el ancho con un pseudoelemento para no reestructurar el marcado.
+   ────────────────────────────────────────────────────────────────────────── */
+.brenson-b2b-banda { position: relative; z-index: 0; overflow-x: clip; border-top: 0 !important; }
+.brenson-b2b-banda::before {
+  content: ''; position: absolute; top: 0; bottom: 0;
+  left: 50%; width: 100vw; transform: translateX(-50%);
+  background: var(--brenson-banda, #0a0d12); z-index: -1;
+}
+.brenson-b2b-banda--profunda { --brenson-banda: #0b0f15; }
+.brenson-b2b-banda--tenue { --brenson-banda: #090c10; }
+.brenson-b2b-banda--card { --brenson-banda: var(--brenson-superficie-card); }
+
+/* Banda clara: la grilla de catálogo de la pantalla 17 va sobre #F4F4F4
+   con tarjetas blancas y texto oscuro (bg-surface-light del design system). */
+.brenson-b2b-banda--clara { --brenson-banda: var(--brenson-gris-claro); }
+body.brenson-empresas .brenson-b2b-banda--clara .brenson-heading,
+body.brenson-empresas .brenson-b2b-banda--clara h2,
+body.brenson-empresas .brenson-b2b-banda--clara h3 { color: var(--brenson-carbon); }
+body.brenson-empresas .brenson-b2b-banda--clara .brenson-subheading { color: var(--brenson-carbon-60); }
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-b2b-card {
+  background: #fff; color: var(--brenson-carbon); box-shadow: var(--brenson-shadow);
+}
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-card__title,
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-b2b-card h3 { color: var(--brenson-carbon); }
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-b2b-card .brenson-muted,
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-b2b-flotas__locked,
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-b2b-flotas__specs dt { color: var(--brenson-gris); }
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-b2b-flotas__specs { border-block-color: var(--brenson-gris-borde); background: var(--brenson-gris-claro); border-radius: var(--brenson-radius); padding: var(--brenson-space-3); }
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-b2b-flotas__specs dd { color: var(--brenson-carbon); }
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-b2b-flotas__vacio { color: var(--brenson-gris); }
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-chip { background: #fff; color: var(--brenson-gris); }
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-chip:hover { color: var(--brenson-carbon); }
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-b2b-flotas__card--medida { border-color: var(--brenson-gris-borde); background: transparent; }
+.brenson-b2b-flotas .brenson-b2b-banda--clara .brenson-b2b-flotas__card--medida h3 { color: var(--brenson-carbon); }
+
+/* Lista de enlaces sobre superficie oscura (evita texto oscuro ilegible) */
+.brenson-b2b-roi .brenson-doc-list a,
+.brenson-b2b-respaldo .brenson-doc-list a,
+.brenson-b2b-contacto .brenson-doc-list a {
+  color: #fff; border-color: rgba(255,255,255,.14);
+}
+.brenson-b2b-roi .brenson-doc-list a:hover,
+.brenson-b2b-respaldo .brenson-doc-list a:hover,
+.brenson-b2b-contacto .brenson-doc-list a:hover { background: rgba(255,255,255,.06); }
+
 /* ── Empresas · Contacto y asesoría (cierre de pantallas 15 y 16) ────────── */
-.brenson-b2b-contacto__grid { display: grid; gap: var(--brenson-space-6); align-items: start; }
-@media (min-width: 990px) { .brenson-b2b-contacto__grid { grid-template-columns: 1fr 1fr; } }
-.brenson-b2b-contacto__bio { display: grid; gap: var(--brenson-space-4); }
-.brenson-b2b-contacto .brenson-field label { color: #fff; }
+.brenson-b2b-contacto { padding-block: var(--brenson-space-16); }
+.brenson-b2b-contacto__grid { display: grid; gap: var(--brenson-space-12); align-items: center; }
+@media (min-width: 990px) { .brenson-b2b-contacto__grid { grid-template-columns: 5fr 7fr; } }
+.brenson-b2b-contacto__col { display: grid; gap: var(--brenson-space-6); align-content: start; }
+
+.brenson-b2b-contacto__asesor { flex-direction: row; align-items: center; gap: var(--brenson-space-4); border-radius: var(--brenson-radius-xl); }
+.brenson-b2b-contacto__foto { position: relative; width: 9.6rem; height: 9.6rem; flex-shrink: 0; border-radius: var(--brenson-radius-lg); overflow: hidden; background: var(--brenson-carbon); display: grid; place-items: center; }
+.brenson-b2b-contacto__foto img { width: 100%; height: 100%; object-fit: cover; }
+.brenson-b2b-contacto__foto span[aria-hidden] { font-size: var(--brenson-text-3xl); font-weight: 800; color: #fff; }
+.brenson-b2b-contacto__punto { position: absolute; bottom: 0.48rem; right: 0.48rem; width: 1.12rem; height: 1.12rem; border-radius: 50%; background: var(--brenson-certificado); border: 2px solid var(--brenson-superficie-card); }
+.brenson-b2b-contacto__nombre { display: block; font-size: var(--brenson-text-lg); font-weight: 700; color: #fff; margin-top: 0.16rem; }
+.brenson-b2b-contacto__disponible { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: var(--brenson-space-3); padding: 0.32rem 0.8rem; border-radius: var(--brenson-radius-pill); font-size: 1.1rem; font-weight: 600; color: #34d17f; background: rgba(31,138,76,.12); }
+
+.brenson-b2b-contacto__pitch { display: grid; gap: var(--brenson-space-4); justify-items: start; }
+.brenson-b2b-contacto__pitch .brenson-heading { margin: 0; }
+.brenson-b2b-contacto__pitch .brenson-subheading { margin: 0; }
+
+.brenson-b2b-contacto__formulario { padding: var(--brenson-space-8); gap: var(--brenson-space-5); }
+.brenson-b2b-contacto__form-head { display: grid; gap: 0.32rem; padding-bottom: var(--brenson-space-5); border-bottom: 1px solid rgba(255,255,255,.08); }
+.brenson-b2b-contacto__fila { display: grid; gap: var(--brenson-space-4); }
+@media (min-width: 750px) { .brenson-b2b-contacto__fila { grid-template-columns: 1fr 1fr; } }
+.brenson-b2b-contacto .brenson-field label { color: var(--brenson-sobre-superficie); font-size: var(--brenson-text-xs); font-weight: 600; }
 .brenson-b2b-contacto .brenson-field input,
 .brenson-b2b-contacto .brenson-field select {
   background: var(--brenson-carbon); color: #fff; border: 1px solid rgba(255,255,255,.14);
