@@ -108,8 +108,8 @@
           <h2 style="margin:0; font-size: var(--brenson-text-lg)">Parámetros y notas de entrega</h2>
           <div class="brenson-form__row brenson-form__row--2">
             <div class="brenson-field"><label for="q-obs">Observaciones para el asesor</label><textarea id="q-obs" rows="3" data-q-notes placeholder="Ej. Entrega escalonada en dos lotes, matriculación en Barranquilla."></textarea></div>
-            <fieldset class="brenson-field">
-              <legend style="font-weight:600; font-size: var(--brenson-text-sm); margin-bottom:0.56rem">Validez de la propuesta</legend>
+            <fieldset class="brenson-field brenson-fieldset">
+              <legend class="brenson-fieldset__legend">Validez de la propuesta</legend>
               <div class="brenson-chips">
                 <button type="button" class="brenson-chip is-active" data-q-validez="{{ validez }}">{{ validez }} días</button>
                 <button type="button" class="brenson-chip" data-q-validez="30">30 días</button>

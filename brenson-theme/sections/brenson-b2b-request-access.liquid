@@ -86,13 +86,13 @@
               </div>
               <div class="brenson-field"><label for="b2b-ciudad">Ciudad principal de operación *</label><input id="b2b-ciudad" type="text" data-b2b="ciudad" required autocomplete="address-level2" placeholder="Ej. Bogotá"></div>
             </div>
-            <fieldset class="brenson-field">
-              <legend style="font-weight:600; font-size: var(--brenson-text-sm); margin-bottom:0.56rem">Volumen estimado de flota a electrificar *</legend>
+            <fieldset class="brenson-field brenson-fieldset">
+              <legend class="brenson-fieldset__legend">Volumen estimado de flota a electrificar *</legend>
               <div class="brenson-chips" role="radiogroup">
-                <label class="brenson-chip"><input type="radio" name="flota_rango" value="10" data-b2b-radio="flota_estimada" required style="margin-right:0.64rem">10 a 20 unidades</label>
-                <label class="brenson-chip"><input type="radio" name="flota_rango" value="20" data-b2b-radio="flota_estimada" style="margin-right:0.64rem">21 a 50 unidades</label>
-                <label class="brenson-chip"><input type="radio" name="flota_rango" value="50" data-b2b-radio="flota_estimada" style="margin-right:0.64rem">Más de 50 unidades</label>
-                <label class="brenson-chip"><input type="radio" name="flota_rango" value="5" data-b2b-radio="flota_estimada" style="margin-right:0.64rem">Menos de 10</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="5" data-b2b-radio="flota_estimada" required>Menos de 10 unidades</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="10" data-b2b-radio="flota_estimada">10 a 20 unidades</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="20" data-b2b-radio="flota_estimada">21 a 50 unidades</label>
+                <label class="brenson-chip"><input type="radio" name="flota_rango" value="50" data-b2b-radio="flota_estimada">Más de 50 unidades</label>
               </div>
             </fieldset>
 
@@ -107,7 +107,7 @@
 
             <div class="brenson-field">
               <label style="display:flex; gap:0.8rem; align-items:flex-start; font-weight:400; font-size: var(--brenson-text-xs)">
-                <input type="checkbox" data-b2b="acepta" required style="width:auto; min-height:auto; margin-top:0.24rem">
+                <input type="checkbox" data-b2b="acepta" required style="margin-top:0.24rem">
                 <span>Autorizo el tratamiento de los datos de la empresa y del contacto de acuerdo con la <a class="link" href="/policies/privacy-policy">política de tratamiento de datos</a> de Brenson S.A.S. (Ley 1581 de 2012).</span>
               </label>
             </div>
