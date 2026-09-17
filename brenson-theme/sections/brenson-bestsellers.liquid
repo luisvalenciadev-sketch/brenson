@@ -1,0 +1,90 @@
+{%- comment -%}
+  brenson-bestsellers — Home (pantalla Stitch 01). "Más vendidos" con tabs Todos / Trabajo / Personal.
+  Filtro client-side sin recarga, por el metafield brenson.uso (personal | comercial | logistica).
+  Pendiente marcado en REVIEW.md desde la revisión inicial del home; usa el mismo card-product de Dawn
+  para no duplicar estilos de card.
+{%- endcomment -%}
+<section class="brenson-section brenson-bestsellers" id="brenson-bestsellers-{{ section.id }}">
+  <div class="brenson-container">
+    <header class="brenson-section__head" style="display:flex; justify-content:space-between; align-items:flex-end; gap: var(--brenson-space-4); flex-wrap:wrap;">
+      <div>
+        <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+        <h2 class="brenson-heading" style="margin-bottom:0">{{ section.settings.title }}</h2>
+        {%- if section.settings.subtitle != blank -%}<p class="brenson-subheading" style="margin-top:0.4rem">{{ section.settings.subtitle }}</p>{%- endif -%}
+      </div>
+      <div class="brenson-tabs" role="tablist" data-bestsellers-tabs style="width: 28.8rem; flex-shrink:0;">
+        <button type="button" role="tab" class="brenson-tab" aria-selected="true" data-uso-filter="">Todos</button>
+        <button type="button" role="tab" class="brenson-tab" aria-selected="false" data-uso-filter="trabajo">Trabajo</button>
+        <button type="button" role="tab" class="brenson-tab" aria-selected="false" data-uso-filter="personal">Personal</button>
+      </div>
+    </header>
+
+    <ul class="grid product-grid contains-card contains-card--product grid--4-col-desktop grid--2-col-tablet-down" role="list" data-bestsellers-list>
+      {%- if section.settings.collection != blank -%}
+        {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+          {%- liquid
+            assign usos = product.metafields.brenson.uso.value
+            assign is_trabajo = false
+            assign is_personal = false
+            if usos contains 'comercial' or usos contains 'logistica'
+              assign is_trabajo = true
+            endif
+            if usos contains 'personal'
+              assign is_personal = true
+            endif
+          -%}
+          <li class="grid__item" data-bestseller-item data-uso-trabajo="{{ is_trabajo }}" data-uso-personal="{{ is_personal }}">
+            {% render 'card-product', card_product: product, media_aspect_ratio: section.settings.image_ratio, lazy_load: false, show_vendor: false, show_rating: false, section_id: section.id, quick_add: 'none', product_view_context: 'collection' %}
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+    <p class="brenson-muted" data-bestsellers-empty hidden style="text-align:center; padding: var(--brenson-space-6) 0">No hay vehículos para este filtro por ahora.</p>
+
+    {%- if section.settings.show_view_all -%}
+      <div style="text-align:center; margin-top: var(--brenson-space-8)">
+        <a class="brenson-btn brenson-btn--outline" href="{{ section.settings.collection.url | default: routes.all_products_collection_url }}">Ver catálogo completo</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<script>
+  (function(){
+    var root = document.getElementById('brenson-bestsellers-{{ section.id }}');
+    if (!root) return;
+    var tabs = root.querySelectorAll('[data-uso-filter]');
+    var items = root.querySelectorAll('[data-bestseller-item]');
+    var empty = root.querySelector('[data-bestsellers-empty]');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t === tab)); });
+        var filter = tab.dataset.usoFilter;
+        var visible = 0;
+        items.forEach(function(item){
+          var show = filter === '' || (filter === 'trabajo' && item.dataset.usoTrabajo === 'true') || (filter === 'personal' && item.dataset.usoPersonal === 'true');
+          item.hidden = !show;
+          if (show) visible++;
+        });
+        empty.hidden = visible > 0;
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Home · Más vendidos",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Unidades disponibles" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Los más vendidos para moverte o trabajar" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo", "default": "Precios de cuota transparente con entrega inmediata garantizada." },
+    { "type": "collection", "id": "collection", "label": "Colección" },
+    { "type": "range", "id": "products_to_show", "min": 4, "max": 12, "step": 4, "label": "Productos a mostrar", "default": 8 },
+    { "type": "select", "id": "image_ratio", "label": "Proporción de imagen", "default": "adapt", "options": [ { "value": "adapt", "label": "Adaptar a la imagen" }, { "value": "portrait", "label": "Retrato" }, { "value": "square", "label": "Cuadrada" } ] },
+    { "type": "checkbox", "id": "show_view_all", "label": "Mostrar botón \"Ver catálogo\"", "default": true }
+  ],
+  "presets": [ { "name": "Home · Más vendidos" } ],
+  "enabled_on": { "templates": ["index"] }
+}
+{% endschema %}
