@@ -1,0 +1,58 @@
+{%- comment -%}
+  brenson-blog-newsletter — Pantalla Stitch 14 (Página B). Newsletter del blog + CTA de WhatsApp,
+  en dos columnas sobre fondo oscuro. Distinto del newsletter genérico del footer (Dawn): este es
+  específico del blog, pareado con un asesor, tal como en el mockup.
+{%- endcomment -%}
+<section class="brenson-section brenson-section--dark brenson-blog-newsletter">
+  <div class="brenson-container">
+    <div class="brenson-blog-newsletter__grid">
+      <div>
+        <span class="brenson-blog-newsletter__eyebrow"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.eyebrow }}</span>
+        <h3 class="brenson-heading" style="color:#fff; margin: var(--brenson-space-3) 0 var(--brenson-space-2); font-size: var(--brenson-text-2xl)">{{ section.settings.title }}</h3>
+        <p class="brenson-muted" style="color: rgba(255,255,255,.6); font-size: var(--brenson-text-sm); max-width: 48rem;">{{ section.settings.text }}</p>
+        {%- form 'customer' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="brenson-blog-newsletter__form">
+            <input type="email" name="contact[email]" required placeholder="Ingresa tu correo electrónico...">
+            <button type="submit" class="brenson-btn brenson-btn--primary">Suscribirme</button>
+          </div>
+          {%- if form.posted_successfully? -%}<p style="color: var(--brenson-certificado); font-size: var(--brenson-text-sm); margin-top: var(--brenson-space-2)">¡Gracias por suscribirte!</p>{%- endif -%}
+        {%- endform -%}
+      </div>
+      <div class="brenson-blog-newsletter__whatsapp">
+        <span class="brenson-blog-newsletter__whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M14 6.5 17.5 10M4 20l3-1 9-9-2-2-9 9-1 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        <h4>{{ section.settings.wa_title }}</h4>
+        <p>{{ section.settings.wa_text }}</p>
+        <a class="brenson-btn brenson-btn--whatsapp brenson-btn--block" href="{% render 'brenson-whatsapp-link', context: 'servicio' %}" target="_blank" rel="noopener">Chatear con un asesor por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .brenson-blog-newsletter__grid { display:grid; gap: var(--brenson-space-8); align-items:center; }
+  @media (min-width: 990px) { .brenson-blog-newsletter__grid { grid-template-columns: 7fr 5fr; } }
+  .brenson-blog-newsletter__eyebrow { display:inline-flex; align-items:center; gap:0.48rem; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); color: rgba(255,255,255,.75); font-size: var(--brenson-text-xs); font-weight:700; text-transform:uppercase; padding: 0.4rem 1.12rem; border-radius: 999px; }
+  .brenson-blog-newsletter__form { display:flex; gap:0.8rem; flex-wrap:wrap; margin-top: var(--brenson-space-5); max-width: 48rem; }
+  .brenson-blog-newsletter__form input { flex:1; min-width: 22rem; min-height:4.8rem; padding: 0 1.6rem; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.15); border-radius: var(--brenson-radius-lg); color:#fff; font-size: var(--brenson-text-sm); }
+  .brenson-blog-newsletter__form input::placeholder { color: rgba(255,255,255,.4); }
+  .brenson-blog-newsletter__whatsapp { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-6); }
+  .brenson-blog-newsletter__whatsapp-icon { display:grid; place-items:center; width: 4.4rem; height:4.4rem; border-radius:50%; background: rgba(31,138,76,.15); color: var(--brenson-certificado); margin-bottom: var(--brenson-space-3); }
+  .brenson-blog-newsletter__whatsapp h4 { margin: 0 0 0.4rem; font-size: var(--brenson-text-lg); color:#fff; }
+  .brenson-blog-newsletter__whatsapp p { margin: 0 0 var(--brenson-space-5); font-size: var(--brenson-text-sm); color: rgba(255,255,255,.6); line-height:1.5; }
+</style>
+
+{% schema %}
+{
+  "name": "Blog · Newsletter",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Boletín de movilidad eléctrica" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Suscríbete a nuestras guías exclusivas" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Recibe en tu correo análisis de normatividad en Colombia, comparativas de rendimiento de baterías y alertas de nuevos lanzamientos de vehículos eléctricos. Sin spam." },
+    { "type": "text", "id": "wa_title", "label": "Título WhatsApp", "default": "¿Tienes dudas sobre un modelo o su garantía?" },
+    { "type": "textarea", "id": "wa_text", "label": "Texto WhatsApp", "default": "Escríbenos directamente. Un especialista en vehículos ligeros te asesora sobre autonomía real, financiación y homologación." }
+  ],
+  "presets": [ { "name": "Blog · Newsletter" } ],
+  "enabled_on": { "templates": ["blog"] }
+}
+{% endschema %}

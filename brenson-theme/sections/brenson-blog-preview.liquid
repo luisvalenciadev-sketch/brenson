@@ -1,7 +1,7 @@
 {%- comment -%}
-  brenson-blog-preview — Home (pantalla Stitch 01). Reemplaza featured-blog (Dawn) para igualar el
-  diseño: imagen con badge de categoría, fecha + tiempo de lectura estimado, y enlace "Leer artículo".
-  El tiempo de lectura se calcula (no se inventa): palabras del cuerpo / 200 ppm, redondeado hacia arriba.
+  brenson-blog-preview — Pantalla Stitch 14 (Página B) / Home. Artículo destacado (el más reciente)
+  en tarjeta grande de 2 columnas + grid de artículos restantes. El tiempo de lectura se calcula
+  (no se inventa): palabras del cuerpo / 200 ppm, redondeado hacia arriba.
 {%- endcomment -%}
 <section class="brenson-section brenson-blog-preview">
   <div class="brenson-container">
@@ -16,19 +16,57 @@
     </header>
 
     {%- if section.settings.blog != blank -%}
+      {%- assign articles = section.settings.blog.articles -%}
+      {%- assign featured = articles.first -%}
+      {%- if featured and section.settings.show_featured -%}
+        {%- liquid
+          assign category = ''
+          for t in featured.tags
+            unless t == 'mock'
+              assign category = t
+              break
+            endunless
+          endfor
+          assign words = featured.content | strip_html | split: ' ' | size
+          assign read_min = words | divided_by: 200 | plus: 1
+        -%}
+        <a class="brenson-blog-featured" href="{{ featured.url }}">
+          <div class="brenson-blog-featured__media">
+            {%- if featured.image -%}{{ featured.image | image_url: width: 900 | image_tag: loading: 'lazy', alt: featured.title }}{%- endif -%}
+            <span class="brenson-badge brenson-badge--rojo brenson-badge--sm brenson-blog-featured__flag">Artículo destacado</span>
+          </div>
+          <div class="brenson-blog-featured__body">
+            <div>
+              <p class="brenson-blog-featured__meta">
+                {%- if category != blank -%}<strong>{{ category }}</strong> · {%- endif -%}
+                <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                {{ read_min }} min de lectura · {{ featured.published_at | date: '%d %b %Y' }}
+              </p>
+              <h3 class="brenson-blog-featured__title">{{ featured.title }}</h3>
+              <p class="brenson-muted">{{ featured.excerpt_or_content | strip_html | truncate: 220 }}</p>
+            </div>
+            <div class="brenson-blog-featured__foot">
+              <div class="brenson-blog-featured__author">
+                <span aria-hidden="true">BR</span>
+                <div><strong>{{ featured.author | default: 'Equipo Editorial Brenson' }}</strong><span>Movilidad sostenible Colombia</span></div>
+              </div>
+              <span class="brenson-btn brenson-btn--carbon brenson-btn--sm">Leer artículo →</span>
+            </div>
+          </div>
+        </a>
+        {%- assign articles = articles | slice: 1, 11 -%}
+      {%- endif -%}
+
       <ul class="brenson-grid brenson-grid--3" role="list">
-        {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
+        {%- for article in articles limit: section.settings.post_limit -%}
           {%- liquid
             assign category = ''
             for t in article.tags
-              if t != 'mock'
+              unless t == 'mock'
                 assign category = t
                 break
-              endif
+              endunless
             endfor
-            assign words = article.content | strip_html | split: ' ' | size
-            assign read_min = words | divided_by: 200
-            assign read_min = read_min | plus: 1
           -%}
           <li class="brenson-blog-card">
             <a class="brenson-blog-card__media" href="{{ article.url }}">
@@ -37,13 +75,13 @@
               {%- else -%}
                 <span class="brenson-blog-card__ph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
               {%- endif -%}
-              {%- if category != blank -%}<span class="brenson-badge brenson-badge--carbon brenson-badge--sm brenson-blog-card__badge">{{ category }}</span>{%- endif -%}
+              {%- if category != blank -%}<span class="brenson-blog-card__badge">{{ category }}</span>{%- endif -%}
             </a>
             <div class="brenson-blog-card__body">
-              <p class="brenson-blog-card__meta">{{ article.published_at | date: '%d %b %Y' }} · {{ read_min }} min de lectura</p>
+              <p class="brenson-blog-card__meta">{{ article.published_at | date: '%d %b %Y' }}</p>
               <h3 class="brenson-blog-card__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
               <p class="brenson-muted brenson-blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 140 }}</p>
-              <a class="brenson-blog-card__link" href="{{ article.url }}">Leer artículo →</a>
+              <a class="brenson-blog-card__link" href="{{ article.url }}">Leer guía <span aria-hidden="true">→</span></a>
             </div>
           </li>
         {%- endfor -%}
@@ -52,20 +90,35 @@
   </div>
 </section>
 <style>
+  .brenson-blog-featured { display:block; text-decoration:none; color:inherit; background:#fff; border:1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-xl); overflow:hidden; margin: var(--brenson-space-8) 0; box-shadow: var(--brenson-shadow-sm); }
+  @media (min-width: 990px) { .brenson-blog-featured { display:grid; grid-template-columns: 7fr 5fr; } }
+  .brenson-blog-featured__media { position:relative; background: var(--brenson-carbon); min-height:28rem; }
+  .brenson-blog-featured__media img { width:100%; height:100%; object-fit:cover; display:block; }
+  .brenson-blog-featured__flag { position:absolute; top: var(--brenson-space-4); left: var(--brenson-space-4); }
+  .brenson-blog-featured__body { padding: var(--brenson-space-8); display:flex; flex-direction:column; justify-content:space-between; gap: var(--brenson-space-6); height:100%; }
+  .brenson-blog-featured__meta { display:flex; align-items:center; gap:0.4rem; margin:0 0 var(--brenson-space-3); font-size: var(--brenson-text-xs); font-weight:600; color: var(--brenson-carbon-60); text-transform:uppercase; letter-spacing:.02em; }
+  .brenson-blog-featured__meta strong { color: var(--brenson-rojo); }
+  .brenson-blog-featured__title { margin:0 0 var(--brenson-space-3); font-size: var(--brenson-text-2xl); line-height:1.25; color: var(--brenson-carbon); }
+  .brenson-blog-featured:hover .brenson-blog-featured__title { color: var(--brenson-rojo); }
+  .brenson-blog-featured__foot { display:flex; align-items:center; justify-content:space-between; gap: var(--brenson-space-4); padding-top: var(--brenson-space-5); border-top: 1px solid var(--brenson-gris-borde); }
+  .brenson-blog-featured__author { display:flex; align-items:center; gap:0.8rem; font-size: var(--brenson-text-xs); }
+  .brenson-blog-featured__author span[aria-hidden] { width:3.6rem; height:3.6rem; border-radius:50%; background: var(--brenson-rojo-suave); color: var(--brenson-rojo); display:grid; place-items:center; font-weight:800; flex-shrink:0; }
+  .brenson-blog-featured__author strong { display:block; color: var(--brenson-carbon); }
+  .brenson-blog-featured__author span:last-child { color: var(--brenson-carbon-60); }
+
   .brenson-blog-card { display:flex; flex-direction:column; background:#fff; border:1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); overflow:hidden; }
-  .brenson-blog-card__media { position:relative; display:block; aspect-ratio: 4/3; background: var(--brenson-gris-claro); }
+  .brenson-blog-card__media { position:relative; display:block; aspect-ratio: 16/9; background: var(--brenson-gris-claro); }
   .brenson-blog-card__media img { width:100%; height:100%; object-fit:cover; display:block; }
   .brenson-blog-card__ph { width:100%; height:100%; display:grid; place-items:center; color: var(--brenson-gris-borde); }
   .brenson-blog-card__ph svg { width:30%; }
-  .brenson-blog-card__badge { position:absolute; top: var(--brenson-space-3); left: var(--brenson-space-3); }
+  .brenson-blog-card__badge { position:absolute; top: var(--brenson-space-3); left: var(--brenson-space-3); background: rgba(255,255,255,.95); color: var(--brenson-carbon); font-size: var(--brenson-text-xs); font-weight:800; text-transform:uppercase; padding: 0.16rem 0.8rem; border-radius: var(--brenson-radius); box-shadow: var(--brenson-shadow-sm); }
   .brenson-blog-card__body { padding: var(--brenson-space-5); display:flex; flex-direction:column; gap:0.56rem; flex:1; }
-  .brenson-blog-card__meta { margin:0; font-size: var(--brenson-text-xs); font-weight:700; text-transform:uppercase; letter-spacing:.04em; color: var(--brenson-gris); }
+  .brenson-blog-card__meta { margin:0; font-size: var(--brenson-text-xs); font-weight:600; color: var(--brenson-gris); }
   .brenson-blog-card__title { margin:0; font-size: var(--brenson-text-lg); line-height:1.3; }
   .brenson-blog-card__title a { color: var(--brenson-carbon); text-decoration:none; }
   .brenson-blog-card__title a:hover { color: var(--brenson-rojo); }
   .brenson-blog-card__excerpt { margin:0; font-size: var(--brenson-text-sm); flex:1; }
-  .brenson-blog-card__link { margin-top:0.4rem; font-size: var(--brenson-text-sm); font-weight:700; color: var(--brenson-carbon); text-decoration:none; }
-  .brenson-blog-card__link:hover { color: var(--brenson-rojo); }
+  .brenson-blog-card__link { margin-top:0.4rem; font-size: var(--brenson-text-sm); font-weight:700; color: var(--brenson-rojo); text-decoration:none; display:flex; align-items:center; gap:0.4rem; padding-top: var(--brenson-space-3); border-top: 1px solid var(--brenson-gris-borde); justify-content:space-between; }
 </style>
 
 {% schema %}
@@ -76,9 +129,10 @@
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Aprende y ahorra" },
     { "type": "text", "id": "title", "label": "Título", "default": "Guías y novedades de movilidad eléctrica" },
     { "type": "blog", "id": "blog", "label": "Blog" },
-    { "type": "range", "id": "post_limit", "min": 3, "max": 9, "step": 3, "label": "Artículos a mostrar", "default": 3 }
+    { "type": "checkbox", "id": "show_featured", "label": "Destacar el artículo más reciente", "default": true },
+    { "type": "range", "id": "post_limit", "min": 3, "max": 9, "step": 3, "label": "Artículos a mostrar en el grid", "default": 3 }
   ],
   "presets": [ { "name": "Home · Blog" } ],
-  "enabled_on": { "templates": ["index"] }
+  "enabled_on": { "templates": ["index", "blog"] }
 }
 {% endschema %}

@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -12,21 +21,24 @@
     },
     "filtros": { "type": "brenson-blog-filters", "settings": {} },
     "main": {
-      "type": "main-blog",
+      "type": "brenson-blog-preview",
       "settings": {
-        "layout": "collage",
-        "show_image": true,
-        "image_height": "medium",
-        "show_date": true,
-        "show_author": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "eyebrow": "Biblioteca técnica y urbana",
+        "title": "Artículos recientes",
+        "blog": "movilidad-electrica",
+        "show_featured": true,
+        "post_limit": 9
       }
+    },
+    "newsletter": {
+      "type": "brenson-blog-newsletter",
+      "settings": {}
     }
   },
   "order": [
     "hero",
     "filtros",
-    "main"
+    "main",
+    "newsletter"
   ]
 }

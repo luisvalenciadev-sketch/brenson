@@ -1,0 +1,166 @@
+{%- comment -%}
+  brenson-warranty-terms — Pantalla Stitch 14. Términos de garantía (acordeón, izquierda) +
+  consulta de chasis y formulario de soporte (derecha), en dos columnas como en el mockup.
+  Reemplaza los bloques separados collapsible-content + brenson-warranty-lookup + brenson-lead-form
+  que antes se apilaban verticalmente en la página.
+{%- endcomment -%}
+<section class="brenson-section brenson-section--alt brenson-warranty-terms" id="brenson-warranty-terms-{{ section.id }}">
+  <div class="brenson-container">
+    <div class="brenson-warranty-terms__grid">
+      <div>
+        <span class="brenson-eyebrow" style="color: var(--brenson-rojo)">{{ section.settings.eyebrow }}</span>
+        <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+        <div class="brenson-warranty-terms__accordion">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'termino' -%}
+              <details class="brenson-warranty-terms__item {% if forloop.first %}brenson-warranty-terms__item--open{% endif %}" {% if forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+                <summary>
+                  <span>
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                      {%- case forloop.index -%}
+                        {%- when 1 -%}<path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                        {%- when 2 -%}<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m9 9 6 6m0-6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        {%- when 3 -%}<rect x="4" y="3" width="16" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8 12 2.5 2.5L16 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        {%- when 4 -%}<rect x="7" y="7" width="10" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 3h4v4h-4z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m10 15 2-3 2 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                        {%- else -%}<path d="M4 12a8 8 0 1 1 2.6 5.9M4 12V6m0 6h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      {%- endcase -%}
+                    </svg>
+                    {{ forloop.index }}. {{ block.settings.pregunta }}
+                  </span>
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" class="brenson-warranty-terms__chevron"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </summary>
+                <div class="brenson-warranty-terms__body">{{ block.settings.respuesta }}</div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="brenson-warranty-terms__aside">
+        <div class="brenson-b2b-card">
+          <div class="brenson-warranty-terms__card-head">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m21 21-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M11 8v3l2 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3>Consulta el estado de tu garantía</h3>
+          </div>
+          <p class="brenson-muted" style="font-size: var(--brenson-text-sm)">Ingresa el código alfanumérico que encuentras en tu tarjeta de propiedad o factura de compra.</p>
+          <form data-brenson-warranty-lookup data-endpoint="{{ settings.brenson_services_url }}" style="display:flex; gap:0.8rem;">
+            <input type="text" name="serie" required placeholder="Número de serie o chasis (ej. BRN-2024-X)" style="flex:1; min-height:4.4rem; padding:0 1.6rem; border:1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius); font-family: monospace; font-size: var(--brenson-text-sm)">
+            <button type="submit" class="brenson-btn brenson-btn--carbon brenson-btn--sm">Consultar</button>
+          </form>
+          <p class="brenson-form__success" data-lookup-success hidden role="status" style="font-size: var(--brenson-text-xs)"></p>
+          <p class="brenson-form__error" data-lookup-error hidden role="alert" style="font-size: var(--brenson-text-xs)">No pudimos verificar ese número. Revísalo o contáctanos por WhatsApp.</p>
+          <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin: var(--brenson-space-2) 0 0; display:flex; gap:0.4rem; align-items:center;"><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>También puedes verlo en tu cuenta Brenson en la sección Mis Unidades.</p>
+        </div>
+
+        <div class="brenson-b2b-card">
+          <div class="brenson-warranty-terms__card-head" style="color: var(--brenson-rojo)">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M14 6.5 17.5 10M4 20l3-1 9-9-2-2-9 9-1 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <h3>¿Necesitas soporte o un repuesto?</h3>
+          </div>
+          <p class="brenson-muted" style="font-size: var(--brenson-text-sm)">Nuestro equipo técnico en Colombia te contacta en menos de 2 horas hábiles.</p>
+          {%- form 'contact', id: 'BrensonSoporteForm', class: 'brenson-form', data-brenson-lead-form: '', data-endpoint: settings.brenson_services_url -%}
+            {%- if form.posted_successfully? -%}<p class="brenson-form__success" role="status">Recibimos tu solicitud. Un asesor te contactará pronto.</p>{%- endif -%}
+            <input type="hidden" name="contact[tipo]" data-name="tipo" value="soporte">
+            <input type="hidden" name="contact[fuente]" data-name="fuente" value="garantia">
+            <input type="text" name="contact[website]" tabindex="-1" autocomplete="off" class="brenson-visually-hidden" aria-hidden="true">
+            <div class="brenson-field">
+              <label for="soporte-nombre">Nombre completo *</label>
+              <input id="soporte-nombre" type="text" name="contact[name]" data-name="nombre" required autocomplete="name" placeholder="Ej. Camila Restrepo">
+            </div>
+            <div class="brenson-form__row brenson-form__row--2">
+              <div class="brenson-field">
+                <label for="soporte-whatsapp">WhatsApp de contacto *</label>
+                <input id="soporte-whatsapp" type="tel" name="contact[phone]" data-name="whatsapp" required inputmode="tel" placeholder="+57 300 123 4567">
+              </div>
+              <div class="brenson-field">
+                <label for="soporte-modelo">Modelo de vehículo *</label>
+                <select id="soporte-modelo" name="contact[vehiculo]" data-name="vehiculo" required>
+                  {%- for p in section.settings.collection.products limit: 12 -%}<option>{{ p.title }}</option>{%- endfor -%}
+                </select>
+              </div>
+            </div>
+            <div class="brenson-field">
+              <label for="soporte-mensaje">Mensaje o requerimiento *</label>
+              <textarea id="soporte-mensaje" name="contact[body]" data-name="mensaje" required rows="2" placeholder="Cuéntanos si requieres repuesto, mantenimiento preventivo o revisión por garantía..."></textarea>
+            </div>
+            <button type="submit" class="brenson-btn brenson-btn--primary brenson-btn--block" data-lead-submit>Solicitar soporte</button>
+            <p class="brenson-form__success" data-lead-success hidden role="status">Recibimos tu solicitud. Un asesor te contactará en horario de atención.</p>
+            <p class="brenson-form__error" data-lead-error hidden role="alert">No pudimos enviar tu solicitud. Escríbenos por WhatsApp o intenta de nuevo.</p>
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .brenson-warranty-terms__grid { display:grid; gap: var(--brenson-space-8); align-items:start; }
+  @media (min-width: 990px) { .brenson-warranty-terms__grid { grid-template-columns: 1.4fr 1fr; } }
+  .brenson-warranty-terms__accordion { display:flex; flex-direction:column; gap: var(--brenson-space-3); margin-top: var(--brenson-space-6); }
+  .brenson-warranty-terms__item { background:#fff; border:1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); overflow:hidden; }
+  .brenson-warranty-terms__item--open { border: 2px solid rgba(238,0,0,.3); }
+  .brenson-warranty-terms__item summary { list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap: var(--brenson-space-3); padding: var(--brenson-space-4) var(--brenson-space-5); font-weight:700; font-size: var(--brenson-text-sm); color: var(--brenson-carbon); }
+  .brenson-warranty-terms__item summary::-webkit-details-marker { display:none; }
+  .brenson-warranty-terms__item--open summary { background: rgba(238,0,0,.04); }
+  .brenson-warranty-terms__item summary > span:first-child { display:flex; align-items:center; gap: 0.8rem; }
+  .brenson-warranty-terms__item summary svg:first-child { color: var(--brenson-rojo); flex-shrink:0; }
+  .brenson-warranty-terms__item:not(.brenson-warranty-terms__item--open) summary svg:first-child { color: var(--brenson-gris); }
+  .brenson-warranty-terms__item[open] .brenson-warranty-terms__chevron { transform: rotate(180deg); }
+  .brenson-warranty-terms__body { padding: 0 var(--brenson-space-5) var(--brenson-space-5); font-size: var(--brenson-text-sm); color: var(--brenson-carbon-60); border-top: 1px solid var(--brenson-gris-borde); padding-top: var(--brenson-space-4); }
+  .brenson-warranty-terms__body ul { margin: 0.8rem 0 0; padding-left: 1.8rem; }
+  .brenson-warranty-terms__body li { margin-bottom: 0.4rem; }
+  .brenson-warranty-terms__aside { display:flex; flex-direction:column; gap: var(--brenson-space-5); }
+  .brenson-warranty-terms__card-head { display:flex; align-items:center; gap:0.64rem; margin-bottom: var(--brenson-space-2); }
+  .brenson-warranty-terms__card-head h3 { margin:0; font-size: var(--brenson-text-md); }
+</style>
+<script>
+  (function(){
+    var root = document.getElementById('brenson-warranty-terms-{{ section.id }}');
+    if (!root) return;
+    var form = root.querySelector('[data-brenson-warranty-lookup]');
+    var success = root.querySelector('[data-lookup-success]');
+    var error = root.querySelector('[data-lookup-error]');
+    if (!form) return;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      error.hidden = true; success.hidden = true;
+      var serie = form.serie.value.trim();
+      var endpoint = form.dataset.endpoint;
+      if (!endpoint) {
+        success.hidden = false;
+        success.textContent = 'Modo demostración: la consulta en vivo se activa cuando brenson-services queda conectado. Mientras tanto, escríbenos por WhatsApp con el número ' + serie + '.';
+        return;
+      }
+      fetch(endpoint + '/warranty-lookup?serie=' + encodeURIComponent(serie))
+        .then(function(r){ if (!r.ok) throw new Error('not found'); return r.json(); })
+        .then(function(data){
+          success.hidden = false;
+          success.textContent = data.mensaje || ('Garantía vigente hasta ' + data.fin_garantia + ' para ' + (data.vehiculo || 'este vehículo') + '.');
+        })
+        .catch(function(){ error.hidden = false; });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Garantía · Términos",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Claridad total" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Términos de garantía Brenson" },
+    { "type": "collection", "id": "collection", "label": "Colección para el select \"Modelo de vehículo\"" }
+  ],
+  "blocks": [
+    {
+      "type": "termino",
+      "name": "Término",
+      "settings": [
+        { "type": "text", "id": "pregunta", "label": "Pregunta" },
+        { "type": "richtext", "id": "respuesta", "label": "Respuesta" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Garantía · Términos" } ],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

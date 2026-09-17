@@ -235,6 +235,7 @@
         "eyebrow": "Aprende y ahorra",
         "title": "Guías y novedades de movilidad eléctrica",
         "blog": "movilidad-electrica",
+        "show_featured": false,
         "post_limit": 3
       }
     }
