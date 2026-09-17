@@ -1,0 +1,81 @@
+{%- comment -%}
+  brenson-contact-channels — Página de Contacto. 4 tarjetas de canal directo: WhatsApp (destacado),
+  teléfono, sede física y correo. Todos los datos vienen de Ajustes del tema → Brenson (ya existentes),
+  ninguno se inventa. No hay un número de línea fija distinto de WhatsApp en los ajustes, así que el
+  canal "Teléfono" reutiliza el mismo número de WhatsApp como tel:, que es el contacto telefónico real.
+{%- endcomment -%}
+{%- liquid
+  assign wa_number = settings.brenson_whatsapp | replace: '+', '' | replace: ' ', '' | replace: '-', ''
+  assign wa_display = settings.brenson_whatsapp
+  if wa_number.size == 12
+    assign country = wa_number | slice: 0, 2
+    assign local = wa_number | slice: 2, 10
+    assign p1 = local | slice: 0, 3
+    assign p2 = local | slice: 3, 3
+    assign p3 = local | slice: 6, 4
+    assign wa_display = '+' | append: country | append: ' ' | append: p1 | append: ' ' | append: p2 | append: ' ' | append: p3
+  endif
+-%}
+<section class="brenson-section brenson-contact-channels">
+  <div class="brenson-container">
+    <header class="brenson-section__head brenson-section__head--center">
+      <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+    </header>
+    <div class="brenson-contact-channels__grid">
+      <a class="brenson-contact-channels__card brenson-contact-channels__card--primary" href="{% render 'brenson-whatsapp-link', context: 'default' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="contacto_canales">
+        <span class="brenson-contact-channels__icon"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M14 6.5 17.5 10M4 20l3-1 9-9-2-2-9 9-1 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        <h3>WhatsApp</h3>
+        <p>Respuesta más rápida. Un asesor te escribe en horario de atención.</p>
+        <span class="brenson-contact-channels__value">{{ wa_display }}</span>
+      </a>
+      <a class="brenson-contact-channels__card" href="tel:+{{ wa_number }}">
+        <span class="brenson-contact-channels__icon"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M6.6 10.8c1.3 2.5 3.1 4.3 5.6 5.6l1.9-1.9c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V19c0 .6-.4 1-1 1C10.6 20 4 13.4 4 5.5c0-.6.4-1 1-1h3.1c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.3 0 .7-.2 1L6.6 10.8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+        <h3>Teléfono</h3>
+        <p>Línea directa para llamadas.</p>
+        <span class="brenson-contact-channels__value">{{ wa_display }}</span>
+      </a>
+      <a class="brenson-contact-channels__card" href="https://www.google.com/maps/search/?api=1&query={{ settings.brenson_sede_direccion | url_encode }}" target="_blank" rel="noopener">
+        <span class="brenson-contact-channels__icon"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 22s7-5.5 7-11.5A7 7 0 0 0 5 10.5C5 16.5 12 22 12 22Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="10.5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        <h3>Sede</h3>
+        <p>Visítanos con cita previa por WhatsApp.</p>
+        <span class="brenson-contact-channels__value">{{ settings.brenson_sede_direccion }}</span>
+      </a>
+      <a class="brenson-contact-channels__card" href="mailto:{{ settings.brenson_email_ventas }}">
+        <span class="brenson-contact-channels__icon"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Correo</h3>
+        <p>Para cotizaciones o adjuntar documentos.</p>
+        <span class="brenson-contact-channels__value">{{ settings.brenson_email_ventas }}</span>
+      </a>
+    </div>
+  </div>
+</section>
+<style>
+  .brenson-contact-channels__grid { display:grid; gap: var(--brenson-space-5); grid-template-columns: 1fr; }
+  @media (min-width: 750px) { .brenson-contact-channels__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 990px) { .brenson-contact-channels__grid { grid-template-columns: repeat(4, 1fr); } }
+  .brenson-contact-channels__card { display:flex; flex-direction:column; gap: 0.56rem; text-decoration:none; color: inherit; background:#fff; border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-6); transition: border-color var(--brenson-duration) var(--brenson-ease), box-shadow var(--brenson-duration) var(--brenson-ease); }
+  .brenson-contact-channels__card:hover { border-color: var(--brenson-carbon); box-shadow: var(--brenson-shadow-sm); }
+  .brenson-contact-channels__card--primary { background: var(--brenson-whatsapp); border-color: var(--brenson-whatsapp); color: #fff; }
+  .brenson-contact-channels__card--primary:hover { border-color: var(--brenson-whatsapp-hover); background: var(--brenson-whatsapp-hover); }
+  .brenson-contact-channels__icon { width: 4.4rem; height: 4.4rem; border-radius: 50%; background: var(--brenson-gris-claro); color: var(--brenson-carbon); display:grid; place-items:center; }
+  .brenson-contact-channels__card--primary .brenson-contact-channels__icon { background: rgba(255,255,255,.2); color:#fff; }
+  .brenson-contact-channels__card h3 { margin: 0.4rem 0 0; font-size: var(--brenson-text-lg); }
+  .brenson-contact-channels__card p { margin:0; font-size: var(--brenson-text-sm); opacity: .85; flex:1; }
+  .brenson-contact-channels__value { font-weight: 700; font-size: var(--brenson-text-sm); padding-top: var(--brenson-space-3); border-top: 1px solid rgba(0,0,0,.08); }
+  .brenson-contact-channels__card--primary .brenson-contact-channels__value { border-top-color: rgba(255,255,255,.25); }
+</style>
+
+{% schema %}
+{
+  "name": "Contacto · Canales",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Escríbenos por donde prefieras" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Todos nuestros canales de contacto" },
+    { "type": "paragraph", "content": "WhatsApp, dirección y correo vienen de Ajustes del tema → Brenson. El teléfono reutiliza el mismo número de WhatsApp (no hay línea fija distinta configurada)." }
+  ],
+  "presets": [ { "name": "Contacto · Canales" } ],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

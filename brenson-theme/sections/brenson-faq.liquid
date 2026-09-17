@@ -15,6 +15,7 @@
     assign faqs = shop.metaobjects.brenson_faq.values
   endif
   assign limit = section.settings.limit | default: 6
+  assign categorias = section.settings.categoria | split: ','
   assign title = section.settings.title
   if curated and request.page_type == 'collection'
     assign title = title | append: ' sobre ' | append: collection.title | downcase
@@ -30,7 +31,15 @@
     <div class="brenson-accordion">
       {%- assign shown = 0 -%}
       {%- for faq in faqs -%}
-        {%- if curated == false and section.settings.categoria != blank and section.settings.categoria != 'todas' and faq.categoria.value != section.settings.categoria -%}{%- continue -%}{%- endif -%}
+        {%- liquid
+          assign skip = false
+          if curated == false and section.settings.categoria != blank and section.settings.categoria != 'todas'
+            unless categorias contains faq.categoria.value
+              assign skip = true
+            endunless
+          endif
+        -%}
+        {%- if skip -%}{%- continue -%}{%- endif -%}
         {%- if shown >= limit -%}{%- break -%}{%- endif -%}
         {%- assign shown = shown | plus: 1 -%}
         <details {% if forloop.first %}open{% endif %}>
@@ -53,7 +62,15 @@
   "mainEntity": [
     {%- assign n = 0 -%}
     {%- for faq in faqs -%}
-      {%- if curated == false and section.settings.categoria != blank and section.settings.categoria != 'todas' and faq.categoria.value != section.settings.categoria -%}{%- continue -%}{%- endif -%}
+      {%- liquid
+        assign skip = false
+        if curated == false and section.settings.categoria != blank and section.settings.categoria != 'todas'
+          unless categorias contains faq.categoria.value
+            assign skip = true
+          endunless
+        endif
+      -%}
+      {%- if skip -%}{%- continue -%}{%- endif -%}
       {%- if n >= limit -%}{%- break -%}{%- endif -%}
       {%- if n > 0 -%},{%- endif -%}
       {%- assign n = n | plus: 1 -%}
@@ -71,7 +88,7 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Resolvemos tus dudas" },
     { "type": "text", "id": "title", "label": "Título", "default": "Preguntas frecuentes" },
-    { "type": "select", "id": "categoria", "label": "Categoría de FAQ", "default": "todas", "options": [ { "value": "todas", "label": "Todas" }, { "value": "general", "label": "General / normativa" }, { "value": "bateria", "label": "Batería y carga" }, { "value": "garantia", "label": "Garantía" }, { "value": "servicio", "label": "Servicio técnico" }, { "value": "compra", "label": "Compra y financiación" } ] },
+    { "type": "text", "id": "categoria", "label": "Categoría(s) de FAQ", "default": "todas", "info": "\"todas\", una categoría (ej. \"garantia\") o varias separadas por coma (ej. \"garantia,compra\"). Categorías válidas: general, bateria, garantia, servicio, compra." },
     { "type": "range", "id": "limit", "min": 3, "max": 12, "step": 1, "label": "Máximo de preguntas", "default": 6 },
     { "type": "checkbox", "id": "show_cta", "label": "Mostrar CTA WhatsApp", "default": true }
   ],
