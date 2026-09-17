@@ -326,7 +326,42 @@ body.brenson-empresas .brenson-b2b-banda--clara .brenson-subheading { color: var
 .brenson-b2b-respaldo .brenson-doc-list a:hover,
 .brenson-b2b-contacto .brenson-doc-list a:hover { background: rgba(255,255,255,.06); }
 
+/* Equipamiento de fábrica sobre banda clara (pantalla 17) */
+.brenson-b2b-flotas__equipo { gap: var(--brenson-space-4); padding: var(--brenson-space-8); }
+.brenson-b2b-flotas__icono { width: 4.8rem; height: 4.8rem; border-radius: var(--brenson-radius-lg); display: grid; place-items: center; background: rgba(238,0,0,.1); color: var(--brenson-rojo); }
+.brenson-b2b-flotas__equipo-nota { display: flex; align-items: center; gap: 0.56rem; margin: auto 0 0; padding-top: var(--brenson-space-4); border-top: 1px solid var(--brenson-gris-borde); font-size: var(--brenson-text-xs); font-weight: 600; color: var(--brenson-certificado); }
+.brenson-b2b-flotas__equipo-nota svg { flex-shrink: 0; }
+
+/* Escala de descuentos: intro + 3 niveles (pantalla 17) */
+.brenson-b2b-flotas__escala { display: grid; gap: var(--brenson-space-6); align-items: center; }
+@media (min-width: 990px) { .brenson-b2b-flotas__escala { grid-template-columns: repeat(4, 1fr); } }
+.brenson-b2b-flotas__escala-intro { display: grid; gap: var(--brenson-space-3); justify-items: start; }
+.brenson-b2b-flotas__nivel { display: grid; gap: 0.32rem; padding: var(--brenson-space-6); border-radius: var(--brenson-radius-xl); background: rgba(255,255,255,.05); }
+.brenson-b2b-flotas__nivel-label { font-size: var(--brenson-text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--brenson-sobre-superficie); }
+.brenson-b2b-flotas__nivel-pct { font-size: var(--brenson-text-3xl); font-weight: 800; line-height: 1; color: #fff; }
+.brenson-b2b-flotas__nivel-pct small { font-size: var(--brenson-text-md); font-weight: 700; }
+.brenson-b2b-flotas__nivel:nth-of-type(3) .brenson-b2b-flotas__nivel-pct { color: var(--brenson-rojo); }
+.brenson-b2b-flotas__nivel-nota { font-size: var(--brenson-text-xs); color: var(--brenson-sobre-superficie); }
+
 /* ── Empresas · Contacto y asesoría (cierre de pantallas 15 y 16) ────────── */
+/* Variante «asesor» (pantalla 16): panel único, retrato centrado + llamada */
+.brenson-b2b-contacto__panel { max-width: 1040px; margin-inline: auto; display: grid; gap: var(--brenson-space-8); align-items: center; padding: var(--brenson-space-10); border-radius: var(--brenson-radius-xl); }
+@media (min-width: 750px) { .brenson-b2b-contacto__panel { grid-template-columns: 5fr 7fr; gap: var(--brenson-space-12); } }
+.brenson-b2b-contacto__retrato { display: grid; justify-items: center; text-align: center; gap: 0.32rem; }
+.brenson-b2b-contacto__foto--grande { width: 19.2rem; height: 19.2rem; border-radius: var(--brenson-radius-xl); margin-bottom: var(--brenson-space-4); }
+.brenson-b2b-contacto__retrato .brenson-b2b-contacto__nombre { margin: 0; }
+.brenson-b2b-contacto__cargo { margin: 0; font-size: var(--brenson-text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--brenson-rojo); }
+.brenson-b2b-contacto__llamada { display: grid; gap: var(--brenson-space-4); justify-items: start; }
+.brenson-b2b-contacto__llamada .brenson-heading,
+.brenson-b2b-contacto__llamada .brenson-subheading { margin: 0; }
+.brenson-b2b-contacto__botones { display: flex; flex-wrap: wrap; gap: var(--brenson-space-3); }
+.brenson-btn--whatsapp-suave { background: rgba(37,211,102,.12); color: #34e07f; border: 0; }
+.brenson-btn--whatsapp-suave:hover { background: rgba(37,211,102,.22); color: #34e07f; }
+.brenson-b2b-contacto__datos { display: flex; flex-wrap: wrap; gap: var(--brenson-space-6); padding-top: var(--brenson-space-4); font-size: var(--brenson-text-xs); }
+.brenson-b2b-contacto__datos a { display: inline-flex; align-items: center; gap: 0.48rem; color: rgba(255,255,255,.8); text-decoration: none; }
+.brenson-b2b-contacto__datos a:hover { color: #fff; }
+.brenson-b2b-contacto__datos svg { color: var(--brenson-sobre-superficie); flex-shrink: 0; }
+
 .brenson-b2b-contacto { padding-block: var(--brenson-space-16); }
 .brenson-b2b-contacto__grid { display: grid; gap: var(--brenson-space-12); align-items: center; }
 @media (min-width: 990px) { .brenson-b2b-contacto__grid { grid-template-columns: 5fr 7fr; } }

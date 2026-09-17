@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "layout": "theme.empresas",
   "sections": {
@@ -65,7 +74,16 @@
           }
         }
       },
-      "block_order": ["e1", "e2", "e3", "e4", "s1", "s2", "s3", "s4"],
+      "block_order": [
+        "e1",
+        "e2",
+        "e3",
+        "e4",
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
       "settings": {}
     },
     "casos": {
@@ -79,8 +97,15 @@
     },
     "contacto": {
       "type": "brenson-b2b-contacto",
-      "settings": { "banda": false }
+      "settings": {
+        "banda": false,
+        "variante": "asesor"
+      }
     }
   },
-  "order": ["respaldo", "casos", "contacto"]
+  "order": [
+    "respaldo",
+    "casos",
+    "contacto"
+  ]
 }

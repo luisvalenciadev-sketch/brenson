@@ -169,20 +169,23 @@
 
     {%- comment -%} ── Equipamiento de fábrica ── {%- endcomment -%}
     {%- if equipamiento.size > 0 -%}
-      <div class="brenson-b2b-block" id="equipamiento">
+      <div class="brenson-b2b-block brenson-b2b-banda brenson-b2b-banda--clara" id="equipamiento">
         <header class="brenson-section__head brenson-section__head--center">
-          <span class="brenson-eyebrow" style="color:#ff6b6b">Ecosistema integral B2B</span>
+          <span class="brenson-eyebrow" style="color: var(--brenson-rojo)">Ecosistema integral B2B</span>
           <h2 class="brenson-heading">{{ s.equipo_title }}</h2>
           <p class="brenson-subheading">{{ s.equipo_text }}</p>
         </header>
         <ul class="brenson-grid brenson-grid--3" role="list">
           {%- for block in equipamiento -%}
-            <li class="brenson-b2b-card" {{ block.shopify_attributes }}>
+            <li class="brenson-b2b-card brenson-b2b-flotas__equipo" {{ block.shopify_attributes }}>
+              <span class="brenson-b2b-flotas__icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.5v9M7.5 12h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              </span>
               <h3 style="margin:0; font-size: var(--brenson-text-lg)">{{ block.settings.titulo }}</h3>
               <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ block.settings.texto }}</p>
               {%- if block.settings.nota != blank -%}
-                <p class="brenson-b2b-respaldo__pill">
-                  <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <p class="brenson-b2b-flotas__equipo-nota">
+                  <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="m4 12.5 4 4 5-6M11 16.5l4-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   {{ block.settings.nota }}
                 </p>
               {%- endif -%}
@@ -193,20 +196,22 @@
     {%- endif -%}
 
     {%- comment -%} ── Escala de descuentos + cierre hacia el cotizador ── {%- endcomment -%}
+    {%- assign tiers = shop.metaobjects.brenson_tier_b2b.values -%}
     <div class="brenson-b2b-block brenson-b2b-banda brenson-b2b-banda--card" id="escala">
-      <div class="brenson-b2b-card brenson-b2b-card--center">
-        <span class="brenson-eyebrow">Política de escala</span>
-        <h2 class="brenson-heading">{{ s.cierre_title }}</h2>
-        <p class="brenson-subheading">{{ s.cierre_text }}</p>
-        {%- assign tiers = shop.metaobjects.brenson_tier_b2b.values -%}
-        {%- if tiers.size > 0 -%}
-          <ul class="brenson-checklist" style="grid-template-columns:1fr; text-align:left">
-            {%- for t in tiers -%}
-              <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Desde {{ t.minimo_unidades.value }} unidades · {{ t.descuento_pct.value | round }} % de descuento</li>
-            {%- endfor -%}
-          </ul>
-        {%- endif -%}
-        <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="/pages/empresas-acceso">Solicitar acceso al cotizador</a>
+      <div class="brenson-b2b-flotas__escala">
+        <div class="brenson-b2b-flotas__escala-intro">
+          <span class="brenson-eyebrow" style="color: var(--brenson-rojo)">Política de escala</span>
+          <h2 class="brenson-heading" style="font-size: var(--brenson-text-2xl)">{{ s.cierre_title }}</h2>
+          <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ s.cierre_text }}</p>
+          <a class="brenson-btn brenson-btn--primary brenson-btn--sm" href="/pages/empresas-acceso">Solicitar acceso al cotizador</a>
+        </div>
+        {%- for t in tiers -%}
+          <div class="brenson-b2b-flotas__nivel">
+            <span class="brenson-b2b-flotas__nivel-label">Nivel {{ forloop.index }} · {{ t.nombre.value }}</span>
+            <strong class="brenson-b2b-flotas__nivel-pct brenson-num">{{ t.descuento_pct.value | round }} %<small> OFF</small></strong>
+            <span class="brenson-b2b-flotas__nivel-nota">A partir de {{ t.minimo_unidades.value }} unidades</span>
+          </div>
+        {%- endfor -%}
       </div>
     </div>
 

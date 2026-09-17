@@ -26,8 +26,66 @@
   assign rangos = s.rangos | split: ','
 -%}
 
-<section id="contacto" class="brenson-section brenson-b2b-contacto{% if s.banda %} brenson-b2b-banda{% endif %}">
+<section id="contacto" class="brenson-section brenson-b2b-contacto brenson-b2b-contacto--{{ s.variante }}{% if s.banda %} brenson-b2b-banda{% endif %}">
   <div class="brenson-container">
+
+  {%- comment -%}
+    Variante «asesor» (pantalla 16): una sola tarjeta, retrato centrado a la
+    izquierda y llamada a la acción a la derecha. Sin formulario.
+  {%- endcomment -%}
+  {%- if s.variante == 'asesor' -%}
+    <div class="brenson-b2b-card brenson-b2b-contacto__panel">
+      <div class="brenson-b2b-contacto__retrato">
+        <div class="brenson-b2b-contacto__foto brenson-b2b-contacto__foto--grande">
+          {%- if asesor.foto.value -%}
+            {{ asesor.foto.value | image_url: width: 384 | image_tag: loading: 'lazy', alt: asesor.nombre.value }}
+          {%- else -%}
+            <span aria-hidden="true">{{ asesor.nombre.value | default: 'B' | slice: 0 }}</span>
+          {%- endif -%}
+          <span class="brenson-b2b-contacto__punto" aria-hidden="true"></span>
+        </div>
+        {%- if asesor -%}
+          <h3 class="brenson-b2b-contacto__nombre">{{ asesor.nombre.value }}</h3>
+          {%- if asesor.cargo.value != blank -%}
+            <p class="brenson-b2b-contacto__cargo">{{ asesor.cargo.value }}</p>
+          {%- endif -%}
+          {%- if s.especialidad != blank -%}
+            <p class="brenson-muted" style="font-size: 1.1rem; margin:0">{{ s.especialidad }}</p>
+          {%- endif -%}
+        {%- endif -%}
+        <span class="brenson-b2b-contacto__disponible">
+          <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          {{ s.respuesta }}
+        </span>
+      </div>
+
+      <div class="brenson-b2b-contacto__llamada">
+        <span class="brenson-eyebrow">Atención consultiva personalizada</span>
+        <h2 class="brenson-heading" style="font-size: var(--brenson-text-2xl)">{{ s.title }}</h2>
+        <p class="brenson-subheading">{{ s.text }}</p>
+        <div class="brenson-b2b-contacto__botones">
+          <a class="brenson-btn brenson-btn--primary" href="/pages/empresas-acceso">Agendar sesión técnica de flotas</a>
+          <a class="brenson-btn brenson-btn--whatsapp-suave" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener">Hablar por WhatsApp corporativo</a>
+        </div>
+        <div class="brenson-b2b-contacto__datos">
+          {%- if asesor.email.value != blank or settings.brenson_email_empresas != blank -%}
+            {%- assign correo = asesor.email.value | default: settings.brenson_email_empresas -%}
+            <a href="mailto:{{ correo }}">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m3.5 7 8.5 6 8.5-6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+              {{ correo }}
+            </a>
+          {%- endif -%}
+          {%- if asesor.whatsapp.value != blank -%}
+            <a href="tel:{{ asesor.whatsapp.value | replace: ' ', '' }}">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+              {{ asesor.whatsapp.value }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+  {%- else -%}
     <div class="brenson-b2b-contacto__grid">
 
       {%- comment -%}
@@ -125,9 +183,12 @@
       </div>
 
     </div>
+  {%- endif -%}
   </div>
 </section>
-<script src="{{ 'brenson-lead-form.js' | asset_url }}" defer></script>
+{%- if s.variante != 'asesor' -%}
+  <script src="{{ 'brenson-lead-form.js' | asset_url }}" defer></script>
+{%- endif -%}
 {%- endif -%}
 
 {% schema %}
@@ -142,7 +203,18 @@
     { "type": "text", "id": "form_cta", "label": "Texto del botón", "default": "Agendar sesión técnica con un especialista" },
     { "type": "text", "id": "rangos", "label": "Rangos de unidades (separados por coma)", "default": "10 a 19 unidades, 20 a 49 unidades, 50 o más unidades" },
     { "type": "text", "id": "disponible", "label": "Etiqueta de disponibilidad", "default": "Disponible hoy" },
-    { "type": "checkbox", "id": "banda", "label": "Fondo en banda diferenciada", "default": true }
+    { "type": "checkbox", "id": "banda", "label": "Fondo en banda diferenciada", "default": true },
+
+    { "type": "header", "content": "Variante de cierre" },
+    {
+      "type": "select", "id": "variante", "label": "Diseño del cierre", "default": "formulario",
+      "options": [
+        { "value": "formulario", "label": "Asesor + formulario ejecutivo" },
+        { "value": "asesor", "label": "Solo asesor, con retrato grande" }
+      ]
+    },
+    { "type": "text", "id": "especialidad", "label": "Especialidad del asesor", "default": "Especialista en ciclo-logística y homologación" },
+    { "type": "text", "id": "respuesta", "label": "Tiempo de respuesta", "default": "Tiempo de respuesta: menos de 2 horas" }
   ],
   "presets": [{ "name": "Empresas · Contacto" }],
   "enabled_on": { "templates": ["page"] }
