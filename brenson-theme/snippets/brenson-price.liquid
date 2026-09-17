@@ -60,7 +60,7 @@
   assign cuota_money = cuota_cents | money_without_trailing_zeros
   assign precio_money = price_cents | money_without_trailing_zeros
 -%}
-<div class="brenson-price brenson-price--{{ layout_mode }}" data-brenson-price data-price="{{ price_cents }}" data-tasa="{{ tasa_pct }}" data-plazo="{{ plazo }}" data-inicial="{{ inicial_pct }}">
+<div class="brenson-price brenson-price--{{ layout_mode }}" data-brenson-price data-brenson-price-handle="{{ product.handle }}" data-price="{{ price_cents }}" data-tasa="{{ tasa_pct }}" data-plazo="{{ plazo }}" data-inicial="{{ inicial_pct }}">
   {%- if financiable -%}
     <span class="brenson-price__label">{{ 'brenson.cuota_desde' | t }}</span>
     <span class="brenson-price__cuota brenson-num">

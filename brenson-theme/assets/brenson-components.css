@@ -22,6 +22,14 @@
   background: var(--brenson-carbon);
   color: var(--brenson-blanco);
 }
+/* Dawn define "h2 { color: rgb(var(--color-foreground)); }" en base.css: una regla que apunta
+   directamente al elemento siempre gana sobre el color heredado del contenedor, sin importar
+   especificidad. Sin este override, todo <h2 class="brenson-heading"> dentro de una sección
+   oscura queda invisible (texto oscuro sobre fondo oscuro). */
+.brenson-section--dark .brenson-heading,
+.brenson-section--dark .brenson-subheading {
+  color: var(--brenson-blanco);
+}
 .brenson-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -114,6 +122,11 @@
   background: var(--brenson-certificado-suave);
   color: var(--brenson-certificado);
   cursor: default;
+  max-width: 100%;
+  white-space: normal;
+  flex-wrap: wrap;
+  row-gap: 0.2em;
+  text-align: left;
 }
 button.brenson-badge--certificado { cursor: pointer; }
 button.brenson-badge--certificado:hover { background: #d6ecdf; }
@@ -156,19 +169,23 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 
 /* ---------- Specs inline (cards) ---------- */
 .brenson-specs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--brenson-space-4);
   list-style: none;
   padding: 0; margin: 0;
+  width: 100%;
 }
 .brenson-specs__item {
   display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
-  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  text-align: center;
   font-size: var(--brenson-text-xs);
   color: var(--brenson-on-surface-muted);
-  text-align: center;
 }
-.brenson-specs__item svg { width: 2rem; height: 2rem; color: var(--brenson-carbon); }
+.brenson-specs__item svg { width: 2rem; height: 2rem; color: var(--brenson-carbon); flex-shrink: 0; }
 .brenson-specs__value { font-weight: var(--brenson-font-weight-bold); color: var(--brenson-on-surface); font-size: var(--brenson-text-sm); }
 
 /* ---------- Card de vehículo ---------- */

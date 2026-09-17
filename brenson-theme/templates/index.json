@@ -1,14 +1,52 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "brenson-hero",
       "blocks": {
-        "cat_bicicletas": { "type": "categoria", "settings": { "collection": "bicicletas-electricas", "label": "Bicicletas" } },
-        "cat_ciclomotores": { "type": "categoria", "settings": { "collection": "ciclomotores", "label": "Ciclomotores" } },
-        "cat_motocarros": { "type": "categoria", "settings": { "collection": "motocarros", "label": "Motocarros" } },
-        "cat_cuadriciclos": { "type": "categoria", "settings": { "collection": "cuadriciclos", "label": "Cuadriciclos" } }
+        "cat_bicicletas": {
+          "type": "categoria",
+          "settings": {
+            "collection": "bicicletas-electricas",
+            "label": "Bicicletas"
+          }
+        },
+        "cat_ciclomotores": {
+          "type": "categoria",
+          "settings": {
+            "collection": "ciclomotores",
+            "label": "Ciclomotores"
+          }
+        },
+        "cat_motocarros": {
+          "type": "categoria",
+          "settings": {
+            "collection": "motocarros",
+            "label": "Motocarros"
+          }
+        },
+        "cat_cuadriciclos": {
+          "type": "categoria",
+          "settings": {
+            "collection": "cuadriciclos",
+            "label": "Cuadriciclos"
+          }
+        }
       },
-      "block_order": ["cat_bicicletas", "cat_ciclomotores", "cat_motocarros", "cat_cuadriciclos"],
+      "block_order": [
+        "cat_bicicletas",
+        "cat_ciclomotores",
+        "cat_motocarros",
+        "cat_cuadriciclos"
+      ],
       "settings": {
         "image": "shopify://shop_images/AB6AXuCnsAoTWqC9bnnsfxiwMZuwSVgJauzXebQU3SWrpEmZHZKTxlI3-7qubEjzb8RoH3DRjW5pYp9fd45MuhAK6OITRTiS7ivZai911zZfbj3quhnvkK2W0Z3h4seQUz1AEE1eVjoFfkNDcbMbHGx7QCZf5eNlA1Ks7LU18fJDxD6yeH0BYNm.jpg",
         "overlay_opacity": 70,
@@ -25,23 +63,87 @@
     "trust": {
       "type": "brenson-trust-bar",
       "blocks": {
-        "t1": { "type": "certificado" },
-        "t2": { "type": "garantia", "settings": { "text": "Respaldo directo de Brenson en Colombia" } },
-        "t3": { "type": "envios", "settings": { "title": "Envíos a toda Colombia", "text": "Tiempos estimados por región en cada ficha" } },
-        "t4": { "type": "financiacion", "settings": { "title": "Financiación con aliado", "text": "Simula tu cuota y solicita el estudio en línea" } }
+        "t1": {
+          "type": "certificado",
+          "settings": {}
+        },
+        "t2": {
+          "type": "garantia",
+          "settings": {
+            "text": "Respaldo directo de Brenson en Colombia"
+          }
+        },
+        "t3": {
+          "type": "envios",
+          "settings": {
+            "title": "Envíos a toda Colombia",
+            "text": "Tiempos estimados por región en cada ficha"
+          }
+        },
+        "t4": {
+          "type": "financiacion",
+          "settings": {
+            "title": "Financiación con aliado",
+            "text": "Simula tu cuota y solicita el estudio en línea"
+          }
+        }
       },
-      "block_order": ["t1", "t2", "t3", "t4"],
-      "settings": { "padding": 24 }
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "padding": 24
+      }
     },
     "categorias": {
       "type": "brenson-category-grid",
       "blocks": {
-        "c1": { "type": "categoria", "settings": { "collection": "bicicletas-electricas", "label": "Bicicletas eléctricas", "text": "Para tu trayecto diario sin sudar ni pagar parqueadero.", "tag": "Urbano y plegable" } },
-        "c2": { "type": "categoria", "settings": { "collection": "ciclomotores", "label": "Ciclomotores", "text": "Silenciosos, económicos y sin pico y placa.", "tag": "Ágil y veloz" } },
-        "c3": { "type": "categoria", "settings": { "collection": "motocarros", "label": "Motocarros", "text": "Carga de hasta 800 kg para logística urbana.", "tag": "Carga y trabajo" } },
-        "c4": { "type": "categoria", "settings": { "collection": "cuadriciclos", "label": "Cuadriciclos", "text": "Para turismo, hoteles, parques y fincas.", "tag": "Pasajeros y terreno" } }
+        "c1": {
+          "type": "categoria",
+          "settings": {
+            "collection": "bicicletas-electricas",
+            "label": "Bicicletas eléctricas",
+            "text": "Para tu trayecto diario sin sudar ni pagar parqueadero.",
+            "tag": "Urbano y plegable"
+          }
+        },
+        "c2": {
+          "type": "categoria",
+          "settings": {
+            "collection": "ciclomotores",
+            "label": "Ciclomotores",
+            "text": "Silenciosos, económicos y sin pico y placa.",
+            "tag": "Ágil y veloz"
+          }
+        },
+        "c3": {
+          "type": "categoria",
+          "settings": {
+            "collection": "motocarros",
+            "label": "Motocarros",
+            "text": "Carga de hasta 800 kg para logística urbana.",
+            "tag": "Carga y trabajo"
+          }
+        },
+        "c4": {
+          "type": "categoria",
+          "settings": {
+            "collection": "cuadriciclos",
+            "label": "Cuadriciclos",
+            "text": "Para turismo, hoteles, parques y fincas.",
+            "tag": "Pasajeros y terreno"
+          }
+        }
       },
-      "block_order": ["c1", "c2", "c3", "c4"],
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
       "settings": {
         "eyebrow": "Portafolio",
         "title": "Elige tu vehículo ideal",
@@ -63,12 +165,11 @@
     "financiacion": {
       "type": "brenson-financing-banner",
       "settings": {
-        "eyebrow": "Financiación",
         "title": "La cuota vende, el precio total asusta. Simula la tuya en segundos.",
         "text": "Trabajamos con un aliado financiero para que tengas respuesta rápida sin moverte de casa.",
         "cta_label": "Simular mi cuota",
         "cta_url": "shopify://pages/financiacion",
-        "note": "Tasa de referencia editable desde el admin",
+        "product": "brenson-city-1500",
         "collection": "destacados"
       }
     },
@@ -83,50 +184,70 @@
     "prueba_social": {
       "type": "brenson-social-proof",
       "blocks": {
-        "testimonios": { "type": "testimonios", "settings": { "eyebrow": "Clientes reales", "title": "Lo que dicen quienes ya ruedan con Brenson", "limit": 3 } },
-        "aliados": { "type": "aliados", "settings": { "title": "Aliados y clientes que confían en Brenson" } },
-        "contadores": { "type": "contadores" }
+        "testimonios": {
+          "type": "testimonios",
+          "settings": {
+            "eyebrow": "Clientes reales",
+            "title": "Lo que dicen quienes ya ruedan con Brenson",
+            "limit": 3
+          }
+        },
+        "aliados": {
+          "type": "aliados",
+          "settings": {
+            "title": "Aliados y clientes que confían en Brenson"
+          }
+        },
+        "contadores": {
+          "type": "contadores",
+          "settings": {}
+        }
       },
-      "block_order": ["testimonios", "aliados", "contadores"],
-      "settings": { "alt": true }
+      "block_order": [
+        "testimonios",
+        "aliados",
+        "contadores"
+      ],
+      "settings": {
+        "alt": true
+      }
     },
     "empresas_cta": {
       "type": "brenson-empresas-cta",
       "settings": {
-        "eyebrow": "Brenson Empresas",
+        "eyebrow": "Brenson Empresas B2B",
         "title": "Flotas eléctricas para su empresa.",
-        "text": "Precios por volumen desde 10 unidades, asesor corporativo dedicado y cotización en PDF al instante.",
+        "text": "Precios por volumen desde 10 unidades, asesor corporativo dedicado y cotización formal en PDF con estudio de retorno de inversión (ROI) adaptado a su operación logística.",
         "cta_label": "Conocer Brenson Empresas",
-        "cta_url": "shopify://pages/empresas"
+        "cta_style": "whatsapp",
+        "show_secondary_button": false,
+        "show_tiers": false,
+        "show_checklist": true,
+        "checklist_1": "Beneficio tributario Ley 1715 (0 % IVA y deducción de renta)",
+        "checklist_2": "Telemetría y rastreo GPS integrado para flotas",
+        "checklist_3": "Soporte preventivo y correctivo en sus instalaciones",
+        "helper_text": "Atención corporativa en menos de 2 horas hábiles"
       }
     },
     "blog": {
-      "type": "featured-blog",
+      "type": "brenson-blog-preview",
       "settings": {
-        "heading": "Guías y novedades de movilidad eléctrica",
-        "heading_size": "h2",
+        "eyebrow": "Aprende y ahorra",
+        "title": "Guías y novedades de movilidad eléctrica",
         "blog": "movilidad-electrica",
-        "post_limit": 3,
-        "columns_desktop": 3,
-        "color_scheme": "scheme-1",
-        "show_image": true,
-        "show_date": true,
-        "show_author": false,
-        "show_view_all": true,
-        "padding_top": 64,
-        "padding_bottom": 48
+        "post_limit": 3
       }
-    },
-    "newsletter": {
-      "type": "newsletter",
-      "blocks": {
-        "heading": { "type": "heading", "settings": { "heading": "Recibe ofertas exclusivas y novedades", "heading_size": "h2" } },
-        "paragraph": { "type": "paragraph", "settings": { "text": "<p>Lanzamientos, promociones de financiación y guías de movilidad eléctrica. Sin spam.</p>" } },
-        "email_form": { "type": "email_form" }
-      },
-      "block_order": ["heading", "paragraph", "email_form"],
-      "settings": { "color_scheme": "scheme-2", "full_width": true, "padding_top": 48, "padding_bottom": 48 }
     }
   },
-  "order": ["hero", "trust", "categorias", "destacados", "financiacion", "casos", "prueba_social", "empresas_cta", "blog", "newsletter"]
+  "order": [
+    "hero",
+    "trust",
+    "categorias",
+    "destacados",
+    "financiacion",
+    "casos",
+    "prueba_social",
+    "empresas_cta",
+    "blog"
+  ]
 }

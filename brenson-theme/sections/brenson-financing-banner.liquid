@@ -1,32 +1,101 @@
 {%- comment -%}
   brenson-financing-banner — Módulo 01/05. Banner de financiación en el home con mini simulador
-  del producto de referencia. La cifra se calcula (nunca se escribe a mano).
+  INTERACTIVO del producto de referencia (pantalla Stitch 01). Reutiliza el web component
+  <brenson-simulator> (assets/brenson-simulator.js) — misma fórmula y comportamiento que la ficha
+  de producto y /pages/financiacion, sin duplicar lógica de cálculo.
 {%- endcomment -%}
 {%- liquid
   assign ref = section.settings.product
   if ref == blank and section.settings.collection != blank
     assign ref = section.settings.collection.products.first
   endif
+  assign params = shop.metaobjects.brenson_parametros_financiacion.values | first
+  assign tasa = 1.9
+  assign plazos = '12,24,36,48' | split: ','
+  assign iniciales = '0,10,20,30' | split: ','
+  assign plazo_default = 36
+  assign inicial_default = 10
+  if params
+    if params.tasa_mensual.value
+      assign tasa = params.tasa_mensual.value
+    endif
+    if params.plazos.value
+      assign plazos = params.plazos.value
+    endif
+    if params.iniciales_pct.value
+      assign iniciales = params.iniciales_pct.value
+    endif
+    if params.plazo_default.value
+      assign plazo_default = params.plazo_default.value
+    endif
+    if params.inicial_default.value
+      assign inicial_default = params.inicial_default.value
+    endif
+  endif
 -%}
 <section class="brenson-section brenson-section--dark brenson-financing-banner">
   <div class="brenson-container">
     <div class="brenson-financing-banner__grid">
       <div>
-        <span class="brenson-eyebrow" style="color:#ff6b6b">{{ section.settings.eyebrow }}</span>
-        <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+        <span class="brenson-badge brenson-badge--rojo brenson-badge--sm" style="display:inline-flex; gap:0.4rem; align-items:center;">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 8h8M8 12h2m4 0h2M8 16h2m4 0h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Simulador en tiempo real
+        </span>
+        <h2 class="brenson-heading" style="margin-top: var(--brenson-space-3)">{{ section.settings.title }}</h2>
         <p class="brenson-subheading" style="color:rgba(255,255,255,.8)">{{ section.settings.text }}</p>
-        <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap; align-items:center;">
+        <div style="display:flex; gap: var(--brenson-space-4); flex-wrap: wrap; align-items:center;">
           <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="{{ section.settings.cta_url | default: '/pages/financiacion' }}">{{ section.settings.cta_label }}</a>
-          {%- if section.settings.note != blank -%}<span style="font-size: var(--brenson-text-sm); color: rgba(255,255,255,.7)">{{ section.settings.note }}</span>{%- endif -%}
+          <span style="display:flex; align-items:center; gap:0.4rem; font-size: var(--brenson-text-sm); color: rgba(255,255,255,.7)">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="color: var(--brenson-certificado)"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Tasa preferencial desde {{ tasa }} % m.v.
+          </span>
         </div>
       </div>
       {%- if ref -%}
-        <div class="brenson-simulator__result">
-          <span class="brenson-simulator__result-label">Vehículo de referencia</span>
-          <strong style="font-size: var(--brenson-text-lg)">{{ ref.title }}</strong>
-          {%- render 'brenson-price', product: ref, layout: 'full', show_link: false -%}
-          <a class="brenson-btn brenson-btn--carbon brenson-btn--block" href="{{ ref.url }}#brenson-simulator">Simular con este vehículo</a>
-        </div>
+        <brenson-simulator
+          class="brenson-financing-banner__sim"
+          data-tasa="{{ tasa }}"
+          data-plazo="{{ plazo_default }}"
+          data-inicial="{{ inicial_default }}"
+          data-price="{{ ref.selected_or_first_available_variant.price }}"
+          data-product-title="{{ ref.title | escape }}"
+          data-product-handle="{{ ref.handle }}"
+          data-currency="COP"
+        >
+          <div class="brenson-financing-banner__card">
+            <div class="brenson-financing-banner__card-head">
+              <span>Vehículo de referencia</span>
+              <span class="brenson-badge brenson-badge--gris brenson-badge--sm" data-sim-vehicle-name>{{ ref.title }}</span>
+            </div>
+            <fieldset class="brenson-simulator__field">
+              <legend class="brenson-simulator__legend">Cuota inicial (%)</legend>
+              <div class="brenson-financing-banner__pills" data-sim-iniciales>
+                {%- for pct in iniciales -%}
+                  {%- assign pct_n = pct | strip | times: 1 -%}
+                  <button type="button" data-sim-inicial="{{ pct_n }}" aria-pressed="{% if pct_n == inicial_default %}true{% else %}false{% endif %}">{{ pct_n }} %</button>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+            <fieldset class="brenson-simulator__field">
+              <legend class="brenson-simulator__legend">Plazo en meses</legend>
+              <div class="brenson-financing-banner__pills" data-sim-plazos>
+                {%- for m in plazos -%}
+                  {%- assign m_n = m | strip | times: 1 -%}
+                  <button type="button" data-sim-plazo="{{ m_n }}" aria-selected="{% if m_n == plazo_default %}true{% else %}false{% endif %}">{{ m_n }}</button>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+            <div class="brenson-financing-banner__result">
+              <span>Tu cuota mensual fija aproximada</span>
+              <div class="brenson-num"><span data-sim-cuota>—</span> <small>/mes</small></div>
+              <p>Sujeto a validación crediticia y capacidad de endeudamiento.</p>
+            </div>
+            <button type="button" class="brenson-btn brenson-btn--primary brenson-btn--block" data-sim-cta>
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+              Solicitar pre-aprobado
+            </button>
+          </div>
+        </brenson-simulator>
       {%- endif -%}
     </div>
   </div>
@@ -34,8 +103,18 @@
 <style>
   .brenson-financing-banner__grid { display: grid; gap: var(--brenson-space-8); align-items: center; }
   @media (min-width: 990px) { .brenson-financing-banner__grid { grid-template-columns: 1.3fr 1fr; } }
-  .brenson-financing-banner .brenson-price__contado, .brenson-financing-banner .brenson-price__terms { color: var(--brenson-gris); }
+  .brenson-financing-banner__card { background: #fff; color: var(--brenson-carbon); border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-6); display: grid; gap: var(--brenson-space-4); box-shadow: var(--brenson-shadow-lg); }
+  .brenson-financing-banner__card-head { display:flex; justify-content:space-between; align-items:center; padding-bottom: var(--brenson-space-3); border-bottom: 1px solid var(--brenson-gris-borde); font-size: var(--brenson-text-xs); font-weight:700; text-transform:uppercase; letter-spacing:.04em; color: var(--brenson-carbon-60); }
+  .brenson-financing-banner__pills { display:grid; grid-template-columns: repeat(4, 1fr); gap: 0.56rem; }
+  .brenson-financing-banner__pills button { padding: 0.8rem 0; font-size: var(--brenson-text-xs); font-weight:700; border-radius: var(--brenson-radius); border: 1.5px solid var(--brenson-gris-borde); background:#fff; cursor:pointer; transition: all .15s; }
+  .brenson-financing-banner__pills button[aria-pressed='true'], .brenson-financing-banner__pills button[aria-selected='true'] { background: var(--brenson-carbon); border-color: var(--brenson-carbon); color:#fff; }
+  .brenson-financing-banner__result { text-align:center; background: var(--brenson-gris-claro); border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-4); }
+  .brenson-financing-banner__result > span { font-size: var(--brenson-text-xs); font-weight:600; text-transform:uppercase; letter-spacing:.04em; color: var(--brenson-carbon-60); }
+  .brenson-financing-banner__result > div { font-size: var(--brenson-text-3xl); font-weight:800; color: var(--brenson-rojo); margin: 0.32rem 0; }
+  .brenson-financing-banner__result small { font-size: var(--brenson-text-sm); font-weight:600; color: var(--brenson-carbon-60); }
+  .brenson-financing-banner__result p { margin:0; font-size: var(--brenson-text-xs); color: var(--brenson-carbon-60); }
 </style>
+<script src="{{ 'brenson-simulator.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
@@ -43,12 +122,10 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Financiación" },
     { "type": "text", "id": "title", "label": "Título", "default": "La cuota vende, el precio total asusta. Simula la tuya en segundos." },
     { "type": "textarea", "id": "text", "label": "Texto", "default": "Trabajamos con un aliado financiero para que tengas respuesta rápida sin moverte de casa." },
     { "type": "text", "id": "cta_label", "label": "Botón", "default": "Simular mi cuota" },
     { "type": "url", "id": "cta_url", "label": "Enlace del botón" },
-    { "type": "text", "id": "note", "label": "Nota", "default": "Tasa de referencia editable desde el admin" },
     { "type": "product", "id": "product", "label": "Vehículo de referencia" },
     { "type": "collection", "id": "collection", "label": "O primera unidad de esta colección" }
   ],

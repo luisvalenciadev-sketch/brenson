@@ -2,23 +2,33 @@
   brenson-empresas-cta — Módulo 01/08. Bloque de invitación al portal Brenson Empresas. Tono formal (usted).
 {%- endcomment -%}
 {%- assign tiers = shop.metaobjects.brenson_tier_b2b.values -%}
-<section class="brenson-empresas-cta{% if section.settings.show_tiers %} brenson-section brenson-section--dark{% else %} brenson-empresas-cta--compact{% endif %}">
+{%- assign layout_simple = true -%}
+{%- if section.settings.show_tiers or section.settings.show_checklist -%}{%- assign layout_simple = false -%}{%- endif -%}
+<section class="brenson-empresas-cta{% unless layout_simple %} brenson-section brenson-section--dark{% else %} brenson-empresas-cta--compact{% endunless %}">
   <div class="brenson-container">
-    <div class="brenson-empresas-cta__grid{% unless section.settings.show_tiers %} brenson-empresas-cta__grid--simple{% endunless %}">
+    <div class="brenson-empresas-cta__grid{% if layout_simple %} brenson-empresas-cta__grid--simple{% endif %}">
       <div>
         <span class="brenson-eyebrow" style="color:#ff6b6b">{{ section.settings.eyebrow }}</span>
         <h2 class="brenson-heading">{{ section.settings.title }}</h2>
         <p class="brenson-subheading" style="color: rgba(255,255,255,.8)">{{ section.settings.text }}</p>
-        <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap;">
-          {%- if section.settings.cta_style == 'whatsapp' -%}
-            <a class="brenson-btn brenson-btn--whatsapp brenson-btn--lg" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="empresas_cta">{{ section.settings.cta_label }}</a>
-          {%- else -%}
-            <a class="brenson-btn brenson-btn--white brenson-btn--lg" href="{{ section.settings.cta_url | default: '/pages/empresas' }}">{{ section.settings.cta_label }}</a>
-          {%- endif -%}
-          {%- if section.settings.show_secondary_button -%}
-            <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="empresas_cta">Hablar con un ejecutivo</a>
-          {%- endif -%}
-        </div>
+        {%- if section.settings.show_checklist -%}
+          <ul class="brenson-empresas-cta__checklist" role="list">
+            {%- if section.settings.checklist_1 != blank -%}<li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.checklist_1 }}</li>{%- endif -%}
+            {%- if section.settings.checklist_2 != blank -%}<li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.checklist_2 }}</li>{%- endif -%}
+            {%- if section.settings.checklist_3 != blank -%}<li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.checklist_3 }}</li>{%- endif -%}
+          </ul>
+        {%- else -%}
+          <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap;">
+            {%- if section.settings.cta_style == 'whatsapp' -%}
+              <a class="brenson-btn brenson-btn--whatsapp brenson-btn--lg" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="empresas_cta">{{ section.settings.cta_label }}</a>
+            {%- else -%}
+              <a class="brenson-btn brenson-btn--white brenson-btn--lg" href="{{ section.settings.cta_url | default: '/pages/empresas' }}">{{ section.settings.cta_label }}</a>
+            {%- endif -%}
+            {%- if section.settings.show_secondary_button -%}
+              <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="empresas_cta">Hablar con un ejecutivo</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
       </div>
       {%- if section.settings.show_tiers -%}
         <ul class="brenson-empresas-cta__tiers" role="list">
@@ -36,6 +46,15 @@
             <li><span class="brenson-empresas-cta__tier-name">Flota Corporativa</span><strong>18 %</strong><span style="color: rgba(255,255,255,.6)">desde 50 unidades</span></li>
           {%- endif -%}
         </ul>
+      {%- elsif section.settings.show_checklist -%}
+        <div class="brenson-empresas-cta__action">
+          {%- if section.settings.cta_style == 'whatsapp' -%}
+            <a class="brenson-btn brenson-btn--white brenson-btn--lg" href="{% render 'brenson-whatsapp-link', context: 'empresas' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="empresas_cta">{{ section.settings.cta_label }}</a>
+          {%- else -%}
+            <a class="brenson-btn brenson-btn--white brenson-btn--lg" href="{{ section.settings.cta_url | default: '/pages/empresas' }}">{{ section.settings.cta_label }}</a>
+          {%- endif -%}
+          {%- if section.settings.helper_text != blank -%}<span class="brenson-muted" style="color: rgba(255,255,255,.5); font-size: var(--brenson-text-xs)">{{ section.settings.helper_text }}</span>{%- endif -%}
+        </div>
       {%- endif -%}
     </div>
   </div>
@@ -53,6 +72,12 @@
   .brenson-empresas-cta__tiers li > span:last-child { grid-column: 1; font-size: var(--brenson-text-xs); }
   .brenson-empresas-cta__tier-name { font-weight: 700; }
   .brenson-empresas-cta__tiers strong { grid-row: 1 / span 2; font-size: var(--brenson-text-3xl); font-weight: 800; color: #fff; }
+  .brenson-empresas-cta__checklist { list-style:none; margin: var(--brenson-space-6) 0 0; padding-top: var(--brenson-space-5); border-top: 1px solid rgba(255,255,255,.12); display:grid; gap: var(--brenson-space-4); grid-template-columns: 1fr; }
+  @media (min-width: 750px) { .brenson-empresas-cta__checklist { grid-template-columns: repeat(3, 1fr); } }
+  .brenson-empresas-cta__checklist li { display:flex; align-items:flex-start; gap:0.64rem; font-size: var(--brenson-text-xs); color: rgba(255,255,255,.8); font-weight:500; }
+  .brenson-empresas-cta__checklist svg { flex-shrink:0; width:1.8rem; height:1.8rem; color: var(--brenson-certificado); margin-top:0.08rem; }
+  .brenson-empresas-cta__action { display:flex; flex-direction:column; align-items:center; gap: var(--brenson-space-2); }
+  @media (min-width: 990px) { .brenson-empresas-cta__action { align-items:flex-end; } }
 </style>
 
 {% schema %}
@@ -67,7 +92,12 @@
     { "type": "url", "id": "cta_url", "label": "Enlace" },
     { "type": "select", "id": "cta_style", "label": "Estilo del botón principal", "options": [ { "value": "white", "label": "Blanco (enlace a página)" }, { "value": "whatsapp", "label": "WhatsApp (verde)" } ], "default": "white" },
     { "type": "checkbox", "id": "show_secondary_button", "label": "Mostrar botón secundario 'Hablar con un ejecutivo'", "default": true },
-    { "type": "checkbox", "id": "show_tiers", "label": "Mostrar tabla de tiers de descuento", "default": true }
+    { "type": "checkbox", "id": "show_tiers", "label": "Mostrar tabla de tiers de descuento", "default": false },
+    { "type": "checkbox", "id": "show_checklist", "label": "Mostrar viñetas de beneficios (en vez de botones a la izquierda)", "default": false },
+    { "type": "text", "id": "checklist_1", "label": "Viñeta 1", "default": "Beneficio tributario Ley 1715 (0 % IVA y deducción de renta)" },
+    { "type": "text", "id": "checklist_2", "label": "Viñeta 2", "default": "Telemetría y rastreo GPS integrado para flotas" },
+    { "type": "text", "id": "checklist_3", "label": "Viñeta 3", "default": "Soporte preventivo y correctivo en sus instalaciones" },
+    { "type": "text", "id": "helper_text", "label": "Texto bajo el botón (solo con viñetas)", "default": "Atención corporativa en menos de 2 horas hábiles" }
   ],
   "presets": [ { "name": "Brenson · CTA Empresas" } ]
 }

@@ -122,8 +122,11 @@
       if (this.$principal) this.$principal.textContent = has ? fmt.format(r.principal) : '—';
       if (this.$vehicleName && this.vehicleName) this.$vehicleName.textContent = this.vehicleName;
 
-      // Sincroniza el bloque de precio de la ficha y la sticky bar
+      // Sincroniza el bloque de precio de la ficha y la sticky bar del MISMO producto.
+      // (Sin este filtro, un simulador de referencia embebido en una página con varias
+      // tarjetas de producto —p. ej. el home— pisaría la cuota de todas con la suya.)
       document.querySelectorAll('[data-brenson-price]').forEach((block) => {
+        if (this.vehicleHandle && block.dataset.brensonPriceHandle && block.dataset.brensonPriceHandle !== this.vehicleHandle) return;
         var out = block.querySelector('[data-brenson-cuota]');
         var terms = block.querySelector('[data-brenson-terms]');
         if (out && has) out.textContent = fmt.format(r.cuota);
