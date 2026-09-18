@@ -16,7 +16,7 @@
         "title": "Tu vehículo eléctrico, en cuotas que",
         "title_highlight": "sí puedes pagar",
         "text": "Simula tu cuota mensual en segundos, ajusta tu pago inicial y solicita el estudio de crédito con nuestro aliado financiero sin papeleos ni salir de casa.",
-        "product": "brenson-city-1500",
+        "product": "cuadricilo-electrico-corato",
         "collection": "destacados"
       }
     },
@@ -28,7 +28,7 @@
         "subtitle": "Ajusta los parámetros para adaptar la cuota exacta a tu presupuesto mensual.",
         "cta_label": "Solicitar financiamiento",
         "collection": "destacados",
-        "default_product": "brenson-city-1500",
+        "default_product": "cuadricilo-electrico-corato",
         "dark": false
       }
     },

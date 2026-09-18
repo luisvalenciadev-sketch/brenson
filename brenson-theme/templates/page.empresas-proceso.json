@@ -87,12 +87,12 @@
       "settings": {}
     },
     "casos": {
-      "type": "brenson-case-studies-carousel",
+      "type": "brenson-video-carousel",
       "settings": {
         "eyebrow": "Casos de éxito en Colombia",
         "title": "Validado en condiciones de operación exigentes",
         "subtitle": "",
-        "limit": 2
+        "limit": 8
       }
     },
     "contacto": {

@@ -87,7 +87,7 @@
                       {%- else -%}<svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 17h5l3-8h4M11 17l3-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
                     {%- endcase -%}
                   </span>
-                  {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 96 | image_tag: loading: 'lazy', alt: p.title, style: 'width:4.8rem; height:4.8rem; object-fit:cover; border-radius: var(--brenson-radius); background: var(--brenson-gris-claro)' }}{%- endif -%}
+                  {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: p.title, style: 'width:6.4rem; height:6.4rem; object-fit:cover; border-radius: var(--brenson-radius); background: var(--brenson-gris-claro); flex-shrink:0' }}{%- endif -%}
                   <div>
                     <div style="display:flex; align-items:center; gap:0.56rem;">
                       <a class="link" style="font-weight:700; color: var(--brenson-carbon)" href="{{ p.url }}">{{ p.title }}</a>

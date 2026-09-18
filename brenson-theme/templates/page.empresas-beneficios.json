@@ -42,7 +42,9 @@
         }
       },
       "block_order": ["i1", "i2", "i3", "i4"],
-      "settings": {}
+      "settings": {
+        "producto_destacado": "cuadricilo-electrico-corato"
+      }
     },
     "contacto": {
       "type": "brenson-b2b-contacto",
