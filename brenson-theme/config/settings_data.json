@@ -153,7 +153,7 @@
     "brenson_b2b_nombre": "Brenson Empresas",
     "brenson_b2b_collection": "empresas",
     "brenson_b2b_validez_dias": "15",
-    "brenson_services_url": "",
+    "brenson_services_url": "https://brenson-services.brenson.workers.dev",
     "brenson_modo_simulacion": true,
     "brenson_gtm_id": "",
     "brenson_turnstile_site_key": "",

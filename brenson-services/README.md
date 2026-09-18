@@ -26,6 +26,25 @@ STORAGE_PROVIDER=local # solo log                      → r2
 
 Sin `SHOPIFY_ADMIN_TOKEN`, `/quote` usa los precios enviados por el cliente (solo para demo). Con token, **recalcula con Admin API** y el tier real del cliente: el frontend nunca define el precio (riesgo R-A3).
 
+## `/b2b/request` es el único camino de alta corporativa
+
+Desde el 18/09/2026 la tienda usa **cuentas nuevas de cliente**, así que el tema ya no puede crear
+cuentas con `form 'create_customer'`. Este endpoint crea el cliente con Admin API (`customerCreate`)
+o convierte el existente, y escribe los metafields `brenson_b2b.*` más el tag `b2b-pendiente`.
+
+Dos secretos dejan de ser opcionales para que el flujo funcione de verdad:
+
+| Secreto | Si falta |
+|---|---|
+| `SHOPIFY_ADMIN_TOKEN` | No se crea ninguna cuenta: el endpoint solo registra en consola y devuelve un id falso. Necesita scope `write_customers` |
+| `QUOTE_SIGNING_SECRET` | El `upload_token` que ata el documento del paso 2 a su cliente se firma con la clave de desarrollo que está en el código, o sea que deja de proteger nada |
+
+`TURNSTILE_SECRET` sigue siendo opcional: sin él se omite la verificación anti-spam, pero el rate
+limit por IP (5 solicitudes por hora, vía KV) se mantiene.
+
+Del lado del tema hay que pegar la URL del worker en el ajuste `brenson_services_url`. Con ese campo
+vacío el formulario corre en modo simulación: valida y muestra el mensaje de éxito sin enviar nada.
+
 ## Puesta en marcha
 
 ```bash

@@ -89,30 +89,35 @@ app.post('/b2b/request', async (c) => {
   let customerId = '';
   let creado = false;
   if (c.env.SHOPIFY_ADMIN_TOKEN) {
-    const existente = await findCustomerByEmail(c.env, email);
-    if (existente) {
-      // Ya aprobado: no se degrada a pendiente por reenviar el formulario.
-      if (existente.tags.includes('cliente-corporativo')) return c.json({ ok: true, ya_aprobado: true, customer_id: existente.id.split('/').pop() });
-      customerId = existente.id;
-    } else {
-      try {
+    // Todo el bloque de Admin API va en un try: este endpoint es el ÚNICO camino de alta corporativa,
+    // así que un token vencido o un fallo de Shopify no puede salir como 500 crudo. La solicitud se
+    // pierde de todos modos, pero el visitante recibe una salida (WhatsApp) en vez de un error mudo.
+    try {
+      const existente = await findCustomerByEmail(c.env, email);
+      if (existente) {
+        // Ya aprobado: no se degrada a pendiente por reenviar el formulario.
+        if (existente.tags.includes('cliente-corporativo')) return c.json({ ok: true, ya_aprobado: true, customer_id: existente.id.split('/').pop() });
+        customerId = existente.id;
+      } else {
         customerId = await createCustomer(c.env, { email, firstName: String(body.nombre || '').slice(0, 60), lastName: String(body.apellido || '').slice(0, 60), note });
         creado = true;
-      } catch (e) {
-        console.error('[b2b] customerCreate', e);
-        return jsonError(c, 502, 'No pudimos crear la cuenta corporativa. Escríbanos por WhatsApp y la creamos nosotros.');
       }
+      await updateCustomerNoteAndTags(c.env, customerId, note, ['b2b-pendiente']);
+      await setCustomerMetafields(c.env, customerId, [
+        { key: 'tipo_cliente', value: 'empresa', type: 'single_line_text_field' },
+        { key: 'estado_b2b', value: 'pendiente', type: 'single_line_text_field' },
+        { key: 'nit', value: nit, type: 'single_line_text_field' },
+        { key: 'razon_social', value: String(body.razon_social).slice(0, 200), type: 'single_line_text_field' },
+        { key: 'sector', value: String(body.sector || ''), type: 'single_line_text_field' },
+        { key: 'cargo_contacto', value: String(body.cargo || '').slice(0, 120), type: 'single_line_text_field' },
+        { key: 'flota_estimada', value: String(parseInt(body.flota_estimada, 10) || 0), type: 'number_integer' }
+      ]);
+    } catch (e) {
+      console.error('[b2b] alta corporativa falló para', email, e);
+      // Aviso al asesor para que la solicitud no se pierda por un problema de configuración.
+      await mail.send({ to: c.env.ADVISOR_EMAIL, subject: `[FALLÓ] Solicitud B2B no registrada: ${body.razon_social}`, html: `<p>La solicitud no pudo guardarse en Shopify (¿token vencido o sin scope <code>write_customers</code>?). Contactar manualmente.</p><pre>${escapeHtml(note)}</pre><p>Correo: ${escapeHtml(email)}</p>` }).catch(() => {});
+      return jsonError(c, 502, 'No pudimos registrar la solicitud en este momento. Escríbanos por WhatsApp y la tramitamos de inmediato.');
     }
-    await updateCustomerNoteAndTags(c.env, customerId, note, ['b2b-pendiente']);
-    await setCustomerMetafields(c.env, customerId, [
-      { key: 'tipo_cliente', value: 'empresa', type: 'single_line_text_field' },
-      { key: 'estado_b2b', value: 'pendiente', type: 'single_line_text_field' },
-      { key: 'nit', value: nit, type: 'single_line_text_field' },
-      { key: 'razon_social', value: String(body.razon_social).slice(0, 200), type: 'single_line_text_field' },
-      { key: 'sector', value: String(body.sector || ''), type: 'single_line_text_field' },
-      { key: 'cargo_contacto', value: String(body.cargo || '').slice(0, 120), type: 'single_line_text_field' },
-      { key: 'flota_estimada', value: String(parseInt(body.flota_estimada, 10) || 0), type: 'number_integer' }
-    ]);
   } else {
     console.info('[mock shopify] alta B2B pendiente para', email, note);
     customerId = 'gid://shopify/Customer/0';
