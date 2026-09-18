@@ -34,9 +34,8 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 .brenson-partners { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--brenson-space-8); align-items: center; }
 .brenson-partners img { height: 3.6rem; width: auto; }
 .brenson-partner__ph { font-weight: 800; font-size: var(--brenson-text-lg); color: var(--brenson-carbon-60); letter-spacing: -.01em; }
-.brenson-partners--dark { filter: none; opacity: 1; }
-.brenson-partners--dark img { filter: brightness(0) invert(1); opacity: .7; }
-.brenson-partners--dark .brenson-partner__ph { color: rgba(255,255,255,.6); }
+.brenson-partners--dark .brenson-partner { background: #fff; border-radius: var(--brenson-radius-md, 0.8rem); padding: var(--brenson-space-3) var(--brenson-space-5); display: flex; align-items: center; }
+.brenson-partners--dark .brenson-partner__ph { color: var(--brenson-carbon-60); }
 .brenson-b2b-hero__chips { list-style:none; margin: var(--brenson-space-4) 0 0; padding:0; display:flex; flex-wrap:wrap; gap: var(--brenson-space-4); }
 .brenson-b2b-hero__chips li { display:flex; align-items:center; gap:0.48rem; font-size: var(--brenson-text-xs); color: rgba(255,255,255,.7); }
 .brenson-b2b-hero__chips svg { color: var(--brenson-certificado); flex-shrink:0; }
