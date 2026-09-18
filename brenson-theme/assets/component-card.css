@@ -449,9 +449,23 @@
   flex-direction: column;
 }
 
-.card--extend-height.card--standard.card--text .card__inner,
-.card--extend-height.card--media .card__inner {
+.card--extend-height.card--standard.card--text .card__inner {
   flex-grow: 1;
+}
+
+/* Brenson: en tarjetas con imagen (--media), crecer el .card__inner rompe el
+   ratio cuadrado de la imagen (la estira para llenar el alto sobrante),
+   haciendo que tarjetas con menos contenido debajo (specs/precio) se vean
+   más altas o desalineadas frente a sus vecinas en la misma fila. El espacio
+   sobrante debe ir al contenido de texto, no a la imagen. */
+.card--extend-height.card--media .card__content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card--extend-height.card--media .card-information {
+  margin-top: auto;
 }
 
 .card .icon-wrap {

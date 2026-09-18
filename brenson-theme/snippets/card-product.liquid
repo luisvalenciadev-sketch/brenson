@@ -185,7 +185,7 @@
               {%- comment -%} Brenson: categoría + 3 specs clave (decisión G7) {%- endcomment -%}
               {%- assign bmf = card_product.metafields.brenson -%}
               {%- if bmf.categoria.value != blank -%}
-                <div class="brenson-card__category">{{ bmf.categoria.value | replace: 'bicicleta', 'Bicicleta eléctrica' | replace: 'ciclomotor', 'Ciclomotor eléctrico' | replace: 'motocarro', 'Motocarro eléctrico' | replace: 'cuadriciclo', 'Cuadriciclo eléctrico' }}</div>
+                <div class="brenson-card__category">{{ bmf.categoria.value | replace: 'bicicleta', 'Bicicleta eléctrica' | replace: 'ciclomotor', 'Ciclomotor eléctrico' | replace: 'motocarro', 'Motocarro eléctrico' | replace: 'cuadriciclo', 'Cuadriciclo eléctrico' | replace: 'patineta', 'Patineta eléctrica' }}</div>
               {%- endif -%}
               {%- if bmf.autonomia_km.value or bmf.velocidad_max_kmh.value or bmf.capacidad_carga_kg.value -%}
                 <ul class="brenson-specs" role="list" aria-label="Especificaciones clave">

@@ -39,13 +39,21 @@
             "collection": "cuadriciclos",
             "label": "Cuadriciclos"
           }
+        },
+        "cat_patinetas": {
+          "type": "categoria",
+          "settings": {
+            "collection": "patinetas",
+            "label": "Patinetas"
+          }
         }
       },
       "block_order": [
         "cat_bicicletas",
         "cat_ciclomotores",
         "cat_motocarros",
-        "cat_cuadriciclos"
+        "cat_cuadriciclos",
+        "cat_patinetas"
       ],
       "settings": {
         "image": "shopify://shop_images/AB6AXuCnsAoTWqC9bnnsfxiwMZuwSVgJauzXebQU3SWrpEmZHZKTxlI3-7qubEjzb8RoH3DRjW5pYp9fd45MuhAK6OITRTiS7ivZai911zZfbj3quhnvkK2W0Z3h4seQUz1AEE1eVjoFfkNDcbMbHGx7QCZf5eNlA1Ks7LU18fJDxD6yeH0BYNm.jpg",
@@ -158,7 +166,7 @@
         "subtitle": "Precios de cuota transparente con entrega inmediata garantizada.",
         "collection": "destacados",
         "products_to_show": 8,
-        "image_ratio": "adapt",
+        "image_ratio": "square",
         "show_view_all": true
       }
     },
