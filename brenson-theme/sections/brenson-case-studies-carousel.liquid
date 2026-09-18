@@ -1,0 +1,164 @@
+{%- comment -%}
+  brenson-case-studies-carousel — Módulo 16. Caso de éxito destacado (uno a la vez, en carrusel),
+  pantalla Stitch "Empresas · Cómo funciona y respaldo". Misma fuente de datos que
+  brenson-case-studies (metaobject brenson_caso_uso), pero en formato tarjeta grande con
+  navegación, no en grilla. No se comparte con brenson-case-studies para no afectar el home
+  ni la landing de Empresas, que sí usan la grilla.
+
+  Nota de contenido: el metaobject brenson_caso_uso no tiene campo de vocero/autor (nombre,
+  cargo, foto de la persona que da el testimonio) — solo cliente, título, resumen, imagen,
+  vehículos y métricas. Por eso esta tarjeta no incluye avatar ni nombre de contacto; si se
+  quiere esa firma, hay que agregar esos campos al metaobject primero.
+{%- endcomment -%}
+{%- liquid
+  assign sim = settings.brenson_modo_simulacion
+  assign casos = shop.metaobjects.brenson_caso_uso.values
+-%}
+{%- capture slides -%}
+  {%- assign n = 0 -%}
+  {%- for c in casos limit: section.settings.limit -%}
+    {%- if c.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
+    {%- assign n = n | plus: 1 -%}
+    <li class="brenson-case-feat__slide" role="group" aria-roledescription="diapositiva" aria-label="{{ n }} de {{ casos.size }}">
+      <div class="brenson-case-feat__card">
+        {%- unless c.verificado.value -%}<span class="brenson-status brenson-status--pending brenson-case-feat__mock">[MOCK]</span>{%- endunless -%}
+        <div class="brenson-case-feat__grid">
+          <div class="brenson-case-feat__intro">
+            <div class="brenson-case-feat__head">
+              <span class="brenson-case-feat__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.5" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              <div>
+                <h3 class="brenson-case-feat__cliente">{{ c.cliente.value | default: c.titulo.value }}</h3>
+                {%- if c.titulo.value != blank and c.cliente.value != blank -%}<p class="brenson-case-feat__subtitulo">{{ c.titulo.value }}</p>{%- endif -%}
+              </div>
+            </div>
+            {%- if c.resumen.value != blank -%}<p class="brenson-case-feat__quote">&ldquo;{{ c.resumen.value }}&rdquo;</p>{%- endif -%}
+            {%- if c.vehiculos.value -%}
+              <div class="brenson-case__vehicles">
+                {%- for v in c.vehiculos.value -%}<a class="brenson-badge brenson-badge--gris brenson-badge--sm" href="{{ v.url }}">{{ v.title }}</a>{%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+          {%- if c.metricas.value -%}
+            <ul class="brenson-case-feat__stats" role="list">
+              {%- if c.metricas.value.unidades != blank -%}<li><span>Flota activa</span><strong>{{ c.metricas.value.unidades }} uds.</strong></li>{%- endif -%}
+              {%- if c.metricas.value.ahorro_combustible_pct != blank -%}<li><span>Ahorro en combustible</span><strong class="brenson-case-feat__stat--verde">-{{ c.metricas.value.ahorro_combustible_pct }} %</strong></li>{%- endif -%}
+              {%- if c.metricas.value.km_mes != blank -%}<li><span>Distancia mensual</span><strong>{{ c.metricas.value.km_mes | divided_by: 1000.0 | round: 1 }}k km</strong></li>{%- endif -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      </div>
+    </li>
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if slides != blank -%}
+<section class="brenson-section brenson-case-feat">
+  <div class="brenson-container">
+    <header class="brenson-section__head brenson-section__head--center">
+      <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+      {%- if section.settings.subtitle != blank -%}<p class="brenson-subheading">{{ section.settings.subtitle }}</p>{%- endif -%}
+    </header>
+
+    <div class="brenson-case-feat__carousel" data-case-carousel>
+      <ul class="brenson-case-feat__track" data-case-track role="list">{{ slides }}</ul>
+      {%- if n > 1 -%}
+        <div class="brenson-case-feat__nav">
+          <button type="button" class="brenson-case-feat__arrow" data-case-prev aria-label="Caso anterior">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="brenson-case-feat__dots" data-case-dots role="tablist" aria-label="Seleccionar caso"></div>
+          <button type="button" class="brenson-case-feat__arrow" data-case-next aria-label="Caso siguiente">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<script>
+  (function () {
+    document.querySelectorAll('[data-case-carousel]').forEach(function (root) {
+      var track = root.querySelector('[data-case-track]');
+      var slides = Array.prototype.slice.call(track.children);
+      if (slides.length < 2) return;
+      var prev = root.querySelector('[data-case-prev]');
+      var next = root.querySelector('[data-case-next]');
+      var dotsWrap = root.querySelector('[data-case-dots]');
+      slides.forEach(function (_, i) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'brenson-case-feat__dot';
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', 'Ir al caso ' + (i + 1));
+        dot.addEventListener('click', function () { goTo(i); });
+        dotsWrap.appendChild(dot);
+      });
+      var dots = Array.prototype.slice.call(dotsWrap.children);
+
+      function activeIndex() {
+        var scrollLeft = track.scrollLeft;
+        var i = Math.round(scrollLeft / track.clientWidth);
+        return Math.max(0, Math.min(slides.length - 1, i));
+      }
+      function paint() {
+        var i = activeIndex();
+        dots.forEach(function (d, di) { d.setAttribute('aria-selected', String(di === i)); });
+      }
+      function goTo(i) {
+        i = (i + slides.length) % slides.length;
+        track.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
+      }
+      prev.addEventListener('click', function () { goTo(activeIndex() - 1); });
+      next.addEventListener('click', function () { goTo(activeIndex() + 1); });
+      track.addEventListener('scroll', function () {
+        window.clearTimeout(track._t);
+        track._t = window.setTimeout(paint, 80);
+      });
+      paint();
+    });
+  })();
+</script>
+<style>
+  .brenson-case-feat__carousel { position: relative; }
+  .brenson-case-feat__track { list-style: none; margin: 0; padding: 0; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: var(--brenson-radius-xl); }
+  .brenson-case-feat__track::-webkit-scrollbar { display: none; }
+  .brenson-case-feat__slide { flex: 0 0 100%; scroll-snap-align: start; }
+  .brenson-case-feat__card { position: relative; background: var(--brenson-superficie-card, #0f1318); border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-8) var(--brenson-space-6); }
+  @media (min-width: 750px) { .brenson-case-feat__card { padding: var(--brenson-space-10) var(--brenson-space-12); } }
+  .brenson-case-feat__mock { position: absolute; top: var(--brenson-space-5); right: var(--brenson-space-5); }
+  .brenson-case-feat__grid { display: grid; gap: var(--brenson-space-8); }
+  @media (min-width: 990px) { .brenson-case-feat__grid { grid-template-columns: 7fr 5fr; align-items: center; } }
+  .brenson-case-feat__head { display: flex; align-items: flex-start; gap: var(--brenson-space-3); margin-bottom: var(--brenson-space-4); }
+  .brenson-case-feat__icon { flex-shrink: 0; width: 4rem; height: 4rem; border-radius: var(--brenson-radius-lg); display: grid; place-items: center; background: rgba(255,255,255,.06); color: var(--brenson-rojo); }
+  .brenson-case-feat__cliente { margin: 0; font-size: var(--brenson-text-lg); font-weight: 700; color: #fff; }
+  .brenson-case-feat__subtitulo { margin: 0.2rem 0 0; font-size: var(--brenson-text-xs); color: rgba(255,255,255,.55); }
+  .brenson-case-feat__quote { margin: 0 0 var(--brenson-space-4); font-size: var(--brenson-text-md); font-style: italic; line-height: 1.55; color: rgba(255,255,255,.85); }
+  .brenson-case-feat__stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--brenson-space-4); }
+  .brenson-case-feat__stats li { display: grid; gap: 0.32rem; padding: var(--brenson-space-5); border-radius: var(--brenson-radius-lg); background: rgba(255,255,255,.04); }
+  .brenson-case-feat__stats span { font-size: var(--brenson-text-xs); text-transform: uppercase; letter-spacing: .04em; color: rgba(255,255,255,.55); }
+  .brenson-case-feat__stats strong { font-size: var(--brenson-text-2xl); font-weight: 800; line-height: 1; color: #fff; }
+  .brenson-case-feat__stat--verde { color: #34d17f !important; }
+  .brenson-case-feat__nav { display: flex; align-items: center; justify-content: center; gap: var(--brenson-space-4); margin-top: var(--brenson-space-6); }
+  .brenson-case-feat__arrow { width: 4rem; height: 4rem; border-radius: 50%; border: 1px solid var(--brenson-gris-borde); background: #fff; color: var(--brenson-carbon); display: grid; place-items: center; cursor: pointer; }
+  .brenson-case-feat__arrow:hover { background: var(--brenson-gris-claro); }
+  .brenson-case-feat__dots { display: flex; align-items: center; gap: 0.64rem; }
+  .brenson-case-feat__dot { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 0; background: var(--brenson-gris-borde); cursor: pointer; padding: 0; }
+  .brenson-case-feat__dot[aria-selected="true"] { background: var(--brenson-rojo); }
+</style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Casos B2B (carrusel)",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Casos de éxito en Colombia" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Validado en condiciones de operación exigentes" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo" },
+    { "type": "range", "id": "limit", "min": 1, "max": 6, "step": 1, "label": "Máximo de casos", "default": 4 }
+  ],
+  "presets": [ { "name": "Casos B2B (carrusel)" } ]
+}
+{% endschema %}

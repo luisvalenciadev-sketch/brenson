@@ -53,6 +53,18 @@ Baterías y cargadores sueltos (7 productos "Cargador ...", 3 "Batería ...") si
 ### 6. Actualizar documentación
 Al cerrar, actualiza `docs/ESTADO_GENERAL_18SEP2026.md` (o crea la versión de la fecha de esta sesión) con lo que se completó, siguiendo el mismo formato verificado-no-asumido.
 
+### 7. Agregar campos de vocero al metaobject `brenson_caso_uso` (pendiente de sesión de ajustes visuales, 17-sep-2026)
+En esa sesión se rediseñó la sección de "Casos de éxito" de `/pages/empresas-proceso` como tarjeta destacada en carrusel (`sections/brenson-case-studies-carousel.liquid`), siguiendo el mockup `stitch-design/16-empresas-proceso/`. El mockup incluye avatar + nombre + cargo de un vocero del cliente (ej. "Ing. Rodrigo Carvajal, Director Nacional de Flotas y Mantenimiento"), pero el metaobject `brenson_caso_uso` (definido en `docs/metafield-definitions.json`) **no tiene esos campos** — solo `titulo`, `cliente`, `resumen`, `imagen`, `vehiculos`, `metricas`, `verificado`. No se inventó ese nombre/cargo porque sería contenido falso presentado como real.
+
+Pendiente:
+- Agregar a la definición de `brenson_caso_uso` (o a un metaobject relacionado) campos para el vocero: nombre, cargo y foto. Evaluar si conviene reutilizar el metaobject `brenson_testimonio` ya existente (tiene `nombre`, `empresa`, `ciudad`, `texto`, `foto`, `vehiculo`, `verificado`) en vez de duplicar campos — hoy no está conectado a `brenson_caso_uso` (no hay `metaobject_reference` entre ambos).
+- Una vez definidos los campos, actualizar `sections/brenson-case-studies-carousel.liquid` para renderizar el bloque de avatar+nombre+cargo (el markup y CSS del mock ya están documentados en el comentario de cabecera de esa sección).
+- Pedir al usuario los datos reales del vocero antes de publicar (nunca fabricar un nombre/cargo).
+
+También quedaron pendientes de contenido (no de código) de esa misma sesión, ambos ya diagnosticados y con el código listo para cuando se cargue el dato:
+- Metaobject `brenson_aliado`: subir el campo `logo` de cada aliado (Addi, Banco de Bogotá, Comfandi, etc.) — el CSS ya soporta fila horizontal, hoy cae al texto de respaldo por falta de imagen.
+- Metaobject `brenson_caso_uso`: completar `metricas.unidades` y `metricas.km_mes` en los casos "Parque Tayrona [MOCK]" y "Logística Caribe S.A.S. [MOCK]" — están vacíos (antes se mostraba la etiqueta sin número; ya se corrigió para que si falta el dato, esa métrica no se muestre en absoluto).
+
 ## Reglas de trabajo (ya vigentes en el proyecto, no las repitas al usuario)
 
 Responde en español; prefijo `brenson-` en archivos nuevos; `npm run theme:check` en 0 errores antes de cada push; **después de cada push, verifica con `theme pull --only <archivo>` + grep** — "pushed successfully" no es confiable por sí solo (se ha visto quedarse colgado sin avisar); nunca escribas tildes/ñ directo en un comando de bash que vaya a Shopify — usa Node con escapes Unicode; nunca publiques testimonios/aliados/contadores sin `verificado: true`; no reabras decisiones ya firmadas en `docs/DECISIONES_BRENSON.md`.
