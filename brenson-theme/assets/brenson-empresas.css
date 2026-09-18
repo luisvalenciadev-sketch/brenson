@@ -2,6 +2,26 @@
 body.brenson-empresas { background: var(--brenson-carbon); color: #fff; }
 body.brenson-empresas .brenson-heading { color: #fff; }
 body.brenson-empresas .brenson-subheading { color: rgba(255,255,255,.75); }
+
+/* Dawn declara `color: rgb(var(--color-foreground))` sobre h1–h4 en base.css. Es un color EXPLÍCITO,
+   así que gana sobre el `color:#fff` que estas reglas heredan al body: cualquier título sin clase
+   propia (por ejemplo el <h1> de bienvenida del dashboard) quedaba en gris oscuro sobre el fondo
+   carbón, prácticamente invisible. El mockup de Stitch los declara `text-white` uno por uno; aquí se
+   resuelve en un solo sitio para que no vuelva a pasar al agregar secciones.
+   Sobre las tarjetas claras el texto vuelve a ser oscuro (la regla va después y tiene más
+   especificidad, así que gana). */
+body.brenson-empresas h1,
+body.brenson-empresas h2,
+body.brenson-empresas h3,
+body.brenson-empresas h4 { color: #fff; }
+body.brenson-empresas .brenson-b2b-card h1,
+body.brenson-empresas .brenson-b2b-card h2,
+body.brenson-empresas .brenson-b2b-card h3,
+body.brenson-empresas .brenson-b2b-card h4,
+body.brenson-empresas .brenson-card h1,
+body.brenson-empresas .brenson-card h2,
+body.brenson-empresas .brenson-card h3,
+body.brenson-empresas .brenson-card h4 { color: var(--brenson-carbon); }
 body.brenson-empresas main { min-height: 60vh; }
 body.brenson-empresas .brenson-breadcrumb__list { color: rgba(255,255,255,.5); }
 body.brenson-empresas .brenson-breadcrumb__list a { color: rgba(255,255,255,.5); }
@@ -80,7 +100,10 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 .brenson-b2b-footer a { color: rgba(255,255,255,.8); }
 
 /* Dashboard */
-.brenson-b2b-welcome { display: flex; flex-wrap: wrap; align-items: center; gap: var(--brenson-space-3) var(--brenson-space-5); padding: var(--brenson-space-6); border: 1px solid rgba(255,255,255,.12); border-radius: var(--brenson-radius-xl); margin-bottom: var(--brenson-space-6); }
+/* Panel de bienvenida: en el mockup (04-empresas-dashboard) es una superficie ELEVADA sobre el fondo
+   de página (#0d1117 sobre #050709), no una caja transparente con borde. Sin ese relleno el bloque
+   se funde con la página y la franja de bienvenida se lee como un vacío. */
+.brenson-b2b-welcome { display: flex; flex-wrap: wrap; align-items: center; gap: var(--brenson-space-3) var(--brenson-space-5); padding: var(--brenson-space-6); background: var(--brenson-carbon-80); border: 1px solid rgba(255,255,255,.12); border-radius: var(--brenson-radius-xl); margin-bottom: var(--brenson-space-6); box-shadow: var(--brenson-shadow); }
 .brenson-b2b-welcome h1 { margin: 0; font-size: clamp(2.4rem, 2.5vw, 3.2rem); }
 .brenson-b2b-welcome__meta { width: 100%; display: flex; flex-wrap: wrap; gap: var(--brenson-space-3); align-items: center; font-size: var(--brenson-text-sm); color: rgba(255,255,255,.7); }
 .brenson-b2b-kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--brenson-space-4); margin-bottom: var(--brenson-space-6); }
