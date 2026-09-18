@@ -172,7 +172,7 @@
                   <td><code>{{ q.numero.value }}</code></td>
                   <td>{{ q.creada_en.value | date: '%d %b %Y' }}</td>
                   <td>{{ units2 }} unidades</td>
-                  <td class="brenson-num"><strong>{% if q.total.value %}{{ q.total.value.amount | times: 100 | money_without_trailing_zeros }}{% else %}—{% endif %}</strong></td>
+                  <td class="brenson-num"><strong>{% render 'brenson-money-metafield', valor: q.total.value %}</strong></td>
                   <td>{%- case q.estado.value -%}{%- when 'enviada' -%}<span class="brenson-status brenson-status--ok">Enviada y vigente</span>{%- when 'aceptada' -%}<span class="brenson-status brenson-status--ok">Aceptada</span>{%- when 'borrador' -%}<span class="brenson-status brenson-status--pending">Borrador</span>{%- else -%}<span class="brenson-status brenson-status--muted">{{ q.estado.value | capitalize }}</span>{%- endcase -%}</td>
                   <td style="text-align:right; white-space:nowrap">{%- if q.pdf_url.value -%}<a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ q.pdf_url.value }}" target="_blank" rel="noopener">Descargar PDF</a>{%- endif -%} <a class="brenson-btn brenson-btn--sm" href="/pages/cotizador?duplicar={{ q.numero.value }}">Duplicar</a></td>
                 </tr>

@@ -1,0 +1,26 @@
+{%- comment -%}
+  brenson-money-metafield — imprime el valor de un metafield de tipo `money`.
+
+  Por qué existe: el portal mostraba "$0" en el total de todas las cotizaciones aunque el dato
+  guardado era correcto ({"amount":"10304000.00","currency_code":"COP"}). El código usaba
+  `valor.amount | times: 100 | money`, que es la forma del API de Admin, no necesariamente la que
+  expone Liquid. La documentación de Shopify no especifica cómo se resuelve un `money` en Liquid,
+  así que en vez de adivinar este snippet cubre las dos formas posibles:
+
+    1. `valor.amount` responde  → se convierte a centavos y se formatea con el filtro money.
+    2. no responde pero el valor existe → se imprime tal cual (Liquid ya lo formatea).
+    3. no hay valor → guion, nunca "$0", que se lee como "esta cotización vale cero".
+
+  Uso: {% render 'brenson-money-metafield', valor: q.total.value %}
+{%- endcomment -%}
+{%- liquid
+  assign monto = valor.amount
+  if monto != blank
+    assign centavos = monto | times: 100 | round
+    echo centavos | money_without_trailing_zeros
+  elsif valor != blank
+    echo valor
+  else
+    echo '—'
+  endif
+-%}
