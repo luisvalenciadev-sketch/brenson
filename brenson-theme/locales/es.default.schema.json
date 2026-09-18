@@ -1538,30 +1538,6 @@
         }
       }
     },
-    "main-account": {
-      "name": "Cuenta"
-    },
-    "main-activate-account": {
-      "name": "Activar cuenta"
-    },
-    "main-addresses": {
-      "name": "Direcciones"
-    },
-    "main-login": {
-      "name": "Inicio de sesión",
-      "shop_login_button": {
-        "enable": "Habilitar inicio de sesión con Shop"
-      }
-    },
-    "main-order": {
-      "name": "Pedido"
-    },
-    "main-reset-password": {
-      "name": "Restablecer contraseña"
-    },
-    "main-register": {
-      "name": "Registro"
-    },
     "main-list-collections": {
       "name": "Lista de colecciones",
       "settings": {
