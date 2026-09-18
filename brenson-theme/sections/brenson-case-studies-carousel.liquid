@@ -5,10 +5,8 @@
   navegación, no en grilla. No se comparte con brenson-case-studies para no afectar el home
   ni la landing de Empresas, que sí usan la grilla.
 
-  Nota de contenido: el metaobject brenson_caso_uso no tiene campo de vocero/autor (nombre,
-  cargo, foto de la persona que da el testimonio) — solo cliente, título, resumen, imagen,
-  vehículos y métricas. Por eso esta tarjeta no incluye avatar ni nombre de contacto; si se
-  quiere esa firma, hay que agregar esos campos al metaobject primero.
+  El metaobject brenson_caso_uso tiene campos opcionales de vocero (vocero_nombre, vocero_cargo,
+  vocero_foto) — la firma solo se muestra si vocero_nombre está cargado.
 {%- endcomment -%}
 {%- liquid
   assign sim = settings.brenson_modo_simulacion
@@ -37,6 +35,19 @@
             {%- if c.vehiculos.value -%}
               <div class="brenson-case__vehicles">
                 {%- for v in c.vehiculos.value -%}<a class="brenson-badge brenson-badge--gris brenson-badge--sm" href="{{ v.url }}">{{ v.title }}</a>{%- endfor -%}
+              </div>
+            {%- endif -%}
+            {%- if c.vocero_nombre.value != blank -%}
+              <div class="brenson-case-feat__vocero">
+                {%- if c.vocero_foto.value -%}
+                  {{ c.vocero_foto.value | image_url: width: 96 | image_tag: loading: 'lazy', class: 'brenson-case-feat__vocero-foto', alt: c.vocero_nombre.value }}
+                {%- else -%}
+                  <span class="brenson-case-feat__vocero-foto brenson-case-feat__vocero-foto--ph">{{ c.vocero_nombre.value | slice: 0 }}</span>
+                {%- endif -%}
+                <div>
+                  <strong>{{ c.vocero_nombre.value }}</strong>
+                  {%- if c.vocero_cargo.value != blank -%}<span class="brenson-muted">{{ c.vocero_cargo.value }}</span>{%- endif -%}
+                </div>
               </div>
             {%- endif -%}
           </div>
@@ -140,6 +151,12 @@
   .brenson-case-feat__stats span { font-size: var(--brenson-text-xs); text-transform: uppercase; letter-spacing: .04em; color: rgba(255,255,255,.55); }
   .brenson-case-feat__stats strong { font-size: var(--brenson-text-2xl); font-weight: 800; line-height: 1; color: #fff; }
   .brenson-case-feat__stat--verde { color: #34d17f !important; }
+  .brenson-case-feat__vocero { display: flex; align-items: center; gap: var(--brenson-space-3); margin-top: var(--brenson-space-5); }
+  .brenson-case-feat__vocero div { display: flex; flex-direction: column; }
+  .brenson-case-feat__vocero strong { color: #fff; font-size: var(--brenson-text-sm); }
+  .brenson-case-feat__vocero span { font-size: var(--brenson-text-xs); color: rgba(255,255,255,.55); }
+  .brenson-case-feat__vocero-foto { width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .brenson-case-feat__vocero-foto--ph { display: grid; place-items: center; background: rgba(255,255,255,.1); color: #fff; font-weight: 700; }
   .brenson-case-feat__nav { display: flex; align-items: center; justify-content: center; gap: var(--brenson-space-4); margin-top: var(--brenson-space-6); }
   .brenson-case-feat__arrow { width: 4rem; height: 4rem; border-radius: 50%; border: 1px solid var(--brenson-gris-borde); background: #fff; color: var(--brenson-carbon); display: grid; place-items: center; cursor: pointer; }
   .brenson-case-feat__arrow:hover { background: var(--brenson-gris-claro); }

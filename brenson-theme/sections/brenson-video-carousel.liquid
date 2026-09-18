@@ -1,0 +1,162 @@
+{%- comment -%}
+  brenson-video-carousel — Módulo 16. Videos de testimonios y casos de éxito, en carrusel
+  (uno a la vez). Fuente: metaobjects brenson_testimonio y brenson_caso_uso, filtrando solo
+  entradas que tengan el campo "video" cargado. Mismo patrón de interacción que
+  brenson-case-studies-carousel.liquid (track con scroll-snap + flechas + dots, sin JS externo).
+
+  Reglas de contenido: sin autoplay con sonido (los <video> arrancan pausados y sin audio hasta
+  que la persona interactúa); no bloquea el scroll de la página (scroll-snap dentro del track,
+  no captura la rueda del mouse). En producción (modo simulación apagado) solo se muestran
+  entradas verificado = true.
+{%- endcomment -%}
+{%- liquid
+  assign sim = settings.brenson_modo_simulacion
+  assign testimonios = shop.metaobjects.brenson_testimonio.values
+  assign casos = shop.metaobjects.brenson_caso_uso.values
+  assign entradas = testimonios | concat: casos
+-%}
+{%- capture slides -%}
+  {%- assign n = 0 -%}
+  {%- for e in entradas limit: section.settings.limit -%}
+    {%- if e.video.value == blank -%}{%- continue -%}{%- endif -%}
+    {%- if e.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
+    {%- assign n = n | plus: 1 -%}
+    <li class="brenson-video-feat__slide" role="group" aria-roledescription="diapositiva" aria-label="{{ n }} de {{ entradas.size }}">
+      <div class="brenson-video-feat__card">
+        {%- unless e.verificado.value -%}<span class="brenson-status brenson-status--pending brenson-video-feat__mock">[MOCK]</span>{%- endunless -%}
+        <div class="brenson-video-feat__media">
+          <video class="brenson-video-feat__el" src="{{ e.video.value | file_url }}" controls muted playsinline preload="metadata" poster="{% if e.type == 'brenson_caso_uso' and e.imagen.value %}{{ e.imagen.value | image_url: width: 900 }}{% elsif e.type == 'brenson_testimonio' and e.foto.value %}{{ e.foto.value | image_url: width: 900 }}{% endif %}"></video>
+        </div>
+        <div class="brenson-video-feat__body">
+          {%- if e.type == 'brenson_caso_uso' -%}
+            <h3 class="brenson-video-feat__titulo">{{ e.cliente.value | default: e.titulo.value }}</h3>
+            {%- if e.titulo.value != blank and e.cliente.value != blank -%}<p class="brenson-video-feat__sub">{{ e.titulo.value }}</p>{%- endif -%}
+            {%- if e.resumen.value != blank -%}<p class="brenson-video-feat__texto">{{ e.resumen.value }}</p>{%- endif -%}
+          {%- else -%}
+            <h3 class="brenson-video-feat__titulo">{{ e.nombre.value }}</h3>
+            {%- if e.empresa.value != blank or e.ciudad.value != blank -%}<p class="brenson-video-feat__sub">{{ e.empresa.value }}{% if e.empresa.value != blank and e.ciudad.value != blank %} · {% endif %}{{ e.ciudad.value }}</p>{%- endif -%}
+            {%- if e.texto.value != blank -%}<p class="brenson-video-feat__texto">&ldquo;{{ e.texto.value }}&rdquo;</p>{%- endif -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </li>
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if slides != blank -%}
+<section class="brenson-section brenson-video-feat">
+  <div class="brenson-container">
+    <header class="brenson-section__head brenson-section__head--center">
+      <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2 class="brenson-heading">{{ section.settings.title }}</h2>
+      {%- if section.settings.subtitle != blank -%}<p class="brenson-subheading">{{ section.settings.subtitle }}</p>{%- endif -%}
+    </header>
+
+    <div class="brenson-video-feat__carousel" data-video-carousel>
+      <ul class="brenson-video-feat__track" data-video-track role="list">{{ slides }}</ul>
+      {%- if n > 1 -%}
+        <div class="brenson-video-feat__nav">
+          <button type="button" class="brenson-video-feat__arrow" data-video-prev aria-label="Video anterior">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="brenson-video-feat__dots" data-video-dots role="tablist" aria-label="Seleccionar video"></div>
+          <button type="button" class="brenson-video-feat__arrow" data-video-next aria-label="Video siguiente">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<script>
+  (function () {
+    document.querySelectorAll('[data-video-carousel]').forEach(function (root) {
+      var track = root.querySelector('[data-video-track]');
+      var slides = Array.prototype.slice.call(track.children);
+      if (!slides.length) return;
+
+      function pauseAllExcept(el) {
+        slides.forEach(function (s) {
+          var v = s.querySelector('video');
+          if (v && v !== el) v.pause();
+        });
+      }
+      track.querySelectorAll('video').forEach(function (v) {
+        v.addEventListener('play', function () { pauseAllExcept(v); });
+      });
+
+      if (slides.length < 2) return;
+      var prev = root.querySelector('[data-video-prev]');
+      var next = root.querySelector('[data-video-next]');
+      var dotsWrap = root.querySelector('[data-video-dots]');
+      slides.forEach(function (_, i) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'brenson-video-feat__dot';
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', 'Ir al video ' + (i + 1));
+        dot.addEventListener('click', function () { goTo(i); });
+        dotsWrap.appendChild(dot);
+      });
+      var dots = Array.prototype.slice.call(dotsWrap.children);
+
+      function activeIndex() {
+        var scrollLeft = track.scrollLeft;
+        var i = Math.round(scrollLeft / track.clientWidth);
+        return Math.max(0, Math.min(slides.length - 1, i));
+      }
+      function paint() {
+        var i = activeIndex();
+        dots.forEach(function (d, di) { d.setAttribute('aria-selected', String(di === i)); });
+      }
+      function goTo(i) {
+        i = (i + slides.length) % slides.length;
+        var v = slides[i].querySelector('video');
+        if (v) pauseAllExcept(v);
+        track.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
+      }
+      prev.addEventListener('click', function () { goTo(activeIndex() - 1); });
+      next.addEventListener('click', function () { goTo(activeIndex() + 1); });
+      track.addEventListener('scroll', function () {
+        window.clearTimeout(track._t);
+        track._t = window.setTimeout(paint, 80);
+      });
+      paint();
+    });
+  })();
+</script>
+<style>
+  .brenson-video-feat__carousel { position: relative; }
+  .brenson-video-feat__track { list-style: none; margin: 0; padding: 0; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: var(--brenson-radius-xl); }
+  .brenson-video-feat__track::-webkit-scrollbar { display: none; }
+  .brenson-video-feat__slide { flex: 0 0 100%; scroll-snap-align: start; }
+  .brenson-video-feat__card { position: relative; background: var(--brenson-superficie-card, #0f1318); border-radius: var(--brenson-radius-xl); overflow: hidden; }
+  .brenson-video-feat__mock { position: absolute; top: var(--brenson-space-5); right: var(--brenson-space-5); z-index: 1; }
+  .brenson-video-feat__media { position: relative; background: #000; }
+  .brenson-video-feat__el { display: block; width: 100%; max-height: 70vh; aspect-ratio: 16 / 9; object-fit: contain; background: #000; }
+  .brenson-video-feat__body { padding: var(--brenson-space-6); }
+  @media (min-width: 750px) { .brenson-video-feat__body { padding: var(--brenson-space-8) var(--brenson-space-10); } }
+  .brenson-video-feat__titulo { margin: 0; font-size: var(--brenson-text-lg); font-weight: 700; color: #fff; }
+  .brenson-video-feat__sub { margin: 0.2rem 0 0; font-size: var(--brenson-text-xs); color: rgba(255,255,255,.55); }
+  .brenson-video-feat__texto { margin: var(--brenson-space-3) 0 0; font-size: var(--brenson-text-md); line-height: 1.55; color: rgba(255,255,255,.85); }
+  .brenson-video-feat__nav { display: flex; align-items: center; justify-content: center; gap: var(--brenson-space-4); margin-top: var(--brenson-space-6); }
+  .brenson-video-feat__arrow { width: 4rem; height: 4rem; border-radius: 50%; border: 1px solid var(--brenson-gris-borde); background: #fff; color: var(--brenson-carbon); display: grid; place-items: center; cursor: pointer; }
+  .brenson-video-feat__arrow:hover { background: var(--brenson-gris-claro); }
+  .brenson-video-feat__dots { display: flex; align-items: center; gap: 0.64rem; }
+  .brenson-video-feat__dot { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 0; background: var(--brenson-gris-borde); cursor: pointer; padding: 0; }
+  .brenson-video-feat__dot[aria-selected="true"] { background: var(--brenson-rojo); }
+</style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Videos y testimonios",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Historias reales" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Clientes que ya ruedan con Brenson" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo" },
+    { "type": "range", "id": "limit", "min": 1, "max": 8, "step": 1, "label": "Máximo de videos", "default": 6 }
+  ],
+  "presets": [ { "name": "Videos y testimonios" } ]
+}
+{% endschema %}

@@ -181,6 +181,14 @@
         "subtitle": "Conoce cómo empresas y emprendedores del país han transformado sus costos logísticos con Brenson."
       }
     },
+    "videos": {
+      "type": "brenson-video-carousel",
+      "settings": {
+        "eyebrow": "Historias reales",
+        "title": "Clientes que ya ruedan con Brenson",
+        "subtitle": "Casos de uso y testimonios en video, tal como los comparten nuestros clientes."
+      }
+    },
     "prueba_social": {
       "type": "brenson-social-proof",
       "blocks": {
@@ -247,6 +255,7 @@
     "destacados",
     "financiacion",
     "casos",
+    "videos",
     "prueba_social",
     "empresas_cta",
     "blog"

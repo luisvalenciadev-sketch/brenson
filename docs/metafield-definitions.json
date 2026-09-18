@@ -144,6 +144,7 @@
       { "key": "ciudad", "name": "Ciudad", "type": "single_line_text_field" },
       { "key": "texto", "name": "Testimonio", "type": "multi_line_text_field", "required": true },
       { "key": "foto", "name": "Foto", "type": "file_reference" },
+      { "key": "video", "name": "Video", "type": "file_reference" },
       { "key": "vehiculo", "name": "Vehículo", "type": "product_reference" },
       { "key": "verificado", "name": "Autorización verificada", "type": "boolean" }
     ]},
@@ -152,8 +153,12 @@
       { "key": "cliente", "name": "Cliente", "type": "single_line_text_field" },
       { "key": "resumen", "name": "Resumen", "type": "multi_line_text_field" },
       { "key": "imagen", "name": "Imagen", "type": "file_reference" },
+      { "key": "video", "name": "Video", "type": "file_reference" },
       { "key": "vehiculos", "name": "Vehículos", "type": "list.product_reference" },
       { "key": "metricas", "name": "Métricas (JSON)", "type": "json" },
+      { "key": "vocero_nombre", "name": "Vocero: nombre", "type": "single_line_text_field" },
+      { "key": "vocero_cargo", "name": "Vocero: cargo", "type": "single_line_text_field" },
+      { "key": "vocero_foto", "name": "Vocero: foto", "type": "file_reference" },
       { "key": "verificado", "name": "Autorización verificada", "type": "boolean" }
     ]},
     { "type": "brenson_contador", "name": "Contador", "storefront": true, "fields": [
