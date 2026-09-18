@@ -7,6 +7,7 @@
  *   POST /quote             cotización de flota → recalcula con Admin API → PDF → metaobject → email (+50)
  *   GET  /ficha/:handle.pdf ficha técnica generada desde metafields
  *   GET  /quotes/:id.pdf    PDF de cotización (enlace firmado)
+ *   POST /quotes/:numero/accept  aceptar cotización → draftOrderCreate con precio congelado → aviso al asesor
  *   POST /webhooks/shopify/:topic   customers/create, customers/update, checkouts/create, orders/create, orders/fulfilled → CRM
  *   GET  /health
  *
@@ -17,7 +18,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import type { Env } from './types';
 import { getProviders } from './providers';
-import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, createCustomer, updateCustomerNoteAndTags, setCustomerMetafield, setCustomerMetafields } from './lib/shopify';
+import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, createCustomer, updateCustomerNoteAndTags, setCustomerMetafield, setCustomerMetafields, fetchQuoteByHandle, updateQuoteMetaobject, createDraftOrder } from './lib/shopify';
 import { computeQuote, quoteHtml, specSheetHtml, nextQuoteNumber, fmt } from './lib/quote';
 import { verifyTurnstile, rateLimit, jsonError, scoreFor, signPath, verifySignedPath, signToken, verifyToken } from './lib/util';
 
@@ -186,24 +187,31 @@ app.post('/quote', async (c) => {
   quote.pdf_url = pdfUrl;
 
   if (c.env.SHOPIFY_ADMIN_TOKEN) {
+    const fields = [
+      { key: 'numero', value: quote.numero },
+      { key: 'cliente', value: `gid://shopify/Customer/${body.customer_id}` },
+      // El portal filtra por este campo, no por `cliente`: un customer_reference no se resuelve de
+      // forma fiable desde Liquid en el storefront, así que "Mis cotizaciones" salía siempre vacío.
+      { key: 'cliente_id', value: String(body.customer_id) },
+      { key: 'items', value: JSON.stringify(quote.items) },
+      { key: 'subtotal', value: JSON.stringify({ amount: String(quote.subtotal_publico), currency_code: 'COP' }) },
+      { key: 'descuento_pct', value: String(quote.descuento_pct) },
+      { key: 'total', value: JSON.stringify({ amount: String(quote.total), currency_code: 'COP' }) },
+      { key: 'total_formateado', value: fmt(quote.total) },
+      { key: 'validez_dias', value: String(quote.validez_dias) },
+      { key: 'estado', value: quote.estado },
+      { key: 'observaciones', value: quote.observaciones || '' },
+      { key: 'pdf_url', value: pdfUrl },
+      { key: 'creada_en', value: quote.creada_en }
+    ];
+    // El token de aceptación solo tiene sentido una vez la cotización es visible para el cliente
+    // (estado 'enviada'); un borrador todavía puede cambiar de ítems y precios.
+    if (quote.estado === 'enviada') {
+      const acceptToken = await signToken(c.env, `accept:${quote.numero}`, 60 * 60 * 24 * (quote.validez_dias + 2));
+      fields.push({ key: 'accept_token', value: acceptToken });
+    }
     await shopifyAdmin(c.env, `mutation($m: MetaobjectCreateInput!) { metaobjectCreate(metaobject: $m) { metaobject { id } userErrors { message } } }`, {
-      m: { type: 'brenson_cotizacion_b2b', handle: quote.numero.toLowerCase(), fields: [
-        { key: 'numero', value: quote.numero },
-        { key: 'cliente', value: `gid://shopify/Customer/${body.customer_id}` },
-        // El portal filtra por este campo, no por `cliente`: un customer_reference no se resuelve de
-        // forma fiable desde Liquid en el storefront, así que "Mis cotizaciones" salía siempre vacío.
-        { key: 'cliente_id', value: String(body.customer_id) },
-        { key: 'items', value: JSON.stringify(quote.items) },
-        { key: 'subtotal', value: JSON.stringify({ amount: String(quote.subtotal_publico), currency_code: 'COP' }) },
-        { key: 'descuento_pct', value: String(quote.descuento_pct) },
-        { key: 'total', value: JSON.stringify({ amount: String(quote.total), currency_code: 'COP' }) },
-        { key: 'total_formateado', value: fmt(quote.total) },
-        { key: 'validez_dias', value: String(quote.validez_dias) },
-        { key: 'estado', value: quote.estado },
-        { key: 'observaciones', value: quote.observaciones || '' },
-        { key: 'pdf_url', value: pdfUrl },
-        { key: 'creada_en', value: quote.creada_en }
-      ] }
+      m: { type: 'brenson_cotizacion_b2b', handle: quote.numero.toLowerCase(), fields }
     });
   }
   if (quote.estado === 'enviada') {
@@ -221,6 +229,60 @@ app.get('/quotes/:id', async (c) => {
   const html = await pdf.get(id);
   if (!html) return c.notFound();
   return c.html(html);
+});
+
+/**
+ * Aceptar cotización → pedido borrador (Módulo 08, decisión "Opción A").
+ *
+ * Todo ocurre en una sola llamada atómica en el servidor: crear el draft order con el precio
+ * negociado congelado línea por línea y marcar la cotización como aceptada. Si quedara como dos
+ * pasos (aceptar, y luego que el asesor genere el pedido a mano), se reintroduce el riesgo que este
+ * endpoint existe para eliminar: que el valor del PDF y el del pedido no coincidan.
+ */
+app.post('/quotes/:numero/accept', async (c) => {
+  const numero = c.req.param('numero');
+  const body = await c.req.json().catch(() => null);
+  if (!body || !body.customer_id || !body.token) return jsonError(c, 422, 'Solicitud inválida');
+  const ip = c.req.header('cf-connecting-ip') || 'unknown';
+  if (!(await rateLimit(c.env, `accept:${ip}`, 5, 600))) return jsonError(c, 429, 'Demasiados intentos, intente más tarde');
+
+  const quote = await fetchQuoteByHandle(c.env, numero.toLowerCase());
+  if (!quote) return jsonError(c, 404, 'Cotización no encontrada');
+  if (!(await verifyToken(c.env, `accept:${numero}`, body.token))) return jsonError(c, 403, 'Enlace inválido o vencido');
+  if (quote.clienteId !== String(body.customer_id)) return jsonError(c, 403, 'Esta cotización no pertenece a este cliente');
+
+  if (quote.estado === 'aceptada' || quote.pedidoBorradorId) return c.json({ ok: true, numero, ya_aceptada: true });
+  if (quote.estado === 'vencida' || quote.estado === 'rechazada') return jsonError(c, 409, `Cotización ${quote.estado}`);
+  if (quote.estado !== 'enviada') return jsonError(c, 409, 'La cotización debe enviarse antes de aceptarse');
+
+  const vence = Date.parse(quote.creadaEn) + quote.validezDias * 864e5;
+  if (vence < Date.now()) {
+    await updateQuoteMetaobject(c.env, quote.id, [{ key: 'estado', value: 'vencida' }]);
+    return jsonError(c, 410, 'La cotización venció');
+  }
+
+  const { mail } = getProviders(c.env);
+  const draft = await createDraftOrder(c.env, {
+    customerId: `gid://shopify/Customer/${quote.clienteId}`,
+    items: quote.items,
+    note: `Generado desde cotización ${numero}`,
+    tags: ['b2b-cotizacion', numero]
+  });
+
+  await updateQuoteMetaobject(c.env, quote.id, [
+    { key: 'estado', value: 'aceptada' },
+    { key: 'pedido_borrador_id', value: draft.id },
+    { key: 'pedido_borrador_url', value: draft.invoiceUrl || '' }
+  ]);
+
+  const numericId = draft.id.split('/').pop();
+  await mail.send({
+    to: quote.asesorEmail || c.env.ADVISOR_EMAIL,
+    subject: `[ACEPTADA] ${numero} · pedido borrador ${draft.name}`,
+    html: `<p>El cliente aceptó la cotización ${numero} por ${fmt(quote.total)}.</p><p><a href="https://${c.env.SHOPIFY_SHOP}/admin/draft_orders/${numericId}">Abrir pedido borrador en Shopify Admin</a></p>`
+  });
+
+  return c.json({ ok: true, numero, pedido_borrador: draft.name });
 });
 
 /* ---------------- Documentos B2B (bucket privado, enlace firmado) ---------------- */

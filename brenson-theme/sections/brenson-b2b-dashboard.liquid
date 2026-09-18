@@ -104,7 +104,7 @@
         </div>
 
         {%- comment -%} Cotizaciones {%- endcomment -%}
-        <div class="brenson-b2b-card" id="cotizaciones">
+        <div class="brenson-b2b-card" id="cotizaciones" data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:1.6rem; flex-wrap:wrap">
             <h2 style="margin:0; font-size: var(--brenson-text-xl)">Mis cotizaciones</h2>
             <a class="brenson-btn brenson-btn--primary brenson-btn--sm" href="/pages/cotizador">Nueva cotización</a>
@@ -123,8 +123,8 @@
                       <td>{{ q.creada_en.value | date: '%d %b %Y' }}</td>
                       <td>{{ units }}</td>
                       <td class="brenson-num"><strong>{% render 'brenson-money-metafield', texto: q.total_formateado.value, valor: q.total.value %}</strong></td>
-                      <td>{%- case q.estado.value -%}{%- when 'enviada' -%}<span class="brenson-status brenson-status--ok">Enviada</span>{%- when 'aceptada' -%}<span class="brenson-status brenson-status--ok">Aceptada</span>{%- when 'borrador' -%}<span class="brenson-status brenson-status--pending">Borrador</span>{%- else -%}<span class="brenson-status brenson-status--muted">{{ q.estado.value | capitalize }}</span>{%- endcase -%}</td>
-                      <td style="text-align:right; white-space:nowrap">{%- if q.pdf_url.value -%}<a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ q.pdf_url.value }}" target="_blank" rel="noopener">PDF</a>{%- endif -%} <a class="brenson-btn brenson-btn--sm" href="/pages/cotizador?duplicar={{ q.numero.value }}">Duplicar</a></td>
+                      <td data-quote-estado>{%- case q.estado.value -%}{%- when 'enviada' -%}<span class="brenson-status brenson-status--ok">Enviada</span>{%- when 'aceptada' -%}<span class="brenson-status brenson-status--ok">Aceptada</span>{%- when 'borrador' -%}<span class="brenson-status brenson-status--pending">Borrador</span>{%- else -%}<span class="brenson-status brenson-status--muted">{{ q.estado.value | capitalize }}</span>{%- endcase -%}</td>
+                      <td style="text-align:right; white-space:nowrap">{%- if q.estado.value == 'enviada' -%}<button type="button" class="brenson-btn brenson-btn--primary brenson-btn--sm" data-accept-quote data-quote-numero="{{ q.numero.value }}" data-quote-token="{{ q.accept_token.value }}">Aceptar cotización</button>{%- endif -%} {%- if q.pdf_url.value -%}<a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ q.pdf_url.value }}" target="_blank" rel="noopener">PDF</a>{%- endif -%} <a class="brenson-btn brenson-btn--sm" href="/pages/cotizador?duplicar={{ q.numero.value }}">Duplicar</a></td>
                     </tr>
                   {%- endfor -%}
                 </tbody>
@@ -225,6 +225,7 @@
       </div>
     {%- endif -%}
   </div>
+  <script src="{{ 'brenson-b2b-dashboard.js' | asset_url }}" defer></script>
 </section>
 {%- endif -%}
 

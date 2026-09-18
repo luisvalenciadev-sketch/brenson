@@ -191,7 +191,10 @@
       { "key": "estado", "name": "Estado", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"borrador\",\"enviada\",\"aceptada\",\"vencida\",\"rechazada\"]" }] },
       { "key": "observaciones", "name": "Observaciones", "type": "multi_line_text_field" },
       { "key": "pdf_url", "name": "PDF", "type": "url" },
-      { "key": "creada_en", "name": "Creada en", "type": "date_time" }
+      { "key": "creada_en", "name": "Creada en", "type": "date_time" },
+      { "key": "accept_token", "name": "Token de aceptación", "type": "single_line_text_field" },
+      { "key": "pedido_borrador_id", "name": "Draft order", "type": "single_line_text_field" },
+      { "key": "pedido_borrador_url", "name": "URL pedido borrador", "type": "url" }
     ]}
   ],
   "facetas_search_discovery": [

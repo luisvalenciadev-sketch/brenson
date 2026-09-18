@@ -1,4 +1,4 @@
-import type { Env } from '../types';
+import type { DraftOrderResult, Env, QuoteItem } from '../types';
 
 export async function shopifyAdmin<T = unknown>(env: Env, query: string, variables: Record<string, unknown> = {}): Promise<T> {
   if (!env.SHOPIFY_ADMIN_TOKEN) throw new Error('SHOPIFY_ADMIN_TOKEN no configurado');
@@ -78,6 +78,90 @@ export async function fetchCustomerTier(env: Env, customerId: string): Promise<{
   if (!c || !c.tags.includes('cliente-corporativo') || !c.tier?.reference) return null;
   const f = Object.fromEntries(c.tier.reference.fields.map((x) => [x.key, x.value]));
   return { codigo: f.codigo, descuento: parseFloat(f.descuento_pct || '0'), nombre: f.nombre };
+}
+
+/** Lee una cotización por su handle (numero en minúsculas) para el flujo de aceptación. */
+export async function fetchQuoteByHandle(env: Env, handle: string): Promise<{
+  id: string;
+  estado: string;
+  clienteId: string | null;
+  items: QuoteItem[];
+  total: number;
+  creadaEn: string;
+  validezDias: number;
+  acceptToken: string | null;
+  pedidoBorradorId: string | null;
+  asesorEmail: string | null;
+} | null> {
+  const data = await shopifyAdmin<{ metaobjectByHandle: {
+    id: string;
+    estado: { value: string } | null;
+    clienteId: { value: string } | null;
+    items: { value: string } | null;
+    total: { value: string } | null;
+    creadaEn: { value: string } | null;
+    validezDias: { value: string } | null;
+    acceptToken: { value: string } | null;
+    pedidoBorradorId: { value: string } | null;
+    asesor: { reference: { fields: { key: string; value: string }[] } | null } | null;
+  } | null }>(env,
+    `query($handle: MetaobjectHandleInput!) { metaobjectByHandle(handle: $handle) {
+      id
+      estado: field(key: "estado") { value }
+      clienteId: field(key: "cliente_id") { value }
+      items: field(key: "items") { value }
+      total: field(key: "total") { value }
+      creadaEn: field(key: "creada_en") { value }
+      validezDias: field(key: "validez_dias") { value }
+      acceptToken: field(key: "accept_token") { value }
+      pedidoBorradorId: field(key: "pedido_borrador_id") { value }
+      asesor: field(key: "asesor") { reference { ... on Metaobject { fields { key value } } } }
+    } }`, { handle: { type: 'brenson_cotizacion_b2b', handle } });
+  const m = data.metaobjectByHandle;
+  if (!m) return null;
+  let total = 0;
+  try { total = Number(JSON.parse(m.total?.value || '{}').amount || 0); } catch { total = 0; }
+  const asesorFields = m.asesor?.reference ? Object.fromEntries(m.asesor.reference.fields.map((f) => [f.key, f.value])) : null;
+  return {
+    id: m.id,
+    estado: m.estado?.value || 'borrador',
+    clienteId: m.clienteId?.value || null,
+    items: m.items?.value ? JSON.parse(m.items.value) : [],
+    total,
+    creadaEn: m.creadaEn?.value || new Date().toISOString(),
+    validezDias: Number(m.validezDias?.value || 15),
+    acceptToken: m.acceptToken?.value || null,
+    pedidoBorradorId: m.pedidoBorradorId?.value || null,
+    asesorEmail: asesorFields?.email || null
+  };
+}
+
+/** Actualiza campos puntuales de una cotización ya creada (aceptar, marcar vencida, etc). */
+export async function updateQuoteMetaobject(env: Env, id: string, fields: { key: string; value: string }[]): Promise<void> {
+  const data = await shopifyAdmin<{ metaobjectUpdate: { userErrors: { field: string[] | null; message: string }[] } }>(env,
+    `mutation($id: ID!, $m: MetaobjectUpdateInput!) { metaobjectUpdate(id: $id, metaobject: $m) { userErrors { field message } } }`, { id, m: { fields } });
+  if (data.metaobjectUpdate.userErrors.length) throw new Error(data.metaobjectUpdate.userErrors.map((e) => e.message).join('; '));
+}
+
+/**
+ * Crea el pedido borrador con el precio negociado congelado línea por línea (`originalUnitPrice`):
+ * Shopify no debe recalcular contra el precio de catálogo, porque el total del draft order tiene que
+ * coincidir centavo a centavo con lo que ya se le facturó al cliente en el PDF de la cotización.
+ */
+export async function createDraftOrder(env: Env, input: { customerId: string; items: QuoteItem[]; note: string; tags: string[] }): Promise<DraftOrderResult> {
+  const lineItems = input.items.map((i) => ({
+    variantId: i.variant_id.startsWith('gid://') ? i.variant_id : `gid://shopify/ProductVariant/${i.variant_id}`,
+    quantity: i.cantidad,
+    originalUnitPrice: String(i.precio_unitario)
+  }));
+  const data = await shopifyAdmin<{ draftOrderCreate: { draftOrder: { id: string; name: string; invoiceUrl: string | null } | null; userErrors: { field: string[] | null; message: string }[] } }>(env,
+    `mutation($input: DraftOrderInput!) { draftOrderCreate(input: $input) { draftOrder { id name invoiceUrl } userErrors { field message } } }`,
+    // Sin `email`: al dar `customerId`, Shopify usa el correo del cliente. No lo tenemos persistido en
+    // el metaobject de la cotización (solo viaja en el correo de aviso, no se guarda).
+    { input: { customerId: input.customerId, note2: input.note, tags: input.tags, useCustomerDefaultAddress: true, lineItems } });
+  const { draftOrder, userErrors } = data.draftOrderCreate;
+  if (!draftOrder) throw new Error(userErrors.map((e) => e.message).join('; ') || 'draftOrderCreate sin resultado');
+  return draftOrder;
 }
 
 export async function verifyShopifyHmac(rawBody: string, hmacHeader: string, secret: string) {

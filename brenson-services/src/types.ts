@@ -51,7 +51,7 @@ export interface QuoteItem {
 
 export interface Quote {
   numero: string;
-  estado: 'borrador' | 'enviada';
+  estado: 'borrador' | 'enviada' | 'aceptada' | 'vencida' | 'rechazada';
   empresa: string;
   email: string;
   tier: string;
@@ -65,6 +65,12 @@ export interface Quote {
   unidades: number;
   creada_en: string;
   pdf_url?: string;
+}
+
+export interface DraftOrderResult {
+  id: string;
+  name: string;
+  invoiceUrl: string | null;
 }
 
 export interface Providers {
