@@ -16,6 +16,10 @@ body.brenson-empresas .brenson-trust__text { color: rgba(255,255,255,.6); }
   border-radius: var(--brenson-radius-xl); padding: var(--brenson-space-6);
   display: flex; flex-direction: column; gap: var(--brenson-space-3);
   box-shadow: var(--brenson-shadow);
+  /* .brenson-empresas fija --brenson-on-surface-muted en un gris claro pensado para el
+     fondo carbón de la página; esta tarjeta es blanca, así que necesita su propio gris
+     oscuro o el texto .brenson-muted queda casi invisible sobre blanco. */
+  --brenson-on-surface-muted: var(--brenson-gris);
 }
 body.brenson-empresas .brenson-b2b-card .brenson-heading { color: var(--brenson-carbon); }
 body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brenson-gris); }
@@ -24,6 +28,12 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 .brenson-b2b-hero { display: grid; gap: var(--brenson-space-8); align-items: center; padding-block: var(--brenson-space-8); }
 @media (min-width: 990px) { .brenson-b2b-hero { grid-template-columns: 1.3fr 1fr; padding-block: var(--brenson-space-12); } }
 .brenson-b2b-block { padding-block: var(--brenson-space-12); border-top: 1px solid rgba(255,255,255,.08); }
+/* Layout base de .brenson-partners: solo estaba definido dentro del <style> de
+   brenson-social-proof.liquid, así que en páginas sin esa sección (como este gate B2B)
+   el <ul> caía al bullet list vertical por defecto del navegador. */
+.brenson-partners { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--brenson-space-8); align-items: center; }
+.brenson-partners img { height: 3.6rem; width: auto; }
+.brenson-partner__ph { font-weight: 800; font-size: var(--brenson-text-lg); color: var(--brenson-carbon-60); letter-spacing: -.01em; }
 .brenson-partners--dark { filter: none; opacity: 1; }
 .brenson-partners--dark img { filter: brightness(0) invert(1); opacity: .7; }
 .brenson-partners--dark .brenson-partner__ph { color: rgba(255,255,255,.6); }

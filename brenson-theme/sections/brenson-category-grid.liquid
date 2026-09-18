@@ -34,7 +34,7 @@
               </div>
             {%- endif -%}
             {%- if block.settings.tag != blank -%}
-              <div class="brenson-card__badges"><span class="brenson-badge brenson-badge--carbon brenson-badge--sm">{{ block.settings.tag }}</span></div>
+              <div class="brenson-card__badges"><span class="brenson-badge brenson-badge--verde brenson-badge--sm">{{ block.settings.tag }}</span></div>
             {%- endif -%}
           </div>
           <div class="brenson-card__body">
@@ -42,9 +42,9 @@
             <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0;">{{ block.settings.text | default: col.description | strip_html | truncate: 90 }}</p>
             <div class="brenson-card__footer">
               {%- if min_price -%}
-                <span class="brenson-num" style="font-size: var(--brenson-text-sm);">Desde <strong>{{ min_price | money_without_trailing_zeros }}</strong></span>
+                <span class="brenson-num" style="font-size: var(--brenson-text-sm);">Desde <strong style="color: var(--brenson-rojo)">{{ min_price | money_without_trailing_zeros }}</strong></span>
               {%- endif -%}
-              <span class="brenson-btn brenson-btn--outline brenson-btn--sm">Explorar categoría</span>
+              <span class="brenson-btn brenson-btn--primary brenson-btn--sm">Explorar categoría</span>
             </div>
           </div>
         </li>

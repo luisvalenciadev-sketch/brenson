@@ -44,7 +44,7 @@
         {%- assign shown = shown | plus: 1 -%}
         <details {% if forloop.first %}open{% endif %}>
           <summary>{{ faq.pregunta.value }}</summary>
-          <div class="brenson-accordion__body">{{ faq.respuesta.value | metafield_tag }}</div>
+          <div class="brenson-accordion__body">{{ faq.respuesta | metafield_tag }}</div>
         </details>
       {%- endfor -%}
     </div>
@@ -74,7 +74,7 @@
       {%- if n >= limit -%}{%- break -%}{%- endif -%}
       {%- if n > 0 -%},{%- endif -%}
       {%- assign n = n | plus: 1 -%}
-      { "@type": "Question", "name": {{ faq.pregunta.value | json }}, "acceptedAnswer": { "@type": "Answer", "text": {{ faq.respuesta.value | metafield_tag | strip_html | json }} } }
+      { "@type": "Question", "name": {{ faq.pregunta.value | json }}, "acceptedAnswer": { "@type": "Answer", "text": {{ faq.respuesta | metafield_tag | strip_html | json }} } }
     {%- endfor -%}
   ]
 }

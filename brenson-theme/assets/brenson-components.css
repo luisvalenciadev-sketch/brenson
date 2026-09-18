@@ -102,8 +102,8 @@
 .brenson-btn--primary:hover { background: var(--brenson-rojo-hover); }
 .brenson-btn--carbon { background: var(--brenson-carbon); color: #fff; }
 .brenson-btn--carbon:hover { background: var(--brenson-carbon-80); }
-.brenson-btn--outline { background: transparent; color: var(--brenson-carbon); border-color: var(--brenson-carbon); }
-.brenson-btn--outline:hover { background: var(--brenson-gris-claro); }
+.brenson-btn--outline { background: transparent; color: var(--brenson-rojo); border-color: var(--brenson-rojo); }
+.brenson-btn--outline:hover { background: var(--brenson-rojo-suave); }
 .brenson-btn--outline-red { background: transparent; color: var(--brenson-rojo); border-color: var(--brenson-rojo); }
 .brenson-btn--outline-red:hover { background: var(--brenson-rojo-suave); }
 .brenson-btn--white { background: #fff; color: var(--brenson-carbon); }
@@ -218,7 +218,7 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 .brenson-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .brenson-card__badges { position: absolute; top: var(--brenson-space-3); left: var(--brenson-space-3); display: flex; gap: var(--brenson-space-2); z-index: 1; }
 .brenson-card__quick {
-  position: absolute; right: var(--brenson-space-3); bottom: var(--brenson-space-3);
+  position: absolute; right: var(--brenson-space-3); bottom: var(--brenson-space-3); z-index: 2;
   width: 4rem; height: 4rem; border-radius: 50%;
   background: #fff; border: 1px solid var(--brenson-gris-borde);
   display: grid; place-items: center; cursor: pointer;
@@ -227,7 +227,7 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 .brenson-card:hover .brenson-card__quick, .brenson-card__quick:focus-visible { opacity: 1; }
 @media (hover: none) { .brenson-card__quick { opacity: 1; } }
 .brenson-card__wishlist {
-  position: absolute; right: var(--brenson-space-3); top: var(--brenson-space-3); z-index: 1;
+  position: absolute; right: var(--brenson-space-3); top: var(--brenson-space-3); z-index: 2;
   width: 3.2rem; height: 3.2rem; border-radius: 50%;
   background: rgba(255,255,255,.9); border: 0; color: var(--brenson-gris);
   display: grid; place-items: center; cursor: pointer;
@@ -417,7 +417,7 @@ a.brenson-chip.is-active:hover { color: #fff; }
   border: 1.5px solid #8a8f99; border-radius: var(--brenson-radius);
   font-family: var(--brenson-font); font-size: var(--brenson-text-md); background: #fff; color: var(--brenson-carbon);
 }
-.brenson-field input::placeholder, .brenson-field textarea::placeholder { color: var(--brenson-gris); opacity: 1; }
+.brenson-field input::placeholder, .brenson-field textarea::placeholder { color: var(--brenson-carbon-60); opacity: 1; }
 .brenson-field input:focus, .brenson-field select:focus, .brenson-field textarea:focus { outline: 2px solid var(--brenson-carbon); outline-offset: 1px; border-color: var(--brenson-carbon); }
 /* Radios y checkboxes no son campos de texto: la regla de arriba los estiraba al
    100% del ancho y con 4.8rem de alto, lo que empujaba la etiqueta fuera del control. */
