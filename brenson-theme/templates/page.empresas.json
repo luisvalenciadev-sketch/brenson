@@ -16,7 +16,7 @@
         "title": "Resultados reales de empresas que ya operan con Brenson",
         "subtitle": "",
         "limit": 8,
-        "visibilidad_b2b": "landing_y_portal"
+        "visibilidad_b2b": "solo_anon"
       }
     },
     "dashboard": {
