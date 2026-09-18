@@ -127,7 +127,10 @@
       {%- if logos != blank -%}
         <div class="brenson-b2b-block" style="padding-block: var(--brenson-space-8)">
           <p class="brenson-eyebrow" style="justify-content:center; width:100%; color: rgba(255,255,255,.5)">Empresas que ya operan con Brenson en Colombia</p>
-          <ul class="brenson-partners brenson-partners--dark" role="list">{{ logos }}</ul>
+          <div class="brenson-partners__marquee">
+            <ul class="brenson-partners brenson-partners--dark" role="list">{{ logos }}</ul>
+            <ul class="brenson-partners brenson-partners--dark" role="list" aria-hidden="true">{{ logos }}</ul>
+          </div>
         </div>
       {%- endif -%}
 

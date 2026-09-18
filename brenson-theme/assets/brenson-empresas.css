@@ -31,9 +31,15 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 /* Layout base de .brenson-partners: solo estaba definido dentro del <style> de
    brenson-social-proof.liquid, así que en páginas sin esa sección (como este gate B2B)
    el <ul> caía al bullet list vertical por defecto del navegador. */
+.brenson-partners__marquee { display: flex; gap: var(--brenson-space-8); width: 100%; max-width: 100%; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.brenson-partners__marquee .brenson-partners { flex-wrap: nowrap; flex-shrink: 0; width: max-content; animation: brenson-marquee 28s linear infinite; }
+.brenson-partners__marquee:hover .brenson-partners { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .brenson-partners__marquee .brenson-partners { animation: none; } .brenson-partners__marquee { overflow-x: auto; } }
+@keyframes brenson-marquee { from { transform: translateX(0); } to { transform: translateX(calc(-100% - var(--brenson-space-8))); } }
 .brenson-partners { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--brenson-space-8); align-items: center; }
-.brenson-partners img { height: 3.6rem; width: auto; }
-.brenson-partner__ph { font-weight: 800; font-size: var(--brenson-text-lg); color: var(--brenson-carbon-60); letter-spacing: -.01em; }
+.brenson-partners img { height: 3.6rem; width: auto; flex-shrink: 0; }
+.brenson-partner { flex-shrink: 0; }
+.brenson-partner__ph { font-weight: 800; font-size: var(--brenson-text-lg); color: var(--brenson-carbon-60); letter-spacing: -.01em; white-space: nowrap; }
 .brenson-partners--dark .brenson-partner { background: #fff; border-radius: var(--brenson-radius-md, 0.8rem); padding: var(--brenson-space-3) var(--brenson-space-5); display: flex; align-items: center; }
 .brenson-partners--dark .brenson-partner__ph { color: var(--brenson-carbon-60); }
 .brenson-b2b-hero__chips { list-style:none; margin: var(--brenson-space-4) 0 0; padding:0; display:flex; flex-wrap:wrap; gap: var(--brenson-space-4); }
