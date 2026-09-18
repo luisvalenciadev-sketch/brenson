@@ -1492,3 +1492,64 @@ a.product__text {
     border: none;
   }
 }
+
+/* Brenson: en desktop, la tira de miniaturas del layout "thumbnail_slider" va al
+   costado del carrusel principal en vez de debajo. Se apunta al elemento
+   <media-gallery> específicamente (no solo a .product__column-sticky, clase que
+   también usa el bloque de precio/compra) para no afectar el resto de la ficha.
+   Además se desactiva el "sticky" de esta columna: con la tira vertical, quedar
+   pegada al hacer scroll se veía desalineada con el breadcrumb/header. */
+@media screen and (min-width: 990px) {
+  .product--thumbnail_slider media-gallery.product__column-sticky {
+    position: static;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    gap: var(--brenson-space-4, 1.6rem);
+  }
+
+  .product--thumbnail_slider media-gallery.product__column-sticky > .slider-mobile-gutter:not(.thumbnail-slider) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .product--thumbnail_slider media-gallery.product__column-sticky > .thumbnail-slider {
+    flex: 0 0 8.8rem;
+    width: 8.8rem;
+    max-height: 60rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+
+  .product--thumbnail_slider media-gallery.product__column-sticky > .thumbnail-slider .slider-button {
+    position: static;
+    flex-shrink: 0;
+    margin: 0 auto;
+    transform: rotate(90deg);
+  }
+
+  .product--thumbnail_slider media-gallery.product__column-sticky > .thumbnail-slider .thumbnail-list.slider--tablet-up {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-padding-left: 0;
+    padding: 0.5rem;
+    gap: 0.8rem;
+    max-height: 48rem;
+  }
+
+  .product--thumbnail_slider media-gallery.product__column-sticky > .thumbnail-slider .thumbnail-list.slider--tablet-up .thumbnail-list__item.slider__slide {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .product--thumbnail_slider media-gallery.product__column-sticky > .thumbnail-slider .thumbnail[aria-current] {
+    box-shadow: 0 0 0 0.2rem rgb(var(--color-foreground));
+  }
+
+  .product--thumbnail_slider .product__info-container.product__column-sticky {
+    position: static;
+  }
+}

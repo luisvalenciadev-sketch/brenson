@@ -13,15 +13,14 @@
         "cta_whatsapp": { "type": "brenson_cta_whatsapp" },
         "cta_cotizar": { "type": "brenson_cta_cotizar" },
         "buy_buttons": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": false, "show_gift_card_recipient": false } },
-        "micro_garantias": { "type": "brenson_micro_garantias" },
-        "description": { "type": "description" }
+        "micro_garantias": { "type": "brenson_micro_garantias" }
       },
-      "block_order": ["certificado", "title", "subtitle", "specs_clave", "variant_picker", "precio_cuota", "cta_whatsapp", "cta_cotizar", "buy_buttons", "micro_garantias", "description"],
+      "block_order": ["certificado", "title", "subtitle", "specs_clave", "variant_picker", "precio_cuota", "cta_whatsapp", "cta_cotizar", "buy_buttons", "micro_garantias"],
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
         "media_position": "left",
-        "gallery_layout": "thumbnail",
+        "gallery_layout": "thumbnail_slider",
         "media_size": "medium",
         "constrain_to_viewport": true,
         "media_fit": "contain",
