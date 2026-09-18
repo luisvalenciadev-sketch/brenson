@@ -57,7 +57,10 @@
           {%- if logos != blank -%}
             <div class="brenson-social-proof__block" {{ block.shopify_attributes }}>
               <p class="brenson-eyebrow" style="justify-content:center; width:100%; color: var(--brenson-gris)">{{ block.settings.title }}</p>
-              <ul class="brenson-partners" role="list">{{ logos }}</ul>
+              <div class="brenson-partners__marquee">
+                <ul class="brenson-partners" role="list">{{ logos }}</ul>
+                <ul class="brenson-partners" role="list" aria-hidden="true">{{ logos }}</ul>
+              </div>
             </div>
           {%- endif -%}
 
@@ -90,9 +93,15 @@
   .brenson-testimonial__meta > div { display: flex; flex-direction: column; flex: 1; }
   .brenson-testimonial__avatar { width: 4.4rem; height: 4.4rem; border-radius: 50%; object-fit: cover; }
   .brenson-testimonial__avatar--ph { display: grid; place-items: center; background: var(--brenson-carbon); color: #fff; font-weight: 700; }
-  .brenson-partners { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--brenson-space-8); align-items: center; filter: grayscale(1); opacity: .75; }
-  .brenson-partners img { height: 3.6rem; width: auto; }
-  .brenson-partner__ph { font-weight: 800; font-size: var(--brenson-text-lg); color: var(--brenson-carbon-60); letter-spacing: -.01em; }
+  .brenson-partners__marquee { display: flex; width: 100%; max-width: 100%; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .brenson-partners__marquee .brenson-partners { flex-wrap: nowrap; flex-shrink: 0; width: max-content; animation: brenson-marquee 28s linear infinite; }
+  .brenson-partners { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: var(--brenson-space-8); align-items: center; }
+  .brenson-partners img { height: 3.6rem; width: auto; flex-shrink: 0; }
+  .brenson-partner { flex-shrink: 0; }
+  .brenson-partner__ph { font-weight: 800; font-size: var(--brenson-text-lg); color: var(--brenson-carbon-60); letter-spacing: -.01em; white-space: nowrap; }
+  @keyframes brenson-marquee { from { transform: translateX(0); } to { transform: translateX(calc(-100% - var(--brenson-space-8))); } }
+  .brenson-partners__marquee:hover .brenson-partners { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) { .brenson-partners__marquee .brenson-partners { animation: none; } .brenson-partners__marquee { overflow-x: auto; } }
   .brenson-counters { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--brenson-space-6); text-align: center; }
   @media (min-width: 750px) { .brenson-counters { grid-template-columns: repeat(4, 1fr); } }
   .brenson-counter strong { font-size: clamp(3.6rem, 4vw, 5.6rem); font-weight: 800; color: var(--brenson-carbon); line-height: 1; }
