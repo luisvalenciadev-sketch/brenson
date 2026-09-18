@@ -173,14 +173,6 @@
         "collection": "destacados"
       }
     },
-    "casos": {
-      "type": "brenson-case-studies",
-      "settings": {
-        "eyebrow": "Impacto en operación real",
-        "title": "Rentabilidad y sostenibilidad comprobadas en Colombia",
-        "subtitle": "Conoce cómo empresas y emprendedores del país han transformado sus costos logísticos con Brenson."
-      }
-    },
     "videos": {
       "type": "brenson-video-carousel",
       "settings": {
@@ -254,7 +246,6 @@
     "categorias",
     "destacados",
     "financiacion",
-    "casos",
     "videos",
     "prueba_social",
     "empresas_cta",

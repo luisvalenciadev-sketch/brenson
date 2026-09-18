@@ -10,12 +10,12 @@
       }
     },
     "casos": {
-      "type": "brenson-case-studies",
+      "type": "brenson-video-carousel",
       "settings": {
         "eyebrow": "Caso de estudio logístico",
         "title": "Resultados reales de empresas que ya operan con Brenson",
         "subtitle": "",
-        "limit": 2
+        "limit": 8
       }
     },
     "dashboard": {

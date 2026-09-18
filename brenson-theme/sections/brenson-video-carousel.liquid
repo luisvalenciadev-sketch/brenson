@@ -13,30 +13,44 @@
   assign sim = settings.brenson_modo_simulacion
   assign testimonios = shop.metaobjects.brenson_testimonio.values
   assign casos = shop.metaobjects.brenson_caso_uso.values
-  assign entradas = testimonios | concat: casos
+  assign total = testimonios.size | plus: casos.size
 -%}
 {%- capture slides -%}
   {%- assign n = 0 -%}
-  {%- for e in entradas limit: section.settings.limit -%}
-    {%- if e.video.value == blank -%}{%- continue -%}{%- endif -%}
-    {%- if e.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
+  {%- for t in testimonios -%}
+    {%- if n >= section.settings.limit -%}{%- break -%}{%- endif -%}
+    {%- if t.video.value == blank -%}{%- continue -%}{%- endif -%}
+    {%- if t.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
     {%- assign n = n | plus: 1 -%}
-    <li class="brenson-video-feat__slide" role="group" aria-roledescription="diapositiva" aria-label="{{ n }} de {{ entradas.size }}">
+    <li class="brenson-video-feat__slide" role="group" aria-roledescription="diapositiva" aria-label="{{ n }} de {{ total }}">
       <div class="brenson-video-feat__card">
-        {%- unless e.verificado.value -%}<span class="brenson-status brenson-status--pending brenson-video-feat__mock">[MOCK]</span>{%- endunless -%}
+        {%- unless t.verificado.value -%}<span class="brenson-status brenson-status--pending brenson-video-feat__mock">[MOCK]</span>{%- endunless -%}
         <div class="brenson-video-feat__media">
-          <video class="brenson-video-feat__el" src="{{ e.video.value | file_url }}" controls muted playsinline preload="metadata" poster="{% if e.type == 'brenson_caso_uso' and e.imagen.value %}{{ e.imagen.value | image_url: width: 900 }}{% elsif e.type == 'brenson_testimonio' and e.foto.value %}{{ e.foto.value | image_url: width: 900 }}{% endif %}"></video>
+          {{ t.video.value | video_tag: image_size: '900x', class: 'brenson-video-feat__el', controls: true, muted: true, preload: 'metadata' }}
         </div>
         <div class="brenson-video-feat__body">
-          {%- if e.type == 'brenson_caso_uso' -%}
-            <h3 class="brenson-video-feat__titulo">{{ e.cliente.value | default: e.titulo.value }}</h3>
-            {%- if e.titulo.value != blank and e.cliente.value != blank -%}<p class="brenson-video-feat__sub">{{ e.titulo.value }}</p>{%- endif -%}
-            {%- if e.resumen.value != blank -%}<p class="brenson-video-feat__texto">{{ e.resumen.value }}</p>{%- endif -%}
-          {%- else -%}
-            <h3 class="brenson-video-feat__titulo">{{ e.nombre.value }}</h3>
-            {%- if e.empresa.value != blank or e.ciudad.value != blank -%}<p class="brenson-video-feat__sub">{{ e.empresa.value }}{% if e.empresa.value != blank and e.ciudad.value != blank %} · {% endif %}{{ e.ciudad.value }}</p>{%- endif -%}
-            {%- if e.texto.value != blank -%}<p class="brenson-video-feat__texto">&ldquo;{{ e.texto.value }}&rdquo;</p>{%- endif -%}
-          {%- endif -%}
+          <h3 class="brenson-video-feat__titulo">{{ t.nombre.value }}</h3>
+          {%- if t.empresa.value != blank or t.ciudad.value != blank -%}<p class="brenson-video-feat__sub">{{ t.empresa.value }}{% if t.empresa.value != blank and t.ciudad.value != blank %} · {% endif %}{{ t.ciudad.value }}</p>{%- endif -%}
+          {%- if t.texto.value != blank -%}<p class="brenson-video-feat__texto">&ldquo;{{ t.texto.value }}&rdquo;</p>{%- endif -%}
+        </div>
+      </div>
+    </li>
+  {%- endfor -%}
+  {%- for c in casos -%}
+    {%- if n >= section.settings.limit -%}{%- break -%}{%- endif -%}
+    {%- if c.video.value == blank -%}{%- continue -%}{%- endif -%}
+    {%- if c.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
+    {%- assign n = n | plus: 1 -%}
+    <li class="brenson-video-feat__slide" role="group" aria-roledescription="diapositiva" aria-label="{{ n }} de {{ total }}">
+      <div class="brenson-video-feat__card">
+        {%- unless c.verificado.value -%}<span class="brenson-status brenson-status--pending brenson-video-feat__mock">[MOCK]</span>{%- endunless -%}
+        <div class="brenson-video-feat__media">
+          {{ c.video.value | video_tag: image_size: '900x', class: 'brenson-video-feat__el', controls: true, muted: true, preload: 'metadata' }}
+        </div>
+        <div class="brenson-video-feat__body">
+          <h3 class="brenson-video-feat__titulo">{{ c.cliente.value | default: c.titulo.value }}</h3>
+          {%- if c.titulo.value != blank and c.cliente.value != blank -%}<p class="brenson-video-feat__sub">{{ c.titulo.value }}</p>{%- endif -%}
+          {%- if c.resumen.value != blank -%}<p class="brenson-video-feat__texto">{{ c.resumen.value }}</p>{%- endif -%}
         </div>
       </div>
     </li>
