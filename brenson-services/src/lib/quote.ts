@@ -1,7 +1,12 @@
 import type { Env, Quote, QuoteItem } from '../types';
 import { fetchVariants, fetchCustomerTier, shopifyAdmin } from './shopify';
 
-const fmt = (n: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(n);
+/**
+ * Formato de moneda colombiano: separador de miles con punto y sin decimales ($ 10.304.000).
+ * Se exporta porque el portal guarda este mismo texto en el metaobjeto (`total_formateado`): así la
+ * cifra del PDF y la de la tabla "Mis cotizaciones" salen del mismo formateador y no pueden diferir.
+ */
+export const fmt = (n: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(n);
 
 /** Cuota mensual, sistema francés. Misma fórmula que brenson-simulator.js y brenson-price.liquid. */
 export function cuotaMensual(precio: number, inicialPct: number, plazo: number, tasaPct: number): number {

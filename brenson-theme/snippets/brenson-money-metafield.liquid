@@ -14,13 +14,23 @@
   Uso: {% render 'brenson-money-metafield', valor: q.total.value %}
 {%- endcomment -%}
 {%- liquid
-  assign monto = valor.amount
-  if monto != blank
-    assign centavos = monto | times: 100 | round
-    echo centavos | money_without_trailing_zeros
-  elsif valor != blank
-    echo valor
+  comment
+    1) `texto` es la vía fiable: el worker guarda el total ya formateado ($ 10.304.000) con el mismo
+       formateador que usa el PDF. No depende de cómo Liquid resuelva un campo `money`.
+    2) Si no hay texto (cotizaciones viejas), se intenta con el filtro de moneda sobre los centavos.
+    3) Si nada resuelve, guion. Nunca "$0" ni el número crudo: ambos se leen como un dato real y
+       equivocado, mientras que un guion se lee como "falta el dato".
+  endcomment
+  if texto != blank
+    echo texto
   else
-    echo '—'
+    assign monto = valor.amount | default: valor
+    if monto != blank
+      assign centavos = monto | times: 100 | round
+      assign formateado = centavos | money_without_trailing_zeros
+      echo formateado
+    else
+      echo '—'
+    endif
   endif
 -%}

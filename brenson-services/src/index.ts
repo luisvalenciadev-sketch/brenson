@@ -18,7 +18,7 @@ import { cors } from 'hono/cors';
 import type { Env } from './types';
 import { getProviders } from './providers';
 import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, createCustomer, updateCustomerNoteAndTags, setCustomerMetafield, setCustomerMetafields } from './lib/shopify';
-import { computeQuote, quoteHtml, specSheetHtml, nextQuoteNumber } from './lib/quote';
+import { computeQuote, quoteHtml, specSheetHtml, nextQuoteNumber, fmt } from './lib/quote';
 import { verifyTurnstile, rateLimit, jsonError, scoreFor, signPath, verifySignedPath, signToken, verifyToken } from './lib/util';
 
 const app = new Hono<{ Bindings: Env }>();
@@ -197,6 +197,7 @@ app.post('/quote', async (c) => {
         { key: 'subtotal', value: JSON.stringify({ amount: String(quote.subtotal_publico), currency_code: 'COP' }) },
         { key: 'descuento_pct', value: String(quote.descuento_pct) },
         { key: 'total', value: JSON.stringify({ amount: String(quote.total), currency_code: 'COP' }) },
+        { key: 'total_formateado', value: fmt(quote.total) },
         { key: 'validez_dias', value: String(quote.validez_dias) },
         { key: 'estado', value: quote.estado },
         { key: 'observaciones', value: quote.observaciones || '' },
