@@ -15,7 +15,8 @@
         "eyebrow": "Caso de estudio logístico",
         "title": "Resultados reales de empresas que ya operan con Brenson",
         "subtitle": "",
-        "limit": 8
+        "limit": 8,
+        "visibilidad_b2b": "landing_y_portal"
       }
     },
     "dashboard": {

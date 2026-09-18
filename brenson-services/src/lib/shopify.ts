@@ -12,14 +12,20 @@ export async function shopifyAdmin<T = unknown>(env: Env, query: string, variabl
   return json.data;
 }
 
-export async function findCustomerByEmail(env: Env, email: string): Promise<{ id: string; tags: string[]; note: string | null } | null> {
-  const data = await shopifyAdmin<{ customers: { nodes: { id: string; tags: string[]; note: string | null }[] } }>(env,
-    `query($q: String!) { customers(first: 1, query: $q) { nodes { id tags note } } }`, { q: `email:${email}` });
+export async function findCustomerByEmail(env: Env, email: string): Promise<{ id: string; tags: string[]; note: string | null; firstName: string | null; lastName: string | null } | null> {
+  const data = await shopifyAdmin<{ customers: { nodes: { id: string; tags: string[]; note: string | null; firstName: string | null; lastName: string | null }[] } }>(env,
+    `query($q: String!) { customers(first: 1, query: $q) { nodes { id tags note firstName lastName } } }`, { q: `email:${email}` });
   return data.customers.nodes[0] || null;
 }
 
-export async function updateCustomerNoteAndTags(env: Env, id: string, note: string, addTags: string[]) {
-  await shopifyAdmin(env, `mutation($input: CustomerInput!) { customerUpdate(input: $input) { customer { id } userErrors { message } } }`, { input: { id, note } });
+/**
+ * `extra` permite completar el nombre del contacto en la conversión de una cuenta existente: las
+ * cuentas nuevas de Shopify no piden nombre al registrarse, así que el cliente llega sin él y el
+ * admin mostraría "null null" en la lista de solicitudes. Solo se envía lo que venga definido, para
+ * no pisar un nombre que el cliente ya tuviera.
+ */
+export async function updateCustomerNoteAndTags(env: Env, id: string, note: string, addTags: string[], extra: { firstName?: string; lastName?: string } = {}) {
+  await shopifyAdmin(env, `mutation($input: CustomerInput!) { customerUpdate(input: $input) { customer { id } userErrors { message } } }`, { input: { id, note, ...extra } });
   await shopifyAdmin(env, `mutation($id: ID!, $tags: [String!]!) { tagsAdd(id: $id, tags: $tags) { userErrors { message } } }`, { id, tags: addTags });
 }
 

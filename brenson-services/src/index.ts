@@ -75,10 +75,14 @@ app.post('/lead', async (c) => {
  */
 app.post('/b2b/request', async (c) => {
   const ip = c.req.header('cf-connecting-ip') || 'unknown';
-  if (!(await rateLimit(c.env, `b2b:${ip}`, 5, 3600))) return jsonError(c, 429, 'Demasiadas solicitudes. Intente más tarde o escríbanos por WhatsApp.');
   const body = await c.req.json().catch(() => null);
   if (!body || !body.email || !body.nit || !body.razon_social) return jsonError(c, 422, 'Datos incompletos');
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(body.email))) return jsonError(c, 422, 'Correo inválido');
+  // El rate limit va DESPUÉS de validar: si contara los envíos malformados, cinco errores de tipeo
+  // bastarían para dejar a una empresa legítima bloqueada una hora. Validar no cuesta E/S, así que
+  // un bot con basura no consume cupo. 10/hora deja margen para reintentos honestos (una oficina
+  // entera comparte una sola IP pública) sin abrir la puerta a un alta masiva.
+  if (!(await rateLimit(c.env, `b2b:${ip}`, 10, 3600))) return jsonError(c, 429, 'Recibimos varias solicitudes desde esta conexión. Espere unos minutos o escríbanos por WhatsApp y la tramitamos de inmediato.');
   if (c.env.TURNSTILE_SECRET && !(await verifyTurnstile(c.env, body.turnstile, ip))) return jsonError(c, 403, 'Verificación anti-spam fallida');
 
   const email = String(body.email).trim().slice(0, 160);
@@ -92,17 +96,23 @@ app.post('/b2b/request', async (c) => {
     // Todo el bloque de Admin API va en un try: este endpoint es el ÚNICO camino de alta corporativa,
     // así que un token vencido o un fallo de Shopify no puede salir como 500 crudo. La solicitud se
     // pierde de todos modos, pero el visitante recibe una salida (WhatsApp) en vez de un error mudo.
+    const nombre = String(body.nombre || '').slice(0, 60);
+    const apellido = String(body.apellido || '').slice(0, 60);
     try {
       const existente = await findCustomerByEmail(c.env, email);
+      // Solo completa el nombre si el cliente no lo tiene: no pisa el que ya haya puesto.
+      const faltantes: { firstName?: string; lastName?: string } = {};
       if (existente) {
         // Ya aprobado: no se degrada a pendiente por reenviar el formulario.
         if (existente.tags.includes('cliente-corporativo')) return c.json({ ok: true, ya_aprobado: true, customer_id: existente.id.split('/').pop() });
         customerId = existente.id;
+        if (!existente.firstName && nombre) faltantes.firstName = nombre;
+        if (!existente.lastName && apellido) faltantes.lastName = apellido;
       } else {
-        customerId = await createCustomer(c.env, { email, firstName: String(body.nombre || '').slice(0, 60), lastName: String(body.apellido || '').slice(0, 60), note });
+        customerId = await createCustomer(c.env, { email, firstName: nombre, lastName: apellido, note });
         creado = true;
       }
-      await updateCustomerNoteAndTags(c.env, customerId, note, ['b2b-pendiente']);
+      await updateCustomerNoteAndTags(c.env, customerId, note, ['b2b-pendiente'], faltantes);
       await setCustomerMetafields(c.env, customerId, [
         { key: 'tipo_cliente', value: 'empresa', type: 'single_line_text_field' },
         { key: 'estado_b2b', value: 'pendiente', type: 'single_line_text_field' },

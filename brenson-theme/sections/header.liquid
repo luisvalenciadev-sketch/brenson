@@ -286,10 +286,15 @@
         Brenson: la tienda usa cuentas NUEVAS de cliente (decisión A2 revisada el 18/09/2026; el panel
         de Shopify ya no ofrece cuentas clásicas). Se mantiene el enlace simple en lugar del elemento
         <shopify-account> de Dawn 16: ambos funcionan, pero el enlace conserva el estilo del header.
-        account_login_url redirige a la pantalla alojada de Shopify (acceso por código al correo).
+
+        Sin sesión NO se usa routes.account_login_url: esa ruta deja a la persona en el portal alojado
+        de Shopify (Orders/Profile) después de autenticarse, fuera de brenson.co y sin relación con lo
+        que estaba haciendo. Se usa /customer_authentication/login?return_to=<página actual> para que
+        vuelva justo donde estaba. Con sesión, el ícono sí lleva al portal alojado, que es donde viven
+        los pedidos. Ver docs/DECISIONES_BRENSON.md §Cuentas nuevas.
       {%- endcomment -%}
       {%- if shop.customer_accounts_enabled -%}
-        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset">
+        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}/customer_authentication/login?return_to={{ request.path | url_encode }}{%- endif -%}" class="header__icon header__icon--account link focus-inset">
           <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
           <span class="visually-hidden">{%- if customer -%}{{ 'customer.account_fallback' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}</span>
         </a>

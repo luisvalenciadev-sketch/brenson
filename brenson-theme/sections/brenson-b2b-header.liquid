@@ -48,7 +48,12 @@
         {%- if customer -%}
           <a class="brenson-btn brenson-btn--sm" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{{ routes.account_url }}">Mi cuenta</a>
         {%- else -%}
-          <a class="brenson-btn brenson-btn--outline brenson-btn--sm" style="color:#fff; border-color: rgba(255,255,255,.4)" href="#b2b-login">Iniciar sesión</a>
+          {%- comment -%}
+            El ancla #b2b-login solo existe en /pages/empresas sin sesión; desde el resto de páginas
+            de Empresas el botón no hacía nada. Se enlaza la pantalla alojada de Shopify con retorno
+            al portal, que es adonde la persona quiere llegar.
+          {%- endcomment -%}
+          <a class="brenson-btn brenson-btn--outline brenson-btn--sm" style="color:#fff; border-color: rgba(255,255,255,.4)" href="/customer_authentication/login?return_to={{ '/pages/empresas' | url_encode }}">Iniciar sesión</a>
         {%- endif -%}
         <a class="brenson-btn brenson-btn--primary brenson-btn--sm" href="/pages/empresas-acceso">Solicitar acceso</a>
       </div>

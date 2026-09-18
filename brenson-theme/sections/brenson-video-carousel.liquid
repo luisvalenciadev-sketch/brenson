@@ -9,6 +9,21 @@
   no captura la rueda del mouse). En producción (modo simulación apagado) solo se muestran
   entradas verificado = true.
 {%- endcomment -%}
+{%- comment -%}
+  Visibilidad en el portal Empresas: esta sección es material de venta. En /pages/empresas tiene
+  sentido para quien todavía no tiene acceso (landing pública) y para quien ya está aprobado, pero
+  no para quien acaba de enviar su solicitud: ahí queda un carrusel de marketing colgando debajo de
+  un aviso de "estamos validando su empresa". Con visibilidad_b2b = "landing_y_portal" se oculta en
+  los estados intermedios (personal, pendiente, rechazado). En el resto del sitio se deja "siempre".
+  theme-check-disable ConvertIncludeToRender
+{%- endcomment -%}
+{%- if section.settings.visibilidad_b2b == 'landing_y_portal' -%}
+  {%- include 'brenson-b2b-guard' -%}
+  {%- unless b2b_state == 'anon' or b2b_state == 'aprobado' -%}
+    {%- assign brenson_video_oculto = true -%}
+  {%- endunless -%}
+{%- endif -%}
+{%- unless brenson_video_oculto -%}
 {%- liquid
   assign sim = settings.brenson_modo_simulacion
   assign testimonios = shop.metaobjects.brenson_testimonio.values
@@ -160,6 +175,7 @@
   .brenson-video-feat__dot[aria-selected="true"] { background: var(--brenson-rojo); }
 </style>
 {%- endif -%}
+{%- endunless -%}
 
 {% schema %}
 {
@@ -169,7 +185,18 @@
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Historias reales" },
     { "type": "text", "id": "title", "label": "Título", "default": "Clientes que ya ruedan con Brenson" },
     { "type": "text", "id": "subtitle", "label": "Subtítulo" },
-    { "type": "range", "id": "limit", "min": 1, "max": 8, "step": 1, "label": "Máximo de videos", "default": 6 }
+    { "type": "range", "id": "limit", "min": 1, "max": 8, "step": 1, "label": "Máximo de videos", "default": 6 },
+    {
+      "type": "select",
+      "id": "visibilidad_b2b",
+      "label": "Visibilidad en el portal Empresas",
+      "options": [
+        { "value": "siempre", "label": "Siempre (resto del sitio)" },
+        { "value": "landing_y_portal", "label": "Solo sin sesión o ya aprobado" }
+      ],
+      "default": "siempre",
+      "info": "En /pages/empresas elija la segunda opción: oculta el carrusel mientras la empresa está pendiente o rechazada, para no dejar material de venta debajo del aviso de validación."
+    }
   ],
   "presets": [ { "name": "Videos y testimonios" } ]
 }

@@ -71,34 +71,55 @@
       var ok = form.querySelector('[data-b2b-success]'), err = form.querySelector('[data-b2b-error]');
       var btn = form.querySelector('[data-b2b-submit]'), legal = form.querySelector('[data-b2b-legal]');
       var endpoint = (form.dataset.endpoint || '').replace(/\/$/, '');
+      var enviado = false;
       if (btn) { btn.disabled = true; btn.textContent = 'Enviando…'; }
-      err.hidden = true;
+      if (err) err.hidden = true;
 
       try {
         var body = null;
         if (endpoint) {
-          var res = await fetch(endpoint + '/b2b/request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-          body = await res.json().catch(function () { return null; });
-          // El worker manda un mensaje en español listo para mostrar (cupo excedido, correo inválido…).
-          if (!res.ok) throw new Error((body && body.error) || '');
+          // Sin timeout, un worker que no responde deja el botón en "Enviando…" para siempre.
+          var abort = new AbortController();
+          var reloj = setTimeout(function () { abort.abort(); }, 20000);
+          try {
+            var res = await fetch(endpoint + '/b2b/request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data), signal: abort.signal });
+            body = await res.json().catch(function () { return null; });
+            // El worker manda un mensaje en español listo para mostrar (cupo excedido, correo inválido…).
+            if (!res.ok) throw new Error((body && body.error) || '');
+          } finally { clearTimeout(reloj); }
         } else {
           // Modo simulación (sin URL de servicio configurada): no hay cuenta real que crear.
           console.info('[brenson] solicitud B2B (simulación):', data);
           body = { customer_id: form.dataset.customerId || 'simulado' };
         }
+        enviado = true;
         track('b2b_request', { sector: data.sector, flota: data.flota_estimada, via: mode });
 
         // Esa empresa ya está habilitada: no tiene sentido pedirle el documento otra vez.
-        if (body && body.ya_aprobado) { window.location.href = form.dataset.loginUrl || '/pages/empresas'; return; }
+        if (body && body.ya_aprobado) { window.location.href = '/pages/empresas'; return; }
+
+        // Con sesión iniciada, el estado del cliente acaba de cambiar a "pendiente": recargamos para
+        // que el guard renderice la pantalla de validación en vez de dejar el formulario ya enviado
+        // en pantalla. Sin sesión no hay nada que recargar, así que el paso 2 se revela aquí mismo.
+        if (mode === 'convert') { window.location.reload(); return; }
 
         revealStepTwo(form, body);
-        ok.hidden = false;
+        if (ok) { ok.hidden = false; ok.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
         if (legal) legal.hidden = true;
-        ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } catch (ex) {
-        err.textContent = (ex && ex.message) || 'No pudimos enviar la solicitud. Escríbanos por WhatsApp o intente de nuevo.';
-        err.hidden = false;
-        if (btn) { btn.disabled = false; btn.textContent = 'Enviar solicitud de acceso corporativo'; }
+        var msg = (ex && ex.name === 'AbortError')
+          ? 'La solicitud tardó demasiado. Verifique su conexión e intente de nuevo.'
+          : (ex && ex.message) || '';
+        if (err) {
+          err.textContent = msg || 'No pudimos enviar la solicitud. Escríbanos por WhatsApp o intente de nuevo.';
+          err.hidden = false;
+          err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          console.error('[brenson] solicitud B2B falló', ex);
+        }
+      } finally {
+        // Pase lo que pase, el botón no se queda colgado en "Enviando…".
+        if (btn && !enviado) { btn.disabled = false; btn.textContent = 'Enviar solicitud de acceso corporativo'; }
       }
     });
   });
