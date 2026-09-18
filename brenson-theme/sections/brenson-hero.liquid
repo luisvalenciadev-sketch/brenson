@@ -1,57 +1,191 @@
 {%- comment -%}
-  brenson-hero — Módulo 01. Hero con video en loop o imagen (decisión G2), titular, buscador rápido por categoría y CTA.
-  Simulación: si no hay video/imagen cargada se muestra un fondo degradado carbón (S2).
+  brenson-hero — Módulo 01. Hero asimétrico (split-screen): columna de texto + vehículo
+  protagonista flotante en corte, tarjeta flotante de categorías (glassmorphism) y ticker
+  animado. Sustituye el hero anterior (foto de fondo genérica + texto centrado).
+
+  Si el merchant no ha subido `vehicle_image` / `secondary_image` en el editor, se usan como
+  fallback las fotos reales de producto ya incluidas en el tema (Milán y Corato) para que la
+  sección nunca se vea vacía.
 {%- endcomment -%}
 {{ 'brenson-hero.css' | asset_url | stylesheet_tag }}
 
-<section class="brenson-hero color-{{ section.settings.color_scheme }}" style="--hero-min-height: {{ section.settings.min_height }}vh;">
-  <div class="brenson-hero__media" aria-hidden="true">
-    {%- if section.settings.video != blank -%}
-      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', class: 'brenson-hero__video', image_size: '1440x' }}
-    {%- elsif section.settings.image != blank -%}
-      {{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', widths: '750, 1100, 1440, 1920, 2400', class: 'brenson-hero__image' }}
-    {%- else -%}
-      <div class="brenson-hero__placeholder"></div>
-    {%- endif -%}
-    <div class="brenson-hero__overlay" style="--overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
-  </div>
+{%- liquid
+  assign vehicle_image = section.settings.vehicle_image
+  assign secondary_image = section.settings.secondary_image
+  assign has_categories = false
+  assign category_count = 0
+  for block in section.blocks
+    if block.type == 'categoria' and block.settings.collection != blank
+      assign has_categories = true
+      assign category_count = category_count | plus: 1
+    endif
+  endfor
+  assign category_count_padded = category_count
+  if category_count < 10
+    assign category_count_padded = '0' | append: category_count
+  endif
+-%}
 
-  <div class="brenson-container brenson-hero__content">
-    {%- if section.settings.show_certificado and settings.brenson_show_certificado -%}
-      <span class="brenson-badge brenson-badge--certificado brenson-badge--md brenson-hero__badge">
-        <svg class="brenson-badge__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m13 7-4 6h3l-1 4 4-6h-3l1-4Z" fill="currentColor"/></svg>
-        {{ 'brenson.certificado' | t }} · {{ 'brenson.puntos_inspeccion' | t: count: settings.brenson_certificado_puntos }}
-      </span>
-    {%- endif -%}
+<section
+  class="brenson-hero color-{{ section.settings.color_scheme }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  style="--hero-min-height: {{ section.settings.min_height }}vh;"
+>
+  {%- if section.settings.ambient_image != blank -%}
+    <div class="brenson-hero__ambient" aria-hidden="true">
+      {{
+        section.settings.ambient_image
+        | image_url: width: 2400
+        | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', widths: '750, 1100, 1440, 1920, 2400', class: 'brenson-hero__ambient-image'
+      }}
+      <div class="brenson-hero__ambient-scrim" style="--overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+    </div>
+  {%- endif -%}
 
-    <h1 class="brenson-hero__title">{{ section.settings.title | escape }}</h1>
-    {%- if section.settings.subtitle != blank -%}
-      <p class="brenson-hero__subtitle">{{ section.settings.subtitle | escape }}</p>
-    {%- endif -%}
+  <svg class="brenson-hero__route" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path d="M -40 620 C 260 560, 420 720, 700 600 S 1180 420, 1500 480" />
+    <path d="M -40 180 C 300 240, 520 60, 860 140 S 1300 260, 1500 160" class="brenson-hero__route-thin" />
+  </svg>
+  <div class="brenson-hero__glow" aria-hidden="true"></div>
 
-    {%- if section.blocks.size > 0 -%}
-      <nav class="brenson-hero__quick" aria-label="Buscar por categoría">
-        <ul class="brenson-hero__chips">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'categoria' and block.settings.collection != blank -%}
-              <li {{ block.shopify_attributes }}>
-                <a class="brenson-hero__chip" href="{{ block.settings.collection.url }}">
+  <div class="brenson-container brenson-hero__grid">
+
+    <div class="brenson-hero__content">
+      {%- if section.settings.show_certificado and settings.brenson_show_certificado -%}
+        <span class="brenson-badge brenson-badge--certificado brenson-badge--md brenson-hero__badge">
+          <span class="brenson-hero__badge-dot" aria-hidden="true"></span>
+          <svg class="brenson-badge__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m13 7-4 6h3l-1 4 4-6h-3l1-4Z" fill="currentColor"/></svg>
+          {{ 'brenson.certificado' | t }} · {{ 'brenson.puntos_inspeccion' | t: count: settings.brenson_certificado_puntos }}
+        </span>
+      {%- endif -%}
+
+      <h1 class="brenson-hero__title">{{ section.settings.title }}</h1>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="brenson-hero__subtitle">{{ section.settings.subtitle | escape }}</p>
+      {%- endif -%}
+
+      <div class="brenson-hero__actions">
+        {%- if section.settings.cta_url != blank -%}
+          <a class="brenson-btn brenson-btn--primary brenson-btn--lg brenson-hero__cta" href="{{ section.settings.cta_url }}">
+            {{ section.settings.cta_label }}
+            <svg class="brenson-btn__icon" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M9.5 1 15 6l-5.5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 6H1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.show_whatsapp -%}
+          <a
+            class="brenson-btn brenson-btn--outline-white brenson-btn--lg brenson-hero__cta-secondary"
+            href="{% render 'brenson-whatsapp-link', context: 'default' %}"
+            target="_blank"
+            rel="noopener"
+            data-brenson-track="whatsapp_click"
+            data-brenson-source="hero"
+          >
+            <svg class="brenson-btn__icon" viewBox="0 0 17 17" fill="none" aria-hidden="true"><path d="M1.5 15.5 2.7 11.6A6.5 6.5 0 1 1 5.9 14.7Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            {{ settings.brenson_whatsapp_label | default: 'Hablar con un asesor' }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if has_categories and section.settings.show_ticker -%}
+        <div class="brenson-hero__ticker" aria-hidden="true">
+          <div class="brenson-hero__ticker-track">
+            {%- for i in (1..2) -%}
+              <span class="brenson-hero__ticker-set">
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'categoria' and block.settings.collection != blank -%}
+                    <span class="brenson-hero__ticker-item">{{ block.settings.label | default: block.settings.collection.title }}</span>
+                    <span class="brenson-hero__ticker-dot">◆</span>
+                  {%- endif -%}
+                {%- endfor -%}
+              </span>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="brenson-hero__visual">
+      <div class="brenson-hero__visual-glow" aria-hidden="true"></div>
+      <div class="brenson-hero__streaks" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+
+      <div class="brenson-hero__vehicle-wrap">
+        {%- if vehicle_image != blank -%}
+          {{
+            vehicle_image
+            | image_url: width: 1400
+            | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 990px) 700px, 88vw', widths: '400, 600, 800, 1000, 1400', class: 'brenson-hero__vehicle', alt: section.settings.vehicle_image_alt
+          }}
+        {%- else -%}
+          <img
+            src="{{ 'brenson-hero-vehicle-milan.png' | asset_url }}"
+            alt="{{ section.settings.vehicle_image_alt | default: 'Ciclomotor eléctrico Brenson Milán' }}"
+            class="brenson-hero__vehicle"
+            loading="eager"
+            fetchpriority="high"
+            width="1080"
+            height="1080"
+          >
+        {%- endif -%}
+
+        {%- if section.settings.show_certificado and settings.brenson_show_certificado -%}
+          <div class="brenson-hero__chip-inspeccion">
+            <span class="brenson-hero__chip-icon">
+              <svg viewBox="0 0 15 17" fill="none" aria-hidden="true"><path d="M7.5 1 14 3.4V8.3c0 3.9-2.8 6.6-6.5 7.7-3.7-1.1-6.5-3.8-6.5-7.7V3.4Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="brenson-hero__chip-text">
+              <strong>{{ 'brenson.puntos_inspeccion' | t: count: settings.brenson_certificado_puntos }}</strong>
+              <small>{{ 'brenson.certificado' | t }}</small>
+            </span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if secondary_image != blank or section.settings.show_secondary_card -%}
+        <div class="brenson-hero__card-secondary">
+          <div class="brenson-hero__card-secondary-media">
+            {%- if secondary_image != blank -%}
+              {{ secondary_image | image_url: width: 500 | image_tag: loading: 'lazy', sizes: '190px', widths: '190, 260, 380, 500', alt: section.settings.secondary_image_alt }}
+            {%- else -%}
+              <img src="{{ 'brenson-hero-vehicle-corato.png' | asset_url }}" alt="{{ section.settings.secondary_image_alt | default: 'Cuadriciclo eléctrico Brenson Corato' }}" loading="lazy" width="1175" height="1080">
+            {%- endif -%}
+          </div>
+          <div class="brenson-hero__card-secondary-foot">
+            <span>{{ section.settings.secondary_label | default: 'Cuadriciclos' }}</span>
+            <span class="brenson-hero__card-secondary-check">{{ 'brenson.certificado' | t }}</span>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if has_categories -%}
+        <div class="brenson-hero__card-categorias">
+          <div class="brenson-hero__card-categorias-head">
+            <span>{{ section.settings.categories_title | default: 'Nuestras categorías' }}</span>
+            <span class="brenson-hero__card-categorias-count">{{ category_count_padded }}</span>
+          </div>
+          <div class="brenson-hero__card-categorias-grid">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'categoria' and block.settings.collection != blank -%}
+                <a class="brenson-hero__chip-cat" href="{{ block.settings.collection.url }}" {{ block.shopify_attributes }}>
                   {%- if block.settings.icon != blank -%}
                     {{ block.settings.icon | image_url: width: 48 | image_tag: loading: 'lazy', alt: '' }}
                   {%- else -%}
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-8 12h6l-1 8 8-12h-6l1-8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    {%- render 'brenson-hero-category-icon', key: block.settings.icon_key -%}
                   {%- endif -%}
                   <span>{{ block.settings.label | default: block.settings.collection.title }}</span>
                 </a>
-              </li>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if section.settings.cta_url != blank -%}
+              <a class="brenson-hero__chip-cat brenson-hero__chip-cat--all" href="{{ section.settings.cta_url }}">
+                <span>Ver todas</span>
+                <svg viewBox="0 0 12 10" fill="none" aria-hidden="true"><path d="M7 1 11 5 7 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 5H1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </a>
             {%- endif -%}
-          {%- endfor -%}
-          {%- if section.settings.cta_url != blank -%}
-            <li><a class="brenson-btn brenson-btn--primary" href="{{ section.settings.cta_url }}">{{ section.settings.cta_label }}</a></li>
-          {%- endif -%}
-        </ul>
-      </nav>
-    {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
 
   </div>
 </section>
@@ -62,16 +196,31 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    { "type": "video", "id": "video", "label": "Video de fondo (loop)", "info": "Recomendado: 10 a 20 s, sin audio, 1920x1080. Si no hay video se usa la imagen." },
-    { "type": "image_picker", "id": "image", "label": "Imagen de fondo (fallback)" },
-    { "type": "range", "id": "overlay_opacity", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Oscurecer fondo", "default": 55 },
+    { "type": "image_picker", "id": "vehicle_image", "label": "Vehículo protagonista", "info": "Foto de producto en corte (fondo blanco/transparente). Si no se sube ninguna, se usa el ciclomotor Milán por defecto." },
+    { "type": "text", "id": "vehicle_image_alt", "label": "Texto alternativo del vehículo", "default": "Ciclomotor eléctrico Brenson Milán" },
+    { "type": "image_picker", "id": "secondary_image", "label": "Vehículo secundario (tarjeta flotante, opcional)" },
+    { "type": "text", "id": "secondary_image_alt", "label": "Texto alternativo del vehículo secundario", "default": "Cuadriciclo eléctrico Brenson Corato" },
+    { "type": "text", "id": "secondary_label", "label": "Etiqueta del vehículo secundario", "default": "Cuadriciclos" },
+    { "type": "checkbox", "id": "show_secondary_card", "label": "Mostrar tarjeta secundaria aunque no haya imagen propia", "default": true, "info": "Usa la foto por defecto (Corato) mientras no se suba una imagen." },
+    {
+      "type": "header",
+      "content": "Fondo ambiente (opcional)"
+    },
+    { "type": "image_picker", "id": "ambient_image", "label": "Imagen ambiente de fondo", "info": "Textura sutil detrás de todo el hero, no es el vehículo protagonista." },
+    { "type": "range", "id": "overlay_opacity", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Oscurecer fondo ambiente", "default": 70 },
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
     { "type": "range", "id": "min_height", "min": 50, "max": 100, "step": 5, "unit": "vh", "label": "Altura mínima", "default": 85 },
-    { "type": "checkbox", "id": "show_certificado", "label": "Mostrar badge Certificado Brenson", "default": true },
-    { "type": "text", "id": "title", "label": "Titular", "default": "Movilidad eléctrica certificada para tu ciudad y tu negocio" },
-    { "type": "textarea", "id": "subtitle", "label": "Subtítulo", "default": "Bicicletas, ciclomotores, motocarros y cuadriciclos con garantía Brenson y financiación a tu medida." },
-    { "type": "text", "id": "cta_label", "label": "Texto del botón", "default": "Ver catálogo" },
-    { "type": "url", "id": "cta_url", "label": "Enlace del botón" },
-    { "type": "checkbox", "id": "show_whatsapp", "label": "Mostrar enlace a WhatsApp", "default": true },
+    { "type": "checkbox", "id": "show_certificado", "label": "Mostrar badge y chip Certificado Brenson", "default": true },
+    { "type": "text", "id": "title", "label": "Titular", "default": "Movilidad <span>eléctrica</span> certificada para tu ciudad y tu negocio", "info": "Envuelve la palabra que quieras resaltar en verde con <span>…</span>." },
+    { "type": "textarea", "id": "subtitle", "label": "Subtítulo", "default": "Bicicletas, ciclomotores, motocarros, cuadriciclos y patinetas eléctricas, inspeccionadas punto por punto antes de llegar a ti." },
+    { "type": "text", "id": "cta_label", "label": "Texto del botón principal", "default": "Ver catálogo" },
+    { "type": "url", "id": "cta_url", "label": "Enlace del botón principal" },
+    { "type": "checkbox", "id": "show_whatsapp", "label": "Mostrar botón secundario (Hablar con un asesor)", "default": true, "info": "Usa el número y mensaje configurados en Ajustes del tema → Brenson · Contacto y WhatsApp." },
+    { "type": "checkbox", "id": "show_ticker", "label": "Mostrar ticker animado de categorías", "default": true },
+    { "type": "text", "id": "categories_title", "label": "Título de la tarjeta de categorías", "default": "Nuestras categorías" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Esquema de color", "default": "scheme-1" }
   ],
   "blocks": [
@@ -82,7 +231,20 @@
       "settings": [
         { "type": "collection", "id": "collection", "label": "Colección" },
         { "type": "text", "id": "label", "label": "Texto (opcional)" },
-        { "type": "image_picker", "id": "icon", "label": "Icono (opcional, SVG/PNG 48px)" }
+        {
+          "type": "select",
+          "id": "icon_key",
+          "label": "Icono",
+          "options": [
+            { "value": "bicicleta", "label": "Bicicleta" },
+            { "value": "ciclomotor", "label": "Ciclomotor" },
+            { "value": "motocarro", "label": "Motocarro" },
+            { "value": "cuadriciclo", "label": "Cuadriciclo" },
+            { "value": "patineta", "label": "Patineta" }
+          ],
+          "default": "bicicleta"
+        },
+        { "type": "image_picker", "id": "icon", "label": "Icono personalizado (opcional, sustituye al de arriba)" }
       ]
     }
   ],
@@ -90,11 +252,11 @@
     {
       "name": "Brenson · Hero",
       "blocks": [
-        { "type": "categoria", "settings": { "label": "Bicicletas" } },
-        { "type": "categoria", "settings": { "label": "Ciclomotores" } },
-        { "type": "categoria", "settings": { "label": "Motocarros" } },
-        { "type": "categoria", "settings": { "label": "Cuadriciclos" } },
-        { "type": "categoria", "settings": { "label": "Patinetas" } }
+        { "type": "categoria", "settings": { "label": "Bicicletas", "icon_key": "bicicleta" } },
+        { "type": "categoria", "settings": { "label": "Ciclomotores", "icon_key": "ciclomotor" } },
+        { "type": "categoria", "settings": { "label": "Motocarros", "icon_key": "motocarro" } },
+        { "type": "categoria", "settings": { "label": "Cuadriciclos", "icon_key": "cuadriciclo" } },
+        { "type": "categoria", "settings": { "label": "Patinetas", "icon_key": "patineta" } }
       ]
     }
   ]

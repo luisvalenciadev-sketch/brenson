@@ -80,8 +80,12 @@ export async function fetchCustomerTier(env: Env, customerId: string): Promise<{
   return { codigo: f.codigo, descuento: parseFloat(f.descuento_pct || '0'), nombre: f.nombre };
 }
 
-/** Lee una cotización por su handle (numero en minúsculas) para el flujo de aceptación. */
-export async function fetchQuoteByHandle(env: Env, handle: string): Promise<{
+/**
+ * Lee una cotización por su `numero` (no por handle): el handle puede no coincidir con
+ * `numero.toLowerCase()` cuando hubo colisión al crearlo y Shopify le agregó un sufijo
+ * (ver el comentario de `nextQuoteNumber` en quote.ts sobre los datos de siembra duplicados).
+ */
+export async function fetchQuoteByNumero(env: Env, numero: string): Promise<{
   id: string;
   estado: string;
   clienteId: string | null;
@@ -93,8 +97,9 @@ export async function fetchQuoteByHandle(env: Env, handle: string): Promise<{
   pedidoBorradorId: string | null;
   asesorEmail: string | null;
 } | null> {
-  const data = await shopifyAdmin<{ metaobjectByHandle: {
+  const data = await shopifyAdmin<{ metaobjects: { nodes: {
     id: string;
+    numero: { value: string } | null;
     estado: { value: string } | null;
     clienteId: { value: string } | null;
     items: { value: string } | null;
@@ -104,9 +109,10 @@ export async function fetchQuoteByHandle(env: Env, handle: string): Promise<{
     acceptToken: { value: string } | null;
     pedidoBorradorId: { value: string } | null;
     asesor: { reference: { fields: { key: string; value: string }[] } | null } | null;
-  } | null }>(env,
-    `query($handle: MetaobjectHandleInput!) { metaobjectByHandle(handle: $handle) {
+  }[] } }>(env,
+    `query { metaobjects(type: "brenson_cotizacion_b2b", first: 250) { nodes {
       id
+      numero: field(key: "numero") { value }
       estado: field(key: "estado") { value }
       clienteId: field(key: "cliente_id") { value }
       items: field(key: "items") { value }
@@ -116,8 +122,8 @@ export async function fetchQuoteByHandle(env: Env, handle: string): Promise<{
       acceptToken: field(key: "accept_token") { value }
       pedidoBorradorId: field(key: "pedido_borrador_id") { value }
       asesor: field(key: "asesor") { reference { ... on Metaobject { fields { key value } } } }
-    } }`, { handle: { type: 'brenson_cotizacion_b2b', handle } });
-  const m = data.metaobjectByHandle;
+    } } }`);
+  const m = data.metaobjects.nodes.find((n) => n.numero?.value === numero);
   if (!m) return null;
   let total = 0;
   try { total = Number(JSON.parse(m.total?.value || '{}').amount || 0); } catch { total = 0; }
@@ -158,7 +164,7 @@ export async function createDraftOrder(env: Env, input: { customerId: string; it
     `mutation($input: DraftOrderInput!) { draftOrderCreate(input: $input) { draftOrder { id name invoiceUrl } userErrors { field message } } }`,
     // Sin `email`: al dar `customerId`, Shopify usa el correo del cliente. No lo tenemos persistido en
     // el metaobject de la cotización (solo viaja en el correo de aviso, no se guarda).
-    { input: { customerId: input.customerId, note2: input.note, tags: input.tags, useCustomerDefaultAddress: true, lineItems } });
+    { input: { customerId: input.customerId, note: input.note, tags: input.tags, useCustomerDefaultAddress: true, lineItems } });
   const { draftOrder, userErrors } = data.draftOrderCreate;
   if (!draftOrder) throw new Error(userErrors.map((e) => e.message).join('; ') || 'draftOrderCreate sin resultado');
   return draftOrder;

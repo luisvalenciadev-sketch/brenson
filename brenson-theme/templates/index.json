@@ -16,35 +16,40 @@
           "type": "categoria",
           "settings": {
             "collection": "bicicletas-electricas",
-            "label": "Bicicletas"
+            "label": "Bicicletas",
+            "icon_key": "bicicleta"
           }
         },
         "cat_ciclomotores": {
           "type": "categoria",
           "settings": {
             "collection": "ciclomotores",
-            "label": "Ciclomotores"
+            "label": "Ciclomotores",
+            "icon_key": "ciclomotor"
           }
         },
         "cat_motocarros": {
           "type": "categoria",
           "settings": {
             "collection": "motocarros",
-            "label": "Motocarros"
+            "label": "Motocarros",
+            "icon_key": "motocarro"
           }
         },
         "cat_cuadriciclos": {
           "type": "categoria",
           "settings": {
             "collection": "cuadriciclos",
-            "label": "Cuadriciclos"
+            "label": "Cuadriciclos",
+            "icon_key": "cuadriciclo"
           }
         },
         "cat_patinetas": {
           "type": "categoria",
           "settings": {
             "collection": "patinetas",
-            "label": "Patinetas"
+            "label": "Patinetas",
+            "icon_key": "patineta"
           }
         }
       },
@@ -56,15 +61,17 @@
         "cat_patinetas"
       ],
       "settings": {
-        "image": "shopify://shop_images/AB6AXuCnsAoTWqC9bnnsfxiwMZuwSVgJauzXebQU3SWrpEmZHZKTxlI3-7qubEjzb8RoH3DRjW5pYp9fd45MuhAK6OITRTiS7ivZai911zZfbj3quhnvkK2W0Z3h4seQUz1AEE1eVjoFfkNDcbMbHGx7QCZf5eNlA1Ks7LU18fJDxD6yeH0BYNm.jpg",
-        "overlay_opacity": 70,
+        "ambient_image": "shopify://shop_images/AB6AXuCnsAoTWqC9bnnsfxiwMZuwSVgJauzXebQU3SWrpEmZHZKTxlI3-7qubEjzb8RoH3DRjW5pYp9fd45MuhAK6OITRTiS7ivZai911zZfbj3quhnvkK2W0Z3h4seQUz1AEE1eVjoFfkNDcbMbHGx7QCZf5eNlA1Ks7LU18fJDxD6yeH0BYNm.jpg",
+        "overlay_opacity": 80,
         "min_height": 85,
         "show_certificado": true,
-        "title": "Movilidad eléctrica certificada para tu ciudad y tu negocio",
-        "subtitle": "Bicicletas, ciclomotores, motocarros y cuadriciclos con garantía Brenson y financiación a tu medida.",
+        "title": "Movilidad <span>eléctrica</span> certificada para tu ciudad y tu negocio",
+        "subtitle": "Bicicletas, ciclomotores, motocarros, cuadriciclos y patinetas eléctricas, inspeccionadas punto por punto antes de llegar a ti.",
         "cta_label": "Ver catálogo",
         "cta_url": "shopify://collections/all",
         "show_whatsapp": true,
+        "show_ticker": true,
+        "show_secondary_card": true,
         "color_scheme": "scheme-1"
       }
     },

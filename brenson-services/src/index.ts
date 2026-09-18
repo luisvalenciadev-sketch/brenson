@@ -18,7 +18,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import type { Env } from './types';
 import { getProviders } from './providers';
-import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, createCustomer, updateCustomerNoteAndTags, setCustomerMetafield, setCustomerMetafields, fetchQuoteByHandle, updateQuoteMetaobject, createDraftOrder } from './lib/shopify';
+import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, createCustomer, updateCustomerNoteAndTags, setCustomerMetafield, setCustomerMetafields, fetchQuoteByNumero, updateQuoteMetaobject, createDraftOrder } from './lib/shopify';
 import { computeQuote, quoteHtml, specSheetHtml, nextQuoteNumber, fmt } from './lib/quote';
 import { verifyTurnstile, rateLimit, jsonError, scoreFor, signPath, verifySignedPath, signToken, verifyToken } from './lib/util';
 
@@ -246,7 +246,7 @@ app.post('/quotes/:numero/accept', async (c) => {
   const ip = c.req.header('cf-connecting-ip') || 'unknown';
   if (!(await rateLimit(c.env, `accept:${ip}`, 5, 600))) return jsonError(c, 429, 'Demasiados intentos, intente más tarde');
 
-  const quote = await fetchQuoteByHandle(c.env, numero.toLowerCase());
+  const quote = await fetchQuoteByNumero(c.env, numero);
   if (!quote) return jsonError(c, 404, 'Cotización no encontrada');
   if (!(await verifyToken(c.env, `accept:${numero}`, body.token))) return jsonError(c, 403, 'Enlace inválido o vencido');
   if (quote.clienteId !== String(body.customer_id)) return jsonError(c, 403, 'Esta cotización no pertenece a este cliente');
