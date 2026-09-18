@@ -1,8 +1,12 @@
 /**
  * brenson-register.js — Módulo 07
  * - Valida NIT colombiano (dígito de verificación DIAN).
- * - Registro corporativo: serializa los datos de empresa en customer[note] (JSON) antes de enviar el form nativo de Shopify.
- * - Conversión de cuenta personal → corporativa: POST {endpoint}/b2b/request (o simulación).
+ * - Solicitud de acceso corporativo: POST {endpoint}/b2b/request (o simulación).
+ *   Cuentas NUEVAS de cliente: el tema ya no puede crear cuentas con `form 'create_customer'`,
+ *   así que el worker crea o actualiza el cliente por Admin API y devuelve customer_id +
+ *   upload_token para habilitar el paso 2 sin recargar la página.
+ *     modo "register" → visitante sin sesión (el worker crea la cuenta).
+ *     modo "convert"  → cliente B2C con sesión que convierte su cuenta en corporativa.
  * - Subida de documento: POST {endpoint}/upload multipart (o simulación).
  */
 (function () {
@@ -47,45 +51,83 @@
     document.dispatchEvent(new CustomEvent('brenson:track', { detail: p }));
   }
 
-  // Registro nuevo (form nativo Shopify)
-  document.querySelectorAll('[data-brenson-b2b-register]').forEach(function (form) {
+  // Solicitud de acceso corporativo (registro nuevo o conversión de cuenta personal)
+  document.querySelectorAll('[data-brenson-b2b-request]').forEach(function (form) {
+    var mode = form.dataset.b2bMode === 'convert' ? 'convert' : 'register';
     ['[data-b2b="nit"]', '[data-b2b="dv"]'].forEach(function (s) { var el = form.querySelector(s); if (el) el.addEventListener('input', function () { validateNit(form); }); });
-    form.addEventListener('submit', function (e) {
-      if (!validateNit(form)) { e.preventDefault(); return; }
-      var data = collect(form);
-      delete data.acepta;
-      var note = form.querySelector('[data-b2b-note]');
-      if (note) note.value = 'B2B ' + JSON.stringify(data);
-      track('b2b_request', { sector: data.sector, flota: data.flota_estimada, via: 'register' });
-      // El form sigue su envío nativo a Shopify; Flow detecta el tag b2b-pendiente.
-    });
-  });
 
-  // Conversión de cuenta personal existente
-  document.querySelectorAll('[data-brenson-b2b-convert]').forEach(function (form) {
-    ['[data-b2b="nit"]', '[data-b2b="dv"]'].forEach(function (s) { var el = form.querySelector(s); if (el) el.addEventListener('input', function () { validateNit(form); }); });
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
-      if (!validateNit(form)) return;
+      if (!validateNit(form) || !form.reportValidity()) return;
+
       var data = collect(form);
-      data.customer_id = form.dataset.customerId; data.email = form.dataset.customerEmail;
-      var ok = form.querySelector('[data-b2b-success]'), err = form.querySelector('[data-b2b-error]'), btn = form.querySelector('[data-b2b-submit]');
+      delete data.acepta;
+      if (mode === 'convert') { data.customer_id = form.dataset.customerId; data.email = form.dataset.customerEmail; }
+
+      var ok = form.querySelector('[data-b2b-success]'), err = form.querySelector('[data-b2b-error]');
+      var btn = form.querySelector('[data-b2b-submit]'), legal = form.querySelector('[data-b2b-legal]');
       var endpoint = (form.dataset.endpoint || '').replace(/\/$/, '');
-      if (btn) btn.disabled = true;
+      if (btn) { btn.disabled = true; btn.textContent = 'Enviando…'; }
+      err.hidden = true;
+
       try {
+        var body = null;
         if (endpoint) {
           var res = await fetch(endpoint + '/b2b/request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
+          body = await res.json().catch(function () { return null; });
+          // El worker manda un mensaje en español listo para mostrar (cupo excedido, correo inválido…).
+          if (!res.ok) throw new Error((body && body.error) || '');
         } else {
+          // Modo simulación (sin URL de servicio configurada): no hay cuenta real que crear.
           console.info('[brenson] solicitud B2B (simulación):', data);
+          body = { customer_id: form.dataset.customerId || 'simulado' };
         }
-        track('b2b_request', { sector: data.sector, flota: data.flota_estimada, via: 'convert' });
-        ok.hidden = false; err.hidden = true;
-      } catch (ex) { err.hidden = false; if (btn) btn.disabled = false; }
+        track('b2b_request', { sector: data.sector, flota: data.flota_estimada, via: mode });
+
+        // Esa empresa ya está habilitada: no tiene sentido pedirle el documento otra vez.
+        if (body && body.ya_aprobado) { window.location.href = form.dataset.loginUrl || '/pages/empresas'; return; }
+
+        revealStepTwo(form, body);
+        ok.hidden = false;
+        if (legal) legal.hidden = true;
+        ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (ex) {
+        err.textContent = (ex && ex.message) || 'No pudimos enviar la solicitud. Escríbanos por WhatsApp o intente de nuevo.';
+        err.hidden = false;
+        if (btn) { btn.disabled = false; btn.textContent = 'Enviar solicitud de acceso corporativo'; }
+      }
     });
   });
 
-  // Subida de documento
+  /**
+   * Tras crear/actualizar el cliente: bloquea los campos ya enviados, oculta el aviso del paso 2
+   * y revela la caja de subida con el customer_id y el token que devolvió el worker.
+   */
+  function revealStepTwo(form, body) {
+    var btn = form.querySelector('[data-b2b-submit]');
+    if (btn) { btn.hidden = true; btn.disabled = true; }
+    form.querySelectorAll('input, select, textarea').forEach(function (el) {
+      if (!el.closest('[data-b2b-doc-slot]')) el.readOnly = el.disabled = true;
+    });
+
+    var link = form.querySelector('[data-b2b-login-link]');
+    if (link && form.dataset.loginUrl) link.href = form.dataset.loginUrl;
+
+    var placeholder = form.querySelector('[data-b2b-doc-placeholder]');
+    if (placeholder) placeholder.hidden = true;
+
+    var slot = form.querySelector('[data-b2b-doc-slot]');
+    if (!slot) return;
+    var box = slot.querySelector('[data-brenson-b2b-upload]');
+    if (box && body) {
+      if (body.customer_id) box.dataset.customerId = body.customer_id;
+      if (body.upload_token) box.dataset.uploadToken = body.upload_token;
+      if (body.email) box.dataset.customerEmail = body.email;
+    }
+    slot.hidden = false;
+  }
+
+  // Subida de documento (paso 2). El token lo emite /b2b/request y ata el archivo a ese cliente.
   document.querySelectorAll('[data-brenson-b2b-upload]').forEach(function (box) {
     var btn = box.querySelector('[data-upload-submit]'), file = box.querySelector('[data-upload-file]'), type = box.querySelector('[data-upload-type]');
     var ok = box.querySelector('[data-upload-success]'), err = box.querySelector('[data-upload-error]');
@@ -100,6 +142,7 @@
         if (endpoint) {
           var fd = new FormData();
           fd.append('file', f); fd.append('tipo', type.value); fd.append('customer_id', box.dataset.customerId || ''); fd.append('email', box.dataset.customerEmail || '');
+          if (box.dataset.uploadToken) fd.append('token', box.dataset.uploadToken);
           var res = await fetch(endpoint + '/upload', { method: 'POST', body: fd });
           if (!res.ok) throw new Error('HTTP ' + res.status);
         } else {

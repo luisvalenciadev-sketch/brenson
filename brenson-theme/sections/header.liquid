@@ -283,9 +283,10 @@
       {% render 'header-search', input_id: 'Search-In-Modal' %}
 
       {%- comment -%}
-        Brenson: cuentas CLÁSICAS (decisión A2/S12). Dawn 16 usa <shopify-account> para cuentas nuevas;
-        aquí se reemplaza por el enlace clásico a login / cuenta. Si la tienda migra a cuentas nuevas,
-        restaurar el bloque original de Dawn.
+        Brenson: la tienda usa cuentas NUEVAS de cliente (decisión A2 revisada el 18/09/2026; el panel
+        de Shopify ya no ofrece cuentas clásicas). Se mantiene el enlace simple en lugar del elemento
+        <shopify-account> de Dawn 16: ambos funcionan, pero el enlace conserva el estilo del header.
+        account_login_url redirige a la pantalla alojada de Shopify (acceso por código al correo).
       {%- endcomment -%}
       {%- if shop.customer_accounts_enabled -%}
         <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset">

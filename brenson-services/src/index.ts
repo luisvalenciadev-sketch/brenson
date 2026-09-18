@@ -2,7 +2,7 @@
  * brenson-services — Cloudflare Worker (Hono)
  * Endpoints:
  *   POST /lead              lead B2C (cotización, financiamiento, contacto, prueba de manejo) → CRM
- *   POST /b2b/request       conversión de cuenta personal a corporativa → nota + tag pendiente + CRM (+40)
+ *   POST /b2b/request       alta corporativa: crea o convierte el cliente (Admin API) → metafields + tag pendiente + CRM (+40)
  *   POST /upload            documento B2B (multipart) → storage → metafield documento_url
  *   POST /quote             cotización de flota → recalcula con Admin API → PDF → metaobject → email (+50)
  *   GET  /ficha/:handle.pdf ficha técnica generada desde metafields
@@ -17,9 +17,9 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import type { Env } from './types';
 import { getProviders } from './providers';
-import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, updateCustomerNoteAndTags, setCustomerMetafield } from './lib/shopify';
+import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, createCustomer, updateCustomerNoteAndTags, setCustomerMetafield, setCustomerMetafields } from './lib/shopify';
 import { computeQuote, quoteHtml, specSheetHtml, nextQuoteNumber } from './lib/quote';
-import { verifyTurnstile, rateLimit, jsonError, scoreFor, signPath, verifySignedPath } from './lib/util';
+import { verifyTurnstile, rateLimit, jsonError, scoreFor, signPath, verifySignedPath, signToken, verifyToken } from './lib/util';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -64,23 +64,66 @@ app.post('/lead', async (c) => {
   return c.json({ ok: true, id: crmRes.id, score: lead.score });
 });
 
-/* ---------------- Solicitud B2B (cuenta existente) ---------------- */
+/* ---------------- Solicitud de acceso B2B ----------------
+ * Cuentas NUEVAS de cliente: el tema ya no puede crear cuentas con `form 'create_customer'`, así que
+ * este endpoint es el único camino de alta corporativa. Cubre los dos casos de la propuesta (pág. 6,
+ * "creación de cuenta con NIT validado" antes del login):
+ *   - visitante sin sesión  → se crea el cliente
+ *   - cliente B2C con sesión → se convierte su cuenta existente
+ * En ambos escribe los metafields brenson_b2b.* y el tag b2b-pendiente en la misma llamada, de modo
+ * que el guard del tema ve el estado correcto desde el primer render, sin depender de Shopify Flow.
+ */
 app.post('/b2b/request', async (c) => {
+  const ip = c.req.header('cf-connecting-ip') || 'unknown';
+  if (!(await rateLimit(c.env, `b2b:${ip}`, 5, 3600))) return jsonError(c, 429, 'Demasiadas solicitudes. Intente más tarde o escríbanos por WhatsApp.');
   const body = await c.req.json().catch(() => null);
   if (!body || !body.email || !body.nit || !body.razon_social) return jsonError(c, 422, 'Datos incompletos');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(body.email))) return jsonError(c, 422, 'Correo inválido');
+  if (c.env.TURNSTILE_SECRET && !(await verifyTurnstile(c.env, body.turnstile, ip))) return jsonError(c, 403, 'Verificación anti-spam fallida');
+
+  const email = String(body.email).trim().slice(0, 160);
+  const nit = String(body.nit_completo || body.nit).slice(0, 20);
   const { crm, mail } = getProviders(c.env);
-  const note = 'B2B ' + JSON.stringify({ razon_social: body.razon_social, nit: body.nit_completo || body.nit, sector: body.sector, ciudad: body.ciudad, flota_estimada: body.flota_estimada, cargo: body.cargo, whatsapp: body.whatsapp, ts: body.ts });
+  const note = 'B2B ' + JSON.stringify({ razon_social: body.razon_social, nit, sector: body.sector, ciudad: body.ciudad, flota_estimada: body.flota_estimada, cargo: body.cargo, whatsapp: body.whatsapp, ts: body.ts });
+
+  let customerId = '';
+  let creado = false;
   if (c.env.SHOPIFY_ADMIN_TOKEN) {
-    const customer = await findCustomerByEmail(c.env, body.email);
-    if (!customer) return jsonError(c, 404, 'Cliente no encontrado');
-    await updateCustomerNoteAndTags(c.env, customer.id, note, ['b2b-pendiente']);
-    await setCustomerMetafield(c.env, customer.id, 'brenson_b2b', 'estado_b2b', 'pendiente', 'single_line_text_field');
+    const existente = await findCustomerByEmail(c.env, email);
+    if (existente) {
+      // Ya aprobado: no se degrada a pendiente por reenviar el formulario.
+      if (existente.tags.includes('cliente-corporativo')) return c.json({ ok: true, ya_aprobado: true, customer_id: existente.id.split('/').pop() });
+      customerId = existente.id;
+    } else {
+      try {
+        customerId = await createCustomer(c.env, { email, firstName: String(body.nombre || '').slice(0, 60), lastName: String(body.apellido || '').slice(0, 60), note });
+        creado = true;
+      } catch (e) {
+        console.error('[b2b] customerCreate', e);
+        return jsonError(c, 502, 'No pudimos crear la cuenta corporativa. Escríbanos por WhatsApp y la creamos nosotros.');
+      }
+    }
+    await updateCustomerNoteAndTags(c.env, customerId, note, ['b2b-pendiente']);
+    await setCustomerMetafields(c.env, customerId, [
+      { key: 'tipo_cliente', value: 'empresa', type: 'single_line_text_field' },
+      { key: 'estado_b2b', value: 'pendiente', type: 'single_line_text_field' },
+      { key: 'nit', value: nit, type: 'single_line_text_field' },
+      { key: 'razon_social', value: String(body.razon_social).slice(0, 200), type: 'single_line_text_field' },
+      { key: 'sector', value: String(body.sector || ''), type: 'single_line_text_field' },
+      { key: 'cargo_contacto', value: String(body.cargo || '').slice(0, 120), type: 'single_line_text_field' },
+      { key: 'flota_estimada', value: String(parseInt(body.flota_estimada, 10) || 0), type: 'number_integer' }
+    ]);
   } else {
-    console.info('[mock shopify] nota+tag b2b-pendiente para', body.email, note);
+    console.info('[mock shopify] alta B2B pendiente para', email, note);
+    customerId = 'gid://shopify/Customer/0';
   }
-  await crm.upsertLead({ tipo: 'b2b_solicitud', nombre: `${body.nombre || ''} ${body.apellido || ''}`.trim(), email: body.email, whatsapp: String(body.whatsapp || '').replace(/\D/g, ''), empresa: body.razon_social, nit: body.nit_completo || body.nit, sector: body.sector, flota: body.flota_estimada, score: 40, ts: new Date().toISOString() });
-  await mail.send({ to: c.env.ADVISOR_EMAIL, subject: `Solicitud B2B: ${body.razon_social} (NIT ${body.nit_completo || body.nit})`, html: `<p>Nueva solicitud de acceso corporativo.</p><pre>${escapeHtml(note)}</pre><p>Aprobar en Shopify Admin: cambiar tag a <b>cliente-corporativo</b> y asignar tier y asesor.</p>` });
-  return c.json({ ok: true });
+
+  const numericId = customerId.split('/').pop() as string;
+  await crm.upsertLead({ tipo: 'b2b_solicitud', nombre: `${body.nombre || ''} ${body.apellido || ''}`.trim(), email, whatsapp: String(body.whatsapp || '').replace(/\D/g, ''), empresa: body.razon_social, nit, sector: body.sector, flota: body.flota_estimada, score: 40, ts: new Date().toISOString() });
+  await mail.send({ to: c.env.ADVISOR_EMAIL, subject: `Solicitud B2B: ${body.razon_social} (NIT ${nit})`, html: `<p>Nueva solicitud de acceso corporativo. Cuenta ${creado ? 'creada' : 'existente, convertida'}.</p><pre>${escapeHtml(note)}</pre><p>Aprobar en Shopify Admin: cambiar el tag a <b>cliente-corporativo</b>, poner <b>estado_b2b = aprobado</b> y asignar tier y asesor.</p>` });
+
+  // Token de 1 hora para que el paso 2 (documento) quede atado a este cliente sin sesión iniciada.
+  return c.json({ ok: true, customer_id: numericId, email, upload_token: await signToken(c.env, `upload:${numericId}`) });
 });
 
 /* ---------------- Upload documento B2B ---------------- */
@@ -91,6 +134,10 @@ app.post('/upload', async (c) => {
   const tipo = String(form.get('tipo') || 'camara_comercio');
   const email = String(form.get('email') || '');
   const customerId = String(form.get('customer_id') || '');
+  const token = form.get('token');
+  // El paso 2 sin sesión (alta corporativa recién creada) solo se acepta con el token que devolvió
+  // /b2b/request, para que un customer_id ajeno no sirva para sobrescribir el documento de otro.
+  if (token && !(await verifyToken(c.env, `upload:${customerId}`, String(token)))) return jsonError(c, 403, 'Token de subida inválido o vencido');
   if (!file || typeof file === 'string') return jsonError(c, 422, 'Archivo requerido');
   const max = Number(c.env.UPLOAD_MAX_BYTES || 5242880);
   if (file.size > max) return jsonError(c, 413, 'Archivo supera 5 MB');

@@ -45,6 +45,28 @@ export async function verifySignedPath(env: Env, path: string, exp: string | und
   return r === 0;
 }
 
+/**
+ * Token corto (`exp.sig`) que ata una acción posterior a un recurso concreto.
+ *
+ * Lo emite /b2b/request junto con el customer_id recién creado, para que la subida del documento
+ * (paso 2) pueda hacerse sin sesión iniciada pero sin quedar abierta a cualquier customer_id: el
+ * visitante acaba de demostrar que la solicitud es suya al recibir el id en la respuesta.
+ */
+export async function signToken(env: Env, subject: string, ttlSeconds = 60 * 60) {
+  const exp = Math.floor(Date.now() / 1000) + ttlSeconds;
+  return `${exp}.${await hmacHex(signingSecret(env), `${subject}|${exp}`)}`;
+}
+
+export async function verifyToken(env: Env, subject: string, token: string | undefined) {
+  if (!token) return false;
+  const [exp, sig] = token.split('.');
+  if (!exp || !sig || Number(exp) < Math.floor(Date.now() / 1000)) return false;
+  const expected = await hmacHex(signingSecret(env), `${subject}|${exp}`);
+  if (expected.length !== sig.length) return false;
+  let r = 0; for (let i = 0; i < expected.length; i++) r |= expected.charCodeAt(i) ^ sig.charCodeAt(i);
+  return r === 0;
+}
+
 // Scoring de leads (decisión J3): +10 ficha, +20 simulador, +30 cotización/prueba, +40 acceso B2B, +50 PDF flota.
 export function scoreFor(l: Lead): number {
   let s = 10;

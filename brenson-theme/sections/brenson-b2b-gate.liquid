@@ -10,6 +10,13 @@
 {%- endcomment -%}
 {%- include 'brenson-b2b-guard' -%}
 {%- assign tiers = shop.metaobjects.brenson_tier_b2b.values -%}
+{%- comment -%}
+  Cuentas NUEVAS de cliente (decisión A2 revisada, 18/09/2026): el login vive en la página alojada
+  de Shopify, no en el tema. Se enlaza con /customer_authentication/login?return_to=<ruta relativa>
+  para devolver al cliente al portal tras autenticarse. No hay contraseña: Shopify envía un código
+  de un solo uso al correo. Ver docs/DECISIONES_BRENSON.md A2.
+{%- endcomment -%}
+{%- capture b2b_login_url -%}/customer_authentication/login?return_to={{ request.path | url_encode }}{%- endcapture -%}
 
 {%- if b2b_state != 'aprobado' -%}
 <section class="brenson-section brenson-b2b-gate" data-b2b-state="{{ b2b_state }}">
@@ -99,15 +106,17 @@
         <div class="brenson-b2b-card" id="b2b-login">
           <h2 style="font-size: var(--brenson-text-lg); margin:0 0 0.4rem">Ingreso al portal de flotas</h2>
           <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0 0 1.6rem">Consulte sus cotizaciones y precios de flota vigentes.</p>
-          {%- form 'customer_login', class: 'brenson-form', return_to: '/pages/empresas' -%}
-            {%- if form.errors -%}<p class="brenson-form__error">{{ form.errors | default_errors }}</p>{%- endif -%}
-            <div class="brenson-field"><label for="b2b-email">Correo corporativo</label><input id="b2b-email" type="email" name="customer[email]" autocomplete="email" placeholder="compras@suempresa.com.co" required></div>
-            <div class="brenson-field"><label for="b2b-pass">Contraseña</label><input id="b2b-pass" type="password" name="customer[password]" autocomplete="current-password" placeholder="········" required></div>
-            <button class="brenson-btn brenson-btn--carbon brenson-btn--block" type="submit">Ingresar</button>
-            <p style="text-align:center; font-size: var(--brenson-text-sm); margin:0"><a class="link" href="{{ routes.account_recover_url }}">¿Olvidó su contraseña?</a></p>
+          <div class="brenson-form">
+            <ol class="brenson-b2b-login__steps" role="list">
+              <li><span class="brenson-b2b-login__n">1</span>Escriba su correo corporativo en la pantalla segura de Brenson.</li>
+              <li><span class="brenson-b2b-login__n">2</span>Reciba un código de un solo uso en ese correo.</li>
+              <li><span class="brenson-b2b-login__n">3</span>Vuelva al portal con sus precios de flota vigentes.</li>
+            </ol>
+            <a class="brenson-btn brenson-btn--carbon brenson-btn--block" href="{{ b2b_login_url }}">Ingresar con mi correo</a>
+            <p class="brenson-muted" style="text-align:center; font-size: var(--brenson-text-xs); margin:0">Acceso sin contraseña. No tendrá que recordar ni recuperar ninguna clave.</p>
             <hr style="border:0; border-top:1px solid var(--brenson-gris-borde); margin: 0.8rem 0">
             <p style="text-align:center; font-size: var(--brenson-text-sm); margin:0"><a class="link" href="/pages/empresas-acceso">Registrar mi empresa</a></p>
-          {%- endform -%}
+          </div>
         </div>
       </div>
 

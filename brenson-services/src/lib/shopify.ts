@@ -23,8 +23,32 @@ export async function updateCustomerNoteAndTags(env: Env, id: string, note: stri
   await shopifyAdmin(env, `mutation($id: ID!, $tags: [String!]!) { tagsAdd(id: $id, tags: $tags) { userErrors { message } } }`, { id, tags: addTags });
 }
 
+/**
+ * Crea el cliente corporativo por Admin API.
+ *
+ * Con cuentas NUEVAS de cliente el tema ya no puede usar `form 'create_customer'`, así que la cuenta
+ * la crea este worker a partir de la solicitud de acceso. No se envía contraseña: el acceso es por
+ * código de un solo uso al correo, y Shopify no acepta contraseñas en cuentas nuevas.
+ */
+export async function createCustomer(env: Env, input: { email: string; firstName?: string; lastName?: string; phone?: string; note?: string; tags?: string[] }): Promise<string> {
+  const data = await shopifyAdmin<{ customerCreate: { customer: { id: string } | null; userErrors: { field: string[] | null; message: string }[] } }>(env,
+    `mutation($input: CustomerInput!) { customerCreate(input: $input) { customer { id } userErrors { field message } } }`, { input });
+  const { customer, userErrors } = data.customerCreate;
+  if (!customer) throw new Error(userErrors.map((e) => e.message).join('; ') || 'customerCreate sin resultado');
+  return customer.id;
+}
+
 export async function setCustomerMetafield(env: Env, ownerId: string, namespace: string, key: string, value: string, type: string) {
-  await shopifyAdmin(env, `mutation($m: [MetafieldsSetInput!]!) { metafieldsSet(metafields: $m) { userErrors { field message } } }`, { m: [{ ownerId, namespace, key, value, type }] });
+  await setCustomerMetafields(env, ownerId, [{ key, value, type }], namespace);
+}
+
+/** Varios metafields del mismo namespace en una sola mutación (metafieldsSet acepta hasta 25). */
+export async function setCustomerMetafields(env: Env, ownerId: string, fields: { key: string; value: string; type: string }[], namespace = 'brenson_b2b') {
+  const m = fields.filter((f) => f.value !== '' && f.value != null).map((f) => ({ ownerId, namespace, key: f.key, value: f.value, type: f.type }));
+  if (!m.length) return;
+  const data = await shopifyAdmin<{ metafieldsSet: { userErrors: { field: string[] | null; message: string }[] } }>(env,
+    `mutation($m: [MetafieldsSetInput!]!) { metafieldsSet(metafields: $m) { userErrors { field message } } }`, { m });
+  if (data.metafieldsSet.userErrors.length) console.error('[shopify] metafieldsSet', JSON.stringify(data.metafieldsSet.userErrors));
 }
 
 // Precios y datos reales de variantes para recalcular una cotización (R-A3)

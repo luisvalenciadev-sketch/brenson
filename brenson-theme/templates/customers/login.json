@@ -1,8 +1,0 @@
-{
-  "sections": {
-    "breadcrumb": { "type": "brenson-breadcrumb", "settings": { "manual_label": "Mi Cuenta / Acceso" } },
-    "main": { "type": "brenson-account-gate" },
-    "trust": { "type": "brenson-trust-bar", "blocks": { "c": { "type": "certificado" }, "g": { "type": "garantia" }, "e": { "type": "envios" }, "f": { "type": "financiacion" } }, "block_order": ["c", "g", "e", "f"] }
-  },
-  "order": ["breadcrumb", "main", "trust"]
-}

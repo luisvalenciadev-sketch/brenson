@@ -105,6 +105,11 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 .brenson-b2b-steps li strong { display:block; font-size: var(--brenson-text-xs); color: var(--brenson-carbon); }
 .brenson-b2b-steps li.is-current strong { color: var(--brenson-rojo); }
 
+/* Pasos del ingreso sin contraseña (cuentas nuevas de cliente) */
+.brenson-b2b-login__steps { list-style:none; margin:0; padding:0; display:grid; gap: var(--brenson-space-3); }
+.brenson-b2b-login__steps li { display:flex; gap: var(--brenson-space-3); align-items:flex-start; font-size: var(--brenson-text-sm); color: var(--brenson-carbon-60); }
+.brenson-b2b-login__n { flex-shrink:0; width:2.4rem; height:2.4rem; border-radius:50%; display:grid; place-items:center; background: var(--brenson-gris-claro); border:1.5px solid var(--brenson-gris-borde); font-size: var(--brenson-text-xs); font-weight:700; color: var(--brenson-carbon); }
+
 .brenson-b2b-notice { display:flex; gap: var(--brenson-space-3); align-items:flex-start; background: var(--brenson-gris-claro); border-radius: var(--brenson-radius-lg); padding: var(--brenson-space-4); margin: var(--brenson-space-5) 0; text-align:left; color: var(--brenson-carbon-60); font-size: var(--brenson-text-sm); }
 .brenson-b2b-notice svg { flex-shrink:0; margin-top:0.16rem; color: var(--brenson-gris); }
 .brenson-b2b-notice p { margin:0; }

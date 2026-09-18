@@ -445,7 +445,7 @@ Spr  [S1 ][S2 ][S3 ][S4 ][S5 ][S6 ][S7 ][S8 ]
 
 | Módulo | Tarea | Archivos a crear / modificar |
 |---|---|---|
-| M07 | Login/registro rediseñados; registro con tipo de cliente y campos empresa (NIT con validación DV, razón social, sector, flota estimada) → `customer[note]` + tag `b2b-pendiente` | `templates/customers/login.json`, `templates/customers/register.json`, `sections/main-login.liquid`, `sections/main-register.liquid`, `assets/brenson-register.js` |
+| M07 | ~~Login/registro rediseñados en el tema~~ **Cuentas nuevas (A2, 18/09/2026)**: el login es la pantalla alojada de Shopify (enlace `/customer_authentication/login?return_to=…`, sin contraseña) y el alta corporativa la hace el worker con Admin API, escribiendo metafields `brenson_b2b.*` + tag `b2b-pendiente` | `sections/brenson-b2b-request-access.liquid`, `assets/brenson-register.js`, `brenson-services/src/index.ts` (`POST /b2b/request`) |
 | M07 | Dashboard cliente: pedidos, garantías por unidad (metafield de line item/pedido), facturas | `templates/customers/account.json`, `sections/main-account.liquid`, `sections/brenson-account-warranties.liquid` |
 | M08 | Guard de acceso `/pages/empresas` (server-side por tag) + estados: sin sesión, pendiente, aprobado | `sections/brenson-b2b-gate.liquid`, `snippets/brenson-b2b-guard.liquid`, `layout/theme.empresas.liquid`, `templates/page.empresas.json` |
 | M08 | Solicitud de acceso corporativo | `templates/page.empresas-acceso.json`, `sections/brenson-b2b-request-access.liquid` |
@@ -579,7 +579,7 @@ Spr  [S1 ][S2 ][S3 ][S4 ][S5 ][S6 ][S7 ][S8 ]
 
 | # | Riesgo | Mitigación | Nivel |
 |---|---|---|---|
-| R-A1 | **Cuentas nuevas de cliente activas** impedirían personalizar login/registro y gating en Liquid | Verificar en Sprint 1 y fijar cuentas clásicas antes de tocar M07/M08 | Crítico |
+| R-A1 | **Cuentas nuevas de cliente activas** impedirían personalizar login/registro y gating en Liquid | **Materializado el 18/09/2026** y resuelto sin volver a clásicas (Shopify ya no las ofrece). El gating en Liquid *sí* funciona con cuentas nuevas (`customer.tags` y `customer.metafields` siguen disponibles); solo se rehízo el login (pantalla alojada) y el alta (Admin API). Ver DECISIONES_BRENSON.md §Cuentas nuevas | ✅ Cerrado |
 | R-A2 | La colección B2B es técnicamente accesible por URL aunque esté oculta del menú | Guard Liquid en `collection.empresas.json` (mismo snippet `brenson-b2b-guard`), `noindex`, y **la Function garantiza el precio** aunque alguien vea el listado | Alto |
 | R-A3 | Descuento por tier calculado en cliente puede ser manipulado | Nunca confiar en el cliente: la Function recalcula en carrito/checkout; `/quote` recalcula server-side con Admin API | Alto |
 | R-A4 | Apps residuales (Ryviu, A2Reviews, GemPages, etc.) siguen inyectando scripts vía canal aunque cambie el tema | Desinstalar en Fase 5 y auditar `content_for_header` | Medio |

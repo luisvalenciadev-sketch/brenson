@@ -28,11 +28,13 @@
     elsif customer.tags contains b2b_tag
       assign b2b_state = 'aprobado'
     elsif customer.tags contains b2b_tag_pend or estado_mf == 'pendiente'
-      assign b2b_state = 'pendiente'
-    elsif customer.note contains 'B2B {'
       comment
-        Registro corporativo recién creado: la nota lleva el JSON de empresa y Shopify Flow
-        aún no ha asignado el tag b2b-pendiente (tarda segundos). Se trata como pendiente.
+        brenson-services escribe el metafield estado_b2b = 'pendiente' y el tag b2b-pendiente en la
+        misma llamada que crea o actualiza el cliente, así que el estado es correcto desde el primer
+        render y no depende de Shopify Flow.
+
+        Antes existía aquí un tercer caso, `customer.note contains 'B2B {'`. Se eliminó: `note` no
+        es una propiedad del objeto customer de Liquid, así que la condición nunca se cumplía.
       endcomment
       assign b2b_state = 'pendiente'
     else

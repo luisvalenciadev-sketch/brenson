@@ -10,8 +10,8 @@ Estado: ✅ decidido · ⏳ pendiente de verificar o entregar · ⚠️ genera c
 | # | Decisión | Estado |
 |---|---|---|
 | A1 | Rehacer el tema sobre **Dawn**. EDrop queda como respaldo no publicado y se elimina a los 90 días. | ✅ |
-| A2 | Tipo de cuentas de cliente (clásicas/nuevas): **verificar en Sprint 1**. Si son nuevas, cambiar a clásicas antes del Sprint 4. | ⏳ |
-| A3 | Aceptados los dos ajustes: facetas nativas + Section Rendering API; B2B con cuentas clásicas + tags + Shopify Function sin Plus. | ✅ |
+| A2 | ~~Tipo de cuentas de cliente (clásicas/nuevas): verificar en Sprint 1. Si son nuevas, cambiar a clásicas.~~ **Verificado el 18/09/2026: la tienda usa cuentas NUEVAS y no hay vuelta atrás** — el panel Configuración → Cuentas de cliente ya no ofrece las clásicas (Shopify las retiró). Se materializó el riesgo R-A1. | ✅ ⚠️ cambia plan |
+| A3 | Aceptados los dos ajustes: facetas nativas + Section Rendering API; B2B con **tags + metafields de cliente** + Shopify Function sin Plus. El gating por `customer.tags` y `customer.metafields` funciona igual con cuentas nuevas; lo que cambia es el alta y el login (ver A2 y §Cuentas nuevas). | ✅ |
 | A4 | Alcance: **versión completa, 16 semanas**, Sprints 1 a 8. | ✅ |
 | A5 | Plan de Shopify: **verificar en Sprint 1**. | ⏳ |
 | A6 | Acceso dev: colaborador con todos los permisos excepto facturación. | ✅ |
@@ -207,9 +207,36 @@ Estado: ✅ decidido · ⏳ pendiente de verificar o entregar · ⚠️ genera c
 | Textos de políticas legales | Semana 10 | Sprint 6 |
 | Contacto de la agencia de pauta Meta | Semana 9 | Sprint 6 |
 
+## Cuentas nuevas de cliente — impacto en el plan (18/09/2026)
+
+La verificación de A2 confirmó que la tienda usa **cuentas nuevas de cliente** y que Shopify ya no
+ofrece las clásicas. El acceso es **sin contraseña**: código de un solo uso al correo.
+
+Lo que **sigue igual**: el gating del portal B2B. `customer.tags` y `customer.metafields` están
+disponibles en Liquid con cuentas nuevas, así que `brenson-b2b-guard` y la evaluación server-side de
+los cuatro estados no cambian.
+
+Lo que **cambió en el código** (refactor del 18/09/2026):
+
+| Antes (cuentas clásicas) | Ahora (cuentas nuevas) |
+|---|---|
+| `templates/customers/login.json` + `register.json` con la sección `brenson-account-gate` | **Eliminados.** Shopify nunca renderiza esas plantillas; el login vive en su página alojada |
+| `form 'customer_login'` dentro del portal | Enlace a `/customer_authentication/login?return_to=<ruta>` |
+| `form 'create_customer'` (POST nativo a `/account`) | `POST /b2b/request` a brenson-services, que crea el cliente con Admin API |
+| Datos de empresa en `customer[note]` + Shopify Flow asigna el tag | El worker escribe los metafields `brenson_b2b.*` y el tag `b2b-pendiente` en la misma llamada |
+| Guard con fallback `customer.note contains 'B2B {'` | Eliminado: `note` **no** es una propiedad del objeto `customer` de Liquid, la condición nunca se cumplía |
+
+Compromisos de la propuesta que se cumplen distinto:
+
+- **Módulo 07, "login/registro nativo de Shopify mejorado visualmente"**: la pantalla de acceso ya no
+  se puede maquetar en Liquid. La personalización se hace desde el admin (logo, colores, tipografía).
+- **Módulo 07, "dashboard: pedidos, garantías, facturas descargables"**: Shopify muestra los pedidos
+  en su portal alojado. Falta verificar si el tema puede listar `customer.orders` en una página propia
+  o si hay que enlazar al portal de Shopify para esa parte. Ver ESTADO_GENERAL punto 7.
+
 ## Verificaciones técnicas pendientes (equipo dev, Sprint 1)
 
-1. Tipo de cuentas de cliente (A2).
+1. ~~Tipo de cuentas de cliente (A2).~~ ✅ Verificado 18/09/2026: cuentas nuevas. Ver sección anterior.
 2. Plan de Shopify (A5).
 3. Herramienta de WhatsApp: App o API (E3).
 4. Lista de apps instaladas y cuáles eliminar (F1, F3).
