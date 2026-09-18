@@ -69,18 +69,26 @@ Lo que hoy se descarga **no es un PDF**: con `PDF_PROVIDER = "html"` el worker g
 - El código del proveedor ya está escrito con reintentos (riesgo 04 de la propuesta). Solo falta la cuenta.
 - Aparte: el sello "DOCUMENTO DE PRUEBA · modo simulación" que aparece en la cotización **es correcto** — lo pone `quote.ts` cuando `ENVIRONMENT !== 'production'`. No lo quites en staging. Sí hay que acordarse de cambiar `ENVIRONMENT` en el go-live, o las cotizaciones reales saldrían marcadas como prueba.
 
-### 6. `git push` pendiente
+### 6. De la cotización al pedido — **no empieces a construir sin la decisión**
+
+El ciclo comercial se corta en la cotización: no existe nada que la convierta en pedido, la Función de descuento por tier no está desplegada (así que quien arme un carrito paga precio público) y el estado `aceptada` se pinta pero nunca se asigna.
+
+**Lee `docs/FLUJO_COTIZACION_A_PEDIDO.md` completo.** Tiene el estado verificado, el flujo paso a paso con lo que falta, las dos opciones de cierre (pedido borrador vs. compra directa) y qué se construye según cada una.
+
+Es una **decisión de negocio de Brenson**, no técnica: ¿cierra el asesor con pedido borrador, o compra la empresa sola desde el portal? Pregúntala antes de escribir código. La recomendación registrada es pedido borrador como camino principal y la Función como complemento para recompras.
+
+### 7. `git push` pendiente
 
 Hay 2 commits locales que `origin/main` no tiene: `83b06d4` (limpieza de plantillas de Dawn) y `585e9a7` (arreglo del 502 + Turnstile + URL del servicio). Confírmalo con el usuario antes de empujarlos.
 
-### 7. Verificar el dashboard de pedidos del cliente (sub-pregunta abierta de A2)
+### 8. Verificar el dashboard de pedidos del cliente (sub-pregunta abierta de A2)
 
 La propuesta promete en el Módulo 07 un "dashboard: pedidos, garantías, facturas descargables". Con cuentas nuevas, Shopify muestra los pedidos en su portal alojado (`https://shopify.com/62219747403/account`).
 
 - Verifica si el tema puede seguir listando `customer.orders` desde una página propia (`/pages/empresas`) o si hay que enlazar al portal de Shopify para esa parte. **No asumas la respuesta**: compruébalo contra la documentación y, si hace falta, renderizando de verdad con una sesión iniciada.
 - Según el resultado, actualiza el punto 7 de `docs/ESTADO_GENERAL_18SEP2026.md` §4.1 y la fila M07 de `docs/PLAN_DE_TRABAJO_BRENSON.md`.
 
-### 8. Cerrar la brecha de `/upload` sin token (opcional, según prioridad)
+### 9. Cerrar la brecha de `/upload` sin token (opcional, según prioridad)
 
 `/upload` acepta un `customer_id` sin token, porque así funciona la subida desde la página de estado pendiente de un cliente con sesión. Eso significa que alguien con un `customer_id` ajeno podría sobrescribir el documento de otra empresa. El token HMAC solo cubre el camino nuevo (alta sin sesión). Cerrarlo requiere un mecanismo de sesión entre el tema y el worker — evalúa el costo antes de proponerlo, no es trivial.
 
