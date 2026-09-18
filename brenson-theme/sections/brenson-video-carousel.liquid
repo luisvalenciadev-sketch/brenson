@@ -26,7 +26,7 @@
       <div class="brenson-video-feat__card">
         {%- unless t.verificado.value -%}<span class="brenson-status brenson-status--pending brenson-video-feat__mock">[MOCK]</span>{%- endunless -%}
         <div class="brenson-video-feat__media">
-          {{ t.video.value | video_tag: image_size: '900x', class: 'brenson-video-feat__el', controls: true, muted: true, preload: 'metadata' }}
+          {{ t.video.value | video_tag: image_size: '900x', class: 'brenson-video-feat__el', controls: true, muted: false, preload: 'metadata' }}
         </div>
         <div class="brenson-video-feat__body">
           <h3 class="brenson-video-feat__titulo">{{ t.nombre.value }}</h3>
@@ -45,7 +45,7 @@
       <div class="brenson-video-feat__card">
         {%- unless c.verificado.value -%}<span class="brenson-status brenson-status--pending brenson-video-feat__mock">[MOCK]</span>{%- endunless -%}
         <div class="brenson-video-feat__media">
-          {{ c.video.value | video_tag: image_size: '900x', class: 'brenson-video-feat__el', controls: true, muted: true, preload: 'metadata' }}
+          {{ c.video.value | video_tag: image_size: '900x', class: 'brenson-video-feat__el', controls: true, muted: false, preload: 'metadata' }}
         </div>
         <div class="brenson-video-feat__body">
           <h3 class="brenson-video-feat__titulo">{{ c.cliente.value | default: c.titulo.value }}</h3>
