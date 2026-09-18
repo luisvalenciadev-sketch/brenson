@@ -190,6 +190,9 @@ app.post('/quote', async (c) => {
       m: { type: 'brenson_cotizacion_b2b', handle: quote.numero.toLowerCase(), fields: [
         { key: 'numero', value: quote.numero },
         { key: 'cliente', value: `gid://shopify/Customer/${body.customer_id}` },
+        // El portal filtra por este campo, no por `cliente`: un customer_reference no se resuelve de
+        // forma fiable desde Liquid en el storefront, así que "Mis cotizaciones" salía siempre vacío.
+        { key: 'cliente_id', value: String(body.customer_id) },
         { key: 'items', value: JSON.stringify(quote.items) },
         { key: 'subtotal', value: JSON.stringify({ amount: String(quote.subtotal_publico), currency_code: 'COP' }) },
         { key: 'descuento_pct', value: String(quote.descuento_pct) },

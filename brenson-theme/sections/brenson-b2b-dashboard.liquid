@@ -16,7 +16,7 @@
   assign my_quotes = ''
   assign quotes_activas = 0
   for q in shop.metaobjects.brenson_cotizacion_b2b.values
-    assign qcid = q.cliente.value.id | append: ''
+    assign qcid = q.cliente_id.value | default: q.cliente.value.id | append: ''
     if qcid == cid
       assign my_quotes = my_quotes | append: q.system.handle | append: ','
       if q.estado.value == 'enviada' or q.estado.value == 'borrador'
@@ -30,7 +30,7 @@
   assign units_activas = 0
   assign units_reclamo = 0
   for u in shop.metaobjects.brenson_unidad.values
-    assign ucid = u.cliente.value.id | append: ''
+    assign ucid = u.cliente_id.value | default: u.cliente.value.id | append: ''
     if ucid == cid
       assign units_total = units_total | plus: 1
       if u.estado.value == 'activa'
@@ -115,7 +115,7 @@
                 <thead><tr><th>Código</th><th>Fecha</th><th>Unidades</th><th>Total</th><th>Estado</th><th></th></tr></thead>
                 <tbody>
                   {%- for q in shop.metaobjects.brenson_cotizacion_b2b.values -%}
-                    {%- assign qcid = q.cliente.value.id | append: '' -%}
+                    {%- assign qcid = q.cliente_id.value | default: q.cliente.value.id | append: '' -%}
                     {%- if qcid != cid -%}{%- continue -%}{%- endif -%}
                     {%- assign units = 0 -%}{%- for it in q.items.value -%}{%- assign units = units | plus: it.cantidad -%}{%- endfor -%}
                     <tr>
@@ -145,7 +145,7 @@
                 <thead><tr><th>Serie / chasis</th><th>Vehículo</th><th>Pedido</th><th>Entrega</th><th>Garantía vehículo</th><th>Garantía batería</th><th>Estado</th></tr></thead>
                 <tbody>
                   {%- for u in shop.metaobjects.brenson_unidad.values -%}
-                    {%- assign ucid = u.cliente.value.id | append: '' -%}
+                    {%- assign ucid = u.cliente_id.value | default: u.cliente.value.id | append: '' -%}
                     {%- if ucid != cid -%}{%- continue -%}{%- endif -%}
                     <tr>
                       <td><code>{{ u.serie.value }}</code></td>

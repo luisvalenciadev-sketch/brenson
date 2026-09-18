@@ -45,12 +45,41 @@ export async function computeQuote(env: Env, body: any): Promise<Quote> {
   };
 }
 
+/**
+ * Consecutivo de cotización.
+ *
+ * El contador vive en KV, pero KV puede estar vacío aunque la tienda ya tenga cotizaciones: es lo que
+ * pasó al sembrar datos de prueba directamente en Shopify sin pasar por el worker. El contador
+ * arrancó en 0 y reemitió COT-2026-0001, 0002 y 0003, que ya existían. Shopify solo desambigua el
+ * HANDLE (le agrega "-1"), no el campo `numero`, así que quedaron números duplicados entre empresas
+ * distintas — inaceptable en un documento comercial.
+ *
+ * Por eso, cuando KV no tiene contador, se siembra a partir del número más alto que ya exista en la
+ * tienda en vez de asumir cero.
+ */
 export async function nextQuoteNumber(env: Env): Promise<string> {
   const year = new Date().getFullYear();
   const key = `quote-seq:${year}`;
-  const n = Number((env.KV && (await env.KV.get(key))) || 0) + 1;
+  let actual = Number((env.KV && (await env.KV.get(key))) || 0);
+  if (!actual) actual = await maxQuoteNumberEnShopify(env, year);
+  const n = actual + 1;
   if (env.KV) await env.KV.put(key, String(n));
   return `COT-${year}-${String(n).padStart(4, '0')}`;
+}
+
+async function maxQuoteNumberEnShopify(env: Env, year: number): Promise<number> {
+  if (!env.SHOPIFY_ADMIN_TOKEN) return 0;
+  try {
+    const data = await shopifyAdmin<{ metaobjects: { nodes: { numero: { value: string } | null }[] } }>(env,
+      `query { metaobjects(type: "brenson_cotizacion_b2b", first: 250) { nodes { numero: field(key: "numero") { value } } } }`);
+    return data.metaobjects.nodes.reduce((max, n) => {
+      const m = /^COT-(\d{4})-(\d+)$/.exec(n.numero?.value || '');
+      return m && Number(m[1]) === year ? Math.max(max, Number(m[2])) : max;
+    }, 0);
+  } catch (e) {
+    console.error('[quote] no se pudo leer el consecutivo desde Shopify', e);
+    return 0;
+  }
 }
 
 export function quoteHtml(q: Quote, env: Env): string {

@@ -46,7 +46,7 @@
     <script type="application/json" data-q-history>[
       {%- assign first = true -%}
       {%- for q in shop.metaobjects.brenson_cotizacion_b2b.values -%}
-        {%- assign qcid = q.cliente.value.id | append: '' -%}
+        {%- assign qcid = q.cliente_id.value | default: q.cliente.value.id | append: '' -%}
         {%- if qcid != cid -%}{%- continue -%}{%- endif -%}
         {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
         { "numero": {{ q.numero.value | json }}, "items": {{ q.items.value | json }}, "observaciones": {{ q.observaciones.value | json }} }
@@ -148,7 +148,7 @@
     {%- comment -%} Historial de cotizaciones del cliente (misma fuente que el dashboard) {%- endcomment -%}
     {%- assign has_quotes = false -%}
     {%- for q in shop.metaobjects.brenson_cotizacion_b2b.values -%}
-      {%- assign qcid2 = q.cliente.value.id | append: '' -%}
+      {%- assign qcid2 = q.cliente_id.value | default: q.cliente.value.id | append: '' -%}
       {%- if qcid2 == cid -%}{%- assign has_quotes = true -%}{%- break -%}{%- endif -%}
     {%- endfor -%}
     {%- if has_quotes -%}
@@ -165,7 +165,7 @@
             <thead><tr><th>Código / Lote</th><th>Fecha de emisión</th><th>Volumen</th><th>Monto total</th><th>Estado</th><th></th></tr></thead>
             <tbody>
               {%- for q in shop.metaobjects.brenson_cotizacion_b2b.values -%}
-                {%- assign qcid3 = q.cliente.value.id | append: '' -%}
+                {%- assign qcid3 = q.cliente_id.value | default: q.cliente.value.id | append: '' -%}
                 {%- if qcid3 != cid -%}{%- continue -%}{%- endif -%}
                 {%- assign units2 = 0 -%}{%- for it in q.items.value -%}{%- assign units2 = units2 | plus: it.cantidad -%}{%- endfor -%}
                 <tr>
