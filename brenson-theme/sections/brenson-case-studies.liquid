@@ -24,9 +24,9 @@
         <p class="brenson-muted">{{ c.resumen.value }}</p>
         {%- if c.metricas.value -%}
           <ul class="brenson-case__metrics" role="list">
-            {%- if c.metricas.value.unidades -%}<li><strong>{{ c.metricas.value.unidades }}</strong><span>unidades</span></li>{%- endif -%}
-            {%- if c.metricas.value.km_mes -%}<li><strong>{{ c.metricas.value.km_mes | divided_by: 1000.0 | round: 1 }}k</strong><span>km / mes</span></li>{%- endif -%}
-            {%- if c.metricas.value.ahorro_combustible_pct -%}<li><strong style="color: var(--brenson-certificado)">{{ c.metricas.value.ahorro_combustible_pct }} %</strong><span>ahorro en combustible</span></li>{%- endif -%}
+            {%- if c.metricas.value.unidades != blank -%}<li><strong>{{ c.metricas.value.unidades }}</strong><span>unidades</span></li>{%- endif -%}
+            {%- if c.metricas.value.km_mes != blank -%}<li><strong>{{ c.metricas.value.km_mes | divided_by: 1000.0 | round: 1 }}k</strong><span>km / mes</span></li>{%- endif -%}
+            {%- if c.metricas.value.ahorro_combustible_pct != blank -%}<li><strong style="color: var(--brenson-certificado)">{{ c.metricas.value.ahorro_combustible_pct }} %</strong><span>ahorro en combustible</span></li>{%- endif -%}
           </ul>
         {%- endif -%}
         {%- if c.vehiculos.value -%}

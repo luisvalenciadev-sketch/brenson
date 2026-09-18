@@ -22,23 +22,28 @@
 <section id="como-funciona" class="brenson-section brenson-b2b-respaldo">
   <div class="brenson-container">
 
-    {%- comment -%} ── Hero ── {%- endcomment -%}
-    <header class="brenson-b2b-respaldo__hero">
-      <span class="brenson-eyebrow" style="color:#ff6b6b">{{ s.eyebrow }}</span>
-      <h1 class="brenson-heading" style="font-size: clamp(3.2rem, 4vw, 5.2rem)">{{ s.title }}</h1>
-      <p class="brenson-subheading">{{ s.text }}</p>
-      <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap; justify-content:center">
-        <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="#etapas">Explorar las etapas</a>
-        <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="/pages/empresas-acceso">Agendar sesión con un especialista</a>
-      </div>
-    </header>
+    {%- comment -%} ── Hero (dos columnas: texto + CTA a la izquierda, KPIs 2×2 a la derecha, como el mock Stitch 16) ── {%- endcomment -%}
+    <div class="brenson-b2b-respaldo__hero-wrap">
+      <header class="brenson-b2b-respaldo__hero">
+        <span class="brenson-eyebrow brenson-eyebrow--pill">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          {{ s.eyebrow }}
+        </span>
+        <h1 class="brenson-heading" style="font-size: clamp(3.2rem, 4vw, 5.2rem)">{{ s.title }}</h1>
+        <p class="brenson-subheading">{{ s.text }}</p>
+        <div style="display:flex; gap: var(--brenson-space-3); flex-wrap: wrap;">
+          <a class="brenson-btn brenson-btn--primary brenson-btn--lg" href="#etapas">Explorar las etapas</a>
+          <a class="brenson-btn brenson-btn--outline brenson-btn--lg" style="color:#fff; border-color: rgba(255,255,255,.4)" href="/pages/empresas-acceso">Agendar sesión con un especialista</a>
+        </div>
+      </header>
 
-    <ul class="brenson-b2b-respaldo__kpis" role="list">
-      <li><span class="brenson-eyebrow">{{ s.kpi1_label }}</span><strong class="brenson-num">{{ s.kpi1_valor }}</strong><span>{{ s.kpi1_nota }}</span></li>
-      <li><span class="brenson-eyebrow">{{ s.kpi2_label }}</span><strong class="brenson-num">{{ s.kpi2_valor }}</strong><span>{{ s.kpi2_nota }}</span></li>
-      <li><span class="brenson-eyebrow">{{ s.kpi3_label }}</span><strong class="brenson-num">{{ s.kpi3_valor }}</strong><span>{{ s.kpi3_nota }}</span></li>
-      <li><span class="brenson-eyebrow">{{ s.kpi4_label }}</span><strong class="brenson-num">{{ s.kpi4_valor }}</strong><span>{{ s.kpi4_nota }}</span></li>
-    </ul>
+      <ul class="brenson-b2b-respaldo__kpis" role="list">
+        <li><span class="brenson-eyebrow">{{ s.kpi1_label }}</span><strong class="brenson-num">{{ s.kpi1_valor }}</strong><span>{{ s.kpi1_nota }}</span></li>
+        <li><span class="brenson-eyebrow">{{ s.kpi2_label }}</span><strong class="brenson-num">{{ s.kpi2_valor }}</strong><span>{{ s.kpi2_nota }}</span></li>
+        <li><span class="brenson-eyebrow">{{ s.kpi3_label }}</span><strong class="brenson-num">{{ s.kpi3_valor }}</strong><span>{{ s.kpi3_nota }}</span></li>
+        <li><span class="brenson-eyebrow">{{ s.kpi4_label }}</span><strong class="brenson-num">{{ s.kpi4_valor }}</strong><span>{{ s.kpi4_nota }}</span></li>
+      </ul>
+    </div>
 
     {%- comment -%} ── Ruta de implementación ── {%- endcomment -%}
     {%- if etapas.size > 0 -%}
@@ -103,15 +108,29 @@
         </div>
       </div>
 
+      {%- liquid
+        assign recarga_max = s.recarga_a_costo
+        if s.recarga_b_costo > recarga_max
+          assign recarga_max = s.recarga_b_costo
+        endif
+        assign recarga_a_pct = s.recarga_a_costo | times: 100.0 | divided_by: recarga_max
+        assign recarga_b_pct = s.recarga_b_costo | times: 100.0 | divided_by: recarga_max
+      -%}
       <div class="brenson-b2b-card brenson-b2b-respaldo__comparativa">
         <span class="brenson-eyebrow">Comparativa de costo de recarga</span>
         <div class="brenson-b2b-respaldo__comparativa-fila brenson-b2b-respaldo__comparativa-fila--ok">
-          <span>{{ s.recarga_a_label }}</span>
-          <strong class="brenson-num">{{ s.recarga_a_costo | times: 100 | money_without_trailing_zeros }}</strong>
+          <div class="brenson-b2b-respaldo__comparativa-fila-head">
+            <span>{{ s.recarga_a_label }}</span>
+            <strong class="brenson-num">{{ s.recarga_a_costo | times: 100 | money_without_trailing_zeros }}</strong>
+          </div>
+          <div class="brenson-progress"><span style="width: {{ recarga_a_pct }}%; background: var(--brenson-rojo)"></span></div>
         </div>
         <div class="brenson-b2b-respaldo__comparativa-fila">
-          <span>{{ s.recarga_b_label }}</span>
-          <strong class="brenson-num">{{ s.recarga_b_costo | times: 100 | money_without_trailing_zeros }}</strong>
+          <div class="brenson-b2b-respaldo__comparativa-fila-head">
+            <span>{{ s.recarga_b_label }}</span>
+            <strong class="brenson-num">{{ s.recarga_b_costo | times: 100 | money_without_trailing_zeros }}</strong>
+          </div>
+          <div class="brenson-progress"><span style="width: {{ recarga_b_pct }}%; background: var(--brenson-error)"></span></div>
         </div>
         <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin:0">{{ s.recarga_nota }}</p>
       </div>
