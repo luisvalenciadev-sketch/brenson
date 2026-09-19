@@ -1,16 +1,18 @@
-# App custom de Brenson: solo contiene la Shopify Function de descuento por tier B2B.
-# Crear la app en el Partner Dashboard / Dev Dashboard y reemplazar client_id.
-client_id = "REEMPLAZAR_CLIENT_ID"
-name = "Brenson B2B Functions"
-application_url = "https://brenson.co"
-embedded = false
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-[build]
-automatically_update_urls_on_dev = false
-include_config_on_deploy = true
+client_id = "d7aa7b649732e4edb4cda78786dd1701"
+name = "Brenson Admin Scripts"
+application_url = "https://example.com"
+embedded = true
 
 [access_scopes]
-scopes = "write_discounts,read_customers,read_products"
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_customers,write_customers,read_discounts,write_draft_orders,read_draft_orders,read_files,write_files,write_metaobject_definitions,read_metaobjects,write_metaobjects,read_online_store_navigation,write_online_store_navigation,read_orders,read_products,write_products,read_publications,write_publications,write_content,read_themes"
+optional_scopes = [ ]
+use_legacy_install_flow = true
 
 [webhooks]
-api_version = "2025-07"
+api_version = "2026-07"
+
+[auth]
+redirect_urls = [ "http://localhost:8787/callback" ]

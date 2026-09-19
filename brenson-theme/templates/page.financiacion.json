@@ -83,7 +83,8 @@
     "faq": {
       "type": "brenson-faq",
       "settings": { "eyebrow": "Resolvemos tus dudas", "title": "Preguntas frecuentes sobre financiación", "categoria": "compra", "limit": 6, "show_cta": true }
-    }
+    },
+    "addi_modal": { "type": "brenson-addi-check", "settings": {} }
   },
-  "order": ["hero", "simulador", "pasos", "comparativa", "ahorro", "lead", "faq"]
+  "order": ["hero", "simulador", "pasos", "comparativa", "ahorro", "lead", "faq", "addi_modal"]
 }

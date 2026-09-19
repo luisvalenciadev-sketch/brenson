@@ -132,7 +132,8 @@
       }
     },
     "sticky": { "type": "brenson-sticky-cta", "settings": {} },
-    "exit": { "type": "brenson-exit-intent", "settings": { "eyebrow": "Antes de irte", "title": "Llévate la ficha técnica del {modelo}", "text": "Te enviamos la ficha técnica en PDF con specs, garantía y cuota estimada.", "cta_label": "Enviarme la ficha", "days": 7 } }
+    "exit": { "type": "brenson-exit-intent", "settings": { "eyebrow": "Antes de irte", "title": "Llévate la ficha técnica del {modelo}", "text": "Te enviamos la ficha técnica en PDF con specs, garantía y cuota estimada.", "cta_label": "Enviarme la ficha", "days": 7 } },
+    "addi_modal": { "type": "brenson-addi-check", "settings": {} }
   },
-  "order": ["breadcrumb", "main", "simulador", "certificacion", "specs", "garantia", "resenas", "faq", "lead", "related", "sticky", "exit"]
+  "order": ["breadcrumb", "main", "simulador", "certificacion", "specs", "garantia", "resenas", "faq", "lead", "related", "sticky", "exit", "addi_modal"]
 }

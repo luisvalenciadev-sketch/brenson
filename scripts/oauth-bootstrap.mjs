@@ -37,6 +37,7 @@ const SCOPES = [
   'read_metaobjects', 'write_metaobjects',
   'read_metaobject_definitions', 'write_metaobject_definitions',
   'read_orders', 'write_orders',
+  'read_draft_orders', 'write_draft_orders',
   'read_publications', 'write_publications',
   'read_themes', 'write_themes',
   'read_discounts', 'write_discounts',

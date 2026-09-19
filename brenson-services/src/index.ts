@@ -8,6 +8,7 @@
  *   GET  /ficha/:handle.pdf ficha técnica generada desde metafields
  *   GET  /quotes/:id.pdf    PDF de cotización (enlace firmado)
  *   POST /quotes/:numero/accept  aceptar cotización → draftOrderCreate con precio congelado → aviso al asesor
+ *   POST /financing/disponible   consulta de cupo Addi (BNPL), sobre la persona — sirve a B2C y B2B
  *   POST /webhooks/shopify/:topic   customers/create, customers/update, checkouts/create, orders/create, orders/fulfilled → CRM
  *   GET  /health
  *
@@ -29,7 +30,7 @@ app.use('*', async (c, next) => {
   return cors({ origin: (o) => (origins.includes(o) ? o : origins[0]), allowMethods: ['GET', 'POST', 'OPTIONS'], allowHeaders: ['Content-Type'] })(c, next);
 });
 
-app.get('/health', (c) => c.json({ ok: true, env: c.env.ENVIRONMENT, providers: { crm: c.env.CRM_PROVIDER, mail: c.env.MAIL_PROVIDER, pdf: c.env.PDF_PROVIDER, storage: c.env.STORAGE_PROVIDER } }));
+app.get('/health', (c) => c.json({ ok: true, env: c.env.ENVIRONMENT, providers: { crm: c.env.CRM_PROVIDER, mail: c.env.MAIL_PROVIDER, pdf: c.env.PDF_PROVIDER, storage: c.env.STORAGE_PROVIDER, financing: c.env.FINANCING_PROVIDER } }));
 
 /* ---------------- Leads B2C ---------------- */
 app.post('/lead', async (c) => {
@@ -283,6 +284,53 @@ app.post('/quotes/:numero/accept', async (c) => {
   });
 
   return c.json({ ok: true, numero, pedido_borrador: draft.name });
+});
+
+/* ---------------- Consulta de cupo disponible (Addi) ----------------
+ * Sirve tanto al flujo B2C (ficha de producto) como al B2B (cotizador de flota): en ambos casos el
+ * cupo se consulta contra la PERSONA que diligencia el formulario, nunca contra la razón social —
+ * Addi evalúa personas naturales, no tiene producto de crédito para NIT. `contexto` solo cambia el
+ * tipo de lead que se registra en el CRM, no la lógica de la consulta.
+ */
+app.post('/financing/disponible', async (c) => {
+  const ip = c.req.header('cf-connecting-ip') || 'unknown';
+  if (!(await rateLimit(c.env, `addi:${ip}`, 8, 3600))) return jsonError(c, 429, 'Demasiadas consultas desde esta conexión. Intenta de nuevo en un momento.');
+  const body = await c.req.json().catch(() => null);
+  if (!body || body.honeypot) return jsonError(c, 400, 'Solicitud inválida');
+  if (!body.tipo_documento || !body.numero_documento || !body.nombres || !body.apellidos || !body.celular || !body.email) return jsonError(c, 422, 'Completa todos los campos');
+  if (!/^\d{5,15}$/.test(String(body.numero_documento))) return jsonError(c, 422, 'Número de documento inválido');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(body.email))) return jsonError(c, 422, 'Correo inválido');
+  if (!body.acepta_datos) return jsonError(c, 422, 'Debes autorizar el tratamiento de datos para consultar tu cupo');
+  if (c.env.TURNSTILE_SECRET && !(await verifyTurnstile(c.env, body.turnstile, ip))) return jsonError(c, 403, 'Verificación anti-spam fallida');
+
+  const { financing, crm } = getProviders(c.env);
+  const contexto = body.contexto === 'b2b' ? 'b2b' : 'b2c';
+  const result = await financing.checkAvailability({
+    tipoDocumento: String(body.tipo_documento).slice(0, 4),
+    numeroDocumento: String(body.numero_documento),
+    nombres: String(body.nombres).slice(0, 80),
+    apellidos: String(body.apellidos).slice(0, 80),
+    celular: String(body.celular).replace(/\D/g, '').slice(0, 15),
+    email: String(body.email).slice(0, 160),
+    montoSolicitado: Number(body.monto_solicitado || 0),
+    contexto
+  });
+
+  // Se registra el intento en el CRM sin importar el resultado: es una señal de intención de compra
+  // financiada más fuerte que ver la ficha, aunque no llegue al nivel de "solicitó cotización" (+30).
+  await crm.upsertLead({
+    tipo: contexto === 'b2b' ? 'b2b_consulta_addi' : 'consulta_addi',
+    nombre: `${body.nombres} ${body.apellidos}`.trim(),
+    email: String(body.email),
+    whatsapp: String(body.celular).replace(/\D/g, ''),
+    vehiculo: String(body.vehiculo || ''),
+    monto_solicitado: Number(body.monto_solicitado || 0),
+    resultado_addi: result.estado,
+    score: result.estado === 'aprobado' ? 35 : 20,
+    ts: new Date().toISOString()
+  });
+
+  return c.json({ ok: result.ok, estado: result.estado, cupo_disponible: result.cupoDisponible, mensaje: result.mensaje, redirect_url: result.redirectUrl });
 });
 
 /* ---------------- Documentos B2B (bucket privado, enlace firmado) ---------------- */

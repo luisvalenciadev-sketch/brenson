@@ -101,6 +101,13 @@
         this.render(); this.track('simulator_use'); return;
       }
       if (e.target.closest('[data-sim-cta]')) this.requestFinancing();
+      if (e.target.closest('[data-sim-addi]')) this.openAddiCheck();
+    }
+
+    openAddiCheck() {
+      var r = this.compute();
+      document.dispatchEvent(new CustomEvent('brenson:addi-check-open', { detail: { vehiculo: this.vehicleName, precio: r.price, contexto: 'b2c' } }));
+      this.track('addi_check_open', { precio: r.price });
     }
 
     compute() {

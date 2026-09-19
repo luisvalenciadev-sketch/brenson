@@ -15,6 +15,14 @@ CRM_PROVIDER = "mock"         # mock | ghl
 MAIL_PROVIDER = "console"     # console | resend
 PDF_PROVIDER = "html"         # html | pdfmonkey
 STORAGE_PROVIDER = "local"    # local | r2
+FINANCING_PROVIDER = "mock"   # mock | addi — respuesta de cupo Addi determinística en mock
+
+# Addi (BNPL) — solo se usan si FINANCING_PROVIDER = "addi". No son secretos por sí solos (son URLs/ids
+# públicos del convenio), pero solo tienen efecto junto con ADDI_CLIENT_ID/SECRET (`wrangler secret put`).
+# ADDI_AUTH_URL = ""     # ej. token endpoint de Auth0 que entregue Addi
+# ADDI_API_BASE = ""     # ej. https://api.addi.com (confirmar con el manual de integración de Addi)
+# ADDI_AUDIENCE = ""
+# ADDI_MERCHANT_ID = ""
 
 ADVISOR_EMAIL = "empresas@brenson.co"
 MAIL_FROM = "Brenson <cotizaciones@brenson.co>"
@@ -30,6 +38,7 @@ UPLOAD_MAX_BYTES = "5242880"
 #   PDFMONKEY_API_KEY, PDFMONKEY_TEMPLATE_QUOTE, PDFMONKEY_TEMPLATE_SPEC
 #   TURNSTILE_SECRET
 #   QUOTE_SIGNING_SECRET    firma de enlaces de PDF
+#   ADDI_CLIENT_ID, ADDI_CLIENT_SECRET   credenciales Auth0 client-credentials del convenio con Addi
 
 [[kv_namespaces]]
 binding = "KV"

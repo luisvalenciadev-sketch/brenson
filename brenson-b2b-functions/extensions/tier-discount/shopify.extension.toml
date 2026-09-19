@@ -3,6 +3,8 @@ api_version = "2025-07"
 [[extensions]]
 name = "Brenson · Descuento por tier B2B"
 handle = "brenson-tier-discount"
+
+uid = "71ed19fb-c6d8-536e-c437-1f965ef91b8ded30a6fa"
 type = "function"
 description = "Aplica el porcentaje de descuento del tier corporativo del cliente a cada línea que cumpla el mínimo de unidades."
 
@@ -12,7 +14,7 @@ description = "Aplica el porcentaje de descuento del tier corporativo del client
   export = "run"
 
   [extensions.build]
-  command = ""
+  command = "npm run build"
   path = "dist/function.wasm"
 
   [extensions.ui]

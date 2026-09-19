@@ -9,9 +9,18 @@ export interface Env {
   MAIL_PROVIDER: 'console' | 'resend';
   PDF_PROVIDER: 'html' | 'pdfmonkey';
   STORAGE_PROVIDER: 'local' | 'r2';
+  FINANCING_PROVIDER: 'mock' | 'addi';
   GHL_WEBHOOK_URL?: string;
   GHL_API_KEY?: string;
   RESEND_API_KEY?: string;
+  // Addi (BNPL) — consulta de cupo disponible. Auth vía Auth0 client-credentials contra ADDI_AUTH_URL,
+  // luego llamadas al API con ese token. ADDI_CLIENT_ID/SECRET son secretos (`wrangler secret put`).
+  ADDI_AUTH_URL?: string;
+  ADDI_API_BASE?: string;
+  ADDI_AUDIENCE?: string;
+  ADDI_MERCHANT_ID?: string;
+  ADDI_CLIENT_ID?: string;
+  ADDI_CLIENT_SECRET?: string;
   MAIL_FROM: string;
   ADVISOR_EMAIL: string;
   PDFMONKEY_API_KEY?: string;
@@ -78,4 +87,29 @@ export interface Providers {
   mail: { send(m: { to: string; subject: string; html: string }): Promise<void> };
   pdf: { render(o: { id: string; html: string; template?: string; data: unknown }): Promise<string>; get(id: string): Promise<string | null> };
   storage: { put(key: string, file: File, meta: Record<string, string>): Promise<string> };
+  financing: { checkAvailability(input: AddiCheckInput): Promise<AddiCheckResult> };
+}
+
+/**
+ * Consulta de cupo Addi (BNPL). Se evalúa siempre sobre la PERSONA (cédula), tanto en el flujo
+ * B2C como en el B2B — Addi no tiene producto de crédito para personas jurídicas/NIT. `contexto`
+ * solo cambia cómo se registra el lead resultante en el CRM.
+ */
+export interface AddiCheckInput {
+  tipoDocumento: string;
+  numeroDocumento: string;
+  nombres: string;
+  apellidos: string;
+  celular: string;
+  email: string;
+  montoSolicitado: number;
+  contexto: 'b2c' | 'b2b';
+}
+
+export interface AddiCheckResult {
+  ok: boolean;
+  estado: 'aprobado' | 'rechazado' | 'pendiente' | 'error';
+  cupoDisponible: number | null;
+  mensaje: string;
+  redirectUrl?: string;
 }

@@ -85,6 +85,15 @@
       if (val) { this.validez = parseInt(val.dataset.qValidez, 10); this.querySelectorAll('[data-q-validez]').forEach((c) => c.classList.toggle('is-active', c === val)); return; }
       if (e.target.closest('[data-q-pdf]')) this.submit('enviada');
       if (e.target.closest('[data-q-draft]')) this.submit('borrador');
+      if (e.target.closest('[data-q-addi]')) this.openAddiCheck();
+    }
+
+    openAddiCheck() {
+      var r = this.compute();
+      if (!r.lines.length) return;
+      document.dispatchEvent(new CustomEvent('brenson:addi-check-open', {
+        detail: { vehiculo: r.units + ' unidades · ' + (this.dataset.empresa || 'Cotización de flota'), precio: r.total, contexto: 'b2b' }
+      }));
     }
 
     onInput(e) {
@@ -127,8 +136,8 @@
       this.querySelector('[data-q-discount]').textContent = r.lines.length ? '− ' + fmt.format(r.discount) : '—';
       this.querySelector('[data-q-units]').textContent = r.units;
       this.querySelector('[data-q-total]').textContent = r.lines.length ? fmt.format(r.total) : '—';
-      var pdf = this.querySelector('[data-q-pdf]'), draft = this.querySelector('[data-q-draft]');
-      if (pdf) pdf.disabled = !r.lines.length; if (draft) draft.disabled = !r.lines.length;
+      var pdf = this.querySelector('[data-q-pdf]'), draft = this.querySelector('[data-q-draft]'), addi = this.querySelector('[data-q-addi]');
+      if (pdf) pdf.disabled = !r.lines.length; if (draft) draft.disabled = !r.lines.length; if (addi) addi.disabled = !r.lines.length;
       var prog = this.querySelector('[data-q-progress]'), progText = this.querySelector('[data-q-progress-text]');
       if (prog && this.nextMin) {
         var pct = Math.min(100, Math.round(r.units / this.nextMin * 100));

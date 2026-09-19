@@ -1,0 +1,170 @@
+{%- comment -%}
+  brenson-addi-check — Consulta de cupo disponible con Addi (BNPL).
+  Modal único y reutilizable: se abre con el evento `brenson:addi-check-open`
+  (detail: {vehiculo, precio, contexto}), disparado desde:
+    - el simulador financiero B2C (brenson-simulator.js, contexto 'b2c')
+    - el cotizador de flota B2B (brenson-b2b-quoter.js, contexto 'b2b')
+  Addi evalúa siempre a la PERSONA que diligencia el formulario, nunca a la razón social — por eso
+  un único modal sirve a ambos flujos; `contexto` solo cambia el tipo de lead que registra el CRM.
+  Envío: POST {endpoint}/financing/disponible. Sin endpoint → modo simulación local.
+{%- endcomment -%}
+<dialog class="brenson-addi" id="brenson-addi-check" data-brenson-addi data-endpoint="{{ settings.brenson_services_url }}" aria-labelledby="brenson-addi-title">
+  <form method="dialog" class="brenson-addi__close"><button type="submit" aria-label="Cerrar">×</button></form>
+  <div class="brenson-addi__body">
+    <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
+    <h2 id="brenson-addi-title" style="margin:0; font-size: var(--brenson-text-xl)">{{ section.settings.title }}</h2>
+    <p class="brenson-muted" style="margin:0; font-size: var(--brenson-text-sm)" data-addi-context-line>{{ section.settings.text }}</p>
+
+    <form class="brenson-form" data-addi-form>
+      <input type="hidden" data-name="vehiculo">
+      <input type="hidden" data-name="monto_solicitado">
+      <input type="hidden" data-name="contexto" value="b2c">
+      <input type="text" name="contact[website]" class="brenson-visually-hidden" tabindex="-1" autocomplete="off">
+
+      <div class="brenson-addi__grid">
+        <div class="brenson-field">
+          <label for="addi-tipo-doc">Tipo de documento</label>
+          <select id="addi-tipo-doc" data-name="tipo_documento" required>
+            <option value="CC">Cédula de ciudadanía</option>
+            <option value="CE">Cédula de extranjería</option>
+            <option value="PA">Pasaporte</option>
+          </select>
+        </div>
+        <div class="brenson-field">
+          <label for="addi-doc">Número de documento</label>
+          <input id="addi-doc" type="text" inputmode="numeric" data-name="numero_documento" required maxlength="15" autocomplete="off">
+        </div>
+        <div class="brenson-field">
+          <label for="addi-nombres">Nombres</label>
+          <input id="addi-nombres" type="text" data-name="nombres" required autocomplete="given-name">
+        </div>
+        <div class="brenson-field">
+          <label for="addi-apellidos">Apellidos</label>
+          <input id="addi-apellidos" type="text" data-name="apellidos" required autocomplete="family-name">
+        </div>
+        <div class="brenson-field">
+          <label for="addi-celular">Celular</label>
+          <input id="addi-celular" type="tel" data-name="celular" required inputmode="tel" autocomplete="tel">
+        </div>
+        <div class="brenson-field">
+          <label for="addi-email">Correo</label>
+          <input id="addi-email" type="email" data-name="email" required autocomplete="email">
+        </div>
+      </div>
+
+      <label class="brenson-addi__consent">
+        <input type="checkbox" data-name="acepta_datos" required>
+        <span>Autorizo el tratamiento de mis datos personales para que Addi evalúe mi cupo, conforme a la <a class="link" href="/policies/privacy-policy" target="_blank" rel="noopener">política de datos</a>.</span>
+      </label>
+
+      <button type="submit" class="brenson-btn brenson-btn--primary brenson-btn--block" data-addi-submit>{{ section.settings.cta_label }}</button>
+      <p class="brenson-addi__disclaimer">{{ section.settings.disclaimer }}</p>
+    </form>
+
+    <div class="brenson-addi__result" data-addi-result hidden role="status">
+      <p data-addi-result-msg></p>
+      <a class="brenson-btn brenson-btn--primary brenson-btn--block" data-addi-continue href="#" target="_blank" rel="noopener" hidden>Continuar con Addi</a>
+      <button type="button" class="brenson-btn brenson-btn--outline brenson-btn--block" data-addi-retry>Intentar con otros datos</button>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .brenson-addi { border: 0; border-radius: var(--brenson-radius-xl); padding: 0; max-width: 52rem; width: calc(100% - 3.2rem); box-shadow: var(--brenson-shadow-lg); }
+  .brenson-addi::backdrop { background: rgba(5,7,9,.6); backdrop-filter: blur(2px); }
+  .brenson-addi__body { padding: var(--brenson-space-6); display: grid; gap: var(--brenson-space-3); }
+  .brenson-addi__close { position: absolute; top: 0.8rem; right: 0.8rem; margin: 0; }
+  .brenson-addi__close button { width: 3.6rem; height: 3.6rem; border: 0; border-radius: 50%; background: var(--brenson-gris-claro); font-size: 2rem; cursor: pointer; }
+  .brenson-addi__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--brenson-space-2); }
+  .brenson-addi__consent { display: flex; gap: 0.8rem; font-size: var(--brenson-text-xs); align-items: flex-start; }
+  .brenson-addi__consent input { width: auto; min-height: auto; margin-top: 0.24rem; }
+  .brenson-addi__disclaimer { font-size: var(--brenson-text-xs); color: var(--brenson-gris); margin: 0; }
+  .brenson-addi__result { display: grid; gap: var(--brenson-space-2); }
+  @media (max-width: 640px) { .brenson-addi__grid { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  var dlg = document.querySelector('[data-brenson-addi]'); if (!dlg || !('showModal' in dlg)) return;
+  var innerForm = dlg.querySelector('[data-addi-form]');
+  var result = dlg.querySelector('[data-addi-result]');
+  var msg = dlg.querySelector('[data-addi-result-msg]');
+  var cont = dlg.querySelector('[data-addi-continue]');
+  var retry = dlg.querySelector('[data-addi-retry]');
+  var submitBtn = dlg.querySelector('[data-addi-submit]');
+  var ctxLine = dlg.querySelector('[data-addi-context-line]');
+  var defaultText = {{ section.settings.text | json }};
+  var defaultCta = {{ section.settings.cta_label | json }};
+
+  document.addEventListener('brenson:addi-check-open', function (e) {
+    var d = e.detail || {};
+    var set = function (n, v) { var el = innerForm.querySelector('[data-name="' + n + '"]'); if (el) el.value = v || ''; };
+    set('vehiculo', d.vehiculo);
+    set('monto_solicitado', d.precio || 0);
+    set('contexto', d.contexto || 'b2c');
+    if (ctxLine) ctxLine.textContent = d.contexto === 'b2b'
+      ? 'Verificamos el cupo de la persona que gestiona la compra, no el de la empresa. La evaluación la hace Addi.'
+      : defaultText;
+    innerForm.hidden = false; result.hidden = true;
+    dlg.showModal();
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'brenson_addi_check_open', contexto: d.contexto || 'b2c', vehiculo: d.vehiculo || '' });
+  });
+
+  innerForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (innerForm.querySelector('[name="contact[website]"]').value) return; // honeypot
+    var data = {};
+    innerForm.querySelectorAll('[data-name]').forEach(function (el) {
+      data[el.dataset.name] = el.type === 'checkbox' ? el.checked : el.value;
+    });
+    var endpoint = (dlg.dataset.endpoint || '').replace(/\/$/, '');
+    submitBtn.disabled = true; submitBtn.textContent = 'Consultando…';
+    var json = null;
+    try {
+      if (endpoint) {
+        var res = await fetch(endpoint + '/financing/disponible', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        json = await res.json().catch(function () { return null; });
+      } else {
+        json = { ok: true, estado: 'aprobado', cupo_disponible: Math.max(500000, Number(data.monto_solicitado) || 1000000), mensaje: 'Cupo disponible (simulación local, sin backend configurado).' };
+      }
+    } catch (err) {
+      json = null;
+    }
+    if (!json || json.ok === false) {
+      msg.textContent = (json && json.error) || 'No pudimos consultar tu cupo. Verifica tu conexión e intenta de nuevo.';
+      cont.hidden = true;
+    } else if (json.estado === 'aprobado') {
+      var fmt = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+      msg.textContent = 'Tienes cupo disponible' + (json.cupo_disponible ? ': ' + fmt.format(json.cupo_disponible) : '') + '. ' + (json.mensaje || '');
+      if (json.redirect_url) { cont.href = json.redirect_url; cont.hidden = false; } else { cont.hidden = true; }
+    } else {
+      msg.textContent = json.mensaje || 'No tienes cupo disponible con los datos ingresados.';
+      cont.hidden = true;
+    }
+    innerForm.hidden = true; result.hidden = false;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'brenson_addi_check_result', estado: (json && json.estado) || 'error' });
+    submitBtn.disabled = false; submitBtn.textContent = defaultCta;
+  });
+
+  retry.addEventListener('click', function () { result.hidden = true; innerForm.hidden = false; });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Consulta de cupo Addi",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Compra ahora, paga después" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Consulta tu cupo con Addi" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Ingresa tus datos para ver tu cupo disponible. La evaluación crediticia la realiza Addi." },
+    { "type": "text", "id": "cta_label", "label": "Texto del botón", "default": "Consultar disponibilidad" },
+    { "type": "textarea", "id": "disclaimer", "label": "Disclaimer legal", "default": "Addi S.A. Compañía de Financiamiento realiza la evaluación y aprobación del crédito. Brenson no participa en la decisión ni almacena tus datos financieros. [BORRADOR: pendiente revisión legal]" }
+  ],
+  "presets": [ { "name": "Consulta de cupo Addi" } ],
+  "enabled_on": { "templates": ["product", "page", "index"] }
+}
+{% endschema %}

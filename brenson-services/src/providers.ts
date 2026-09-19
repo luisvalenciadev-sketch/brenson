@@ -2,14 +2,15 @@
  * Proveedores intercambiables por variable de entorno (S10, S16).
  * Cada uno tiene una implementación mock que funciona sin cuentas externas.
  */
-import type { Env, Lead, Providers } from './types';
+import type { AddiCheckInput, AddiCheckResult, Env, Lead, Providers } from './types';
 
 export function getProviders(env: Env): Providers {
   return {
     crm: env.CRM_PROVIDER === 'ghl' && env.GHL_WEBHOOK_URL ? ghlCrm(env) : mockCrm(env),
     mail: env.MAIL_PROVIDER === 'resend' && env.RESEND_API_KEY ? resendMail(env) : consoleMail(env),
     pdf: env.PDF_PROVIDER === 'pdfmonkey' && env.PDFMONKEY_API_KEY ? pdfMonkey(env) : htmlPdf(env),
-    storage: env.STORAGE_PROVIDER === 'r2' && env.DOCS ? r2Storage(env) : localStorage_(env)
+    storage: env.STORAGE_PROVIDER === 'r2' && env.DOCS ? r2Storage(env) : localStorage_(env),
+    financing: env.FINANCING_PROVIDER === 'addi' && env.ADDI_CLIENT_ID && env.ADDI_CLIENT_SECRET ? addiFinancing(env) : mockFinancing(env)
   };
 }
 
@@ -106,3 +107,91 @@ function r2Storage(env: Env): Providers['storage'] {
     }
   };
 }
+
+/* ---------- Financing (Addi) ----------
+ * Mock: respuesta determinística por número de documento (mismos datos → mismo resultado), útil para
+ * demos y pruebas E2E sin depender de Addi. ~80% aprobado.
+ */
+function mockFinancing(env: Env): Providers['financing'] {
+  return {
+    async checkAvailability(input: AddiCheckInput): Promise<AddiCheckResult> {
+      const seed = Array.from(input.numeroDocumento).reduce((a, ch) => a + ch.charCodeAt(0), 0);
+      const aprobado = seed % 5 !== 0;
+      const cupo = aprobado ? Math.max(500000, (seed % 20) * 500000 + Math.round(input.montoSolicitado || 0)) : null;
+      console.info('[financing:mock] consulta', input.contexto, input.tipoDocumento, maskDoc(input.numeroDocumento), aprobado ? 'aprobado' : 'rechazado');
+      if (env.KV) await env.KV.put(`addi_check:${Date.now()}`, JSON.stringify({ ...input, numeroDocumento: maskDoc(input.numeroDocumento) }), { expirationTtl: 60 * 60 * 24 * 30 });
+      return {
+        ok: true,
+        estado: aprobado ? 'aprobado' : 'rechazado',
+        cupoDisponible: cupo,
+        mensaje: aprobado ? 'Cupo disponible (simulación).' : 'Sin cupo disponible con los datos ingresados (simulación).'
+      };
+    }
+  };
+}
+
+// Cachea el token de client-credentials en KV para no re-autenticar en cada consulta.
+async function addiToken(env: Env): Promise<string> {
+  if (env.KV) {
+    const cached = await env.KV.get('addi_token');
+    if (cached) return cached;
+  }
+  const res = await fetch(env.ADDI_AUTH_URL!, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ grant_type: 'client_credentials', client_id: env.ADDI_CLIENT_ID, client_secret: env.ADDI_CLIENT_SECRET, audience: env.ADDI_AUDIENCE })
+  });
+  if (!res.ok) throw new Error(`addi auth ${res.status}`);
+  const json = (await res.json()) as { access_token: string; expires_in?: number };
+  const ttl = Math.max(60, (json.expires_in || 3600) - 120);
+  if (env.KV) await env.KV.put('addi_token', json.access_token, { expirationTtl: ttl });
+  return json.access_token;
+}
+
+/**
+ * ADDI REAL — sin verificar contra la especificación oficial.
+ * No tuvimos acceso al portal de partner de Addi (api-docs-sandbox.addi.com requiere credenciales
+ * propias), así que el path, los nombres de campo del payload y la forma de la respuesta de abajo
+ * son la convención típica de una integración BNPL (auth Auth0 + POST de solicitud de crédito con
+ * datos del comprador), NO una confirmación de la API real de Addi.
+ * TODO antes de activar FINANCING_PROVIDER=addi en producción: validar con el manual de integración
+ * que Addi entrega al firmar el convenio comercial (endpoint, nombres de campos, forma de la respuesta
+ * y si hace falta redirigir a un checkout hospedado por Addi en vez de responder síncronamente).
+ */
+function addiFinancing(env: Env): Providers['financing'] {
+  return {
+    async checkAvailability(input: AddiCheckInput): Promise<AddiCheckResult> {
+      try {
+        const token = await addiToken(env);
+        const res = await fetch(`${env.ADDI_API_BASE}/v1/credit-applications`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            merchantId: env.ADDI_MERCHANT_ID,
+            amount: Math.round(input.montoSolicitado || 0),
+            currency: 'COP',
+            buyer: { documentType: input.tipoDocumento, documentNumber: input.numeroDocumento, firstName: input.nombres, lastName: input.apellidos, phone: input.celular, email: input.email }
+          })
+        });
+        if (!res.ok) {
+          console.error('[financing:addi]', res.status, await res.text().catch(() => ''));
+          return { ok: false, estado: 'error', cupoDisponible: null, mensaje: 'No pudimos consultar tu cupo en este momento. Intenta de nuevo o continúa con el asesor.' };
+        }
+        const json = (await res.json()) as { status?: string; approvedAmount?: number; checkoutUrl?: string };
+        const estado = json.status === 'approved' ? 'aprobado' : json.status === 'pending' ? 'pendiente' : 'rechazado';
+        return {
+          ok: true,
+          estado,
+          cupoDisponible: typeof json.approvedAmount === 'number' ? json.approvedAmount : null,
+          mensaje: estado === 'aprobado' ? 'Tienes cupo disponible con Addi.' : estado === 'pendiente' ? 'Tu solicitud quedó en revisión.' : 'No tienes cupo disponible con los datos ingresados.',
+          redirectUrl: json.checkoutUrl
+        };
+      } catch (e) {
+        console.error('[financing:addi] fallo', e);
+        return { ok: false, estado: 'error', cupoDisponible: null, mensaje: 'No pudimos consultar tu cupo en este momento. Intenta de nuevo o continúa con el asesor.' };
+      }
+    }
+  };
+}
+
+function maskDoc(doc: string) { return doc.length > 4 ? doc.slice(0, 2) + '***' + doc.slice(-2) : '***'; }
