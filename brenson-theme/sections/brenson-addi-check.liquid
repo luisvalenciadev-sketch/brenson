@@ -1,160 +1,454 @@
 {%- comment -%}
-  brenson-addi-check — Consulta de cupo disponible con Addi (BNPL).
-  Modal único y reutilizable: se abre con el evento `brenson:addi-check-open`
-  (detail: {vehiculo, precio, contexto}), disparado desde:
-    - el simulador financiero B2C (brenson-simulator.js, contexto 'b2c')
-    - el cotizador de flota B2B (brenson-b2b-quoter.js, contexto 'b2b')
-  Addi evalúa siempre a la PERSONA que diligencia el formulario, nunca a la razón social — por eso
-  un único modal sirve a ambos flujos; `contexto` solo cambia el tipo de lead que registra el CRM.
+  brenson-addi-check — Consulta de cupo disponible con Addi (BNPL), en pasos:
+    intro → identidad → contacto → consultando → resultado
+  Se abre con el evento `brenson:addi-check-open` (detail: {vehiculo, precio, contexto}), disparado desde
+  el simulador B2C (contexto 'b2c') y el cotizador de flota B2B (contexto 'b2b').
+  Addi evalúa siempre a la PERSONA que diligencia el formulario, nunca a la razón social — por eso un
+  único flujo sirve a ambos canales; `contexto` solo cambia el lead que registra el CRM.
   Envío: POST {endpoint}/financing/disponible. Sin endpoint → modo simulación local.
 {%- endcomment -%}
 <dialog class="brenson-addi" id="brenson-addi-check" data-brenson-addi data-endpoint="{{ settings.brenson_services_url }}" aria-labelledby="brenson-addi-title">
-  <form method="dialog" class="brenson-addi__close"><button type="submit" aria-label="Cerrar">×</button></form>
-  <div class="brenson-addi__body">
-    <div class="brenson-addi__badge" aria-hidden="true">
-      {% render 'brenson-addi-icon', class: 'brenson-addi__badge-icon' %}
+  <header class="brenson-addi__head">
+    <div class="brenson-addi__brand">
+      <span class="brenson-addi__badge" aria-hidden="true">{% render 'brenson-addi-icon', class: 'brenson-addi__badge-icon' %}</span>
+      <div>
+        <span class="brenson-addi__eyebrow">{{ section.settings.eyebrow }}</span>
+        <h2 id="brenson-addi-title" class="brenson-addi__title">{{ section.settings.title }}</h2>
+      </div>
     </div>
-    <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
-    <h2 id="brenson-addi-title" style="margin:0; font-size: var(--brenson-text-xl)">{{ section.settings.title }}</h2>
-    <p class="brenson-muted" style="margin:0; font-size: var(--brenson-text-sm)" data-addi-context-line>{{ section.settings.text }}</p>
+    <form method="dialog" class="brenson-addi__close"><button type="submit" aria-label="Cerrar">×</button></form>
+  </header>
 
-    <form class="brenson-form" data-addi-form>
-      <input type="hidden" data-name="vehiculo">
-      <input type="hidden" data-name="monto_solicitado">
-      <input type="hidden" data-name="contexto" value="b2c">
-      <input type="text" name="contact[website]" class="brenson-visually-hidden" tabindex="-1" autocomplete="off">
+  <ol class="brenson-addi__stepper" data-addi-stepper hidden>
+    <li data-addi-dot="identidad"><span>1</span>Tus datos</li>
+    <li data-addi-dot="contacto"><span>2</span>Contacto</li>
+    <li data-addi-dot="resultado"><span>3</span>Resultado</li>
+  </ol>
 
-      <div class="brenson-addi__grid">
-        <div class="brenson-field">
-          <label for="addi-tipo-doc">Tipo de documento</label>
-          <select id="addi-tipo-doc" data-name="tipo_documento" required>
-            <option value="CC">Cédula de ciudadanía</option>
-            <option value="CE">Cédula de extranjería</option>
-            <option value="PA">Pasaporte</option>
-          </select>
-        </div>
-        <div class="brenson-field">
-          <label for="addi-doc">Número de documento</label>
-          <input id="addi-doc" type="text" inputmode="numeric" data-name="numero_documento" required maxlength="15" autocomplete="off">
-        </div>
-        <div class="brenson-field">
-          <label for="addi-nombres">Nombres</label>
-          <input id="addi-nombres" type="text" data-name="nombres" required autocomplete="given-name">
-        </div>
-        <div class="brenson-field">
-          <label for="addi-apellidos">Apellidos</label>
-          <input id="addi-apellidos" type="text" data-name="apellidos" required autocomplete="family-name">
-        </div>
-        <div class="brenson-field">
-          <label for="addi-celular">Celular</label>
-          <input id="addi-celular" type="tel" data-name="celular" required inputmode="tel" autocomplete="tel">
-        </div>
-        <div class="brenson-field">
-          <label for="addi-email">Correo</label>
-          <input id="addi-email" type="email" data-name="email" required autocomplete="email">
+  <form class="brenson-addi__body" data-addi-form novalidate>
+    <input type="hidden" data-name="vehiculo">
+    <input type="hidden" data-name="monto_solicitado">
+    <input type="hidden" data-name="contexto" value="b2c">
+    <input type="hidden" data-name="tipo_documento" value="CC">
+    <input type="text" name="contact[website]" class="brenson-visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    {%- comment -%} Paso 0 · Introducción {%- endcomment -%}
+    <section class="brenson-addi__step" data-addi-step="intro">
+      <div class="brenson-addi__summary">
+        <span class="brenson-addi__summary-label" data-addi-summary-label>Vas a financiar</span>
+        <strong class="brenson-addi__summary-name" data-addi-summary-name>—</strong>
+        <span class="brenson-addi__summary-amount brenson-num" data-addi-summary-amount></span>
+      </div>
+      <p class="brenson-addi__lead" data-addi-context-line>{{ section.settings.text }}</p>
+      <ul class="brenson-addi__benefits">
+        <li>{% render 'brenson-addi-check-mark' %}Paga en cuotas mensuales, sin tarjeta de crédito</li>
+        <li>{% render 'brenson-addi-check-mark' %}Respuesta en minutos, 100 % digital</li>
+        <li>{% render 'brenson-addi-check-mark' %}Solo necesitas tu documento y tu celular</li>
+      </ul>
+      <button type="button" class="brenson-btn brenson-btn--addi brenson-btn--lg brenson-btn--block" data-addi-next="identidad">Empezar</button>
+      <p class="brenson-addi__fine">Toma menos de 2 minutos.</p>
+    </section>
+
+    {%- comment -%} Paso 1 · Identidad {%- endcomment -%}
+    <section class="brenson-addi__step" data-addi-step="identidad" hidden>
+      <h3 class="brenson-addi__step-title">¿Quién hace la compra?</h3>
+      <p class="brenson-addi__fine" data-addi-b2b-note hidden>Addi evalúa a la persona que gestiona la compra, no a la empresa.</p>
+      <div class="brenson-addi__field">
+        <span class="brenson-addi__label" id="addi-tipo-label">Tipo de documento</span>
+        <div class="brenson-addi__segmented" role="radiogroup" aria-labelledby="addi-tipo-label" data-addi-doc-types>
+          <button type="button" role="radio" aria-checked="true" data-addi-doc="CC">Cédula</button>
+          <button type="button" role="radio" aria-checked="false" data-addi-doc="CE">C. extranjería</button>
+          <button type="button" role="radio" aria-checked="false" data-addi-doc="PA">Pasaporte</button>
         </div>
       </div>
+      <div class="brenson-addi__field">
+        <label class="brenson-addi__label" for="addi-doc">Número de documento</label>
+        <input id="addi-doc" type="text" inputmode="numeric" data-name="numero_documento" data-addi-digits="15" required autocomplete="off" placeholder="Ej. 1020304050">
+        <small class="brenson-addi__err" data-addi-err-for="numero_documento">Ingresa un número de documento válido (5 a 15 dígitos).</small>
+      </div>
+      <div class="brenson-addi__row">
+        <div class="brenson-addi__field">
+          <label class="brenson-addi__label" for="addi-nombres">Nombres</label>
+          <input id="addi-nombres" type="text" data-name="nombres" required autocomplete="given-name">
+          <small class="brenson-addi__err" data-addi-err-for="nombres">Escribe tus nombres.</small>
+        </div>
+        <div class="brenson-addi__field">
+          <label class="brenson-addi__label" for="addi-apellidos">Apellidos</label>
+          <input id="addi-apellidos" type="text" data-name="apellidos" required autocomplete="family-name">
+          <small class="brenson-addi__err" data-addi-err-for="apellidos">Escribe tus apellidos.</small>
+        </div>
+      </div>
+      <div class="brenson-addi__nav">
+        <button type="button" class="brenson-addi__back" data-addi-next="intro">← Atrás</button>
+        <button type="button" class="brenson-btn brenson-btn--addi" data-addi-next="contacto">Continuar</button>
+      </div>
+    </section>
 
+    {%- comment -%} Paso 2 · Contacto {%- endcomment -%}
+    <section class="brenson-addi__step" data-addi-step="contacto" hidden>
+      <h3 class="brenson-addi__step-title">¿Dónde te contactamos?</h3>
+      <div class="brenson-addi__field">
+        <label class="brenson-addi__label" for="addi-celular">Celular</label>
+        <div class="brenson-addi__prefixed">
+          <span aria-hidden="true">+57</span>
+          <input id="addi-celular" type="tel" inputmode="numeric" data-name="celular" data-addi-digits="10" required autocomplete="tel-national" placeholder="300 123 4567">
+        </div>
+        <small class="brenson-addi__err" data-addi-err-for="celular">Ingresa un celular colombiano de 10 dígitos.</small>
+      </div>
+      <div class="brenson-addi__field">
+        <label class="brenson-addi__label" for="addi-email">Correo</label>
+        <input id="addi-email" type="email" data-name="email" required autocomplete="email" placeholder="tu@correo.com">
+        <small class="brenson-addi__err" data-addi-err-for="email">Ingresa un correo válido.</small>
+      </div>
       <label class="brenson-addi__consent">
         <input type="checkbox" data-name="acepta_datos" required>
         <span>Autorizo el tratamiento de mis datos personales para que Addi evalúe mi cupo, conforme a la <a class="link" href="/policies/privacy-policy" target="_blank" rel="noopener">política de datos</a>.</span>
       </label>
+      <small class="brenson-addi__err" data-addi-err-for="acepta_datos">Necesitamos tu autorización para consultar el cupo.</small>
+      <div class="brenson-addi__nav">
+        <button type="button" class="brenson-addi__back" data-addi-next="identidad">← Atrás</button>
+        <button type="submit" class="brenson-btn brenson-btn--addi" data-addi-submit>{{ section.settings.cta_label }}</button>
+      </div>
+      <p class="brenson-addi__fine">{{ section.settings.disclaimer }}</p>
+    </section>
 
-      <button type="submit" class="brenson-btn brenson-btn--addi brenson-btn--block" data-addi-submit>{{ section.settings.cta_label }}</button>
-      <p class="brenson-addi__disclaimer">{{ section.settings.disclaimer }}</p>
-    </form>
+    {%- comment -%} Paso 3 · Consultando {%- endcomment -%}
+    <section class="brenson-addi__step brenson-addi__step--center" data-addi-step="cargando" hidden aria-live="polite">
+      <div class="brenson-addi__spinner" aria-hidden="true"></div>
+      <h3 class="brenson-addi__step-title">Consultando tu cupo…</h3>
+      <ul class="brenson-addi__progress-list">
+        <li data-addi-tick>Validando tus datos</li>
+        <li data-addi-tick>Consultando disponibilidad con Addi</li>
+        <li data-addi-tick>Preparando tu resultado</li>
+      </ul>
+    </section>
 
-    <div class="brenson-addi__result" data-addi-result hidden role="status">
-      <p data-addi-result-msg></p>
-      <a class="brenson-btn brenson-btn--addi brenson-btn--block" data-addi-continue href="#" target="_blank" rel="noopener" hidden>Continuar con Addi</a>
-      <button type="button" class="brenson-btn brenson-btn--outline brenson-btn--block" data-addi-retry>Intentar con otros datos</button>
-    </div>
-  </div>
+    {%- comment -%} Paso 4 · Resultado {%- endcomment -%}
+    <section class="brenson-addi__step brenson-addi__step--center" data-addi-step="resultado" hidden aria-live="polite">
+      <div class="brenson-addi__result-icon" data-addi-result-icon aria-hidden="true"></div>
+      <h3 class="brenson-addi__step-title" data-addi-result-title></h3>
+      <div class="brenson-addi__amount brenson-num" data-addi-result-amount hidden></div>
+      <div class="brenson-addi__coverage" data-addi-coverage hidden>
+        <div class="brenson-addi__bar"><span data-addi-coverage-bar></span></div>
+        <p data-addi-coverage-text></p>
+      </div>
+      <p class="brenson-addi__lead" data-addi-result-msg></p>
+      <div class="brenson-addi__actions">
+        <a class="brenson-btn brenson-btn--addi brenson-btn--block" data-addi-continue href="#" target="_blank" rel="noopener" hidden>{% render 'brenson-addi-icon', class: 'brenson-btn__icon' %}Continuar con Addi</a>
+        <a class="brenson-btn brenson-btn--whatsapp brenson-btn--block" data-addi-advisor href="#" target="_blank" rel="noopener" hidden>Hablar con un asesor</a>
+        <a class="brenson-btn brenson-btn--outline brenson-btn--block" data-addi-alt href="/pages/financiacion" hidden>Ver otras opciones de financiación</a>
+        <button type="button" class="brenson-addi__back" data-addi-retry>Consultar con otros datos</button>
+      </div>
+    </section>
+  </form>
 </dialog>
 
 <style>
-  .brenson-addi { border: 0; border-radius: var(--brenson-radius-xl); padding: 0; max-width: 52rem; width: calc(100% - 3.2rem); box-shadow: var(--brenson-shadow-lg); }
+  .brenson-addi { border: 0; border-radius: var(--brenson-radius-xl); padding: 0; max-width: 60rem; width: calc(100% - 3.2rem); max-height: calc(100dvh - 3.2rem); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; background: #fff; color: var(--brenson-carbon); box-shadow: var(--brenson-shadow-lg); }
+  .brenson-addi *, .brenson-addi *::before, .brenson-addi *::after { box-sizing: border-box; }
+  .brenson-addi [hidden] { display: none !important; }
   .brenson-addi::backdrop { background: rgba(5,7,9,.6); backdrop-filter: blur(2px); }
-  .brenson-addi__body { padding: var(--brenson-space-6); display: grid; gap: var(--brenson-space-3); }
-  .brenson-addi__close { position: absolute; top: 0.8rem; right: 0.8rem; margin: 0; }
-  .brenson-addi__close button { width: 3.6rem; height: 3.6rem; border: 0; border-radius: 50%; background: var(--brenson-gris-claro); font-size: 2rem; cursor: pointer; }
-  .brenson-addi__badge { width: 4.4rem; height: 4.4rem; border-radius: 50%; background: var(--brenson-addi); display: flex; align-items: center; justify-content: center; }
-  .brenson-addi__badge-icon { width: 2.2rem; height: 2.2rem; color: #fff; }
-  .brenson-addi__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--brenson-space-2); }
-  .brenson-addi__consent { display: flex; gap: 0.8rem; font-size: var(--brenson-text-xs); align-items: flex-start; }
-  .brenson-addi__consent input { width: auto; min-height: auto; margin-top: 0.24rem; }
-  .brenson-addi__disclaimer { font-size: var(--brenson-text-xs); color: var(--brenson-gris); margin: 0; }
-  .brenson-addi__result { display: grid; gap: var(--brenson-space-2); }
-  @media (max-width: 640px) { .brenson-addi__grid { grid-template-columns: 1fr; } }
+  .brenson-addi[open] { animation: brenson-addi-in .22s ease-out; }
+  @keyframes brenson-addi-in { from { opacity: 0; transform: translateY(1.2rem); } to { opacity: 1; transform: none; } }
+
+  .brenson-addi__head { display: flex; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); padding: var(--brenson-space-5) var(--brenson-space-6) 0; }
+  .brenson-addi__brand { display: flex; align-items: center; gap: var(--brenson-space-3); }
+  .brenson-addi__badge { width: 4.4rem; height: 4.4rem; flex: none; border-radius: 1.2rem; background: var(--brenson-addi); display: flex; align-items: center; justify-content: center; }
+  .brenson-addi__badge-icon { width: 3.2rem; height: 3.2rem; color: #fff; }
+  .brenson-addi__eyebrow { display: block; font-size: var(--brenson-text-xs); color: var(--brenson-addi); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+  .brenson-addi__title { margin: 0; font-size: var(--brenson-text-lg); line-height: 1.2; }
+  .brenson-addi__close { margin: 0; }
+  .brenson-addi__close button { width: 3.6rem; height: 3.6rem; border: 0; border-radius: 50%; background: var(--brenson-gris-claro); font-size: 2rem; line-height: 1; cursor: pointer; }
+
+  .brenson-addi__stepper { display: flex; gap: var(--brenson-space-2); list-style: none; margin: var(--brenson-space-4) var(--brenson-space-6) 0; padding: 0; }
+  .brenson-addi__stepper li { flex: 1; display: flex; align-items: center; gap: .6rem; font-size: var(--brenson-text-xs); color: var(--brenson-gris); padding-top: .8rem; border-top: 3px solid var(--brenson-gris-borde); transition: border-color .2s, color .2s; }
+  .brenson-addi__stepper li span { width: 2rem; height: 2rem; flex: none; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--brenson-gris-claro); font-weight: 700; font-size: 1.1rem; }
+  .brenson-addi__stepper li.is-active, .brenson-addi__stepper li.is-done { border-color: var(--brenson-addi); color: var(--brenson-carbon); }
+  .brenson-addi__stepper li.is-active span, .brenson-addi__stepper li.is-done span { background: var(--brenson-addi); color: #fff; }
+
+  .brenson-addi__body { padding: var(--brenson-space-5) var(--brenson-space-6) var(--brenson-space-6); }
+  .brenson-addi__step { display: grid; gap: var(--brenson-space-3); }
+  .brenson-addi__step[hidden] { display: none; }
+  .brenson-addi__step.is-entering { animation: brenson-addi-step .2s ease-out; }
+  @keyframes brenson-addi-step { from { opacity: 0; transform: translateY(.8rem); } to { opacity: 1; transform: none; } }
+  .brenson-addi__step--center { text-align: center; justify-items: center; }
+  .brenson-addi__step-title { margin: 0; font-size: var(--brenson-text-lg); }
+  .brenson-addi__lead { margin: 0; font-size: var(--brenson-text-sm); color: var(--brenson-gris); }
+  .brenson-addi__fine { margin: 0; font-size: var(--brenson-text-xs); color: var(--brenson-gris); text-align: center; }
+
+  .brenson-addi__summary { display: grid; gap: .2rem; padding: var(--brenson-space-4); border-radius: var(--brenson-radius-lg); background: var(--brenson-addi-suave); }
+  .brenson-addi__summary-label { font-size: var(--brenson-text-xs); color: var(--brenson-gris); }
+  .brenson-addi__summary-name { font-size: var(--brenson-text-md); }
+  .brenson-addi__summary-amount { font-size: var(--brenson-text-xl); font-weight: 700; color: var(--brenson-addi); }
+  .brenson-addi__benefits { list-style: none; margin: 0; padding: 0; display: grid; gap: .8rem; font-size: var(--brenson-text-sm); }
+  .brenson-addi__benefits li { display: flex; gap: .8rem; align-items: flex-start; }
+  .brenson-addi__benefits svg { width: 2rem; height: 2rem; flex: none; color: var(--brenson-addi); }
+
+  .brenson-addi__field { display: grid; gap: .4rem; }
+  .brenson-addi__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--brenson-space-3); }
+  .brenson-addi__label { font-size: var(--brenson-text-sm); font-weight: 600; }
+  .brenson-addi__body input[type="text"], .brenson-addi__body input[type="tel"], .brenson-addi__body input[type="email"] { width: 100%; min-height: 4.8rem; padding: 0 1.4rem; border: 1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius); font: inherit; font-size: 1.6rem; background: #fff; }
+  .brenson-addi__body input:focus { outline: none; border-color: var(--brenson-addi); box-shadow: 0 0 0 3px var(--brenson-addi-suave); }
+  .brenson-addi__field.is-invalid input { border-color: var(--brenson-error); }
+  .brenson-addi__prefixed { display: flex; align-items: stretch; }
+  .brenson-addi__prefixed span { display: flex; align-items: center; padding: 0 1.2rem; border: 1.5px solid var(--brenson-gris-borde); border-right: 0; border-radius: var(--brenson-radius) 0 0 var(--brenson-radius); background: var(--brenson-gris-claro); font-weight: 600; }
+  .brenson-addi__prefixed input { border-radius: 0 var(--brenson-radius) var(--brenson-radius) 0 !important; }
+  .brenson-addi__err { display: none; color: var(--brenson-error); font-size: var(--brenson-text-xs); }
+  .brenson-addi__err.is-visible { display: block; }
+
+  .brenson-addi__segmented { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; padding: .4rem; border-radius: var(--brenson-radius); background: var(--brenson-gris-claro); }
+  .brenson-addi__segmented button { min-height: 4rem; border: 0; border-radius: calc(var(--brenson-radius) - .2rem); background: transparent; font: inherit; font-size: var(--brenson-text-sm); cursor: pointer; }
+  .brenson-addi__segmented button[aria-checked="true"] { background: #fff; color: var(--brenson-addi); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+
+  .brenson-addi__consent { display: flex; gap: .8rem; font-size: var(--brenson-text-xs); align-items: flex-start; }
+  .brenson-addi__consent input { width: 1.8rem; height: 1.8rem; margin-top: .1rem; accent-color: var(--brenson-addi); flex: none; }
+
+  .brenson-addi__nav { display: flex; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); margin-top: var(--brenson-space-2); }
+  .brenson-addi__nav .brenson-btn { flex: 1; max-width: 26rem; }
+  .brenson-addi__back { border: 0; background: none; padding: .8rem 0; font: inherit; font-size: var(--brenson-text-sm); color: var(--brenson-gris); cursor: pointer; }
+  .brenson-addi__back:hover { color: var(--brenson-carbon); }
+
+  .brenson-addi__spinner { width: 5.6rem; height: 5.6rem; border-radius: 50%; border: 5px solid var(--brenson-addi-suave); border-top-color: var(--brenson-addi); animation: brenson-addi-spin .8s linear infinite; }
+  @keyframes brenson-addi-spin { to { transform: rotate(360deg); } }
+  .brenson-addi__progress-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .8rem; text-align: left; font-size: var(--brenson-text-sm); color: var(--brenson-gris); }
+  .brenson-addi__progress-list li { display: flex; gap: .8rem; align-items: center; transition: color .2s; }
+  .brenson-addi__progress-list li::before { content: ''; width: 1.8rem; height: 1.8rem; flex: none; border-radius: 50%; border: 2px solid var(--brenson-gris-borde); transition: all .2s; }
+  .brenson-addi__progress-list li.is-done { color: var(--brenson-carbon); }
+  .brenson-addi__progress-list li.is-done::before { border-color: var(--brenson-addi); background: var(--brenson-addi) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 12 4 4 8-8' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/80% no-repeat; }
+
+  .brenson-addi__result-icon { width: 6.4rem; height: 6.4rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .brenson-addi__result-icon svg { width: 3.2rem; height: 3.2rem; }
+  .brenson-addi__result-icon.is-ok { background: var(--brenson-certificado-suave); color: var(--brenson-certificado); animation: brenson-addi-pop .35s ease-out; }
+  .brenson-addi__result-icon.is-wait { background: var(--brenson-pendiente-suave); color: var(--brenson-pendiente); }
+  .brenson-addi__result-icon.is-no { background: var(--brenson-gris-claro); color: var(--brenson-gris); }
+  @keyframes brenson-addi-pop { 0% { transform: scale(.6); opacity: 0; } 70% { transform: scale(1.08); } 100% { transform: none; opacity: 1; } }
+  .brenson-addi__amount { font-size: 3.6rem; font-weight: 800; color: var(--brenson-addi); line-height: 1; }
+  .brenson-addi__coverage { width: 100%; display: grid; gap: .6rem; }
+  .brenson-addi__coverage p { margin: 0; font-size: var(--brenson-text-sm); }
+  .brenson-addi__bar { height: 1rem; border-radius: 99px; background: var(--brenson-gris-claro); overflow: hidden; }
+  .brenson-addi__bar span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--brenson-addi); transition: width .8s ease-out; }
+  .brenson-addi__actions { width: 100%; display: grid; gap: var(--brenson-space-2); margin-top: var(--brenson-space-2); }
+
+  @media (max-width: 640px) {
+    .brenson-addi { width: 100%; max-width: none; margin: auto 0 0; max-height: 92dvh; border-radius: var(--brenson-radius-xl) var(--brenson-radius-xl) 0 0; }
+    .brenson-addi[open] { animation-name: brenson-addi-sheet; }
+    @keyframes brenson-addi-sheet { from { transform: translateY(100%); } to { transform: none; } }
+    .brenson-addi__head, .brenson-addi__body { padding-inline: var(--brenson-space-4); }
+    .brenson-addi__stepper { margin-inline: var(--brenson-space-4); }
+    .brenson-addi__row { grid-template-columns: 1fr; }
+    .brenson-addi__stepper li { font-size: 1.1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .brenson-addi[open], .brenson-addi__step.is-entering, .brenson-addi__result-icon.is-ok { animation: none; }
+    .brenson-addi__bar span { transition: none; }
+  }
 </style>
 
 <script>
 (function () {
   'use strict';
-  var dlg = document.querySelector('[data-brenson-addi]'); if (!dlg || !('showModal' in dlg)) return;
-  var innerForm = dlg.querySelector('[data-addi-form]');
-  var result = dlg.querySelector('[data-addi-result]');
-  var msg = dlg.querySelector('[data-addi-result-msg]');
-  var cont = dlg.querySelector('[data-addi-continue]');
-  var retry = dlg.querySelector('[data-addi-retry]');
+  var dlg = document.querySelector('[data-brenson-addi]'); if (!dlg) return;
+  var form = dlg.querySelector('[data-addi-form]');
+  var stepper = dlg.querySelector('[data-addi-stepper]');
   var submitBtn = dlg.querySelector('[data-addi-submit]');
-  var ctxLine = dlg.querySelector('[data-addi-context-line]');
   var defaultText = {{ section.settings.text | json }};
   var defaultCta = {{ section.settings.cta_label | json }};
+  var fmt = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+  var ORDER = ['intro', 'identidad', 'contacto', 'cargando', 'resultado'];
+  var ctx = {};
+
+  var $ = function (sel) { return dlg.querySelector(sel); };
+  var field = function (n) { return form.querySelector('[data-name="' + n + '"]'); };
+  var track = function (event, extra) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(Object.assign({ event: event, contexto: ctx.contexto || 'b2c' }, extra || {}));
+  };
+
+  function show(step) {
+    form.querySelectorAll('[data-addi-step]').forEach(function (s) {
+      var on = s.dataset.addiStep === step;
+      s.hidden = !on;
+      s.classList.toggle('is-entering', on);
+    });
+    stepper.hidden = step === 'intro';
+    var idx = ORDER.indexOf(step === 'cargando' ? 'resultado' : step);
+    stepper.querySelectorAll('[data-addi-dot]').forEach(function (dot) {
+      var d = ORDER.indexOf(dot.dataset.addiDot);
+      dot.classList.toggle('is-active', d === idx);
+      dot.classList.toggle('is-done', d < idx);
+    });
+    var focusable = form.querySelector('[data-addi-step="' + step + '"] input:not([type=hidden]):not([type=checkbox]), [data-addi-step="' + step + '"] .brenson-btn');
+    if (focusable && step !== 'cargando') setTimeout(function () { focusable.focus({ preventScroll: true }); }, 60);
+    dlg.scrollTop = 0;
+    track('brenson_addi_step', { step: step });
+  }
+
+  function setError(name, on) {
+    var err = form.querySelector('[data-addi-err-for="' + name + '"]');
+    if (err) err.classList.toggle('is-visible', on);
+    var el = field(name);
+    if (el && el.closest('.brenson-addi__field')) el.closest('.brenson-addi__field').classList.toggle('is-invalid', on);
+    return !on;
+  }
+
+  var rules = {
+    numero_documento: function (v) { return /^\d{5,15}$/.test(v); },
+    nombres: function (v) { return v.trim().length >= 2; },
+    apellidos: function (v) { return v.trim().length >= 2; },
+    celular: function (v) { return /^3\d{9}$/.test(v); },
+    email: function (v) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.trim()); },
+    acepta_datos: function (_v, el) { return el.checked; }
+  };
+  var stepFields = { identidad: ['numero_documento', 'nombres', 'apellidos'], contacto: ['celular', 'email', 'acepta_datos'] };
+
+  function validate(step) {
+    var ok = true, first = null;
+    (stepFields[step] || []).forEach(function (n) {
+      var el = field(n);
+      var valid = rules[n](el.value, el);
+      setError(n, !valid);
+      if (!valid) { ok = false; if (!first) first = el; }
+    });
+    if (first) first.focus();
+    return ok;
+  }
+
+  form.querySelectorAll('[data-addi-digits]').forEach(function (el) {
+    el.addEventListener('input', function () {
+      el.value = el.value.replace(/\D/g, '').slice(0, parseInt(el.dataset.addiDigits, 10));
+      setError(el.dataset.name, false);
+    });
+  });
+  form.querySelectorAll('[data-name]').forEach(function (el) {
+    el.addEventListener('change', function () { if (rules[el.dataset.name]) setError(el.dataset.name, false); });
+  });
+
+  dlg.querySelector('[data-addi-doc-types]').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-addi-doc]'); if (!b) return;
+    this.querySelectorAll('[data-addi-doc]').forEach(function (x) { x.setAttribute('aria-checked', String(x === b)); });
+    field('tipo_documento').value = b.dataset.addiDoc;
+    var doc = field('numero_documento');
+    doc.inputMode = b.dataset.addiDoc === 'PA' ? 'text' : 'numeric';
+  });
+
+  form.addEventListener('click', function (e) {
+    var nav = e.target.closest('[data-addi-next]'); if (!nav) return;
+    var target = nav.dataset.addiNext;
+    var current = nav.closest('[data-addi-step]').dataset.addiStep;
+    var forward = ORDER.indexOf(target) > ORDER.indexOf(current);
+    if (forward && !validate(current)) return;
+    show(target);
+  });
 
   document.addEventListener('brenson:addi-check-open', function (e) {
-    var d = e.detail || {};
-    var set = function (n, v) { var el = innerForm.querySelector('[data-name="' + n + '"]'); if (el) el.value = v || ''; };
-    set('vehiculo', d.vehiculo);
-    set('monto_solicitado', d.precio || 0);
-    set('contexto', d.contexto || 'b2c');
-    if (ctxLine) ctxLine.textContent = d.contexto === 'b2b'
-      ? 'Verificamos el cupo de la persona que gestiona la compra, no el de la empresa. La evaluación la hace Addi.'
+    ctx = e.detail || {};
+    field('vehiculo').value = ctx.vehiculo || '';
+    field('monto_solicitado').value = ctx.precio || 0;
+    field('contexto').value = ctx.contexto || 'b2c';
+    $('[data-addi-summary-label]').textContent = ctx.contexto === 'b2b' ? 'Compra corporativa' : 'Vas a financiar';
+    $('[data-addi-summary-name]').textContent = ctx.vehiculo || 'Tu vehículo Brenson';
+    $('[data-addi-summary-amount]').textContent = ctx.precio ? fmt.format(ctx.precio) : '';
+    $('[data-addi-context-line]').textContent = ctx.contexto === 'b2b'
+      ? 'Consulta el cupo de la persona que gestiona la compra. La evaluación la hace Addi.'
       : defaultText;
-    innerForm.hidden = false; result.hidden = true;
+    $('[data-addi-b2b-note]').hidden = ctx.contexto !== 'b2b';
+    form.querySelectorAll('.brenson-addi__err').forEach(function (x) { x.classList.remove('is-visible'); });
+    form.querySelectorAll('.is-invalid').forEach(function (x) { x.classList.remove('is-invalid'); });
+    show('intro');
     try { dlg.showModal(); } catch (err) { console.error('[brenson] no se pudo abrir el modal de Addi', err); dlg.setAttribute('open', ''); }
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: 'brenson_addi_check_open', contexto: d.contexto || 'b2c', vehiculo: d.vehiculo || '' });
+    track('brenson_addi_check_open', { vehiculo: ctx.vehiculo || '' });
   });
 
-  innerForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    if (innerForm.querySelector('[name="contact[website]"]').value) return; // honeypot
-    var data = {};
-    innerForm.querySelectorAll('[data-name]').forEach(function (el) {
-      data[el.dataset.name] = el.type === 'checkbox' ? el.checked : el.value;
-    });
-    var endpoint = (dlg.dataset.endpoint || '').replace(/\/$/, '');
-    submitBtn.disabled = true; submitBtn.textContent = 'Consultando…';
-    var json = null;
-    try {
-      if (endpoint) {
-        var res = await fetch(endpoint + '/financing/disponible', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-        json = await res.json().catch(function () { return null; });
-      } else {
-        json = { ok: true, estado: 'aprobado', cupo_disponible: Math.max(500000, Number(data.monto_solicitado) || 1000000), mensaje: 'Cupo disponible (simulación local, sin backend configurado).' };
+  function tickProgress() {
+    var items = form.querySelectorAll('[data-addi-tick]');
+    items.forEach(function (li) { li.classList.remove('is-done'); });
+    items.forEach(function (li, i) { setTimeout(function () { li.classList.add('is-done'); }, 450 * (i + 1)); });
+  }
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  function advisorHref(texto) {
+    var wa = document.querySelector('[data-brenson-wa-float]');
+    return wa ? wa.href + encodeURIComponent(' ' + texto) : '';
+  }
+
+  var ICONS = {
+    ok: '<svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    wait: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    no: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>'
+  };
+
+  function renderResult(json) {
+    var icon = $('[data-addi-result-icon]'), title = $('[data-addi-result-title]'), amount = $('[data-addi-result-amount]');
+    var cov = $('[data-addi-coverage]'), bar = $('[data-addi-coverage-bar]'), covText = $('[data-addi-coverage-text]');
+    var msg = $('[data-addi-result-msg]'), cont = $('[data-addi-continue]'), adv = $('[data-addi-advisor]'), alt = $('[data-addi-alt]');
+    var estado = json && json.ok !== false ? json.estado : 'error';
+    var monto = Number(field('monto_solicitado').value) || 0;
+    var nombre = field('nombres').value.trim().split(' ')[0];
+    amount.hidden = true; cov.hidden = true; cont.hidden = true; alt.hidden = true; bar.style.width = '0';
+
+    if (estado === 'aprobado') {
+      icon.className = 'brenson-addi__result-icon is-ok'; icon.innerHTML = ICONS.ok;
+      title.textContent = (nombre ? '¡' + nombre + ', ' : '¡') + 'tienes cupo disponible!';
+      if (json.cupo_disponible) {
+        amount.hidden = false; amount.textContent = fmt.format(json.cupo_disponible);
+        if (monto > 0) {
+          var pct = Math.min(100, Math.round(json.cupo_disponible / monto * 100));
+          cov.hidden = false;
+          covText.textContent = pct >= 100
+            ? 'Tu cupo cubre el 100 % de ' + (ctx.vehiculo || 'tu compra') + '.'
+            : 'Tu cupo cubre el ' + pct + ' %. La diferencia (' + fmt.format(monto - json.cupo_disponible) + ') puedes pagarla como cuota inicial.';
+          requestAnimationFrame(function () { requestAnimationFrame(function () { bar.style.width = pct + '%'; }); });
+        }
       }
-    } catch (err) {
-      json = null;
-    }
-    if (!json || json.ok === false) {
-      msg.textContent = (json && json.error) || 'No pudimos consultar tu cupo. Verifica tu conexión e intenta de nuevo.';
-      cont.hidden = true;
-    } else if (json.estado === 'aprobado') {
-      var fmt = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
-      msg.textContent = 'Tienes cupo disponible' + (json.cupo_disponible ? ': ' + fmt.format(json.cupo_disponible) : '') + '. ' + (json.mensaje || '');
-      if (json.redirect_url) { cont.href = json.redirect_url; cont.hidden = false; } else { cont.hidden = true; }
+      msg.textContent = json.mensaje || '';
+      if (json.redirect_url) { cont.href = json.redirect_url; cont.hidden = false; }
+      adv.href = advisorHref('Consulté mi cupo Addi para ' + (ctx.vehiculo || 'un vehículo') + ' y salió aprobado. Quiero continuar la compra.');
+    } else if (estado === 'pendiente') {
+      icon.className = 'brenson-addi__result-icon is-wait'; icon.innerHTML = ICONS.wait;
+      title.textContent = 'Tu solicitud está en revisión';
+      msg.textContent = json.mensaje || 'Addi te contactará al celular y correo que ingresaste.';
+      adv.href = advisorHref('Mi consulta de cupo Addi quedó en revisión para ' + (ctx.vehiculo || 'un vehículo') + '.');
+    } else if (estado === 'rechazado') {
+      icon.className = 'brenson-addi__result-icon is-no'; icon.innerHTML = ICONS.no;
+      title.textContent = 'Esta vez no encontramos cupo';
+      msg.textContent = 'No te preocupes: tenemos otras formas de financiar tu vehículo. Un asesor puede ayudarte a encontrar la mejor.';
+      alt.hidden = false;
+      adv.href = advisorHref('Consulté cupo con Addi y no tuve disponibilidad. ¿Qué otras opciones de financiación tienen para ' + (ctx.vehiculo || 'un vehículo') + '?');
     } else {
-      msg.textContent = json.mensaje || 'No tienes cupo disponible con los datos ingresados.';
-      cont.hidden = true;
+      icon.className = 'brenson-addi__result-icon is-no'; icon.innerHTML = ICONS.no;
+      title.textContent = 'No pudimos completar la consulta';
+      msg.textContent = (json && json.error) || 'Revisa tu conexión e inténtalo de nuevo en un momento.';
+      adv.href = advisorHref('Intenté consultar mi cupo Addi y no funcionó.');
     }
-    innerForm.hidden = true; result.hidden = false;
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: 'brenson_addi_check_result', estado: (json && json.estado) || 'error' });
+    adv.hidden = !adv.href;
+    show('resultado');
+    track('brenson_addi_check_result', { estado: estado });
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (form.querySelector('[name="contact[website]"]').value) return;
+    if (!validate('contacto')) return;
+    var data = {};
+    form.querySelectorAll('[data-name]').forEach(function (el) { data[el.dataset.name] = el.type === 'checkbox' ? el.checked : el.value; });
+    var endpoint = (dlg.dataset.endpoint || '').replace(/\/$/, '');
+    submitBtn.disabled = true;
+    show('cargando'); tickProgress();
+
+    var request = (async function () {
+      try {
+        if (!endpoint) return { ok: true, estado: 'aprobado', cupo_disponible: Math.max(500000, Number(data.monto_solicitado) || 1000000), mensaje: 'Resultado de simulación (sin backend configurado).' };
+        var res = await fetch(endpoint + '/financing/disponible', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        return await res.json().catch(function () { return null; });
+      } catch (err) { return null; }
+    })();
+    // Tiempo mínimo para que los pasos de la consulta se lean, aunque la respuesta llegue al instante.
+    var results = await Promise.all([request, wait(1600)]);
     submitBtn.disabled = false; submitBtn.textContent = defaultCta;
+    renderResult(results[0]);
   });
 
-  retry.addEventListener('click', function () { result.hidden = true; innerForm.hidden = false; });
+  dlg.querySelector('[data-addi-retry]').addEventListener('click', function () { show('identidad'); });
 })();
 </script>
 
@@ -164,9 +458,9 @@
   "tag": "div",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Compra ahora, paga después" },
-    { "type": "text", "id": "title", "label": "Título", "default": "Consulta tu cupo con Addi" },
-    { "type": "textarea", "id": "text", "label": "Texto", "default": "Ingresa tus datos para ver tu cupo disponible. La evaluación crediticia la realiza Addi." },
-    { "type": "text", "id": "cta_label", "label": "Texto del botón", "default": "Consultar disponibilidad" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Paga a cuotas con Addi" },
+    { "type": "textarea", "id": "text", "label": "Texto de introducción", "default": "Consulta en minutos cuánto cupo tienes disponible. La evaluación crediticia la realiza Addi." },
+    { "type": "text", "id": "cta_label", "label": "Texto del botón de consulta", "default": "Consultar mi cupo" },
     { "type": "textarea", "id": "disclaimer", "label": "Disclaimer legal", "default": "Addi S.A. Compañía de Financiamiento realiza la evaluación y aprobación del crédito. Brenson no participa en la decisión ni almacena tus datos financieros. [BORRADOR: pendiente revisión legal]" }
   ],
   "presets": [ { "name": "Consulta de cupo Addi" } ],
