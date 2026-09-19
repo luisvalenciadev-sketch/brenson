@@ -138,7 +138,10 @@
         {%- endif -%}
         <button type="button" class="brenson-btn brenson-btn--primary brenson-btn--lg brenson-btn--block" data-q-pdf disabled>Generar cotización PDF</button>
         <button type="button" class="brenson-btn brenson-btn--outline brenson-btn--block" data-q-draft disabled>Guardar borrador</button>
-        <button type="button" class="brenson-btn brenson-btn--outline brenson-btn--block" data-q-addi disabled>Verificar cupo con Addi</button>
+        <button type="button" class="brenson-btn brenson-btn--addi brenson-btn--block" data-q-addi disabled>
+          {% render 'brenson-addi-icon', class: 'brenson-btn__icon' %}
+          ADDI
+        </button>
         <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin:0">La consulta de cupo se hace con los datos de la persona responsable de la compra, no de la empresa.</p>
         <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin:0">Recibirá el PDF en su correo{% if b2b_asesor %} y su asesor <strong>{{ b2b_asesor.nombre.value }}</strong> será notificado{% endif %}.</p>
         <div><span class="brenson-kpi__label">Modalidades de pago corporativo</span><div class="brenson-chips" style="margin-top:0.56rem"><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Transferencia / PSE</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Crédito 30/60 días</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Leasing Bancolombia / Sufi</span><span class="brenson-badge brenson-badge--gris brenson-badge--sm">Tarjeta corporativa</span></div></div>

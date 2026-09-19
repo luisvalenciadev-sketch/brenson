@@ -146,7 +146,8 @@
         <button type="button" class="brenson-btn brenson-btn--primary brenson-btn--lg brenson-btn--block" data-sim-cta data-brenson-track="simulator_cta">
           {{ section.settings.cta_label }}
         </button>
-        <button type="button" class="brenson-btn brenson-btn--outline brenson-btn--lg brenson-btn--block" data-sim-addi data-brenson-track="simulator_addi_check">
+        <button type="button" class="brenson-btn brenson-btn--addi brenson-btn--lg brenson-btn--block" data-sim-addi data-brenson-track="simulator_addi_check">
+          {% render 'brenson-addi-icon', class: 'brenson-btn__icon' %}
           Consultar cupo con Addi
         </button>
         <p class="brenson-simulator__disclaimer">{{ disclaimer }}</p>

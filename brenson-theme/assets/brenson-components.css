@@ -109,6 +109,8 @@
 .brenson-btn--white { background: #fff; color: var(--brenson-carbon); }
 .brenson-btn--whatsapp { background: var(--brenson-whatsapp); color: #fff; }
 .brenson-btn--whatsapp:hover { background: var(--brenson-whatsapp-hover); }
+.brenson-btn--addi { background: var(--brenson-addi); color: #fff; border-color: transparent; }
+.brenson-btn--addi:hover { background: var(--brenson-addi-hover); }
 .brenson-btn--lg { min-height: 5.6rem; font-size: var(--brenson-text-md); padding-inline: var(--brenson-space-8); }
 .brenson-btn--sm { min-height: 4rem; font-size: var(--brenson-text-xs); padding-inline: var(--brenson-space-4); }
 .brenson-btn--block { width: 100%; }

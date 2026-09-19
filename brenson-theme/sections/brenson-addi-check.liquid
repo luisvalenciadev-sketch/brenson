@@ -11,6 +11,9 @@
 <dialog class="brenson-addi" id="brenson-addi-check" data-brenson-addi data-endpoint="{{ settings.brenson_services_url }}" aria-labelledby="brenson-addi-title">
   <form method="dialog" class="brenson-addi__close"><button type="submit" aria-label="Cerrar">×</button></form>
   <div class="brenson-addi__body">
+    <div class="brenson-addi__badge" aria-hidden="true">
+      {% render 'brenson-addi-icon', class: 'brenson-addi__badge-icon' %}
+    </div>
     <span class="brenson-eyebrow">{{ section.settings.eyebrow }}</span>
     <h2 id="brenson-addi-title" style="margin:0; font-size: var(--brenson-text-xl)">{{ section.settings.title }}</h2>
     <p class="brenson-muted" style="margin:0; font-size: var(--brenson-text-sm)" data-addi-context-line>{{ section.settings.text }}</p>
@@ -57,13 +60,13 @@
         <span>Autorizo el tratamiento de mis datos personales para que Addi evalúe mi cupo, conforme a la <a class="link" href="/policies/privacy-policy" target="_blank" rel="noopener">política de datos</a>.</span>
       </label>
 
-      <button type="submit" class="brenson-btn brenson-btn--primary brenson-btn--block" data-addi-submit>{{ section.settings.cta_label }}</button>
+      <button type="submit" class="brenson-btn brenson-btn--addi brenson-btn--block" data-addi-submit>{{ section.settings.cta_label }}</button>
       <p class="brenson-addi__disclaimer">{{ section.settings.disclaimer }}</p>
     </form>
 
     <div class="brenson-addi__result" data-addi-result hidden role="status">
       <p data-addi-result-msg></p>
-      <a class="brenson-btn brenson-btn--primary brenson-btn--block" data-addi-continue href="#" target="_blank" rel="noopener" hidden>Continuar con Addi</a>
+      <a class="brenson-btn brenson-btn--addi brenson-btn--block" data-addi-continue href="#" target="_blank" rel="noopener" hidden>Continuar con Addi</a>
       <button type="button" class="brenson-btn brenson-btn--outline brenson-btn--block" data-addi-retry>Intentar con otros datos</button>
     </div>
   </div>
@@ -75,6 +78,8 @@
   .brenson-addi__body { padding: var(--brenson-space-6); display: grid; gap: var(--brenson-space-3); }
   .brenson-addi__close { position: absolute; top: 0.8rem; right: 0.8rem; margin: 0; }
   .brenson-addi__close button { width: 3.6rem; height: 3.6rem; border: 0; border-radius: 50%; background: var(--brenson-gris-claro); font-size: 2rem; cursor: pointer; }
+  .brenson-addi__badge { width: 4.4rem; height: 4.4rem; border-radius: 50%; background: var(--brenson-addi); display: flex; align-items: center; justify-content: center; }
+  .brenson-addi__badge-icon { width: 2.2rem; height: 2.2rem; color: #fff; }
   .brenson-addi__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--brenson-space-2); }
   .brenson-addi__consent { display: flex; gap: 0.8rem; font-size: var(--brenson-text-xs); align-items: flex-start; }
   .brenson-addi__consent input { width: auto; min-height: auto; margin-top: 0.24rem; }
@@ -107,7 +112,7 @@
       ? 'Verificamos el cupo de la persona que gestiona la compra, no el de la empresa. La evaluación la hace Addi.'
       : defaultText;
     innerForm.hidden = false; result.hidden = true;
-    dlg.showModal();
+    try { dlg.showModal(); } catch (err) { console.error('[brenson] no se pudo abrir el modal de Addi', err); dlg.setAttribute('open', ''); }
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'brenson_addi_check_open', contexto: d.contexto || 'b2c', vehiculo: d.vehiculo || '' });
   });

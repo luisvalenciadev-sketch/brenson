@@ -37,6 +37,9 @@
   --brenson-error: #b91c1c;
   --brenson-error-suave: #fee2e2;
   --brenson-info: #2563eb;
+  --brenson-addi: #4171ff;             /* azul oficial de marca Addi (favicon co.addi.com) */
+  --brenson-addi-hover: #2f5be0;
+  --brenson-addi-suave: #e9eeff;
 
   /* ---- Tipografía (manual DO-MKT-001: Ubuntu para texto/contenido, Dancing Script solo
      para títulos o palabras clave puntuales — nunca para el cuerpo ni para toda la jerarquía
