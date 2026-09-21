@@ -70,6 +70,34 @@ Además:
 - Pendiente 2e: agregar el campo `cliente_id` a la definición de `brenson_unidad`. El dashboard ya lo lee con respaldo a `cliente`; falta el campo en Shopify y definir quién lo llena.
 - Ojo con los clientes que quedaron en "pendiente" antes del 21-sep: no tienen `upload_token`, así que su subida responde 403 con el mensaje de WhatsApp.
 
+## Fase 6 — retomar aquí (QA y performance)
+
+Ejecutada en parte el 21-sep; los resultados están en `docs/QA_MATRIZ.md`, sección "Ejecución 21-sep-2026". Los scripts de prueba (`qa-auto.mjs` con puppeteer-core, Lighthouse 12.8) vivían en el scratchpad de esa sesión y no están en el repo: si se reutilizan, instalar `lighthouse` y `puppeteer-core` en una carpeta temporal y usar el Chrome instalado (`C:/Program Files/Google/Chrome/Application/chrome.exe`). Para ver el tema de staging, abrir primero `https://brenson-0.myshopify.com/?preview_theme_id=143001354315&pb=0`: deja una cookie y luego las rutas de `brenson.co` sirven el staging (`pb=0` oculta la barra de vista previa).
+
+**Pendiente técnico, en este orden:**
+1. **LCP (S-02 ❌): 5 a 7 s en móvil, el objetivo es < 2,5 s.** En el inicio, ~4,3 s del LCP son *render delay*: el hilo principal está ocupado con ~2,9 s de scripts en el propio HTML (secciones con `<script>` en línea) y ~2 s de estilos y layout.
+   - Perfilar con la pestaña Performance de DevTools qué scripts del tema corren al cargar y diferir los que no afectan la primera pantalla.
+   - En el hero hay dos imágenes con `fetchpriority=high` (fondo y vehículo) compitiendo: dejar la prioridad alta solo en la del LCP (en móvil es la de fondo, `brenson-hero__ambient-image`).
+   - Reducir el DOM (~1.400 a 1.650 nodos; pesan los SVG de íconos repetidos).
+   - **Medir en pagespeed.web.dev**, no solo con Lighthouse local: en la laptop el TBT varía mucho entre corridas y la vista previa agrega scripts que no existen con el tema publicado. La API gratuita de PageSpeed agotó su cuota el 21-sep.
+2. **Contraste AA**: 30 a 39 elementos por página no pasan, sobre todo texto blanco sobre el verde `#29a800` (~3,2:1; AA pide 4,5:1). **Necesita decisión de Brenson**: oscurecer el verde de los botones (existe `#1f7a00`, el hover) o usar texto oscuro. Después, aplicarlo en `brenson-tokens.css`.
+3. **Facetas (C-01 🟡)**: en `/collections/todos` solo se ven Categoría y Precio. Revisar en la app Search & Discovery que Uso, Autonomía, Velocidad, Carga, Financiable y Licencia sigan activos.
+4. Detalles menores: `/favicon.ico` da 404 (falta el logo de Brenson); el alt de la imagen de fondo del hero dice "Barranquilla" (la sede es Cali; editar en Contenido → Archivos); `heading-order` en la ficha (un `h4` fuera de orden).
+
+**Pendiente que requiere a una persona:**
+- **L-02**: enviar un lead desde un navegador normal en `/pages/contacto` (vista previa) y confirmar el mensaje de éxito. Chrome automatizado no recibe token de Turnstile, así que solo se puede cerrar a mano.
+- Casos con sesión B2B (E-02 a E-05, E-10 a E-13, E-15, E-19), porque el login es con código al correo. Incluye generar una cotización y aceptarla desde el portal (el cotizador ahora envía `portal_token`).
+- E-16 en un checkout real con sesión (por API ya está verificado).
+- Prueba en un Android físico de gama media, y en Safari y Samsung Internet.
+
+**Ya corregido el 21-sep (no repetir):**
+- los formularios de lead eran secuestrados por el captcha de Shopify; se agregó `data-nocaptcha`;
+- el respaldo del formulario usaba `arguments.callee`;
+- Turnstile ahora carga bajo demanda (`brensonTurnstileToken`, asíncrona);
+- carrusel de videos: portadas diferidas, ARIA y área táctil;
+- los botones de plazo tienen roles de pestaña;
+- los webhooks rechazan todo si no hay secreto; `SHOPIFY_WEBHOOK_SECRET` quedó configurado con el Client Secret de la app.
+
 ## Fases 4 a 8 (resumen del plan)
 
 - **4. CRM**: confirmar si existe la subcuenta de GoHighLevel (decisión J1). Luego `CRM_PROVIDER="ghl"` + `GHL_WEBHOOK_URL`, y crear los webhooks de Shopify al worker (customers-create/update, checkouts-create, orders-create/fulfilled). Ver al menos un lead en el pipeline.
