@@ -156,7 +156,7 @@
     "brenson_services_url": "https://brenson-services.brenson.workers.dev",
     "brenson_modo_simulacion": true,
     "brenson_gtm_id": "",
-    "brenson_turnstile_site_key": "",
+    "brenson_turnstile_site_key": "0x4AAAAAAE-9hGIqtJWHkLaK",
     "sections": {
       "header": {
         "type": "header",

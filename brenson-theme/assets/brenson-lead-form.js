@@ -17,8 +17,7 @@
     data.honeypot = (form.querySelector('[name="contact[website]"]') || {}).value || '';
     data.page = location.href;
     data.ts = new Date().toISOString();
-    var t = form.querySelector('[name="cf-turnstile-response"]');
-    if (t) data.turnstile = t.value;
+    if (window.brensonTurnstile) data.turnstile = window.brensonTurnstile(form);
     return data;
   }
 

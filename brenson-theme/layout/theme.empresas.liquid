@@ -408,5 +408,8 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
+    {%- comment -%} Turnstile: sin esto, /b2b/request y el contacto de Empresas no envían token (403 al activar el secreto). {%- endcomment -%}
+    {%- render 'brenson-turnstile' -%}
   </body>
 </html>

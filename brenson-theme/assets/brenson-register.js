@@ -33,8 +33,7 @@
     d.ts = new Date().toISOString();
     // Token de Turnstile: lo inyecta el snippet brenson-turnstile en [data-turnstile-slot].
     // /b2b/request lo exige cuando TURNSTILE_SECRET está configurado en el worker.
-    var t = root.querySelector('[name="cf-turnstile-response"]');
-    if (t) d.turnstile = t.value;
+    if (window.brensonTurnstile) d.turnstile = window.brensonTurnstile(root);
     return d;
   }
 

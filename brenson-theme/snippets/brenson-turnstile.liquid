@@ -1,8 +1,22 @@
 {%- comment -%}
   brenson-turnstile — Módulo 18. Cloudflare Turnstile (anti-spam sin captcha visible, decisión J9).
   Se activa solo si settings.brenson_turnstile_site_key tiene valor. Renderiza el widget en cada [data-turnstile-slot]
-  de los formularios Brenson (lead, solicitud B2B, upload). brenson-services valida el token con TURNSTILE_SECRET.
+  de los formularios Brenson (lead, solicitud B2B, exit intent, cupo Addi). brenson-services valida el token con TURNSTILE_SECRET.
+  Debe renderizarse en TODOS los layouts (theme y theme.empresas): si falta, el formulario no envía
+  token y el worker rechaza el 100 % de los envíos con 403.
+
+  window.brensonTurnstile(root) → devuelve el token del widget dentro de `root` y lo reinicia: el token
+  es de un solo uso, así que sin reset un reintento (o un segundo envío) saldría con un token gastado.
 {%- endcomment -%}
+<script>
+  window.brensonTurnstile = function (root) {
+    var input = root && root.querySelector('[name="cf-turnstile-response"]');
+    var token = input ? input.value : '';
+    var slot = root && root.querySelector('[data-turnstile-slot]');
+    if (token && slot && window.turnstile) { try { window.turnstile.reset(slot); } catch (e) {} }
+    return token;
+  };
+</script>
 {%- if settings.brenson_turnstile_site_key != blank -%}
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
   <script>
