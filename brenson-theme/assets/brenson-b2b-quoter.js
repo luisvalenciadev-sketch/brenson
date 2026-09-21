@@ -164,7 +164,7 @@
     async submit(estado) {
       var r = this.compute();
       var payload = {
-        estado, customer_id: this.dataset.customerId, email: this.dataset.customerEmail, empresa: this.dataset.empresa,
+        estado, customer_id: this.dataset.customerId, portal_token: this.dataset.portalToken, email: this.dataset.customerEmail, empresa: this.dataset.empresa,
         tier: this.dataset.tier, descuento_pct: this.discount, validez_dias: this.validez,
         observaciones: (this.querySelector('[data-q-notes]') || {}).value || '',
         items: r.lines, totales_cliente: { subtotal_publico: r.subPublic, descuento: r.discount, total: r.total, unidades: r.units }

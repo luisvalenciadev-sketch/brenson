@@ -53,7 +53,7 @@
         { "numero": {{ q.numero.value | json }}, "items": {{ q.items.value | json }}, "observaciones": {{ q.observaciones.value | json }} }
       {%- endfor -%}
     ]</script>
-    <brenson-quoter class="brenson-quoter" data-discount="{{ b2b_descuento }}" data-tier="{{ b2b_tier.nombre.value }}" data-next-min="{{ next_tier.minimo_unidades.value | default: 0 }}" data-next-pct="{{ next_tier.descuento_pct.value | default: 0 }}" data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" data-empresa="{{ b2b_empresa | escape }}" data-validez="{{ validez }}">
+    <brenson-quoter class="brenson-quoter" data-discount="{{ b2b_descuento }}" data-tier="{{ b2b_tier.nombre.value }}" data-next-min="{{ next_tier.minimo_unidades.value | default: 0 }}" data-next-pct="{{ next_tier.descuento_pct.value | default: 0 }}" data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" data-portal-token="{{ customer.metafields.brenson_b2b.portal_token.value }}" data-empresa="{{ b2b_empresa | escape }}" data-validez="{{ validez }}">
       <div class="brenson-b2b-stack">
         <div class="brenson-b2b-card brenson-quoter__filters">
           <input type="search" placeholder="Buscar por modelo…" aria-label="Buscar por modelo" data-q-search>

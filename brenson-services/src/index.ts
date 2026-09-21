@@ -19,7 +19,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import type { Env } from './types';
 import { getProviders } from './providers';
-import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, createCustomer, updateCustomerNoteAndTags, setCustomerMetafield, setCustomerMetafields, fetchQuoteByNumero, updateQuoteMetaobject, createDraftOrder } from './lib/shopify';
+import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, createCustomer, updateCustomerNoteAndTags, setCustomerMetafield, setCustomerMetafields, fetchQuoteByNumero, updateQuoteMetaobject, createDraftOrder, listB2BCustomersWithoutPortalToken } from './lib/shopify';
 import { computeQuote, quoteHtml, specSheetHtml, nextQuoteNumber, fmt } from './lib/quote';
 import { htmlToPdf, pdfResponse } from './lib/pdf';
 import { verifyTurnstile, rateLimit, jsonError, scoreFor, signPath, verifySignedPath, signToken, verifyToken } from './lib/util';
@@ -29,6 +29,10 @@ const app = new Hono<{ Bindings: Env }>();
 // Vigencia del token de subida de documento B2B: cubre la validación (24 h hábiles) con holgura para
 // que una empresa que vuelve días después a la pantalla "pendiente" todavía pueda adjuntar.
 const UPLOAD_TOKEN_TTL = 60 * 60 * 24 * 30;
+// Token del portal B2B (autoriza /quote a nombre del cliente). Largo porque el cliente no tiene cómo
+// renovarlo: se vuelve a emitir con /admin/portal-tokens si hiciera falta.
+const PORTAL_TOKEN_TTL = 60 * 60 * 24 * 365 * 2;
+const portalToken = (env: Env, numericId: string) => signToken(env, `portal:${numericId}`, PORTAL_TOKEN_TTL);
 
 app.use('*', async (c, next) => {
   const origins = (c.env.ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
@@ -127,6 +131,8 @@ app.post('/b2b/request', async (c) => {
         // El tema lo renderiza solo para el propio cliente con sesión (pantalla "pendiente"), igual que
         // accept_token en cotizaciones: así la subida posterior también va firmada sin exponer el token.
         { key: 'upload_token', value: uploadToken, type: 'single_line_text_field' },
+        // Mismo patrón para el cotizador: /quote solo acepta cotizar a nombre de quien tiene este token.
+        { key: 'portal_token', value: await portalToken(c.env, customerId.split('/').pop() as string), type: 'single_line_text_field' },
         { key: 'tipo_cliente', value: 'empresa', type: 'single_line_text_field' },
         { key: 'estado_b2b', value: 'pendiente', type: 'single_line_text_field' },
         { key: 'nit', value: nit, type: 'single_line_text_field' },
@@ -188,6 +194,11 @@ app.post('/upload', async (c) => {
 app.post('/quote', async (c) => {
   const body = await c.req.json().catch(() => null);
   if (!body || !Array.isArray(body.items) || !body.items.length) return jsonError(c, 422, 'Sin ítems');
+  const ip = c.req.header('cf-connecting-ip') || 'unknown';
+  if (!(await rateLimit(c.env, `quote:${ip}`, 20, 3600))) return jsonError(c, 429, 'Demasiadas cotizaciones desde esta conexión. Intente más tarde o escríbanos por WhatsApp.');
+  // Sin esto, cualquiera podía crear cotizaciones que aparecían en el portal de otra empresa con solo
+  // conocer su customer_id. El token lo pinta el tema desde brenson_b2b.portal_token, solo para su dueño.
+  if (c.env.SHOPIFY_ADMIN_TOKEN && !(await verifyToken(c.env, `portal:${body.customer_id}`, body.portal_token))) return jsonError(c, 403, 'Sesión del portal inválida. Recargue la página o escríbanos por WhatsApp.');
   const { crm, mail, pdf } = getProviders(c.env);
 
   // Recalcular server-side: precios reales desde Shopify (o los enviados si no hay token, en modo simulación)
@@ -228,9 +239,9 @@ app.post('/quote', async (c) => {
     });
   }
   if (quote.estado === 'enviada') {
-    await mail.send({ to: body.email, subject: `Cotización ${quote.numero} · Brenson Empresas`, html: `<p>Adjuntamos su cotización de flota. Validez ${quote.validez_dias} días.</p><p><a href="${pdfUrl}">Descargar PDF</a></p>` });
+    await mail.send({ to: quote.email, subject: `Cotización ${quote.numero} · Brenson Empresas`, html: `<p>Adjuntamos su cotización de flota. Validez ${quote.validez_dias} días.</p><p><a href="${pdfUrl}">Descargar PDF</a></p>` });
     await mail.send({ to: c.env.ADVISOR_EMAIL, subject: `[B2B] ${body.empresa} generó ${quote.numero} · ${quote.unidades} unidades · ${quote.total.toLocaleString('es-CO')} COP`, html: `<p><a href="${pdfUrl}">PDF</a></p><p>${escapeHtml(quote.observaciones || '')}</p>` });
-    await crm.upsertLead({ tipo: 'b2b_cotizacion', email: body.email, empresa: body.empresa, whatsapp: '', nombre: body.empresa, score: 50, cotizacion: quote.numero, total: quote.total, unidades: quote.unidades, ts: quote.creada_en });
+    await crm.upsertLead({ tipo: 'b2b_cotizacion', email: quote.email, empresa: body.empresa, whatsapp: '', nombre: body.empresa, score: 50, cotizacion: quote.numero, total: quote.total, unidades: quote.unidades, ts: quote.creada_en });
   }
   return c.json({ ok: true, numero: quote.numero, pdf_url: pdfUrl, total: quote.total, unidades: quote.unidades });
 });
@@ -375,6 +386,22 @@ app.get('/ficha/:handle', async (c) => {
   return url.startsWith('http') ? c.redirect(url) : c.html(html);
 });
 
+/* ---------------- Backfill de portal_token ----------------
+ * Los clientes B2B creados antes del 21-sep no tienen brenson_b2b.portal_token y sin él /quote los
+ * rechaza. Esta ruta se lo emite a todos los que falten. Autenticación: el propio SHOPIFY_ADMIN_TOKEN
+ * del worker como Bearer — quien lo tiene ya es administrador de la tienda, no se abre nada nuevo.
+ * Idempotente: solo toca a quien no tenga token.
+ */
+app.post('/admin/portal-tokens', async (c) => {
+  const auth = (c.req.header('Authorization') || '').replace(/^Bearer\s+/i, '');
+  if (!c.env.SHOPIFY_ADMIN_TOKEN || !(await verifySameSecret(auth, c.env.SHOPIFY_ADMIN_TOKEN))) return jsonError(c, 401, 'No autorizado');
+  const ids = await listB2BCustomersWithoutPortalToken(c.env);
+  for (const id of ids) {
+    await setCustomerMetafield(c.env, id, 'brenson_b2b', 'portal_token', await portalToken(c.env, id.split('/').pop() as string), 'single_line_text_field');
+  }
+  return c.json({ ok: true, emitidos: ids.length });
+});
+
 /* ---------------- Webhooks Shopify → CRM ---------------- */
 app.post('/webhooks/shopify/:topic', async (c) => {
   const raw = await c.req.text();
@@ -408,6 +435,14 @@ app.post('/webhooks/shopify/:topic', async (c) => {
 export default app;
 
 /* ---------------- helpers ---------------- */
+/** Comparación en tiempo constante vía HMAC de ambos lados (longitudes distintas no filtran nada). */
+async function verifySameSecret(a: string, b: string) {
+  const k = await crypto.subtle.importKey('raw', crypto.getRandomValues(new Uint8Array(32)), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const [x, y] = await Promise.all([a, b].map((s) => crypto.subtle.sign('HMAC', k, new TextEncoder().encode(s))));
+  const u = new Uint8Array(x), v = new Uint8Array(y);
+  let r = 0; for (let i = 0; i < u.length; i++) r |= u[i] ^ v[i];
+  return r === 0 && a.length > 0;
+}
 function safeJson(v: unknown) { try { return typeof v === 'string' ? JSON.parse(v) : v; } catch { return null; } }
 function escapeHtml(s: string) { return s.replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch] as string)); }
 function leadEmailHtml(l: Record<string, unknown>) {

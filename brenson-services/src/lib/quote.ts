@@ -35,11 +35,15 @@ export function computeItems(items: { variant_id: string; cantidad: number; hand
 
 export async function computeQuote(env: Env, body: any): Promise<Quote> {
   let tierPct = Number(body.descuento_pct || 0), tierCode: string | null = null, tierName = String(body.tier || '');
+  let email = String(body.email || '');
   let variants = null;
   if (env.SHOPIFY_ADMIN_TOKEN && body.customer_id) {
     const tier = await fetchCustomerTier(env, String(body.customer_id));
     if (!tier) throw new Error('Cliente sin tier B2B aprobado');
     tierPct = tier.descuento; tierCode = tier.codigo; tierName = tier.nombre;
+    // El correo sale de Shopify, no del navegador: si no, /quote servía para mandar documentos con la
+    // marca Brenson a cualquier dirección.
+    email = tier.email;
     variants = await fetchVariants(env, body.items.map((i: any) => String(i.variant_id)));
   }
   const items = computeItems(body.items, tierPct, tierCode, variants);
@@ -47,7 +51,7 @@ export async function computeQuote(env: Env, body: any): Promise<Quote> {
   const total = items.reduce((a, i) => a + i.subtotal, 0);
   return {
     numero: '', estado: body.estado === 'borrador' ? 'borrador' : 'enviada',
-    empresa: String(body.empresa || ''), email: String(body.email || ''), tier: tierName, descuento_pct: tierPct,
+    empresa: String(body.empresa || ''), email, tier: tierName, descuento_pct: tierPct,
     validez_dias: Number(body.validez_dias || env.QUOTE_VALIDITY_DAYS || 15), observaciones: String(body.observaciones || '').slice(0, 1000),
     items, subtotal_publico, descuento: subtotal_publico - total, total, unidades: items.reduce((a, i) => a + i.cantidad, 0), creada_en: new Date().toISOString()
   };

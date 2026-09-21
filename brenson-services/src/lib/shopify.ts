@@ -71,13 +71,26 @@ export async function fetchVariants(env: Env, variantIds: string[]): Promise<Rec
   return out;
 }
 
-export async function fetchCustomerTier(env: Env, customerId: string): Promise<{ codigo: string; descuento: number; nombre: string } | null> {
-  const data = await shopifyAdmin<{ customer: { tags: string[]; tier: { reference: { fields: { key: string; value: string }[] } | null } | null } | null }>(env,
-    `query($id: ID!) { customer(id: $id) { tags tier: metafield(namespace: "brenson_b2b", key: "tier") { reference { ... on Metaobject { fields { key value } } } } } }`, { id: `gid://shopify/Customer/${customerId}` });
+export async function fetchCustomerTier(env: Env, customerId: string): Promise<{ codigo: string; descuento: number; nombre: string; email: string } | null> {
+  const data = await shopifyAdmin<{ customer: { email: string | null; tags: string[]; tier: { reference: { fields: { key: string; value: string }[] } | null } | null } | null }>(env,
+    `query($id: ID!) { customer(id: $id) { email tags tier: metafield(namespace: "brenson_b2b", key: "tier") { reference { ... on Metaobject { fields { key value } } } } } }`, { id: `gid://shopify/Customer/${customerId}` });
   const c = data.customer;
   if (!c || !c.tags.includes('cliente-corporativo') || !c.tier?.reference) return null;
   const f = Object.fromEntries(c.tier.reference.fields.map((x) => [x.key, x.value]));
-  return { codigo: f.codigo, descuento: parseFloat(f.descuento_pct || '0'), nombre: f.nombre };
+  return { codigo: f.codigo, descuento: parseFloat(f.descuento_pct || '0'), nombre: f.nombre, email: c.email || '' };
+}
+
+/** Clientes B2B (pendientes o aprobados) sin portal_token, para el backfill de /admin/portal-tokens. */
+export async function listB2BCustomersWithoutPortalToken(env: Env): Promise<string[]> {
+  const out: string[] = [];
+  let after: string | null = null;
+  do {
+    const data: { customers: { pageInfo: { hasNextPage: boolean; endCursor: string }; nodes: { id: string; t: { value: string } | null }[] } } = await shopifyAdmin(env,
+      `query($a: String) { customers(first: 100, after: $a, query: "tag:cliente-corporativo OR tag:b2b-pendiente") { pageInfo { hasNextPage endCursor } nodes { id t: metafield(namespace: "brenson_b2b", key: "portal_token") { value } } } }`, { a: after });
+    for (const n of data.customers.nodes) if (!n.t) out.push(n.id);
+    after = data.customers.pageInfo.hasNextPage ? data.customers.pageInfo.endCursor : null;
+  } while (after);
+  return out;
 }
 
 /**
