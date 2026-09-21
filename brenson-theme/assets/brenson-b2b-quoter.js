@@ -142,7 +142,12 @@
       if (barTotal) barTotal.textContent = r.lines.length ? fmt.format(r.total) : 'Agregue vehículos';
       if (barCta) { barCta.classList.toggle('is-disabled', !r.lines.length); barCta.setAttribute('aria-disabled', String(!r.lines.length)); }
       var pdf = this.querySelector('[data-q-pdf]'), draft = this.querySelector('[data-q-draft]'), addi = this.querySelector('[data-q-addi]');
-      if (pdf) pdf.disabled = !r.lines.length; if (draft) draft.disabled = !r.lines.length; if (addi) addi.disabled = !r.lines.length;
+      // Recién generada y sin cambios: el botón queda deshabilitado para no emitir la misma cotización
+      // dos veces (pasó con COT-2026-0013/0014: el PDF no se abría y el cliente volvía a pulsar).
+      var yaGenerada = !!this._lastSent && this._lastSent === JSON.stringify(r.lines);
+      if (pdf && !this._sending) { pdf.disabled = !r.lines.length || yaGenerada; pdf.textContent = yaGenerada ? 'Cotización generada ✓' : 'Generar cotización PDF'; }
+      if (draft && !this._sending) draft.disabled = !r.lines.length;
+      if (addi) addi.disabled = !r.lines.length;
       var prog = this.querySelector('[data-q-progress]'), progText = this.querySelector('[data-q-progress-text]');
       if (prog && this.nextMin) {
         var pct = Math.min(100, Math.round(r.units / this.nextMin * 100));
@@ -161,7 +166,30 @@
       } catch (e) {}
     }
 
+    // Mensaje de éxito con el siguiente paso y enlaces. Se arma con nodos, no con innerHTML, porque el
+    // número y la URL vienen del servidor.
+    successMessage(el, numero, pdfUrl) {
+      el.textContent = '';
+      var b = document.createElement('strong');
+      b.textContent = 'Cotización ' + (numero || '') + ' generada.';
+      el.appendChild(b);
+      el.appendChild(document.createTextNode(' Le llegará también al correo. Para convertirla en pedido, pulse «Aceptar cotización» en Mis cotizaciones.'));
+      el.appendChild(document.createElement('br'));
+      if (pdfUrl) {
+        var a = document.createElement('a');
+        a.className = 'link'; a.href = pdfUrl; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Ver PDF';
+        el.appendChild(a);
+        el.appendChild(document.createTextNode(' · '));
+      }
+      var m = document.createElement('a');
+      m.className = 'link'; m.href = '/pages/empresas#cotizaciones'; m.textContent = 'Ir a Mis cotizaciones';
+      el.appendChild(m);
+    }
+
     async submit(estado) {
+      // Candado: un segundo clic (o el botón de borrador) mientras se genera no crea otra cotización.
+      if (this._sending) return;
+      this._sending = true;
       var r = this.compute();
       var payload = {
         estado, customer_id: this.dataset.customerId, portal_token: this.dataset.portalToken, email: this.dataset.customerEmail, empresa: this.dataset.empresa,
@@ -170,14 +198,18 @@
         items: r.lines, totales_cliente: { subtotal_publico: r.subPublic, descuento: r.discount, total: r.total, unidades: r.units }
       };
       var ok = this.querySelector('[data-q-success]'), err = this.querySelector('[data-q-error]'), status = this.querySelector('[data-q-status]');
-      var btn = this.querySelector('[data-q-pdf]'); btn.disabled = true; btn.textContent = 'Generando…';
+      var btn = this.querySelector('[data-q-pdf]'), draftBtn = this.querySelector('[data-q-draft]');
+      btn.disabled = true; if (draftBtn) draftBtn.disabled = true;
+      btn.textContent = estado === 'enviada' ? 'Generando…' : btn.textContent;
       try {
         if (this.endpoint) {
           var res = await fetch(this.endpoint + '/quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
           if (!res.ok) throw new Error('HTTP ' + res.status);
           var data = await res.json();
-          if (data.pdf_url && estado === 'enviada') window.open(data.pdf_url, '_blank', 'noopener');
-          ok.textContent = 'Cotización ' + (data.numero || '') + ' generada. Revise su correo.';
+          // Sin window.open: tras el await el navegador lo bloquea como ventana emergente y el cliente
+          // creía que no había pasado nada. El PDF queda como enlace en el mensaje de éxito.
+          if (estado === 'enviada') { this.successMessage(ok, data.numero, data.pdf_url); this._lastSent = JSON.stringify(r.lines); }
+          else ok.textContent = 'Borrador ' + (data.numero || '') + ' guardado. Puede retomarlo desde Mis cotizaciones.';
         } else {
           console.info('[brenson] cotización (simulación):', payload);
           if (estado === 'enviada') this.printPreview(payload);
@@ -187,8 +219,13 @@
         status.textContent = estado === 'enviada' ? 'Enviada' : 'Borrador'; status.className = 'brenson-status ' + (estado === 'enviada' ? 'brenson-status--ok' : 'brenson-status--pending');
         window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'brenson_quote_' + (estado === 'enviada' ? 'pdf' : 'draft'), unidades: r.units, total: r.total, tier: this.dataset.tier });
         if (estado === 'enviada') { try { localStorage.removeItem(this.storageKey); } catch (e) {} }
-      } catch (ex) { err.hidden = false; }
-      finally { btn.disabled = false; btn.textContent = 'Generar cotización PDF'; }
+      } catch (ex) { err.hidden = false; ok.hidden = true; }
+      finally {
+        this._sending = false;
+        this.compute(); // repinta los botones: "Cotización generada ✓" si no cambió nada desde el envío
+        // compute() vuelve a guardar el borrador local: tras una cotización enviada se borra otra vez.
+        if (estado === 'enviada' && !ok.hidden) { try { localStorage.removeItem(this.storageKey); } catch (e) {} }
+      }
     }
 
     printPreview(p) {
