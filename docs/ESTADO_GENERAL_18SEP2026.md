@@ -88,6 +88,31 @@ Hallazgos de `AUDITORIA_BRENSON_ECOSISTEMA_18SEP2026.md` que no dependían de cr
 
 > ⚠️ **Antes del próximo `wrangler deploy`**: ejecutar `wrangler secret put QUOTE_SIGNING_SECRET`. Sin ese secreto, `/quote`, `/b2b/request` y los enlaces firmados fallan con un 500 (a propósito). Además, los clientes que quedaron en "pendiente" antes de este cambio no tienen `upload_token`: la subida les responde 403 con el mensaje de WhatsApp. Si alguno necesita adjuntar, se le reenvía `/b2b/request` o se adjunta desde el Admin.
 
+### 3e. Fase 3: ciclo B2B de punta a punta contra la tienda real (21-sep)
+
+Prueba automatizada con un cliente de prueba (`qa.fase3.…@example.com`), 4 × Motocarro CARRY FURGÓN, tier 1 = 8 %:
+1. registro → metafields y tokens;
+2. subida de documento: con token propio 200, con token ajeno 403;
+3. aprobación;
+4. cotización → PDF real;
+5. aceptación: como otro cliente 403; la segunda aceptación no duplica;
+6. pedido borrador;
+7. carrito con la Function.
+
+**Resultado final: cotización $41.216.000 = pedido borrador #D3 $41.216.000 = carrito a precio público con la Function (−$3.584.000).** Para llegar ahí se encontraron y corrigieron:
+
+| Hallazgo | Gravedad | Corrección |
+|---|---|---|
+| El pedido borrador salía a **precio público** (COT-2026-0010 por $41,2 M → #D2 por $44,8 M). `originalUnitPrice` se ignora en líneas con `variantId` | Crítica: el riesgo que el flujo debía eliminar | `priceOverride` + `acceptAutomaticDiscounts: false` (evita el doble descuento con la Function) |
+| **Ningún producto** tenía `brenson.b2b_disponible`: la Function nunca descontaba nada, mientras que la cotización sí | Crítica | Se marcaron los 8 productos de la colección `empresas`. La cotización aplica ahora la misma regla que la Function |
+| **`/quote` sin autenticación**: cualquiera podía crear cotizaciones en el portal de otra empresa y mandar correos con la marca a cualquier dirección | Alta (seguridad) | Token `brenson_b2b.portal_token`, emitido en `/b2b/request`; backfill con `POST /admin/portal-tokens` (6 emitidos). El correo se toma de Shopify. Rate limit 20/h |
+
+**Regla operativa nueva**: un producto solo tiene precio corporativo (en la cotización y en el checkout) si tiene **"Disponible para empresas" = true**. Al agregar un producto al catálogo B2B, hay que marcar ese campo.
+
+**Datos de prueba creados hoy** (borrar antes del lanzamiento, junto con los del 18-sep): cliente `gid://shopify/Customer/9917535223883`, cotizaciones COT-2026-0010 a 0012, borradores #D2 (precio incorrecto, del bug) y #D3, y las 8 unidades de `brenson_unidad`.
+
+**Falta de la Fase 3**: probar el portal desde el navegador con sesión real (cotizador y botón "Aceptar") y la subida a R2 cuando esté habilitado.
+
 ---
 
 ## 4. Todo lo pendiente de validar con Brenson
@@ -135,7 +160,7 @@ Organizado por si depende de una respuesta simple o de contenido/material.
 | 2b | **Correo real del worker**: `MAIL_PROVIDER = "console"`, así que el aviso "Solicitud B2B: <empresa>" se escribe en el log y muere ahí. **Nadie en Brenson se entera de una solicitud nueva**, y el flujo queda esperando una aprobación que nadie sabe que debe hacer. Falta `RESEND_API_KEY` + dominio `brenson.co` verificado en Resend, y cambiar `MAIL_PROVIDER` a `"resend"` en `wrangler.toml` | Cuenta de Resend con el dominio verificado |
 | 2c | ✅ **Turnstile activo (21-sep)**: widget "Brenson formularios" (dominios brenson.co y brenson-0.myshopify.com, modo managed), site key en los ajustes del tema de staging y `TURNSTILE_SECRET` en el worker. Se corrigieron tres huecos que habrían bloqueado envíos legítimos: el layout `theme.empresas` no cargaba el widget (registro B2B y contacto de Empresas), y exit intent y la consulta de cupo Addi no enviaban token. Nuevo `window.brensonTurnstile(root)`: lee el token y reinicia el widget (el token es de un solo uso; sin reset, un reintento fallaba). Verificado: sin token o con token falso → 403. **Pendiente**: probar un envío real desde el navegador en la vista previa. **Ojo al publicar**: el tema publicado hoy ("Brenson Theme") no llama al worker; el nuevo sí envía token | — |
 | 2d | **`git push` pendiente**: commits locales sin subir a GitHub (`83b06d4` limpieza de plantillas de Dawn, `585e9a7` arreglo del 502 + Turnstile + URL del servicio, más lo de la tarde del 18-sep) | Solo falta ejecutarlo |
-| 2e | **Unidades en flota: mismo bug de referencia que tenían las cotizaciones.** `brenson-b2b-dashboard` filtra las unidades con `u.cliente.value.id`, un `customer_reference` que no resuelve de forma fiable en Liquid del storefront. En las cotizaciones se resolvió agregando un campo `cliente_id` de texto plano al metaobjeto y filtrando por él; en `brenson_unidad` **no se hizo**, porque las unidades hoy no las crea el worker sino que se cargan a mano, así que hay que definir primero quién llena ese campo al registrar una unidad. Hoy no se nota porque no hay unidades cargadas para ningún cliente real: el día que se carguen, "Mis unidades en flota" y los KPI de unidades y garantías van a salir en cero. Arreglo: agregar `cliente_id` a la definición `brenson_unidad`, rellenarlo en la carga, y cambiar las 2 líneas del dashboard que ya quedaron con `default:` esperando ese campo | Definir el proceso de alta de unidades |
+| 2e | 🟡 **Unidades con cliente_id (21-sep)**: campo creado en brenson_unidad; scripts/sync-unidades-cliente-id.mjs lo rellena desde la referencia cliente (correrlo después de cargar unidades, hasta que un webhook lo automatice en la Fase 4). Las 8 unidades cargadas son de prueba y no tienen producto (campo obligatorio), por eso Shopify rechaza actualizarlas: borrarlas en la limpieza | Limpieza de datos de prueba |
 | 2f | ✅ **PDF real (21-sep, opción C)**: `PDF_PROVIDER = "browser"` usa Cloudflare Browser Rendering (`src/lib/pdf.ts`) para convertir en PDF el mismo HTML de marca, al abrir el enlace. Caché en KV: cotización 1 año (el documento queda congelado al emitirse), ficha técnica 1 día con versión de plantilla en la clave (`pdfbin:v2:ficha-…`). Si el navegador falla se sirve el HTML, así que cotizar nunca se rompe por el PDF. Verificado: COT-2026-0009 y la ficha del Dallas descargan `application/pdf` (primera vez ~5 s, desde caché <1 s). Se descartó PDFMonkey: habría duplicado el diseño en plantillas externas. **Ojo**: las cotizaciones de prueba del 18-sep conservan el diseño viejo (rojo) porque su HTML se guardó antes de corregir la paleta; las nuevas salen con la marca | — |
 | 2h | ~~El ciclo comercial se corta en la cotización~~ **Resuelto (Opción A, 19-sep)**: "Aceptar cotización" → `POST /quotes/:numero/accept` → pedido borrador con precio congelado, probado en staging. **Sigue abierto**: la Función de descuento por tier **no está desplegada** (`automaticDiscountNodes` = 0, el build se cuelga) — un carrito B2B paga precio público. Detalle: **[FLUJO_COTIZACION_A_PEDIDO.md](FLUJO_COTIZACION_A_PEDIDO.md)** §5 | Build de la Function (técnico) |
 | 2i | **Totales de cotización se mostraban en $0** (corregido el 18-sep) con el snippet `brenson-money-metafield`. El mismo patrón latente en `brenson-price.liquid` (`cuota_desde_override`) **quedó blindado el 21-sep**: toma `.amount` o el valor directo, y si no da un número positivo calcula la cuota normal | — |
