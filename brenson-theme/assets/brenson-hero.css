@@ -150,7 +150,9 @@
 .brenson-hero__chip-inspeccion {
   position: absolute;
   left: 6%;
-  top: 4%;
+  /* Con 4% quedaba bajo el header en desktop y el chip se veía cortado. */
+  top: 14%;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: var(--brenson-space-3);
@@ -188,9 +190,12 @@
 .brenson-hero__card-secondary:hover { transform: translateY(-3px); }
 .brenson-hero__card-secondary-media { border-radius: var(--brenson-radius-lg); overflow: hidden; background: rgba(255,255,255,0.04); aspect-ratio: 4 / 3; }
 .brenson-hero__card-secondary-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.brenson-hero__card-secondary-foot { display: flex; align-items: center; justify-content: space-between; margin-top: var(--brenson-space-2); padding-inline: 0.2rem; }
-.brenson-hero__card-secondary-foot span:first-child { font-family: var(--brenson-font); font-size: var(--brenson-text-xs); font-weight: var(--brenson-font-weight-bold); color: #fff; }
-.brenson-hero__card-secondary-check { font-size: 1.05rem; color: var(--brenson-verde-lima); font-weight: var(--brenson-font-weight-bold); }
+/* Apilado: en 180px "Cuadriciclos" + "Certificado Brenson" no caben en una línea y el sello
+   se partía en dos renglones desalineados. */
+.brenson-hero__card-secondary-foot { display: flex; flex-direction: column; align-items: flex-start; gap: 0.2rem; margin-top: var(--brenson-space-2); padding-inline: 0.2rem; }
+.brenson-hero__card-secondary-foot span:first-child { font-family: var(--brenson-font); font-size: var(--brenson-text-xs); font-weight: var(--brenson-font-weight-bold); color: #fff; line-height: 1.2; }
+.brenson-hero__card-secondary-check { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 1.05rem; line-height: 1.2; white-space: nowrap; color: var(--brenson-verde-lima); font-weight: var(--brenson-font-weight-bold); }
+.brenson-hero__card-secondary-check::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
 
 /* ---------- Tarjeta de categorías (glassmorphism) ---------- */
 .brenson-hero__card-categorias {
