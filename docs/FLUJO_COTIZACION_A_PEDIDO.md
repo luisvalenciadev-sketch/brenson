@@ -114,7 +114,14 @@ Código listo y con tests pasando (`brenson-b2b-functions/extensions/tier-discou
   - Conectividad de red a GitHub/npm confirmada OK, no parece ser un bloqueo de red genérico.
 - **Siguiente paso al retomar:** investigar el build de `javy` en aislamiento (`cd extensions/tier-discount && npx shopify app function build --verbose`, revisar si hay un proceso `javy`/`cargo` colgado con `tasklist`, o probar fijar una versión distinta de `@shopify/shopify_function`/`javy` en `package.json` si el problema es una versión rota).
 
-**Una vez compile y despliegue**, falta activar el descuento automático — se puede hacer por Admin API (`discountAutomaticAppCreate`, usando el `functionId` que expone `shopifyFunctions` en la Admin GraphQL API una vez la app esté instalada), sin pasar por la UI de Configuración → Descuentos.
+**Resuelto el 21-sep — la causa no era javy ni OneDrive, eran tres defectos del proyecto:**
+1. **Recursión infinita**: `[extensions.build] command = "npm run build"`, y el script `build` del `package.json` es `shopify app function build`, que vuelve a ejecutar ese comando. Cada `timeout` mataba solo al proceso padre y dejaba la cadena huérfana corriendo. Para Functions en JS no se declara `command`: la CLI compila sola.
+2. **Faltaba el punto de entrada y el codegen** de la plantilla oficial: `src/index.js` (reexporta `run.js`), la clave `codegen` en `package.json` y `schema.graphql` (`shopify app function schema`). El schema solo se genera con `api_version = "2026-07"`; con `2025-07` Shopify lo rechaza para este target.
+3. **Error de diseño**: la consulta leía el % con `metafield.reference { ... on Metaobject }`, **y el input de Functions no resuelve referencias**. Nunca habría compilado. Ahora el cliente aporta solo el GID de su tier y el % sale de la configuración del descuento (`$app:brenson.config`), que sincroniza `scripts/sync-tier-discount-config.mjs` desde los metaobjects `brenson_tier_b2b`. **Hay que volver a correr ese script cada vez que cambie un % de tier.**
+
+Desplegada como `brenson-admin-scripts-9`, con 8 pruebas unitarias y una ejecución real del `.wasm` (12 % aplicado a la línea que cumple el mínimo).
+
+**Lo que falta** es crear el descuento automático: — se puede hacer por Admin API (`discountAutomaticAppCreate`, usando el `functionId` que expone `shopifyFunctions` en la Admin GraphQL API una vez la app esté instalada), sin pasar por la UI de Configuración → Descuentos.
 
 ---
 

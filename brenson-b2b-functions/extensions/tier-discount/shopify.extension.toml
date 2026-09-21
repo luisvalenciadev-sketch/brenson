@@ -1,4 +1,4 @@
-api_version = "2025-07"
+api_version = "2026-07"
 
 [[extensions]]
 name = "Brenson · Descuento por tier B2B"
@@ -13,8 +13,10 @@ description = "Aplica el porcentaje de descuento del tier corporativo del client
   input_query = "src/run.graphql"
   export = "run"
 
+  # Sin `command`: para Functions en JS la CLI compila sola (esbuild + javy) desde src/index.js.
+  # `command = "npm run build"` hacía que `shopify app function build` se llamara a sí mismo en
+  # bucle (el script build del package.json ES ese mismo comando): por eso el deploy "se colgaba".
   [extensions.build]
-  command = "npm run build"
   path = "dist/function.wasm"
 
   [extensions.ui]

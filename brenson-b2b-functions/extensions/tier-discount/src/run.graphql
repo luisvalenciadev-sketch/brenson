@@ -1,19 +1,17 @@
 query RunInput {
+  # El input de Functions NO resuelve referencias (metafield.reference no existe aquí): el tier del
+  # cliente llega como el GID crudo del metaobject, y el % se busca en la configuración del propio
+  # descuento, que sincroniza scripts/sync-tier-discount-config.mjs desde los metaobjects brenson_tier_b2b.
+  discount {
+    discountClasses
+    config: metafield(namespace: "$app:brenson", key: "config") { jsonValue }
+  }
   cart {
     buyerIdentity {
       customer {
         id
         hasTags(tags: ["cliente-corporativo"]) { tag hasTag }
-        tier: metafield(namespace: "brenson_b2b", key: "tier") {
-          reference {
-            ... on Metaobject {
-              codigo: field(key: "codigo") { value }
-              descuento: field(key: "descuento_pct") { value }
-              minimo: field(key: "minimo_unidades") { value }
-              nombre: field(key: "nombre") { value }
-            }
-          }
-        }
+        tier: metafield(namespace: "brenson_b2b", key: "tier") { value }
       }
     }
     lines {

@@ -13,5 +13,17 @@
   "devDependencies": {
     "@shopify/shopify_function": "^1.0.0",
     "javy": "^0.1.2"
+  },
+  "codegen": {
+    "schema": "schema.graphql",
+    "documents": "src/*.graphql",
+    "generates": {
+      "./generated/api.ts": {
+        "plugins": ["typescript", "typescript-operations"]
+      }
+    },
+    "config": {
+      "omitOperationSuffix": true
+    }
   }
 }

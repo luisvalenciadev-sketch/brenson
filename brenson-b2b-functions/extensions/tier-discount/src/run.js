@@ -5,8 +5,11 @@
  *
  * Reglas:
  *  1. Solo aplica si el cliente tiene el tag `cliente-corporativo` y un tier asignado (metafield brenson_b2b.tier).
- *  2. El % viene del metaobject del tier (descuento_pct). Un producto puede sobrescribirlo con brenson.b2b_precio_tier
- *     (JSON {"tier_1": 8, "tier_2": 12, "tier_3": 18}).
+ *  2. El % del tier viene de la configuración del descuento ($app:brenson.config), porque el input de
+ *     Functions no resuelve la referencia al metaobject: el metafield del cliente solo trae su GID.
+ *     Forma: {"tiers": {"gid://shopify/Metaobject/1": {"codigo": "tier_2", "pct": 12, "nombre": "…"}}}
+ *     La escribe scripts/sync-tier-discount-config.mjs a partir de los metaobjects brenson_tier_b2b.
+ *     Un producto puede sobrescribir el % con brenson.b2b_precio_tier (JSON {"tier_1": 8, "tier_2": 12, "tier_3": 18}).
  *  3. Solo líneas de productos con brenson.b2b_disponible = true y cantidad >= brenson.b2b_minimo_unidades (default 1).
  *  4. Esta es la ÚNICA validación real de precio: lo que el tema muestra como "precio corporativo" es display.
  *
@@ -22,15 +25,19 @@ const EMPTY = { operations: [] };
  * @returns {RunResult}
  */
 export function run(input) {
+  // Si el descuento no se creó con la clase PRODUCT, devolver operaciones de producto es un error.
+  if (!(input.discount?.discountClasses || []).includes('PRODUCT')) return EMPTY;
   const customer = input.cart.buyerIdentity?.customer;
   if (!customer) return EMPTY;
   const approved = (customer.hasTags || []).some((t) => t.tag === 'cliente-corporativo' && t.hasTag);
-  const tier = customer.tier?.reference;
-  if (!approved || !tier) return EMPTY;
+  const tierId = customer.tier?.value;
+  if (!approved || !tierId) return EMPTY;
+  const tier = input.discount.config?.jsonValue?.tiers?.[tierId];
+  if (!tier) return EMPTY;
 
-  const tierCode = tier.codigo?.value || '';
-  const tierPct = parseFloat(tier.descuento?.value || '0');
-  const tierName = tier.nombre?.value || 'Tier corporativo';
+  const tierCode = tier.codigo || '';
+  const tierPct = parseFloat(tier.pct);
+  const tierName = tier.nombre || 'Tier corporativo';
   if (!(tierPct > 0)) return EMPTY;
 
   const candidates = [];
