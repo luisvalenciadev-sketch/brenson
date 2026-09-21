@@ -131,7 +131,7 @@
           <p class="brenson-muted" style="font-size: var(--brenson-text-xs); margin:0">{{ s.form_text }}</p>
         </div>
 
-        {%- form 'contact', id: 'BrensonB2BContacto', class: 'brenson-form', data-brenson-lead-form: '', data-endpoint: settings.brenson_services_url -%}
+        {%- form 'contact', id: 'BrensonB2BContacto', class: 'brenson-form', data-brenson-lead-form: '', data-nocaptcha: 'true', data-endpoint: settings.brenson_services_url -%}
           {%- if form.posted_successfully? -%}
             <p class="brenson-form__success" role="status">Recibimos su solicitud. Un ejecutivo la contactará en horario hábil.</p>
           {%- endif -%}

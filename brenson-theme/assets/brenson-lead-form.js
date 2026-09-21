@@ -17,7 +17,6 @@
     data.honeypot = (form.querySelector('[name="contact[website]"]') || {}).value || '';
     data.page = location.href;
     data.ts = new Date().toISOString();
-    if (window.brensonTurnstile) data.turnstile = window.brensonTurnstile(form);
     return data;
   }
 
@@ -63,7 +62,7 @@
       if (btn) btn.textContent = 'Solicitar financiamiento';
     });
 
-    form.addEventListener('submit', async function (e) {
+    form.addEventListener('submit', async function onSubmit(e) {
       var payload = collect(form);
       if (payload.honeypot) { e.preventDefault(); return; }
 
@@ -81,6 +80,7 @@
       e.preventDefault();
       if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = 'Enviando…'; }
       try {
+        if (window.brensonTurnstileToken) payload.turnstile = await window.brensonTurnstileToken(form);
         var res = await fetch(endpoint + '/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         track(payload);
@@ -89,7 +89,8 @@
       } catch (ex) {
         console.warn('[brenson] lead fallback a formulario nativo:', ex);
         // Respaldo: envío nativo de Shopify (contact form) para no perder el lead
-        form.removeEventListener('submit', arguments.callee);
+        // Función con nombre: `arguments.callee` lanza TypeError en modo estricto y el respaldo nunca corría.
+        form.removeEventListener('submit', onSubmit);
         HTMLFormElement.prototype.submit.call(form);
       } finally {
         if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || btn.textContent; }

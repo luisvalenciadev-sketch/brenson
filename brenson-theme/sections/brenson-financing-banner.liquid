@@ -78,10 +78,10 @@
             </fieldset>
             <fieldset class="brenson-simulator__field">
               <legend class="brenson-simulator__legend">Plazo en meses</legend>
-              <div class="brenson-financing-banner__pills" data-sim-plazos>
+              <div class="brenson-financing-banner__pills" data-sim-plazos role="tablist" aria-label="Plazo en meses">
                 {%- for m in plazos -%}
                   {%- assign m_n = m | strip | times: 1 -%}
-                  <button type="button" data-sim-plazo="{{ m_n }}" aria-selected="{% if m_n == plazo_default %}true{% else %}false{% endif %}">{{ m_n }}</button>
+                  <button type="button" role="tab" data-sim-plazo="{{ m_n }}" aria-selected="{% if m_n == plazo_default %}true{% else %}false{% endif %}">{{ m_n }}</button>
                 {%- endfor -%}
               </div>
             </fieldset>

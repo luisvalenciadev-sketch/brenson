@@ -1,33 +1,62 @@
 {%- comment -%}
   brenson-turnstile — Módulo 18. Cloudflare Turnstile (anti-spam sin captcha visible, decisión J9).
-  Se activa solo si settings.brenson_turnstile_site_key tiene valor. Renderiza el widget en cada [data-turnstile-slot]
-  de los formularios Brenson (lead, solicitud B2B, exit intent, cupo Addi). brenson-services valida el token con TURNSTILE_SECRET.
+  Se activa solo si settings.brenson_turnstile_site_key tiene valor. brenson-services valida el token con TURNSTILE_SECRET.
   Debe renderizarse en TODOS los layouts (theme y theme.empresas): si falta, el formulario no envía
   token y el worker rechaza el 100 % de los envíos con 403.
 
-  window.brensonTurnstile(root) → devuelve el token del widget dentro de `root` y lo reinicia: el token
-  es de un solo uso, así que sin reset un reintento (o un segundo envío) saldría con un token gastado.
+  Carga bajo demanda: el script de Cloudflare (~1,4 MB con su iframe, medido con Lighthouse el 21-sep)
+  solo se pide cuando el visitante toca o enfoca un formulario que tiene [data-turnstile-slot]. Antes se
+  cargaba en todas las páginas aunque nadie llenara nada, y era el recurso más pesado de la ficha.
+
+  window.brensonTurnstileToken(root) → Promise<string>. Carga y renderiza el widget si hace falta,
+  espera el token (máx. 8 s) y reinicia el widget: el token es de un solo uso, así que sin reset un
+  reintento o un segundo envío saldría con un token gastado. Los formularios lo llaman con `await`
+  justo antes del fetch.
 {%- endcomment -%}
-<script>
-  window.brensonTurnstile = function (root) {
-    var input = root && root.querySelector('[name="cf-turnstile-response"]');
-    var token = input ? input.value : '';
-    var slot = root && root.querySelector('[data-turnstile-slot]');
-    if (token && slot && window.turnstile) { try { window.turnstile.reset(slot); } catch (e) {} }
-    return token;
-  };
-</script>
 {%- if settings.brenson_turnstile_site_key != blank -%}
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
   <script>
-    window.onloadTurnstileCallback = function () {
-      document.querySelectorAll('[data-turnstile-slot]').forEach(function (slot) {
-        if (slot.dataset.rendered) return;
-        slot.dataset.rendered = '1';
-        turnstile.render(slot, { sitekey: {{ settings.brenson_turnstile_site_key | json }}, theme: 'light', language: 'es', appearance: 'interaction-only' });
-      });
-    };
-    document.addEventListener('DOMContentLoaded', function () { if (window.turnstile) window.onloadTurnstileCallback(); });
-    window.addEventListener('load', function () { if (window.turnstile) window.onloadTurnstileCallback(); });
+    (function () {
+      var SITEKEY = {{ settings.brenson_turnstile_site_key | json }};
+      var loading = null;
+      function load() {
+        if (loading) return loading;
+        loading = new Promise(function (resolve, reject) {
+          window.onloadBrensonTurnstile = resolve;
+          var s = document.createElement('script');
+          s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onloadBrensonTurnstile';
+          s.async = true;
+          s.onerror = function () { loading = null; reject(new Error('turnstile no cargó')); };
+          document.head.appendChild(s);
+        });
+        return loading;
+      }
+      function renderIn(root) {
+        return load().then(function () {
+          root.querySelectorAll('[data-turnstile-slot]').forEach(function (slot) {
+            if (slot.dataset.widgetId) return;
+            slot.dataset.widgetId = window.turnstile.render(slot, { sitekey: SITEKEY, theme: 'light', language: 'es', appearance: 'interaction-only' });
+          });
+        });
+      }
+      // Precalienta al primer contacto con el formulario: cuando llega el envío, el token suele estar listo.
+      function warm(e) {
+        var form = e.target && e.target.closest && e.target.closest('form');
+        if (form && form.querySelector('[data-turnstile-slot]')) renderIn(form).catch(function () {});
+      }
+      document.addEventListener('focusin', warm);
+      document.addEventListener('pointerdown', warm, { passive: true });
+
+      window.brensonTurnstileToken = async function (root) {
+        var slot = root && root.querySelector('[data-turnstile-slot]');
+        if (!slot) return '';
+        try { await renderIn(root); } catch (e) { return ''; }
+        var id = slot.dataset.widgetId, token = '', start = Date.now();
+        while (!(token = window.turnstile.getResponse(id)) && Date.now() - start < 8000) {
+          await new Promise(function (r) { setTimeout(r, 200); });
+        }
+        if (token) { try { window.turnstile.reset(id); } catch (e) {} }
+        return token || '';
+      };
+    })();
   </script>
 {%- endif -%}

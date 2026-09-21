@@ -3,6 +3,10 @@
   Campos (decisión H4): nombre, WhatsApp, ciudad, uso previsto, cantidad. Vehículo precargado oculto.
   Envío: POST a settings.brenson_services_url + '/lead' (S10). Si la URL está vacía → modo simulación: éxito local.
   Respaldo sin JS: el formulario apunta al formulario de contacto nativo de Shopify (form 'contact').
+  data-nocaptcha="true" es obligatorio: sin él, el script de Shopify (form-persister + captcha) se
+  engancha a todo form hacia /contact y lo envía de forma nativa aunque el JS haga preventDefault,
+  así que el lead nunca llegaba al worker (detectado en QA con Chrome, 21-sep). La protección
+  anti-spam de estos formularios es Turnstile.
   Prueba de manejo (decisión I6): selector de modalidad sede / domicilio con ciudades desde settings.
 {%- endcomment -%}
 {%- liquid
@@ -27,7 +31,7 @@
         </ul>
       </header>
 
-      {%- form 'contact', id: 'BrensonLeadForm', class: 'brenson-form', data-brenson-lead-form: '', data-endpoint: settings.brenson_services_url -%}
+      {%- form 'contact', id: 'BrensonLeadForm', class: 'brenson-form', data-brenson-lead-form: '', data-nocaptcha: 'true', data-endpoint: settings.brenson_services_url -%}
         {%- if form.posted_successfully? -%}
           <p class="brenson-form__success" role="status">Recibimos tu solicitud. Un asesor te contactará pronto.</p>
         {%- endif -%}

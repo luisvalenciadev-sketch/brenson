@@ -1,0 +1,14 @@
+{%- comment -%}
+  brenson-video-lazy — <video> del carrusel de testimonios/casos sin descargas anticipadas.
+
+  `video_tag` pintaba la portada (900px) de TODAS las diapositivas al cargar la página, aunque el
+  carrusel esté bajo el pliegue y solo se vea una a la vez: ~540 KB fuera de pantalla en el home
+  (Lighthouse, 21-sep). Además metía un <img> de respaldo sin alt. Aquí la portada va en
+  data-poster y el JS del carrusel la asigna al acercarse a la vista; preload="none" evita bajar
+  metadatos del video hasta que alguien lo reproduzca.
+
+  Parámetros: video (valor del campo file_reference), label (texto accesible si el video no tiene alt).
+{%- endcomment -%}
+<video class="brenson-video-feat__el" controls playsinline preload="none" data-poster="{{ video.preview_image | image_url: width: 900 }}" aria-label="{{ video.alt | default: label | escape }}">
+  {%- for s in video.sources -%}<source src="{{ s.url }}" type="{{ s.mime_type }}">{%- endfor -%}
+</video>

@@ -436,7 +436,6 @@
     if (!validate('contacto')) return;
     var data = {};
     form.querySelectorAll('[data-name]').forEach(function (el) { data[el.dataset.name] = el.type === 'checkbox' ? el.checked : el.value; });
-    if (window.brensonTurnstile) data.turnstile = window.brensonTurnstile(form);
     var endpoint = (dlg.dataset.endpoint || '').replace(/\/$/, '');
     submitBtn.disabled = true;
     show('cargando'); tickProgress();
@@ -444,6 +443,8 @@
     var request = (async function () {
       try {
         if (!endpoint) return { ok: true, estado: 'aprobado', cupo_disponible: Math.max(500000, Number(data.monto_solicitado) || 1000000), mensaje: 'Resultado de simulación (sin backend configurado).' };
+        // El token puede tardar unos segundos: se pide aquí, en paralelo con la animación de consulta.
+        if (window.brensonTurnstileToken) data.turnstile = await window.brensonTurnstileToken(form);
         var res = await fetch(endpoint + '/financing/disponible', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
         return await res.json().catch(function () { return null; });
       } catch (err) { return null; }

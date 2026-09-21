@@ -405,7 +405,9 @@ app.post('/admin/portal-tokens', async (c) => {
 /* ---------------- Webhooks Shopify → CRM ---------------- */
 app.post('/webhooks/shopify/:topic', async (c) => {
   const raw = await c.req.text();
-  if (c.env.SHOPIFY_WEBHOOK_SECRET && !(await verifyShopifyHmac(raw, c.req.header('X-Shopify-Hmac-Sha256') || '', c.env.SHOPIFY_WEBHOOK_SECRET))) return jsonError(c, 401, 'HMAC inválido');
+  // Cerrado por defecto: sin secreto configurado se rechaza todo. Antes, sin SHOPIFY_WEBHOOK_SECRET se
+  // aceptaba cualquier POST sin firma y cualquiera podía inyectar pedidos o clientes falsos al CRM (QA B-02).
+  if (!c.env.SHOPIFY_WEBHOOK_SECRET || !(await verifyShopifyHmac(raw, c.req.header('X-Shopify-Hmac-Sha256') || '', c.env.SHOPIFY_WEBHOOK_SECRET))) return jsonError(c, 401, 'HMAC inválido');
   const topic = c.req.param('topic');
   const data = JSON.parse(raw);
   const { crm } = getProviders(c.env);

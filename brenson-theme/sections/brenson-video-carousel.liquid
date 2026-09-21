@@ -43,11 +43,11 @@
     {%- if t.video.value == blank -%}{%- continue -%}{%- endif -%}
     {%- if t.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
     {%- assign n = n | plus: 1 -%}
-    <li class="brenson-video-feat__slide" role="group" aria-roledescription="diapositiva" aria-label="{{ n }} de {{ total }}">
+    <div class="brenson-video-feat__slide" role="group" aria-roledescription="diapositiva" aria-label="{{ n }} de {{ total }}">
       <div class="brenson-video-feat__card">
         {%- unless t.verificado.value -%}<span class="brenson-status brenson-status--pending brenson-video-feat__mock">[MOCK]</span>{%- endunless -%}
         <div class="brenson-video-feat__media">
-          {{ t.video.value | video_tag: image_size: '900x', class: 'brenson-video-feat__el', controls: true, muted: false, preload: 'metadata' }}
+          {%- render 'brenson-video-lazy', video: t.video.value, label: t.nombre.value -%}
         </div>
         <div class="brenson-video-feat__body">
           <h3 class="brenson-video-feat__titulo">{{ t.nombre.value }}</h3>
@@ -55,18 +55,18 @@
           {%- if t.texto.value != blank -%}<p class="brenson-video-feat__texto">&ldquo;{{ t.texto.value }}&rdquo;</p>{%- endif -%}
         </div>
       </div>
-    </li>
+    </div>
   {%- endfor -%}
   {%- for c in casos -%}
     {%- if n >= section.settings.limit -%}{%- break -%}{%- endif -%}
     {%- if c.video.value == blank -%}{%- continue -%}{%- endif -%}
     {%- if c.verificado.value != true and sim != true -%}{%- continue -%}{%- endif -%}
     {%- assign n = n | plus: 1 -%}
-    <li class="brenson-video-feat__slide" role="group" aria-roledescription="diapositiva" aria-label="{{ n }} de {{ total }}">
+    <div class="brenson-video-feat__slide" role="group" aria-roledescription="diapositiva" aria-label="{{ n }} de {{ total }}">
       <div class="brenson-video-feat__card">
         {%- unless c.verificado.value -%}<span class="brenson-status brenson-status--pending brenson-video-feat__mock">[MOCK]</span>{%- endunless -%}
         <div class="brenson-video-feat__media">
-          {{ c.video.value | video_tag: image_size: '900x', class: 'brenson-video-feat__el', controls: true, muted: false, preload: 'metadata' }}
+          {%- render 'brenson-video-lazy', video: c.video.value, label: c.titulo.value -%}
         </div>
         <div class="brenson-video-feat__body">
           <h3 class="brenson-video-feat__titulo">{{ c.cliente.value | default: c.titulo.value }}</h3>
@@ -74,7 +74,7 @@
           {%- if c.resumen.value != blank -%}<p class="brenson-video-feat__texto">{{ c.resumen.value }}</p>{%- endif -%}
         </div>
       </div>
-    </li>
+    </div>
   {%- endfor -%}
 {%- endcapture -%}
 {%- if slides != blank -%}
@@ -87,7 +87,7 @@
     </header>
 
     <div class="brenson-video-feat__carousel" data-video-carousel>
-      <ul class="brenson-video-feat__track" data-video-track role="list">{{ slides }}</ul>
+      <div class="brenson-video-feat__track" data-video-track>{{ slides }}</div>
       {%- if n > 1 -%}
         <div class="brenson-video-feat__nav">
           <button type="button" class="brenson-video-feat__arrow" data-video-prev aria-label="Video anterior">
@@ -119,6 +119,16 @@
         v.addEventListener('play', function () { pauseAllExcept(v); });
       });
 
+      // Las portadas se piden cuando el carrusel se acerca a la vista, no al cargar la página. Va antes
+      // del return de un solo slide: posters/activeIndex son declaraciones de función (hoisting).
+      var io = new IntersectionObserver(function (entries) {
+        if (!entries.some(function (e) { return e.isIntersecting; })) return;
+        io.disconnect();
+        visible = true;
+        posters(activeIndex());
+      }, { rootMargin: '300px 0px' });
+      io.observe(root);
+
       if (slides.length < 2) return;
       var prev = root.querySelector('[data-video-prev]');
       var next = root.querySelector('[data-video-next]');
@@ -139,8 +149,17 @@
         var i = Math.round(scrollLeft / track.clientWidth);
         return Math.max(0, Math.min(slides.length - 1, i));
       }
+      var visible = false;
+      function posters(i) {
+        if (!visible) return;
+        [i - 1, i, i + 1].forEach(function (k) {
+          var v = slides[(k + slides.length) % slides.length].querySelector('video[data-poster]');
+          if (v) { v.poster = v.dataset.poster; v.removeAttribute('data-poster'); }
+        });
+      }
       function paint() {
         var i = activeIndex();
+        posters(i);
         dots.forEach(function (d, di) { d.setAttribute('aria-selected', String(di === i)); });
       }
       function goTo(i) {
@@ -177,8 +196,10 @@
   .brenson-video-feat__arrow { width: 4rem; height: 4rem; border-radius: 50%; border: 1px solid var(--brenson-gris-borde); background: #fff; color: var(--brenson-carbon); display: grid; place-items: center; cursor: pointer; }
   .brenson-video-feat__arrow:hover { background: var(--brenson-gris-claro); }
   .brenson-video-feat__dots { display: flex; align-items: center; gap: 0.64rem; }
-  .brenson-video-feat__dot { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 0; background: var(--brenson-gris-borde); cursor: pointer; padding: 0; }
-  .brenson-video-feat__dot[aria-selected="true"] { background: var(--brenson-rojo); }
+  /* Área táctil de 24px (WCAG 2.5.8) con el mismo punto visual de 8px dibujado en ::before. */
+  .brenson-video-feat__dot { position: relative; width: 2.4rem; height: 2.4rem; border: 0; background: transparent; cursor: pointer; padding: 0; }
+  .brenson-video-feat__dot::before { content: ""; position: absolute; inset: 0; margin: auto; width: 0.8rem; height: 0.8rem; border-radius: 50%; background: var(--brenson-gris-borde); }
+  .brenson-video-feat__dot[aria-selected="true"]::before { background: var(--brenson-rojo); }
 </style>
 {%- endif -%}
 {%- endunless -%}

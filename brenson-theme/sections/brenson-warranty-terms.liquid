@@ -58,7 +58,7 @@
             <h3>¿Necesitas soporte o un repuesto?</h3>
           </div>
           <p class="brenson-muted" style="font-size: var(--brenson-text-sm)">Nuestro equipo técnico en Colombia te contacta en menos de 2 horas hábiles.</p>
-          {%- form 'contact', id: 'BrensonSoporteForm', class: 'brenson-form', data-brenson-lead-form: '', data-endpoint: settings.brenson_services_url -%}
+          {%- form 'contact', id: 'BrensonSoporteForm', class: 'brenson-form', data-brenson-lead-form: '', data-nocaptcha: 'true', data-endpoint: settings.brenson_services_url -%}
             {%- if form.posted_successfully? -%}<p class="brenson-form__success" role="status">Recibimos tu solicitud. Un asesor te contactará pronto.</p>{%- endif -%}
             <input type="hidden" name="contact[tipo]" data-name="tipo" value="soporte">
             <input type="hidden" name="contact[fuente]" data-name="fuente" value="garantia">

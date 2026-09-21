@@ -31,9 +31,6 @@
     if (d.nit && d.dv) d.nit_completo = d.nit + '-' + d.dv;
     d.tipo_cliente = 'empresa';
     d.ts = new Date().toISOString();
-    // Token de Turnstile: lo inyecta el snippet brenson-turnstile en [data-turnstile-slot].
-    // /b2b/request lo exige cuando TURNSTILE_SECRET está configurado en el worker.
-    if (window.brensonTurnstile) d.turnstile = window.brensonTurnstile(root);
     return d;
   }
 
@@ -77,6 +74,9 @@
       try {
         var body = null;
         if (endpoint) {
+          // /b2b/request exige el token de Turnstile cuando TURNSTILE_SECRET está configurado en el
+          // worker. Se pide aquí, con el botón ya en "Enviando…", porque puede tardar unos segundos.
+          if (window.brensonTurnstileToken) data.turnstile = await window.brensonTurnstileToken(form);
           // Sin timeout, un worker que no responde deja el botón en "Enviando…" para siempre.
           var abort = new AbortController();
           var reloj = setTimeout(function () { abort.abort(); }, 20000);
