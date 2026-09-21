@@ -121,7 +121,9 @@ Código listo y con tests pasando (`brenson-b2b-functions/extensions/tier-discou
 
 Desplegada como `brenson-admin-scripts-9`, con 8 pruebas unitarias y una ejecución real del `.wasm` (12 % aplicado a la línea que cumple el mínimo).
 
-**Lo que falta** es crear el descuento automático: — se puede hacer por Admin API (`discountAutomaticAppCreate`, usando el `functionId` que expone `shopifyFunctions` en la Admin GraphQL API una vez la app esté instalada), sin pasar por la UI de Configuración → Descuentos.
+**Descuento automático creado el 21-sep** con `scripts/sync-tier-discount-config.mjs`: "Descuento corporativo por tier" (`gid://shopify/DiscountAutomaticNode/1501751541835`), **ACTIVE**, clase PRODUCT, no se combina con otros descuentos de producto ni de pedido (sí con envío). La configuración tiene los 3 tiers con 8/12/18 %, **que siguen siendo valores de simulación** hasta que Brenson confirme los reales; después de cambiarlos en los metaobjects hay que volver a correr el script (es idempotente: actualiza, no duplica).
+
+**Pendiente**: probarlo en un checkout real con un cliente de prueba aprobado y con tier asignado (Fase 3 del plan).
 
 ---
 

@@ -39,8 +39,12 @@ const fn = shopifyFunctions.nodes.find((n) => n.title?.includes('tier') || n.tit
 if (!fn) { console.error('✗ La Function no aparece en la tienda. ¿Se desplegó la app (shopify app deploy)?', shopifyFunctions.nodes); process.exit(1); }
 console.log(`Function: ${fn.title} (${fn.id}, ${fn.apiType})`);
 
-const { automaticDiscountNodes } = await gql(`{ automaticDiscountNodes(first: 50) { nodes { id automaticDiscount { __typename ... on DiscountAutomaticApp { title status appDiscountType { functionId } } } } } }`);
-const existing = automaticDiscountNodes.nodes.find((n) => n.automaticDiscount.__typename === 'DiscountAutomaticApp' && n.automaticDiscount.appDiscountType?.functionId === fn.id.split('/').pop());
+// discountNodes y no automaticDiscountNodes: este último no lista los descuentos de app creados con
+// discountClasses (API de descuentos nueva) y el script crearía un duplicado en cada corrida.
+const { discountNodes } = await gql(`{ discountNodes(first: 100) { nodes { id discount { __typename ... on DiscountAutomaticApp { title status appDiscountType { functionId } } } } } }`);
+const existing = discountNodes.nodes
+  .map((n) => ({ id: n.id, automaticDiscount: n.discount }))
+  .find((n) => n.automaticDiscount.__typename === 'DiscountAutomaticApp' && n.automaticDiscount.appDiscountType?.functionId === fn.id.split('/').pop());
 if (dryRun()) { console.log(`(dry-run) ${existing ? `actualizaría ${existing.id}` : 'crearía el descuento'}`); process.exit(0); }
 
 const metafield = { namespace: '$app:brenson', key: 'config', type: 'json', value: JSON.stringify(config) };

@@ -23,7 +23,7 @@ Para el detalle técnico del roadmap de 16 semanas ver `PLAN_DE_TRABAJO_BRENSON.
 | Theme Check | ✅ 0 errores | 105 warnings preexistentes, aceptados |
 | Backend `brenson-services` | ✅ Desplegado 17-sep | `https://brenson-services.brenson.workers.dev` — modo `staging`, proveedores `mock`/`console`/`html`/`local` |
 | Almacenamiento R2 (documentos B2B) | ❌ Pausado | Requiere habilitar R2 en Cloudflare (pide tarjeta); Luis lo retoma cuando Brenson la tenga a mano |
-| Function de descuento B2B (`brenson-b2b-functions`) | ❌ No desplegada (confirmado 19-sep) | `automaticDiscountNodes` = 0; `shopify app deploy` se cuelga en el build de la función. Ver `FLUJO_COTIZACION_A_PEDIDO.md` §5 |
+| Function de descuento B2B (`brenson-b2b-functions`) | ✅ Desplegada y activa (21-sep) | `brenson-admin-scripts-9` + descuento automático "Descuento corporativo por tier" ACTIVE. Falta la prueba en un checkout real. Ver `FLUJO_COTIZACION_A_PEDIDO.md` §5 |
 | Search & Discovery (facetas) | ✅ Confirmado funcionando | Verificado con captura real: Categoría, Uso, Autonomía/Velocidad/Carga por tramo, Financiable, Requiere licencia |
 | Webhooks Shopify → GHL | ❌ Ninguno configurado | 0 `webhookSubscriptions` en la tienda — no hay integración de CRM activa todavía |
 | GoHighLevel | ❓ Sin confirmar si existe | Ver decisión J1 pendiente |
