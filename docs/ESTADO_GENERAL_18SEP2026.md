@@ -109,7 +109,7 @@ Prueba automatizada con un cliente de prueba (`qa.fase3.…@example.com`), 4 × 
 
 **Regla operativa nueva**: un producto solo tiene precio corporativo (en la cotización y en el checkout) si tiene **"Disponible para empresas" = true**. Al agregar un producto al catálogo B2B, hay que marcar ese campo.
 
-**Datos de prueba creados hoy** (borrar antes del lanzamiento, junto con los del 18-sep): cliente `gid://shopify/Customer/9917535223883`, cotizaciones COT-2026-0010 a 0012, borradores #D2 (precio incorrecto, del bug) y #D3, y las 8 unidades de `brenson_unidad`.
+**Limpieza (21-sep, autorizada por Luis)**: se borraron el cliente QA, las 12 cotizaciones (COT-2026-0001 a 0012), los borradores #D1 a #D3 y las 8 unidades de prueba. Verificado: 0 restantes. El #D1 del 19-sep, que se había dado por probado, también estaba a precio público ($44,8 M): el bug de `originalUnitPrice` venía desde el principio. **Pendiente 2j resuelto** con esta limpieza. **Ojo**: el consecutivo en KV (`quote-seq:2026`) sigue en 12, así que la próxima cotización será COT-2026-0013. Si se quiere arrancar en 0001 al lanzar, hay que borrar esa clave de KV.
 
 **Falta de la Fase 3**: probar el portal desde el navegador con sesión real (cotizador y botón "Aceptar") y la subida a R2 cuando esté habilitado.
 
