@@ -82,7 +82,7 @@ Ejecutada en parte el 21-sep; los resultados están en `docs/QA_MATRIZ.md`, secc
    - **Medir en pagespeed.web.dev**, no solo con Lighthouse local: en la laptop el TBT varía mucho entre corridas y la vista previa agrega scripts que no existen con el tema publicado. La API gratuita de PageSpeed agotó su cuota el 21-sep.
 2. **Contraste AA**: 30 a 39 elementos por página no pasan, sobre todo texto blanco sobre el verde `#29a800` (~3,2:1; AA pide 4,5:1). **Necesita decisión de Brenson**: oscurecer el verde de los botones (existe `#1f7a00`, el hover) o usar texto oscuro. Después, aplicarlo en `brenson-tokens.css`.
 3. **Facetas (C-01 🟡)**: en `/collections/todos` solo se ven Categoría y Precio. Revisar en la app Search & Discovery que Uso, Autonomía, Velocidad, Carga, Financiable y Licencia sigan activos.
-4. Detalles menores: `/favicon.ico` da 404 (falta el logo de Brenson); el alt de la imagen de fondo del hero dice "Barranquilla" (la sede es Cali; editar en Contenido → Archivos); `heading-order` en la ficha (un `h4` fuera de orden).
+4. Detalles menores: ~~favicon~~ resuelto el 21-sep (símbolo del logo en verde de marca, `shopify://shop_images/brenson-favicon.png`; subido con `scripts/upload-local-image.mjs`); el alt de la imagen de fondo del hero dice "Barranquilla" (la sede es Cali; editar en Contenido → Archivos); `heading-order` en la ficha (un `h4` fuera de orden).
 
 **Pendiente que requiere a una persona:**
 - **L-02**: enviar un lead desde un navegador normal en `/pages/contacto` (vista previa) y confirmar el mensaje de éxito. Chrome automatizado no recibe token de Turnstile, así que solo se puede cerrar a mano.

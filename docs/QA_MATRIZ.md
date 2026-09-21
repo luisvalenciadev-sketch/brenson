@@ -29,7 +29,7 @@ Primer valor: antes de las correcciones del 21-sep. **El TBT y la nota de rendim
 
 **Contraste**: 30 a 39 elementos por página no pasan AA, sobre todo texto blanco sobre el verde de marca `#29a800` (ratio ~3,2:1; AA pide 4,5:1 en texto normal). Es una decisión de marca: oscurecer el verde de los botones (p. ej. `#1f7a00`, ya existe como hover) o usar texto oscuro. **Pendiente de decidir con Brenson.**
 
-**Otros**: `/favicon.ico` responde 404 (falta el logo, pendiente de Brenson); el alt de la imagen de fondo del hero dice "Barranquilla" (la sede es Cali), revisar en Contenido → Archivos.
+**Otros**: favicon ✅ resuelto el 21-sep (símbolo del logo de Brenson en verde, en ambos layouts); el alt de la imagen de fondo del hero dice "Barranquilla" (la sede es Cali), revisar en Contenido → Archivos.
 
 
 ## B2C
