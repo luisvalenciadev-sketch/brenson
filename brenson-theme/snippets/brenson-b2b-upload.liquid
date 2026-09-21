@@ -4,8 +4,11 @@
   Modo simulación (sin URL): muestra éxito local (S10/S16).
   El envío lo maneja JS (data-upload-submit es button type="button"), por eso siempre es un <div>,
   tanto suelto (paso 2 post-registro) como anidado dentro de otro <form> (parámetro inline).
+  El worker exige siempre un token firmado para el customer_id: sin sesión lo inyecta JS con la
+  respuesta de /b2b/request; con sesión sale del metafield brenson_b2b.upload_token, que Liquid
+  solo le muestra al propio cliente (mismo patrón que accept_token en cotizaciones).
 {%- endcomment -%}
-<div class="brenson-field brenson-upload" data-brenson-b2b-upload data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" style="padding: var(--brenson-space-4); border: 1px dashed var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); background: var(--brenson-gris-claro)">
+<div class="brenson-field brenson-upload" data-brenson-b2b-upload data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" data-upload-token="{{ customer.metafields.brenson_b2b.upload_token.value }}" style="padding: var(--brenson-space-4); border: 1px dashed var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); background: var(--brenson-gris-claro)">
   <label for="b2b-doc" style="font-weight:600">Cámara de comercio o RUT (PDF o imagen, máx. 5 MB)</label>
   <div style="display:flex; gap:1.2rem; align-items:center; flex-wrap:wrap; margin-top:0.8rem">
     <select data-upload-type aria-label="Tipo de documento" style="max-width: 22.4rem">

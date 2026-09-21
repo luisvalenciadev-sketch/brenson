@@ -87,17 +87,28 @@ async function maxQuoteNumberEnShopify(env: Env, year: number): Promise<number> 
   }
 }
 
+// Paleta del manual de marca (mismos valores que brenson-theme/assets/brenson-tokens.css).
+const BRAND = { verde: '#29a800', carbon: '#1e1e1e', font: "Ubuntu,'Helvetica Neue',Arial,sans-serif" };
+const BRAND_FONT = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap">';
+
+/**
+ * El sello "Certificado Brenson" es una promesa operativa (decisión B14, riesgo R-D3): solo sale si el
+ * proceso de inspección está aprobado (CERTIFICACION_ACTIVA=true) Y el producto está marcado
+ * explícitamente como certificado. Un metafield ausente ya no basta para mostrarlo.
+ */
+function certificacionActiva(env: Env) { return env.CERTIFICACION_ACTIVA === 'true'; }
+
 export function quoteHtml(q: Quote, env: Env): string {
   const rows = q.items.map((l) => `<tr><td>${l.cantidad}</td><td>${esc(l.title)}<br><small>${esc(l.variant)}${l.sku ? ' · ' + esc(l.sku) : ''}</small></td><td class="r">${fmt(l.precio_publico)}</td><td class="r">${l.descuento_pct} %</td><td class="r">${fmt(l.precio_unitario)}</td><td class="r"><b>${fmt(l.subtotal)}</b></td></tr>`).join('');
   const vence = new Date(Date.parse(q.creada_en) + q.validez_dias * 864e5).toLocaleDateString('es-CO');
   const mock = env.ENVIRONMENT !== 'production' ? '<p class="mock">DOCUMENTO DE PRUEBA · brenson-services en modo simulación</p>' : '';
-  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><title>${q.numero} · Brenson Empresas</title>
-<style>body{font-family:Montserrat,Arial,sans-serif;color:#050709;padding:40px;max-width:900px;margin:auto}h1{margin:0;font-size:22px}.head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #050709;padding-bottom:16px;margin-bottom:24px}.logo{font-weight:800;font-size:24px;letter-spacing:-.02em}.logo span{color:#ee0000}table{width:100%;border-collapse:collapse;margin:16px 0}th,td{padding:10px 8px;border-bottom:1px solid #e3e5e8;font-size:13px;vertical-align:top}th{text-align:left;font-size:11px;text-transform:uppercase;color:#6b7280;letter-spacing:.06em}.r{text-align:right}.tot{font-size:26px;font-weight:800}.box{background:#f4f4f4;border-radius:8px;padding:16px;margin-top:16px;font-size:13px}.mock{background:#fef3c7;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700}small{color:#6b7280}.green{color:#1f8a4c}</style></head><body>
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8">${BRAND_FONT}<title>${q.numero} · Brenson Empresas</title>
+<style>body{font-family:${BRAND.font};color:${BRAND.carbon};padding:40px;max-width:900px;margin:auto}h1{margin:0;font-size:22px}.head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid ${BRAND.verde};padding-bottom:16px;margin-bottom:24px}.logo{font-weight:800;font-size:24px;letter-spacing:-.02em}.logo span{color:${BRAND.verde}}table{width:100%;border-collapse:collapse;margin:16px 0}th,td{padding:10px 8px;border-bottom:1px solid #e3e5e8;font-size:13px;vertical-align:top}th{text-align:left;font-size:11px;text-transform:uppercase;color:#6b7280;letter-spacing:.06em}.r{text-align:right}.tot{font-size:26px;font-weight:800}.box{background:#f4f4f4;border-radius:8px;padding:16px;margin-top:16px;font-size:13px}.mock{background:#fef3c7;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700}small{color:#6b7280}.green{color:#1f8a4c}</style></head><body>
 ${mock}<div class="head"><div><div class="logo">BRENSON<span>.</span> Empresas</div><small>División corporativa y flotas · Colombia</small></div><div style="text-align:right"><h1>Cotización ${q.numero}</h1><small>Emitida ${new Date(q.creada_en).toLocaleDateString('es-CO')} · Válida hasta ${vence}</small></div></div>
 <p><b>Cliente:</b> ${esc(q.empresa)} · ${esc(q.email)}<br><b>Tier:</b> ${esc(q.tier)} (${q.descuento_pct} % de descuento corporativo)</p>
 <table><thead><tr><th>Cant.</th><th>Vehículo</th><th class="r">Precio público</th><th class="r">Dto.</th><th class="r">Precio corporativo</th><th class="r">Subtotal</th></tr></thead><tbody>${rows}</tbody></table>
 <div style="text-align:right"><div>Subtotal precio público ${fmt(q.subtotal_publico)}</div><div class="green">Descuento corporativo − ${fmt(q.descuento)}</div><div class="tot">Total ${fmt(q.total)}</div><small>${q.unidades} unidades · IVA incluido</small></div>
-<div class="box"><b>Observaciones:</b> ${esc(q.observaciones || '—')}<br><br><b>Modalidades de pago:</b> transferencia / PSE · crédito 30/60 días (sujeto a aprobación) · leasing con aliado · tarjeta en línea.<br><b>Garantía:</b> según ficha de cada modelo, con Certificación Brenson de 12 puntos. <br><b>Condiciones:</b> precios sujetos a disponibilidad y a confirmación del asesor. Esta cotización no constituye orden de compra. [BORRADOR: condiciones legales pendientes]</div>
+<div class="box"><b>Observaciones:</b> ${esc(q.observaciones || '—')}<br><br><b>Modalidades de pago:</b> transferencia / PSE · crédito 30/60 días (sujeto a aprobación) · leasing con aliado · tarjeta en línea.<br><b>Garantía:</b> según ficha de cada modelo${certificacionActiva(env) ? ', con Certificación Brenson de 12 puntos' : ''}. <br><b>Condiciones:</b> precios sujetos a disponibilidad y a confirmación del asesor. Esta cotización no constituye orden de compra. [BORRADOR: condiciones legales pendientes]</div>
 </body></html>`;
 }
 
@@ -108,8 +119,8 @@ export async function specSheetHtml(env: Env, handle: string): Promise<string | 
   const p = data.productByHandle; if (!p) return null;
   const mf = Object.fromEntries(p.metafields.nodes.map((m) => [m.key, m.value]));
   const row = (l: string, v?: string, u = '') => (v ? `<tr><td>${l}</td><td class="r"><b>${esc(v)}${u}</b></td></tr>` : '');
-  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><title>${esc(p.title)} · Ficha técnica</title><style>body{font-family:Montserrat,Arial,sans-serif;color:#050709;padding:40px;max-width:800px;margin:auto}h1{margin:0}img{max-width:100%;border-radius:12px}table{width:100%;border-collapse:collapse;margin:12px 0 24px}td{padding:8px;border-bottom:1px solid #e3e5e8;font-size:13px}.r{text-align:right}h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;margin:24px 0 0}.seal{display:inline-block;background:#e6f4ec;color:#1f8a4c;padding:6px 12px;border-radius:999px;font-weight:700;font-size:12px}</style></head><body>
-<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:800;font-size:22px">BRENSON<span style="color:#ee0000">.</span></div>${mf.certificado !== 'false' ? '<span class="seal">Certificado Brenson · 12 puntos de inspección</span>' : ''}</div>
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8">${BRAND_FONT}<title>${esc(p.title)} · Ficha técnica</title><style>body{font-family:${BRAND.font};color:${BRAND.carbon};padding:40px;max-width:800px;margin:auto}h1{margin:0}img{max-width:100%;border-radius:12px}table{width:100%;border-collapse:collapse;margin:12px 0 24px}td{padding:8px;border-bottom:1px solid #e3e5e8;font-size:13px}.r{text-align:right}h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;margin:24px 0 0}.seal{display:inline-block;background:#e6f4ec;color:#1f8a4c;padding:6px 12px;border-radius:999px;font-weight:700;font-size:12px}</style></head><body>
+<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:800;font-size:22px">BRENSON<span style="color:${BRAND.verde}">.</span></div>${certificacionActiva(env) && mf.certificado === 'true' ? '<span class="seal">Certificado Brenson · 12 puntos de inspección</span>' : ''}</div>
 <h1>${esc(p.title)}</h1><p>${esc(mf.descripcion_corta || '')}</p>${p.featuredImage ? `<img src="${p.featuredImage.url}&width=800" alt="">` : ''}
 <h2>Rendimiento</h2><table>${row('Autonomía', mf.autonomia_km, ' km')}${row('Velocidad máxima', mf.velocidad_max_kmh, ' km/h')}${row('Potencia del motor', mf.potencia_motor_w, ' W')}${row('Pasajeros', mf.pasajeros)}</table>
 <h2>Batería</h2><table>${row('Tipo', mf.bateria_tipo)}${row('Capacidad', mf.bateria_capacidad)}${row('Tiempo de carga', mf.tiempo_carga_h, ' h')}${row('Garantía batería', mf.garantia_bateria_meses, ' meses')}</table>

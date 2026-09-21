@@ -25,9 +25,14 @@ import { verifyTurnstile, rateLimit, jsonError, scoreFor, signPath, verifySigned
 
 const app = new Hono<{ Bindings: Env }>();
 
+// Vigencia del token de subida de documento B2B: cubre la validación (24 h hábiles) con holgura para
+// que una empresa que vuelve días después a la pantalla "pendiente" todavía pueda adjuntar.
+const UPLOAD_TOKEN_TTL = 60 * 60 * 24 * 30;
+
 app.use('*', async (c, next) => {
   const origins = (c.env.ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
-  return cors({ origin: (o) => (origins.includes(o) ? o : origins[0]), allowMethods: ['GET', 'POST', 'OPTIONS'], allowHeaders: ['Content-Type'] })(c, next);
+  // Denegar por defecto: un origen fuera de la lista no recibe Access-Control-Allow-Origin.
+  return cors({ origin: (o) => (origins.includes(o) ? o : null), allowMethods: ['GET', 'POST', 'OPTIONS'], allowHeaders: ['Content-Type'] })(c, next);
 });
 
 app.get('/health', (c) => c.json({ ok: true, env: c.env.ENVIRONMENT, providers: { crm: c.env.CRM_PROVIDER, mail: c.env.MAIL_PROVIDER, pdf: c.env.PDF_PROVIDER, storage: c.env.STORAGE_PROVIDER, financing: c.env.FINANCING_PROVIDER } }));
@@ -94,6 +99,7 @@ app.post('/b2b/request', async (c) => {
 
   let customerId = '';
   let creado = false;
+  let uploadToken = '';
   if (c.env.SHOPIFY_ADMIN_TOKEN) {
     // Todo el bloque de Admin API va en un try: este endpoint es el ÚNICO camino de alta corporativa,
     // así que un token vencido o un fallo de Shopify no puede salir como 500 crudo. La solicitud se
@@ -115,7 +121,11 @@ app.post('/b2b/request', async (c) => {
         creado = true;
       }
       await updateCustomerNoteAndTags(c.env, customerId, note, ['b2b-pendiente'], faltantes);
+      uploadToken = await signToken(c.env, `upload:${customerId.split('/').pop()}`, UPLOAD_TOKEN_TTL);
       await setCustomerMetafields(c.env, customerId, [
+        // El tema lo renderiza solo para el propio cliente con sesión (pantalla "pendiente"), igual que
+        // accept_token en cotizaciones: así la subida posterior también va firmada sin exponer el token.
+        { key: 'upload_token', value: uploadToken, type: 'single_line_text_field' },
         { key: 'tipo_cliente', value: 'empresa', type: 'single_line_text_field' },
         { key: 'estado_b2b', value: 'pendiente', type: 'single_line_text_field' },
         { key: 'nit', value: nit, type: 'single_line_text_field' },
@@ -139,8 +149,8 @@ app.post('/b2b/request', async (c) => {
   await crm.upsertLead({ tipo: 'b2b_solicitud', nombre: `${body.nombre || ''} ${body.apellido || ''}`.trim(), email, whatsapp: String(body.whatsapp || '').replace(/\D/g, ''), empresa: body.razon_social, nit, sector: body.sector, flota: body.flota_estimada, score: 40, ts: new Date().toISOString() });
   await mail.send({ to: c.env.ADVISOR_EMAIL, subject: `Solicitud B2B: ${body.razon_social} (NIT ${nit})`, html: `<p>Nueva solicitud de acceso corporativo. Cuenta ${creado ? 'creada' : 'existente, convertida'}.</p><pre>${escapeHtml(note)}</pre><p>Aprobar en Shopify Admin: cambiar el tag a <b>cliente-corporativo</b>, poner <b>estado_b2b = aprobado</b> y asignar tier y asesor.</p>` });
 
-  // Token de 1 hora para que el paso 2 (documento) quede atado a este cliente sin sesión iniciada.
-  return c.json({ ok: true, customer_id: numericId, email, upload_token: await signToken(c.env, `upload:${numericId}`) });
+  // Mismo token que quedó en el metafield: el paso 2 (documento) queda atado a este cliente sin sesión.
+  return c.json({ ok: true, customer_id: numericId, email, upload_token: uploadToken || await signToken(c.env, `upload:${numericId}`, UPLOAD_TOKEN_TTL) });
 });
 
 /* ---------------- Upload documento B2B ---------------- */
@@ -152,9 +162,10 @@ app.post('/upload', async (c) => {
   const email = String(form.get('email') || '');
   const customerId = String(form.get('customer_id') || '');
   const token = form.get('token');
-  // El paso 2 sin sesión (alta corporativa recién creada) solo se acepta con el token que devolvió
-  // /b2b/request, para que un customer_id ajeno no sirva para sobrescribir el documento de otro.
-  if (token && !(await verifyToken(c.env, `upload:${customerId}`, String(token)))) return jsonError(c, 403, 'Token de subida inválido o vencido');
+  // Siempre con token: el que devolvió /b2b/request (paso 2 sin sesión) o el que el tema toma del
+  // metafield brenson_b2b.upload_token (pantalla "pendiente" con sesión). Sin esto, un customer_id
+  // ajeno adivinado bastaba para sobrescribir el documento de otra empresa.
+  if (!customerId || !(await verifyToken(c.env, `upload:${customerId}`, token ? String(token) : undefined))) return jsonError(c, 403, 'Enlace de subida inválido o vencido. Escríbanos por WhatsApp y le ayudamos a adjuntar el documento.');
   if (!file || typeof file === 'string') return jsonError(c, 422, 'Archivo requerido');
   const max = Number(c.env.UPLOAD_MAX_BYTES || 5242880);
   if (file.size > max) return jsonError(c, 413, 'Archivo supera 5 MB');

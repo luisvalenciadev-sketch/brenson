@@ -27,7 +27,17 @@ async function hmacHex(secret: string, data: string) {
   const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(data));
   return Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
-function signingSecret(env: Env) { return env.QUOTE_SIGNING_SECRET || 'dev-only-secret-change-me'; }
+/**
+ * Sin respaldo en producción: una clave por defecto escrita aquí la conoce cualquiera con acceso al
+ * repo y le permitiría forjar enlaces a PDFs, documentos B2B y tokens de aceptación. Si falta el
+ * secreto, mejor que el endpoint falle (500 visible en `wrangler tail`) a que firme con una clave pública.
+ * Solo el entorno `development` (wrangler dev local) puede usar la clave de prueba.
+ */
+function signingSecret(env: Env) {
+  if (env.QUOTE_SIGNING_SECRET) return env.QUOTE_SIGNING_SECRET;
+  if (env.ENVIRONMENT === 'development') return 'dev-only-secret-change-me';
+  throw new Error('QUOTE_SIGNING_SECRET no configurado (wrangler secret put QUOTE_SIGNING_SECRET)');
+}
 
 /** Devuelve `?exp=…&sig=…` para el recurso `path` (ej. "/quotes/COT-2026-0001"), válido `ttlSeconds`. */
 export async function signPath(env: Env, path: string, ttlSeconds = 60 * 60 * 24 * 30) {

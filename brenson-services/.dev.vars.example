@@ -8,4 +8,7 @@ PDFMONKEY_API_KEY=
 PDFMONKEY_TEMPLATE_QUOTE=
 PDFMONKEY_TEMPLATE_SPEC=
 TURNSTILE_SECRET=
+# Obligatorio fuera de desarrollo: sin él, los endpoints que firman enlaces fallan en vez de usar
+# una clave por defecto. En local, ENVIRONMENT=development habilita la clave de prueba.
 QUOTE_SIGNING_SECRET=
+ENVIRONMENT=development

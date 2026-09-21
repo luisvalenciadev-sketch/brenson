@@ -96,7 +96,14 @@
             </fieldset>
 
             {%- if customer -%}
-              {%- render 'brenson-b2b-upload', inline: true -%}
+              {%- comment -%}
+                Con sesión, el documento se adjunta tras enviar: la página recarga en la pantalla
+                "pendiente", que ya trae el token de subida. Antes del envío todavía no existe.
+              {%- endcomment -%}
+              <div class="brenson-field" style="padding: var(--brenson-space-4); border: 1px dashed var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); background: var(--brenson-gris-claro)">
+                <strong style="font-size: var(--brenson-text-sm)">Cámara de comercio o RUT</strong>
+                <p class="brenson-field__hint">Lo adjunta en el siguiente paso, apenas envíe esta solicitud. PDF o imagen, máximo 5 MB.</p>
+              </div>
             {%- else -%}
               <div class="brenson-field" data-b2b-doc-placeholder style="padding: var(--brenson-space-4); border: 1px dashed var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); background: var(--brenson-gris-claro)">
                 <strong style="font-size: var(--brenson-text-sm)">Cámara de comercio o RUT</strong>

@@ -7,20 +7,24 @@ Este documento nació como una decisión de negocio pendiente; ya se decidió (O
 
 ---
 
-## 1. Lo que existe hoy (verificado contra la tienda real)
+## 1. Punto de partida (18-sep) y estado actual (21-sep)
+
+> **Histórico.** Esta tabla describe lo que se encontró el 18-sep, antes de construir la Opción A. Las
+> dos filas tachadas ya no son ciertas: el paso cotización → pedido existe y está probado (§4). La
+> auditoría del 18-sep (`AUDITORIA_BRENSON_ECOSISTEMA_18SEP2026.md` §13) lo detectó como "documentación
+> desfasada"; esta nota lo corrige.
 
 ```
-Empresa aprobada → entra al portal → arma cotización → PDF → …y ahí se acaba
+18-sep: Empresa aprobada → portal → cotización → PDF → …y ahí se acababa
+21-sep: … → PDF → "Aceptar cotización" → pedido borrador con precio congelado → cobro nativo de Shopify
 ```
 
-| Hecho | Cómo se verificó |
+| Hecho (18-sep) | Estado al 21-sep |
 |---|---|
-| **No existe ningún código que convierta una cotización en pedido** | Búsqueda de `draftOrder`, `draft_order`, `orderCreate` en `brenson-services/`, `brenson-theme/sections/` y `brenson-b2b-functions/`: **cero referencias** |
-| **"Pedidos" del menú no lleva a nada propio** | `brenson-b2b-header.liquid:25` apunta a `routes.account_url`, el portal alojado de Shopify. Si nunca se crea un pedido, siempre estará vacío |
-| **La Función de descuento por tier NO está desplegada** | `automaticDiscountNodes` en la tienda devuelve **0**. Si una empresa arma un carrito y paga, **paga precio público**. El 8/12/18 % solo existe dentro del cálculo de la cotización y como número en pantalla |
-| **Una cotización nunca puede llegar a `aceptada`** | El estado se pinta en la tabla y está en los datos de prueba, pero `quote.ts` solo asigna `borrador` y `enviada`. No hay forma de que la empresa diga "la acepto" |
-
-Conclusión: el portal **insinúa** un ciclo comercial completo (pedidos, estado "aceptada", descuento por volumen) que todavía no existe detrás.
+| ~~No existe ningún código que convierta una cotización en pedido~~ | ✅ `POST /quotes/:numero/accept` → `draftOrderCreate` (§4) |
+| "Pedidos" del menú apunta al portal alojado de Shopify (`brenson-b2b-header.liquid:25`) | Sigue igual, y es correcto: el pedido aparece ahí al facturarse el borrador |
+| **La Función de descuento por tier NO está desplegada** (`automaticDiscountNodes` = 0) | ❌ **Sigue sin desplegar** — el build de la función se cuelga (§5). Un carrito B2B paga precio público |
+| ~~Una cotización nunca puede llegar a `aceptada`~~ | ✅ Botón en el dashboard (`brenson-b2b-dashboard.js`) + evento `brenson_quote_accept` |
 
 ---
 

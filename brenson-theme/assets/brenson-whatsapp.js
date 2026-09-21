@@ -1,7 +1,7 @@
 /**
  * brenson-whatsapp.js — Módulo 10
  * - Calcula estado en línea / fuera de horario (hora de Colombia, UTC-5, sin DST).
- * - Emite evento de analytics al hacer clic en cualquier enlace con data-brenson-track="whatsapp_click".
+ * - El evento de analytics de clic (data-brenson-track="whatsapp_click") lo emite brenson-datalayer.liquid.
  * Sin dependencias.
  */
 (function () {
@@ -43,21 +43,7 @@
     });
   }
 
-  function track(e) {
-    var a = e.target.closest('[data-brenson-track="whatsapp_click"]');
-    if (!a) return;
-    var payload = {
-      event: 'brenson_whatsapp_click',
-      source: a.dataset.brensonSource || 'unknown',
-      page_type: document.body.dataset.pageType || (document.querySelector('main') || {}).dataset?.template || '',
-      product: a.dataset.brensonProduct || ''
-    };
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(payload);
-    document.dispatchEvent(new CustomEvent('brenson:track', { detail: payload }));
-  }
-
-  document.addEventListener('click', track, { passive: true });
+  // El evento brenson_whatsapp_click lo emite el listener genérico de snippets/brenson-datalayer.liquid.
   updateStatus();
   setInterval(updateStatus, 60000);
 })();

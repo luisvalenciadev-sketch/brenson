@@ -41,9 +41,18 @@
   assign price_cents = v.price | default: product.price
   assign price = price_cents | divided_by: 100.0
 
-  if product.metafields.brenson.cuota_desde_override.value
-    assign cuota = product.metafields.brenson.cuota_desde_override.value.amount | times: 1.0
-  else
+  comment
+    Override opcional (metafield money). Mismo riesgo que tuvo el total de cotizaciones: la forma en
+    que Liquid resuelve un `money` no está documentada (ver brenson-money-metafield). Se toma `.amount`
+    o el valor directo, y si no da un número positivo se cae al cálculo: nunca una cuota de $0.
+  endcomment
+  assign cuota = 0
+  assign ov = product.metafields.brenson.cuota_desde_override.value
+  if ov != blank
+    assign ov_monto = ov.amount | default: ov
+    assign cuota = ov_monto | times: 1.0
+  endif
+  if cuota <= 0
     assign inicial = price | times: inicial_pct | divided_by: 100.0
     assign principal = price | minus: inicial
     assign i = tasa_pct | divided_by: 100.0

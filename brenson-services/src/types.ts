@@ -29,6 +29,7 @@ export interface Env {
   TURNSTILE_SECRET?: string;
   QUOTE_SIGNING_SECRET?: string;
   QUOTE_VALIDITY_DAYS: string;
+  CERTIFICACION_ACTIVA?: string;
   UPLOAD_MAX_BYTES: string;
   KV: KVNamespace;
   DOCS: R2Bucket;

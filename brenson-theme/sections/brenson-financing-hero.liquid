@@ -31,7 +31,8 @@
       </div>
       {%- if ref -%}
         <div class="brenson-financing-hero__card">
-          <span class="brenson-badge brenson-badge--certificado brenson-badge--sm" style="position:absolute; top: var(--brenson-space-4); left: var(--brenson-space-4); z-index:1;"><svg class="brenson-badge__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Certificado Brenson</span></span>
+          {%- comment -%} Vía el snippet: respeta el interruptor global y el metafield del producto (R-D3). {%- endcomment -%}
+          <div style="position:absolute; top: var(--brenson-space-4); left: var(--brenson-space-4); z-index:1;">{%- render 'brenson-badge', product: ref, type: 'certificado', size: 'sm' -%}</div>
           {%- if ref.featured_image -%}{{ ref.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: ref.title, style: 'width:100%; aspect-ratio:4/3; object-fit:contain; background: var(--brenson-gris-claro); border-radius: var(--brenson-radius-lg);' }}{%- endif -%}
           <div class="brenson-financing-hero__card-foot">
             <div>

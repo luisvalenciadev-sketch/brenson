@@ -49,6 +49,16 @@
     });
     window.dataLayer.push({ event: 'brenson_consent', analytics: !!d.analyticsAllowed, marketing: !!d.marketingAllowed });
   });
+  // Clics declarativos: cualquier elemento con data-brenson-track="x" emite brenson_x (whatsapp_click,
+  // pdf_download, quote_cta, simulator_cta…). Vive aquí, y no en un JS de sección, para que funcione
+  // en todas las páginas aunque la sección que lo cargaba no esté presente.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-brenson-track]');
+    if (!a) return;
+    var p = { event: 'brenson_' + a.dataset.brensonTrack, source: a.dataset.brensonSource || 'unknown', page_type: {{ request.page_type | json }}, product: a.dataset.brensonProduct || '' };
+    window.dataLayer.push(p);
+    document.dispatchEvent(new CustomEvent('brenson:track', { detail: p }));
+  }, { passive: true });
 </script>
 
 {%- if settings.brenson_gtm_id != blank -%}

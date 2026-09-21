@@ -27,6 +27,9 @@ FINANCING_PROVIDER = "mock"   # mock | addi — respuesta de cupo Addi determin�
 ADVISOR_EMAIL = "empresas@brenson.co"
 MAIL_FROM = "Brenson <cotizaciones@brenson.co>"
 QUOTE_VALIDITY_DAYS = "15"
+# Sello "Certificado Brenson" en PDFs: "true" solo cuando el workshop apruebe el checklist (decisión B14).
+# Equivale en el tema a Ajustes → Brenson · Confianza → "Mostrar sello Certificado Brenson".
+CERTIFICACION_ACTIVA = "false"
 UPLOAD_MAX_BYTES = "5242880"
 
 # Secretos esperados (wrangler secret put <NAME>):

@@ -60,6 +60,7 @@
       { "key": "cargo_contacto", "name": "Cargo del contacto", "type": "single_line_text_field" },
       { "key": "documento_url", "name": "Documento (cámara de comercio / RUT)", "type": "url" },
       { "key": "documento_tipo", "name": "Tipo de documento", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"camara_comercio\",\"rut\"]" }] },
+      { "key": "upload_token", "name": "Token de subida (automático, no editar)", "type": "single_line_text_field" },
       { "key": "tier", "name": "Tier B2B", "type": "metaobject_reference", "metaobject": "brenson_tier_b2b" },
       { "key": "asesor", "name": "Asesor asignado", "type": "metaobject_reference", "metaobject": "brenson_asesor" },
       { "key": "estado_b2b", "name": "Estado B2B", "type": "single_line_text_field", "validations": [{ "name": "choices", "value": "[\"pendiente\",\"aprobado\",\"rechazado\",\"suspendido\"]" }] },

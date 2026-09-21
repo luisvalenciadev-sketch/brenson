@@ -25,6 +25,8 @@
         body: JSON.stringify({ customer_id: customerId, token: btn.dataset.quoteToken })
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'brenson_quote_accept', numero: btn.dataset.quoteNumero });
       var row = btn.closest('[data-quote-row]');
       var estadoCell = row && row.querySelector('[data-quote-estado]');
       if (estadoCell) estadoCell.innerHTML = '<span class="brenson-status brenson-status--ok">Aceptada</span>';

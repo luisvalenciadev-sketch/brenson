@@ -169,13 +169,20 @@
           fd.append('file', f); fd.append('tipo', type.value); fd.append('customer_id', box.dataset.customerId || ''); fd.append('email', box.dataset.customerEmail || '');
           if (box.dataset.uploadToken) fd.append('token', box.dataset.uploadToken);
           var res = await fetch(endpoint + '/upload', { method: 'POST', body: fd });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
+          if (!res.ok) {
+            // El worker manda el motivo en español (token vencido, tipo de archivo…) listo para mostrar.
+            var rb = await res.json().catch(function () { return null; });
+            throw new Error((rb && rb.error) || '');
+          }
         } else {
           console.info('[brenson] upload (simulación):', f.name, type.value);
         }
         track('b2b_document_upload', { tipo: type.value });
         ok.hidden = false; err.hidden = true; btn.textContent = 'Adjuntado';
-      } catch (ex) { err.hidden = false; btn.disabled = false; btn.textContent = 'Adjuntar'; }
+      } catch (ex) {
+        err.textContent = (ex && ex.message) || 'No pudimos subir el archivo. Verifique el tamaño (máx. 5 MB) e intente de nuevo.';
+        err.hidden = false; btn.disabled = false; btn.textContent = 'Adjuntar';
+      }
     });
   });
 })();
