@@ -28,7 +28,7 @@ Continúa el proyecto Brenson (e-commerce de vehículos eléctricos en Shopify +
 | 3. Probar el ciclo B2B completo | 🟢 Hecha por API el 21-sep (ver `ESTADO_GENERAL` §3e: 3 fallos críticos corregidos). Faltan la prueba en navegador con sesión real, la de R2 y la limpieza de datos de prueba |
 | 4. CRM (GoHighLevel + webhooks) | ⬜ Bloqueada: confirmar si existe GHL |
 | 5. Contenido de Brenson | ⬜ En paralelo, depende del cliente |
-| 6. QA y performance | ⬜ |
+| 6. QA y performance | 🟡 21-sep: 20 casos ejecutados (ver `QA_MATRIZ.md` "Ejecución 21-sep"). Pendientes: LCP (S-02 ❌, 5-7 s), contraste del verde de marca (decisión con Brenson), casos con sesión B2B, un envío humano de lead y Android físico |
 | 7. Analytics y remarketing | ⬜ |
 | 8. Lanzamiento | ⬜ |
 
