@@ -25,7 +25,7 @@ Continúa el proyecto Brenson (e-commerce de vehículos eléctricos en Shopify +
 |---|---|
 | 1. Seguridad y código | ✅ Completa y desplegada (worker + tema) |
 | 2. Encender integraciones | 🟡 4 de 6 listas; faltan Resend y R2 (bloqueadas por terceros) |
-| 3. Probar el ciclo B2B completo | ⬜ Siguiente |
+| 3. Probar el ciclo B2B completo | 🟢 Hecha por API el 21-sep (ver `ESTADO_GENERAL` §3e: 3 fallos críticos corregidos). Faltan la prueba en navegador con sesión real, la de R2 y la limpieza de datos de prueba |
 | 4. CRM (GoHighLevel + webhooks) | ⬜ Bloqueada: confirmar si existe GHL |
 | 5. Contenido de Brenson | ⬜ En paralelo, depende del cliente |
 | 6. QA y performance | ⬜ |
