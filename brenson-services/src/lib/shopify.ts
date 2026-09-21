@@ -58,15 +58,15 @@ export async function setCustomerMetafields(env: Env, ownerId: string, fields: {
 }
 
 // Precios y datos reales de variantes para recalcular una cotización (R-A3)
-export async function fetchVariants(env: Env, variantIds: string[]): Promise<Record<string, { price: number; title: string; productTitle: string; handle: string; sku: string; tierOverride: Record<string, number> | null; minB2B: number }>> {
+export async function fetchVariants(env: Env, variantIds: string[]): Promise<Record<string, { price: number; title: string; productTitle: string; handle: string; sku: string; tierOverride: Record<string, number> | null; minB2B: number; b2bDisponible: boolean }>> {
   const ids = variantIds.map((v) => (v.startsWith('gid://') ? v : `gid://shopify/ProductVariant/${v}`));
-  const data = await shopifyAdmin<{ nodes: ({ id: string; price: string; title: string; sku: string | null; product: { title: string; handle: string; tier: { value: string } | null; min: { value: string } | null } } | null)[] }>(env,
-    `query($ids: [ID!]!) { nodes(ids: $ids) { ... on ProductVariant { id price title sku product { title handle tier: metafield(namespace: "brenson", key: "b2b_precio_tier") { value } min: metafield(namespace: "brenson", key: "b2b_minimo_unidades") { value } } } } }`, { ids });
+  const data = await shopifyAdmin<{ nodes: ({ id: string; price: string; title: string; sku: string | null; product: { title: string; handle: string; tier: { value: string } | null; min: { value: string } | null; b2b: { value: string } | null } } | null)[] }>(env,
+    `query($ids: [ID!]!) { nodes(ids: $ids) { ... on ProductVariant { id price title sku product { title handle tier: metafield(namespace: "brenson", key: "b2b_precio_tier") { value } min: metafield(namespace: "brenson", key: "b2b_minimo_unidades") { value } b2b: metafield(namespace: "brenson", key: "b2b_disponible") { value } } } } }`, { ids });
   const out: Record<string, any> = {};
   for (const n of data.nodes) {
     if (!n) continue;
     const numeric = n.id.split('/').pop()!;
-    out[numeric] = { price: Math.round(parseFloat(n.price)), title: n.title, productTitle: n.product.title, handle: n.product.handle, sku: n.sku || '', tierOverride: n.product.tier ? JSON.parse(n.product.tier.value) : null, minB2B: n.product.min ? parseInt(n.product.min.value, 10) : 1 };
+    out[numeric] = { price: Math.round(parseFloat(n.price)), title: n.title, productTitle: n.product.title, handle: n.product.handle, sku: n.sku || '', tierOverride: n.product.tier ? JSON.parse(n.product.tier.value) : null, minB2B: n.product.min ? parseInt(n.product.min.value, 10) : 1, b2bDisponible: n.product.b2b?.value === 'true' };
   }
   return out;
 }
@@ -158,13 +158,19 @@ export async function createDraftOrder(env: Env, input: { customerId: string; it
   const lineItems = input.items.map((i) => ({
     variantId: i.variant_id.startsWith('gid://') ? i.variant_id : `gid://shopify/ProductVariant/${i.variant_id}`,
     quantity: i.cantidad,
-    originalUnitPrice: String(i.precio_unitario)
+    // priceOverride, no originalUnitPrice: este último solo aplica a líneas personalizadas y Shopify lo
+    // ignora cuando hay variantId. Con él, el borrador salía a precio público (visto en la prueba E2E del
+    // 21-sep: COT-2026-0010 por $41.216.000 generó #D2 por $44.800.000).
+    priceOverride: { amount: String(i.precio_unitario), currencyCode: 'COP' }
   }));
   const data = await shopifyAdmin<{ draftOrderCreate: { draftOrder: { id: string; name: string; invoiceUrl: string | null } | null; userErrors: { field: string[] | null; message: string }[] } }>(env,
     `mutation($input: DraftOrderInput!) { draftOrderCreate(input: $input) { draftOrder { id name invoiceUrl } userErrors { field message } } }`,
     // Sin `email`: al dar `customerId`, Shopify usa el correo del cliente. No lo tenemos persistido en
     // el metaobject de la cotización (solo viaja en el correo de aviso, no se guarda).
-    { input: { customerId: input.customerId, note: input.note, tags: input.tags, useCustomerDefaultAddress: true, lineItems } });
+    // acceptAutomaticDiscounts: false — el precio ya viene con el descuento del tier congelado. Sin esto,
+    // la Function "Descuento corporativo por tier" se aplicaría otra vez encima y el pedido quedaría
+    // por debajo de lo cotizado.
+    { input: { customerId: input.customerId, note: input.note, tags: input.tags, useCustomerDefaultAddress: true, acceptAutomaticDiscounts: false, lineItems } });
   const { draftOrder, userErrors } = data.draftOrderCreate;
   if (!draftOrder) throw new Error(userErrors.map((e) => e.message).join('; ') || 'draftOrderCreate sin resultado');
   return draftOrder;

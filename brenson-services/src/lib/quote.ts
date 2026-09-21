@@ -19,11 +19,14 @@ export function cuotaMensual(precio: number, inicialPct: number, plazo: number, 
 }
 
 /** Calcula los ítems de una cotización aplicando el % de descuento del tier (o el override por producto). */
-export function computeItems(items: { variant_id: string; cantidad: number; handle?: string; title?: string; variant?: string; sku?: string; precio_publico?: number }[], tierPct: number, tierCode: string | null, variants: Record<string, { price: number; title: string; productTitle: string; handle: string; sku: string; tierOverride: Record<string, number> | null; minB2B: number }> | null): QuoteItem[] {
+export function computeItems(items: { variant_id: string; cantidad: number; handle?: string; title?: string; variant?: string; sku?: string; precio_publico?: number }[], tierPct: number, tierCode: string | null, variants: Record<string, { price: number; title: string; productTitle: string; handle: string; sku: string; tierOverride: Record<string, number> | null; minB2B: number; b2bDisponible: boolean }> | null): QuoteItem[] {
   return items.filter((it) => it.cantidad > 0).map((it) => {
     const v = variants ? variants[String(it.variant_id).split('/').pop()!] : null;
     const price = v ? v.price : Math.round(Number(it.precio_publico || 0));
-    const pct = v && v.tierOverride && tierCode && v.tierOverride[tierCode] != null ? v.tierOverride[tierCode] : tierPct;
+    // Misma regla que la Function del checkout: sin brenson.b2b_disponible = true no hay precio
+    // corporativo. Si la cotización descontara y el checkout no, el cliente vería dos precios distintos.
+    const pct = v && !v.b2bDisponible ? 0
+      : v && v.tierOverride && tierCode && v.tierOverride[tierCode] != null ? v.tierOverride[tierCode] : tierPct;
     const qty = v ? Math.max(it.cantidad, v.minB2B) : it.cantidad;
     const unit = Math.round(price * (1 - pct / 100));
     return { handle: v ? v.handle : (it.handle || ''), title: v ? v.productTitle : (it.title || ''), variant_id: String(it.variant_id), variant: v ? v.title : (it.variant || ''), sku: v ? v.sku : (it.sku || ''), cantidad: qty, precio_publico: price, descuento_pct: pct, precio_unitario: unit, subtotal: unit * qty, subtotal_publico: price * qty };
