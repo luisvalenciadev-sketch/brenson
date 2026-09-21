@@ -21,6 +21,7 @@ import type { Env } from './types';
 import { getProviders } from './providers';
 import { verifyShopifyHmac, shopifyAdmin, findCustomerByEmail, createCustomer, updateCustomerNoteAndTags, setCustomerMetafield, setCustomerMetafields, fetchQuoteByNumero, updateQuoteMetaobject, createDraftOrder } from './lib/shopify';
 import { computeQuote, quoteHtml, specSheetHtml, nextQuoteNumber, fmt } from './lib/quote';
+import { htmlToPdf, pdfResponse } from './lib/pdf';
 import { verifyTurnstile, rateLimit, jsonError, scoreFor, signPath, verifySignedPath, signToken, verifyToken } from './lib/util';
 
 const app = new Hono<{ Bindings: Env }>();
@@ -240,7 +241,9 @@ app.get('/quotes/:id', async (c) => {
   const { pdf } = getProviders(c.env);
   const html = await pdf.get(id);
   if (!html) return c.notFound();
-  return c.html(html);
+  // La cotización no cambia una vez emitida: el PDF se genera una vez y se guarda un año.
+  const bytes = await htmlToPdf(c.env, html, `pdfbin:${id}`, 60 * 60 * 24 * 365);
+  return bytes ? pdfResponse(bytes, `${id}.pdf`) : c.html(html);
 });
 
 /**
@@ -357,8 +360,16 @@ app.get('/docs/*', async (c) => {
 /* ---------------- Ficha técnica PDF ---------------- */
 app.get('/ficha/:handle', async (c) => {
   const handle = c.req.param('handle').replace(/\.pdf$/, '');
+  // Caché de un día: las specs se editan en el Admin y la ficha debe reflejarlas sin intervención.
+  // Se consulta antes de armar el HTML para no gastar la llamada a Shopify en cada descarga.
+  // El "v2" es la versión de la plantilla: al cambiar specSheetHtml se sube, y los PDF viejos caducan solos.
+  const cacheKey = `pdfbin:v2:ficha-${handle}`;
+  const cached = c.env.PDF_PROVIDER === 'browser' && c.env.KV ? await c.env.KV.get(cacheKey, 'arrayBuffer') : null;
+  if (cached) return pdfResponse(cached, `ficha-${handle}.pdf`);
   const html = await specSheetHtml(c.env, handle);
   if (!html) return c.notFound();
+  const bytes = await htmlToPdf(c.env, html, cacheKey, 60 * 60 * 24);
+  if (bytes) return pdfResponse(bytes, `ficha-${handle}.pdf`);
   const { pdf } = getProviders(c.env);
   const url = await pdf.render({ id: `ficha-${handle}`, html, template: c.env.PDFMONKEY_TEMPLATE_SPEC, data: { handle } });
   return url.startsWith('http') ? c.redirect(url) : c.html(html);

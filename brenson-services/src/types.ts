@@ -7,7 +7,7 @@ export interface Env {
   SHOPIFY_WEBHOOK_SECRET?: string;
   CRM_PROVIDER: 'mock' | 'ghl';
   MAIL_PROVIDER: 'console' | 'resend';
-  PDF_PROVIDER: 'html' | 'pdfmonkey';
+  PDF_PROVIDER: 'html' | 'pdfmonkey' | 'browser';
   STORAGE_PROVIDER: 'local' | 'r2';
   FINANCING_PROVIDER: 'mock' | 'addi';
   GHL_WEBHOOK_URL?: string;
@@ -33,6 +33,8 @@ export interface Env {
   UPLOAD_MAX_BYTES: string;
   KV: KVNamespace;
   DOCS: R2Bucket;
+  // Cloudflare Browser Rendering (PDF_PROVIDER = "browser"): convierte el HTML de cotizaciones y fichas en PDF real.
+  BROWSER?: Fetcher;
 }
 
 export interface Lead {

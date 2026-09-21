@@ -13,7 +13,7 @@ SHOPIFY_API_VERSION = "2025-07"
 # Proveedores: mock | real. Ver docs/ESTRATEGIA_SIMULACION.md (S10, S16)
 CRM_PROVIDER = "mock"         # mock | ghl
 MAIL_PROVIDER = "console"     # console | resend
-PDF_PROVIDER = "html"         # html | pdfmonkey
+PDF_PROVIDER = "browser"      # html | pdfmonkey | browser (PDF real con Cloudflare Browser Rendering, respaldo HTML)
 STORAGE_PROVIDER = "local"    # local | r2
 FINANCING_PROVIDER = "mock"   # mock | addi — respuesta de cupo Addi determinística en mock
 
@@ -57,6 +57,10 @@ preview_id = "4b7852d761e74571a968971728059e90"
 # binding = "DOCS"
 # bucket_name = "brenson-b2b-docs"
 # preview_bucket_name = "brenson-b2b-docs-dev"
+
+# Navegador headless para PDF_PROVIDER = "browser" (src/lib/pdf.ts).
+[browser]
+binding = "BROWSER"
 
 [observability]
 enabled = true
