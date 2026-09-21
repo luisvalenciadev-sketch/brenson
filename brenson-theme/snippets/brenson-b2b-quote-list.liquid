@@ -1,0 +1,39 @@
+{%- comment -%}
+  brenson-b2b-quote-list — Lista de cotizaciones del cliente B2B (dashboard e historial del cotizador).
+  Mobile-first: en móvil cada cotización es una tarjeta con los botones a lo ancho; en tablet van
+  en dos columnas y desde 990px se ven como filas de tabla con encabezado. Reemplaza a las
+  <table> anteriores, que en móvil obligaban a desplazarse de lado para ver el estado y las acciones.
+
+  Parámetros:
+    cid          : id del cliente como texto (customer.id | append: '')
+    show_accept  : true para mostrar "Aceptar cotización" en las enviadas (solo en el dashboard)
+{%- endcomment -%}
+<ul class="brenson-b2b-list brenson-b2b-list--quotes" role="list">
+  <li class="brenson-b2b-list__head" aria-hidden="true"><span>Código</span><span>Fecha</span><span>Unidades</span><span>Total</span><span>Estado</span><span></span></li>
+  {%- for q in shop.metaobjects.brenson_cotizacion_b2b.values -%}
+    {%- assign qcid = q.cliente_id.value | default: q.cliente.value.id | append: '' -%}
+    {%- if qcid != cid -%}{%- continue -%}{%- endif -%}
+    {%- assign units = 0 -%}{%- for it in q.items.value -%}{%- assign units = units | plus: it.cantidad -%}{%- endfor -%}
+    <li class="brenson-b2b-item" data-quote-row>
+      <div class="brenson-b2b-item__title"><code>{{ q.numero.value }}</code></div>
+      <div class="brenson-b2b-item__field"><span class="brenson-b2b-item__label">Fecha</span><span>{{ q.creada_en.value | date: '%d %b %Y' }}</span></div>
+      <div class="brenson-b2b-item__field"><span class="brenson-b2b-item__label">Unidades</span><span>{{ units }}</span></div>
+      <div class="brenson-b2b-item__field brenson-b2b-item__field--strong"><span class="brenson-b2b-item__label">Total</span><strong class="brenson-num">{% render 'brenson-money-metafield', texto: q.total_formateado.value, valor: q.total.value %}</strong></div>
+      <div class="brenson-b2b-item__status" data-quote-estado>
+        {%- case q.estado.value -%}
+          {%- when 'enviada' -%}<span class="brenson-status brenson-status--ok">Enviada</span>
+          {%- when 'aceptada' -%}<span class="brenson-status brenson-status--ok">Aceptada</span>
+          {%- when 'borrador' -%}<span class="brenson-status brenson-status--pending">Borrador</span>
+          {%- else -%}<span class="brenson-status brenson-status--muted">{{ q.estado.value | capitalize }}</span>
+        {%- endcase -%}
+      </div>
+      <div class="brenson-b2b-item__actions">
+        {%- if show_accept and q.estado.value == 'enviada' -%}
+          <button type="button" class="brenson-btn brenson-btn--primary brenson-btn--sm brenson-b2b-item__main" data-accept-quote data-quote-numero="{{ q.numero.value }}" data-quote-token="{{ q.accept_token.value }}">Aceptar cotización</button>
+        {%- endif -%}
+        {%- if q.pdf_url.value -%}<a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ q.pdf_url.value }}" target="_blank" rel="noopener">Ver PDF</a>{%- endif -%}
+        <a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="/pages/cotizador?duplicar={{ q.numero.value }}">Duplicar</a>
+      </div>
+    </li>
+  {%- endfor -%}
+</ul>

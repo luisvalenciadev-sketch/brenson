@@ -124,16 +124,16 @@
 
 /* ---------- Imagen destacada ---------- */
 .brenson-article__hero {
-  margin: calc(var(--brenson-space-12) * -1) auto var(--brenson-space-10);
+  margin: var(--brenson-space-8) auto var(--brenson-space-10);
   max-width: var(--brenson-article-width);
-  border-radius: var(--brenson-radius-xl);
+  border-radius: var(--brenson-radius-lg);
   overflow: hidden;
   box-shadow: var(--brenson-shadow-lg);
   background: var(--brenson-carbon);
 }
 .brenson-article__hero img { display: block; width: 100%; height: auto; }
-@media (max-width: 749px) {
-  .brenson-article__hero { margin-top: var(--brenson-space-8); border-radius: var(--brenson-radius-lg); }
+@media (min-width: 750px) {
+  .brenson-article__hero { margin-top: calc(var(--brenson-space-12) * -1); border-radius: var(--brenson-radius-xl); }
 }
 
 /* ---------- Cuerpo ---------- */

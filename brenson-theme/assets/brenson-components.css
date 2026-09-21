@@ -95,8 +95,13 @@
   border: 1.5px solid transparent;
   cursor: pointer;
   transition: background var(--brenson-duration) var(--brenson-ease), transform var(--brenson-duration) var(--brenson-ease), border-color var(--brenson-duration) var(--brenson-ease);
-  white-space: nowrap;
+  /* En móvil un label largo ("Solicitar cotización por WhatsApp") desbordaba la pantalla
+     con nowrap; se deja partir en dos líneas y se fija en una sola desde tablet. */
+  white-space: normal;
+  text-align: center;
+  line-height: 1.2;
 }
+@media (min-width: 750px) { .brenson-btn { white-space: nowrap; } }
 .brenson-btn:active { transform: scale(0.98); }
 .brenson-btn--primary { background: var(--brenson-rojo); color: #fff; }
 .brenson-btn--primary:hover { background: var(--brenson-rojo-hover); }
@@ -234,6 +239,9 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
   background: rgba(255,255,255,.9); border: 0; color: var(--brenson-gris);
   display: grid; place-items: center; cursor: pointer;
 }
+/* Área táctil de 44px sin agrandar el ícono visible (quick 40px, wishlist 32px). */
+.brenson-card__quick::before,
+.brenson-card__wishlist::before { content: ''; position: absolute; inset: 50% auto auto 50%; width: 4.4rem; height: 4.4rem; transform: translate(-50%, -50%); }
 .brenson-card__wishlist:hover { color: var(--brenson-rojo); background: #fff; }
 .brenson-card__wishlist.is-active { color: var(--brenson-rojo); }
 .brenson-card__wishlist.is-active svg path { fill: currentColor; }
@@ -260,27 +268,34 @@ button.brenson-badge--certificado:hover { background: #d6ecdf; }
 
 /* ---------- Grid genérico ---------- */
 .brenson-grid { display: grid; gap: var(--brenson-space-5); grid-template-columns: repeat(1, 1fr); }
-.brenson-grid--2 { grid-template-columns: repeat(2, 1fr); }
-@media (min-width: 750px) { .brenson-grid--3, .brenson-grid--4 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 750px) { .brenson-grid--2, .brenson-grid--3, .brenson-grid--4 { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 990px) { .brenson-grid--3 { grid-template-columns: repeat(3, 1fr); } .brenson-grid--4 { grid-template-columns: repeat(4, 1fr); } }
-@media (max-width: 749px) { .brenson-grid--2 { grid-template-columns: 1fr; } }
 
-/* ---------- Carrusel mobile (pantallas Stitch 09/10): grid en desktop, scroll-snap en móvil ---------- */
-@media (max-width: 749px) {
-  .brenson-carousel-mobile {
-    display: flex !important;
-    grid-template-columns: none !important;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: var(--brenson-space-4);
-    padding-bottom: var(--brenson-space-2);
-    margin-inline: calc(-1 * var(--brenson-gutter));
-    padding-inline: var(--brenson-gutter);
-    scrollbar-width: none;
+/* ---------- Carrusel mobile (pantallas Stitch 09/10): scroll-snap en móvil, grid desde tablet ---------- */
+.brenson-grid.brenson-carousel-mobile {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: var(--brenson-space-4);
+  padding-bottom: var(--brenson-space-2);
+  margin-inline: calc(-1 * var(--brenson-gutter));
+  padding-inline: var(--brenson-gutter);
+  /* Sin esto el snap alinea la primera card contra el borde de la pantalla, ignorando el padding. */
+  scroll-padding-inline: var(--brenson-gutter);
+  scrollbar-width: none;
+}
+.brenson-carousel-mobile::-webkit-scrollbar { display: none; }
+.brenson-carousel-mobile > * { flex: 0 0 82%; scroll-snap-align: start; }
+@media (min-width: 750px) {
+  .brenson-grid.brenson-carousel-mobile {
+    display: grid;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    gap: var(--brenson-space-5);
+    padding: 0;
+    margin-inline: 0;
   }
-  .brenson-carousel-mobile::-webkit-scrollbar { display: none; }
-  .brenson-carousel-mobile > * { flex: 0 0 82%; scroll-snap-align: start; }
 }
 
 /* ---------- Chips / tabs (simulador, filtros) ---------- */
@@ -346,30 +361,37 @@ a.brenson-chip.is-active:hover { color: #fff; }
 /* ---------- Checklist certificación ---------- */
 .brenson-checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--brenson-space-3); }
 @media (min-width: 750px) { .brenson-checklist { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 990px) { .brenson-checklist { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 990px) { .brenson-checklist { grid-template-columns: repeat(3, 1fr); } .brenson-checklist--max2 { grid-template-columns: repeat(2, 1fr); } }
 .brenson-checklist li { display: flex; gap: var(--brenson-space-2); align-items: flex-start; font-size: var(--brenson-text-sm); }
 .brenson-checklist svg { flex: none; width: 2rem; height: 2rem; color: var(--brenson-certificado); margin-top: 0.08rem; }
 
 /* ---------- WhatsApp flotante ---------- */
+/* Móvil: botón circular solo con ícono. Tablet+: píldora con texto y estado. */
 .brenson-wa-float {
   position: fixed; right: var(--brenson-space-4);
   bottom: calc(var(--brenson-space-4) + var(--brenson-thumb-zone));
   z-index: var(--brenson-z-whatsapp);
-  display: inline-flex; align-items: center; gap: var(--brenson-space-2);
-  min-height: 5.6rem; padding: 0 var(--brenson-space-5) 0 var(--brenson-space-4);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--brenson-space-2);
+  width: 5.6rem; min-height: 5.6rem; padding: 0;
   border-radius: var(--brenson-radius-pill);
   background: var(--brenson-whatsapp); color: #fff; text-decoration: none;
   font-weight: var(--brenson-font-weight-bold); font-size: var(--brenson-text-sm);
   box-shadow: var(--brenson-shadow-lg);
 }
 .brenson-wa-float svg { width: 2.56rem; height: 2.56rem; }
+.brenson-wa-float__text { display: none; }
 .brenson-wa-float__status { display: block; font-size: 1.1rem; font-weight: var(--brenson-font-weight-medium); opacity: 0.9; }
 .brenson-wa-float__status::before { content: ''; display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 50%; background: #fff; margin-right: 0.48rem; }
 .brenson-wa-float[data-status='closed'] .brenson-wa-float__status::before { background: var(--brenson-pendiente); }
-@media (max-width: 749px) {
-  .brenson-wa-float__text { display: none; }
-  .brenson-wa-float { width: 5.6rem; padding: 0; justify-content: center; }
-  body.has-brenson-sticky-bar .brenson-wa-float { bottom: calc(var(--brenson-sticky-bar-height) + var(--brenson-space-3) + var(--brenson-thumb-zone)); }
+/* La sticky bar de la ficha vive hasta 989px: el botón debe subir mientras exista
+   (antes solo subía por debajo de 750px y en tablet quedaba encima de la barra). */
+body.has-brenson-sticky-bar .brenson-wa-float { bottom: calc(var(--brenson-sticky-bar-height) + var(--brenson-space-3) + var(--brenson-thumb-zone)); }
+@media (min-width: 750px) {
+  .brenson-wa-float { width: auto; padding: 0 var(--brenson-space-5) 0 var(--brenson-space-4); justify-content: flex-start; }
+  .brenson-wa-float__text { display: inline; }
+}
+@media (min-width: 990px) {
+  body.has-brenson-sticky-bar .brenson-wa-float { bottom: calc(var(--brenson-space-4) + var(--brenson-thumb-zone)); }
 }
 
 /* ---------- Sticky bar mobile (ficha) ---------- */

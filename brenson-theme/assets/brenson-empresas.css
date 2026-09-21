@@ -43,7 +43,8 @@ body.brenson-empresas .brenson-trust__text { color: rgba(255,255,255,.6); }
 }
 body.brenson-empresas .brenson-b2b-card .brenson-heading { color: var(--brenson-carbon); }
 body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brenson-gris); }
-.brenson-b2b-card--center { max-width: 640px; margin: 0 auto; text-align: center; align-items: center; padding: var(--brenson-space-10) var(--brenson-space-8); }
+.brenson-b2b-card--center { max-width: 640px; margin: 0 auto; text-align: center; align-items: center; padding: var(--brenson-space-8) var(--brenson-space-5); }
+@media (min-width: 750px) { .brenson-b2b-card--center { padding: var(--brenson-space-10) var(--brenson-space-8); } }
 
 .brenson-b2b-hero { display: grid; gap: var(--brenson-space-8); align-items: center; padding-block: var(--brenson-space-8); }
 @media (min-width: 990px) { .brenson-b2b-hero { grid-template-columns: 1.3fr 1fr; padding-block: var(--brenson-space-12); } }
@@ -80,21 +81,59 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 
 /* Header / footer del portal */
 .brenson-b2b-header { position: sticky; top: 0; z-index: 50; background: var(--brenson-carbon); border-bottom: 1px solid rgba(255,255,255,.1); }
-.brenson-b2b-header__inner { display: flex; align-items: center; gap: var(--brenson-space-6); min-height: 6.8rem; }
+.brenson-b2b-header__inner { display: flex; align-items: center; gap: var(--brenson-space-3); min-height: 6.4rem; }
+@media (min-width: 990px) { .brenson-b2b-header__inner { gap: var(--brenson-space-6); min-height: 6.8rem; } }
 .brenson-b2b-header__logo { display: inline-flex; align-items: center; gap: 0.8rem; color: #fff; text-decoration: none; font-weight: 800; letter-spacing: -.02em; font-size: 1.8rem; }
 .brenson-b2b-header__logo img { height: 3.2rem; width: auto; }
 .brenson-b2b-header__logo .brenson-badge { background: rgba(255,255,255,.12); color: #fff; }
 .brenson-b2b-nav { display: none; gap: var(--brenson-space-5); margin-inline: auto; }
-@media (min-width: 990px) { .brenson-b2b-nav { display: flex; } }
-.brenson-b2b-nav a { color: rgba(255,255,255,.75); text-decoration: none; font-size: var(--brenson-text-sm); font-weight: 600; padding: 0.8rem 0; border-bottom: 2px solid transparent; }
+/* La navegación en línea necesita ~1100px con sus 6 enlaces; por debajo vive en el menú ☰. */
+@media (min-width: 1100px) { .brenson-b2b-nav { display: flex; } }
+/* En teléfonos de 320px la etiqueta "Empresas" no cabe junto a los controles. */
+.brenson-b2b-header__logo .brenson-badge { display: none; }
+@media (min-width: 380px) { .brenson-b2b-header__logo .brenson-badge { display: inline-flex; } }
+.brenson-b2b-nav { gap: var(--brenson-space-4); }
+/* Nombre y NIT junto al avatar solo en pantallas anchas: con él, los enlaces se partían en dos líneas. */
+.brenson-b2b-header .brenson-b2b-header__company { display: none; }
+@media (min-width: 1400px) { .brenson-b2b-header .brenson-b2b-header__company { display: block; } }
+.brenson-b2b-nav a { white-space: nowrap; color: rgba(255,255,255,.75); text-decoration: none; font-size: var(--brenson-text-sm); font-weight: 600; padding: 0.8rem 0; border-bottom: 2px solid transparent; }
 .brenson-b2b-nav a[aria-current='page'], .brenson-b2b-nav a:hover { color: #fff; border-color: var(--brenson-rojo); }
 .brenson-b2b-header__user { margin-left: auto; display: flex; align-items: center; gap: var(--brenson-space-3); font-size: var(--brenson-text-xs); color: rgba(255,255,255,.75); }
 .brenson-b2b-header__user strong { display: block; color: #fff; font-size: var(--brenson-text-sm); }
-.brenson-b2b-header__avatar { width: 3.6rem; height: 3.6rem; border-radius: 50%; background: var(--brenson-rojo); color: #fff; display: grid; place-items: center; font-weight: 800; }
+/* En pantallas angostas el avatar no cabe junto al logo, la campana y el menú; la empresa ya se ve dentro del menú. */
+.brenson-b2b-header__avatar { width: 3.6rem; height: 3.6rem; border-radius: 50%; background: var(--brenson-rojo); color: #fff; display: none; place-items: center; font-weight: 800; flex: none; }
+@media (min-width: 480px) { .brenson-b2b-header__avatar { display: grid; } }
 .brenson-b2b-header__eyebrow { display: block; font-size: var(--brenson-text-xs); color: rgba(255,255,255,.5); }
-.brenson-b2b-header__bell { position: relative; display: grid; place-items: center; width: 3.6rem; height: 3.6rem; border: 0; background: transparent; color: rgba(255,255,255,.75); cursor: pointer; }
+.brenson-b2b-header__bell { position: relative; display: grid; place-items: center; width: 4.4rem; height: 4.4rem; border: 0; background: transparent; color: rgba(255,255,255,.75); cursor: pointer; }
 .brenson-b2b-header__bell:hover { color: #fff; }
-.brenson-b2b-header__bell-dot { position: absolute; top: 0.6rem; right: 0.7rem; width: 0.72rem; height: 0.72rem; border-radius: 50%; background: var(--brenson-rojo); border: 2px solid var(--brenson-carbon); }
+.brenson-b2b-header__bell-dot { position: absolute; top: 1rem; right: 1.1rem; width: 0.72rem; height: 0.72rem; border-radius: 50%; background: var(--brenson-rojo); border: 2px solid var(--brenson-carbon); }
+/* Datos de la empresa y acciones secundarias: en móvil se mueven al menú. */
+.brenson-b2b-header__desktop { display: none; }
+/* Entre 990 y 1199px la navegación ya está visible pero no caben también los botones de sesión:
+   siguen en el menú ☰ hasta 1200px. */
+@media (min-width: 1200px) { .brenson-b2b-header__desktop { display: block; } a.brenson-b2b-header__desktop { display: inline-flex; } }
+/* En pantallas muy angostas el CTA no cabe junto al logo; queda primero dentro del menú. */
+.brenson-b2b-header__cta { display: none; }
+@media (min-width: 480px) { .brenson-b2b-header__cta { display: inline-flex; } }
+@media (min-width: 480px) { .brenson-b2b-menu__cta { display: none; } }
+
+/* Menú móvil (<details>, sin JS) */
+.brenson-b2b-menu { position: relative; flex: none; }
+@media (min-width: 1200px) { .brenson-b2b-menu { display: none; } }
+.brenson-b2b-menu__toggle { list-style: none; display: grid; place-items: center; width: 4.4rem; height: 4.4rem; border-radius: var(--brenson-radius); color: #fff; cursor: pointer; }
+.brenson-b2b-menu__toggle::-webkit-details-marker { display: none; }
+.brenson-b2b-menu__toggle:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.brenson-b2b-menu__close { display: none; }
+.brenson-b2b-menu[open] .brenson-b2b-menu__open { display: none; }
+.brenson-b2b-menu[open] .brenson-b2b-menu__close { display: block; }
+.brenson-b2b-menu__panel { position: absolute; right: 0; top: calc(100% + 1rem); width: min(32rem, calc(100vw - 3.2rem)); max-height: calc(100dvh - 9rem); overflow-y: auto; display: grid; gap: var(--brenson-space-4); padding: var(--brenson-space-4); background: var(--brenson-carbon-80); border: 1px solid rgba(255,255,255,.12); border-radius: var(--brenson-radius-xl); box-shadow: var(--brenson-shadow-lg); }
+.brenson-b2b-menu__who { margin: 0; padding-bottom: var(--brenson-space-3); border-bottom: 1px solid rgba(255,255,255,.1); font-size: var(--brenson-text-xs); color: rgba(255,255,255,.7); }
+.brenson-b2b-menu__who strong { display: block; color: #fff; font-size: var(--brenson-text-sm); }
+.brenson-b2b-menu__links { display: grid; }
+.brenson-b2b-menu__links a { display: flex; align-items: center; min-height: 4.4rem; padding-inline: var(--brenson-space-3); border-radius: var(--brenson-radius); color: rgba(255,255,255,.85); text-decoration: none; font-size: var(--brenson-text-md); font-weight: 600; }
+.brenson-b2b-menu__links a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.brenson-b2b-menu__links a[aria-current='page'] { color: #fff; box-shadow: inset 3px 0 0 var(--brenson-rojo); }
+.brenson-b2b-menu__actions { display: grid; gap: var(--brenson-space-2); }
 .brenson-b2b-footer { border-top: 1px solid rgba(255,255,255,.1); padding-block: var(--brenson-space-8); font-size: var(--brenson-text-xs); color: rgba(255,255,255,.6); }
 .brenson-b2b-footer__inner { display: flex; flex-wrap: wrap; gap: var(--brenson-space-4) var(--brenson-space-8); justify-content: space-between; align-items: center; }
 .brenson-b2b-footer a { color: rgba(255,255,255,.8); }
@@ -103,20 +142,141 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 /* Panel de bienvenida: en el mockup (04-empresas-dashboard) es una superficie ELEVADA sobre el fondo
    de página (#0d1117 sobre #050709), no una caja transparente con borde. Sin ese relleno el bloque
    se funde con la página y la franja de bienvenida se lee como un vacío. */
-.brenson-b2b-welcome { display: flex; flex-wrap: wrap; align-items: center; gap: var(--brenson-space-3) var(--brenson-space-5); padding: var(--brenson-space-6); background: var(--brenson-carbon-80); border: 1px solid rgba(255,255,255,.12); border-radius: var(--brenson-radius-xl); margin-bottom: var(--brenson-space-6); box-shadow: var(--brenson-shadow); }
+/* Mobile-first: intro arriba y botones a lo ancho debajo (el CTA de cotizar primero);
+   desde 990px la intro y los botones van lado a lado. */
+.brenson-b2b-welcome { display: grid; gap: var(--brenson-space-5); padding: var(--brenson-space-5); background: var(--brenson-carbon-80); border: 1px solid rgba(255,255,255,.12); border-radius: var(--brenson-radius-xl); margin-bottom: var(--brenson-space-4); box-shadow: var(--brenson-shadow); }
 .brenson-b2b-welcome h1 { margin: 0; font-size: clamp(2.4rem, 2.5vw, 3.2rem); }
-.brenson-b2b-welcome__meta { width: 100%; display: flex; flex-wrap: wrap; gap: var(--brenson-space-3); align-items: center; font-size: var(--brenson-text-sm); color: rgba(255,255,255,.7); }
-.brenson-b2b-kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--brenson-space-4); margin-bottom: var(--brenson-space-6); }
-@media (min-width: 990px) { .brenson-b2b-kpis { grid-template-columns: repeat(4, 1fr); } }
-.brenson-kpi__label { font-size: var(--brenson-text-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--brenson-gris); font-weight: 700; }
-.brenson-kpi__value { font-size: var(--brenson-text-3xl); font-weight: 800; line-height: 1; }
+.brenson-b2b-welcome__intro { display: grid; gap: var(--brenson-space-2); min-width: 0; }
+.brenson-b2b-welcome__company { margin: 0; font-size: var(--brenson-text-sm); color: rgba(255,255,255,.7); }
+.brenson-b2b-welcome__badges { display: flex; flex-wrap: wrap; gap: var(--brenson-space-2); align-items: center; }
+.brenson-b2b-welcome__actions { display: grid; gap: var(--brenson-space-2); }
+@media (min-width: 750px) {
+  .brenson-b2b-welcome { padding: var(--brenson-space-6); margin-bottom: var(--brenson-space-6); }
+  .brenson-b2b-welcome__actions { display: flex; flex-wrap: wrap; }
+}
+@media (min-width: 990px) {
+  .brenson-b2b-welcome { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .brenson-b2b-welcome__actions { flex-direction: row-reverse; }
+}
+
+/* KPIs: 2×2 compacto en móvil, 4 en línea desde 990px */
+.brenson-b2b-kpis { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--brenson-space-3); margin: 0 0 var(--brenson-space-4); }
+.brenson-b2b-kpis .brenson-b2b-card { padding: var(--brenson-space-4); gap: var(--brenson-space-2); min-width: 0; }
+@media (min-width: 750px) { .brenson-b2b-kpis { gap: var(--brenson-space-4); margin-bottom: var(--brenson-space-6); } .brenson-b2b-kpis .brenson-b2b-card { padding: var(--brenson-space-6); gap: var(--brenson-space-3); } }
+@media (min-width: 990px) { .brenson-b2b-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.brenson-kpi__label { font-size: var(--brenson-text-xs); text-transform: uppercase; letter-spacing: .04em; color: var(--brenson-gris); font-weight: 700; overflow-wrap: anywhere; }
+.brenson-kpi__value { font-size: var(--brenson-text-2xl); font-weight: 800; line-height: 1; }
+@media (min-width: 750px) { .brenson-kpi__value { font-size: var(--brenson-text-3xl); } .brenson-kpi__label { letter-spacing: .06em; } }
 .brenson-kpi__note { font-size: var(--brenson-text-xs); color: var(--brenson-gris); }
-.brenson-b2b-cols { display: grid; gap: var(--brenson-space-4); }
-@media (min-width: 990px) { .brenson-b2b-cols { grid-template-columns: 2fr 1fr; } }
-.brenson-b2b-stack { display: grid; gap: var(--brenson-space-4); align-content: start; }
-.brenson-advisor { display: flex; flex-wrap: wrap; gap: var(--brenson-space-4); align-items: center; }
-.brenson-advisor__avatar { width: 6.4rem; height: 6.4rem; border-radius: 50%; object-fit: cover; background: var(--brenson-carbon); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 2.4rem; }
-.brenson-advisor__actions { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-left: auto; }
+
+/* Cabecera de tarjeta (título + acción): en móvil la acción baja a su propia línea si no cabe. */
+.brenson-b2b-card__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); }
+.brenson-b2b-card__head h2 { margin: 0; font-size: var(--brenson-text-xl); }
+.brenson-b2b-card__head p { margin: 0.32rem 0 0; font-size: var(--brenson-text-sm); }
+.brenson-b2b-card > h2 { margin: 0; font-size: var(--brenson-text-xl); }
+
+/* Grilla del dashboard. Móvil (orden de tareas): cotizaciones, asesor, unidades, documentos.
+   Desktop: asesor | acciones+documentos arriba; cotizaciones y unidades a todo el ancho.
+   minmax(0,1fr) en todas las pistas: con 1fr una lista ancha estiraba la columna y la página
+   entera se salía de la pantalla en móvil. */
+.brenson-b2b-dash { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--brenson-space-4); grid-template-areas: "quotes" "advisor" "units" "side"; }
+.brenson-b2b-dash > * { min-width: 0; }
+.brenson-b2b-dash__quotes { grid-area: quotes; }
+.brenson-b2b-dash__advisor { grid-area: advisor; }
+.brenson-b2b-dash__units { grid-area: units; }
+.brenson-b2b-dash__side { grid-area: side; display: grid; gap: var(--brenson-space-4); align-content: start; }
+/* En móvil y tablet las acciones rápidas duplican la barra inferior y el CTA de bienvenida. */
+.brenson-b2b-dash__actions { display: none; }
+/* Desktop: el contenedor lateral se disuelve (display: contents) para que acciones y documentos
+   ocupen áreas propias; así el asesor comparte fila solo con las acciones (alturas parecidas)
+   y no queda una tarjeta con un gran vacío. */
+@media (min-width: 990px) {
+  .brenson-b2b-dash { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-areas: "advisor actions" "quotes quotes" "units units" "docs docs"; }
+  .brenson-b2b-dash__side { display: contents; }
+  .brenson-b2b-dash__actions { display: flex; grid-area: actions; }
+  .brenson-b2b-dash__docs { grid-area: docs; }
+  .brenson-b2b-dash__docs .brenson-doc-list { grid-template-columns: repeat(auto-fill, minmax(26rem, 1fr)); }
+}
+#cotizaciones, #unidades, #q-summary { scroll-margin-top: 8rem; }
+
+.brenson-b2b-stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--brenson-space-4); align-content: start; }
+.brenson-b2b-stack > * { min-width: 0; }
+
+/* Asesor: foto + nombre en una fila; botones a lo ancho debajo en móvil. */
+.brenson-advisor { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--brenson-space-3) var(--brenson-space-4); align-items: center; }
+.brenson-advisor__avatar { width: 5.6rem; height: 5.6rem; border-radius: 50%; object-fit: cover; background: var(--brenson-carbon); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 2.2rem; }
+.brenson-advisor__who { display: grid; gap: 0.2rem; min-width: 0; }
+.brenson-advisor__who .brenson-muted { font-size: var(--brenson-text-sm); }
+.brenson-advisor__actions { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 0.8rem; }
+@media (min-width: 750px) {
+  .brenson-advisor { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .brenson-advisor__avatar { width: 6.4rem; height: 6.4rem; font-size: 2.4rem; }
+  .brenson-advisor__actions { grid-column: auto; display: flex; flex-wrap: wrap; }
+}
+
+/* ── Listas del portal (cotizaciones y unidades) ─────────────────────────────
+   Móvil: una tarjeta por registro, campos como filas etiqueta/valor y botones a lo ancho.
+   Tablet: dos columnas de tarjetas. Desktop (990+): filas tipo tabla con encabezado. */
+.brenson-b2b-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--brenson-space-3); font-size: var(--brenson-text-sm); }
+@media (min-width: 750px) { .brenson-b2b-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.brenson-b2b-list__head { display: none; }
+.brenson-b2b-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.6rem var(--brenson-space-3); align-content: start; padding: var(--brenson-space-4); border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); background: #fff; }
+.brenson-b2b-item__title { grid-column: 1; grid-row: 1; min-width: 0; font-weight: 700; }
+.brenson-b2b-item__title code, .brenson-b2b-list code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--brenson-text-sm); overflow-wrap: anywhere; }
+.brenson-b2b-item__status { grid-column: 2; grid-row: 1; justify-self: end; }
+.brenson-b2b-item__field { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; gap: var(--brenson-space-3); padding-top: 0.6rem; border-top: 1px solid var(--brenson-gris-claro); text-align: right; min-width: 0; }
+.brenson-b2b-item__field > :last-child { min-width: 0; overflow-wrap: anywhere; }
+.brenson-b2b-item__field--strong > :last-child { font-weight: 700; color: var(--brenson-carbon); }
+.brenson-b2b-item__label { flex: none; text-align: left; font-size: var(--brenson-text-xs); text-transform: uppercase; letter-spacing: .04em; color: var(--brenson-gris); }
+.brenson-b2b-item__actions { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.8rem; padding-top: var(--brenson-space-2); }
+.brenson-b2b-item__actions .brenson-btn { min-height: 4.4rem; }
+.brenson-b2b-item__main { grid-column: 1 / -1; }
+@media (min-width: 990px) {
+  .brenson-b2b-list { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .brenson-b2b-list__head,
+  .brenson-b2b-item { display: grid; grid-template-columns: var(--brenson-b2b-cols); gap: var(--brenson-space-4); align-items: center; }
+  .brenson-b2b-list__head { padding: 0 var(--brenson-space-3) 0.96rem; border-bottom: 1px solid var(--brenson-gris-borde); font-size: var(--brenson-text-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--brenson-gris); font-weight: 700; }
+  .brenson-b2b-item { padding: var(--brenson-space-3); border: 0; border-bottom: 1px solid var(--brenson-gris-borde); border-radius: 0; background: none; }
+  .brenson-b2b-item__title, .brenson-b2b-item__status, .brenson-b2b-item__field, .brenson-b2b-item__actions { grid-column: auto; grid-row: auto; }
+  .brenson-b2b-item__status { justify-self: start; }
+  .brenson-b2b-item__field { display: block; padding: 0; border: 0; text-align: left; }
+  .brenson-b2b-item__label { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .brenson-b2b-item__actions { display: flex; justify-content: flex-end; flex-wrap: wrap; padding: 0; }
+  .brenson-b2b-item__actions .brenson-btn { min-height: 4rem; }
+}
+/* Unidades en móvil/tablet: vehículo a lo ancho y las cuatro fechas/datos en una cuadrícula 2×2
+   (etiqueta sobre valor), para que cada tarjeta no ocupe siete renglones. */
+.brenson-b2b-list--units .brenson-b2b-item { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.brenson-b2b-list--units .brenson-b2b-item__field { grid-column: auto; display: grid; gap: 0.2rem; justify-content: stretch; text-align: left; }
+.brenson-b2b-list--units .brenson-b2b-item__field--strong { grid-column: 1 / -1; }
+@media (min-width: 990px) {
+  .brenson-b2b-list--units .brenson-b2b-item { grid-template-columns: var(--brenson-b2b-cols); }
+  .brenson-b2b-list--units .brenson-b2b-item__field,
+  .brenson-b2b-list--units .brenson-b2b-item__field--strong { grid-column: auto; display: block; }
+}
+.brenson-b2b-list--quotes { --brenson-b2b-cols: minmax(0, 1.1fr) minmax(0, .9fr) minmax(0, .6fr) minmax(0, 1fr) minmax(0, .8fr) minmax(0, 2.6fr); }
+.brenson-b2b-list--units { --brenson-b2b-cols: minmax(0, 1.3fr) minmax(0, 1.5fr) minmax(0, .6fr) minmax(0, .9fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, .9fr); }
+
+/* Tiers: carrusel en móvil; la etiqueta "Su nivel actual" sobresale 1.2rem por arriba. */
+.brenson-b2b-tiers.brenson-carousel-mobile { padding-top: 1.4rem; }
+@media (min-width: 750px) { .brenson-b2b-tiers.brenson-carousel-mobile { padding-top: 0; } }
+
+/* ── Barra de pestañas inferior del portal (solo < 990px) ─────────────────── */
+.brenson-b2b-tabbar { position: fixed; inset-inline: 0; bottom: 0; z-index: 60; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); padding: 0.4rem 0.4rem calc(0.4rem + env(safe-area-inset-bottom, 0px)); background: rgba(13,17,23,.97); border-top: 1px solid rgba(255,255,255,.1); box-shadow: 0 -8px 24px rgba(0,0,0,.35); backdrop-filter: blur(12px); }
+.brenson-b2b-tabbar a { display: grid; justify-items: center; align-content: center; gap: 0.2rem; min-height: 5.6rem; padding: 0.4rem 0.2rem; border-radius: var(--brenson-radius); color: rgba(255,255,255,.65); text-decoration: none; font-size: 1.1rem; font-weight: 600; line-height: 1.1; text-align: center; }
+.brenson-b2b-tabbar a > svg { width: 2.2rem; height: 2.2rem; }
+.brenson-b2b-tabbar a[aria-current='page'] { color: #fff; }
+.brenson-b2b-tabbar a[aria-current='page'] > svg { color: var(--brenson-rojo); }
+.brenson-b2b-tabbar__plus { display: grid; place-items: center; width: 3.6rem; height: 3.6rem; margin-top: -1.6rem; border-radius: 50%; background: var(--brenson-rojo); color: #fff; box-shadow: 0 6px 16px rgba(41,168,0,.35); border: 3px solid rgba(13,17,23,.97); }
+.brenson-b2b-tabbar__plus svg { width: 2rem; height: 2rem; }
+.brenson-b2b-tabbar__main { color: #fff !important; }
+body:has(.brenson-b2b-tabbar) { padding-bottom: calc(6.8rem + env(safe-area-inset-bottom, 0px)); }
+body:has(.brenson-b2b-tabbar) .brenson-b2b-flotas__barra { bottom: calc(6.8rem + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 990px) {
+  .brenson-b2b-tabbar { display: none; }
+  body:has(.brenson-b2b-tabbar) { padding-bottom: 0; }
+  body:has(.brenson-b2b-tabbar) .brenson-b2b-flotas__barra { bottom: 0; }
+}
 
 .brenson-b2b-steps { list-style:none; display:flex; margin: var(--brenson-space-6) 0; padding:0; }
 .brenson-b2b-steps li { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.56rem; position:relative; font-size: var(--brenson-text-xs); color: var(--brenson-gris); }
@@ -148,21 +308,68 @@ body.brenson-empresas .brenson-b2b-card .brenson-subheading { color: var(--brens
 .brenson-table-wrap { overflow-x: auto; }
 
 /* Cotizador */
-.brenson-quoter { display: grid; gap: var(--brenson-space-4); }
-@media (min-width: 990px) { .brenson-quoter { grid-template-columns: 2fr 1fr; align-items: start; } .brenson-quoter__summary { position: sticky; top: 8.4rem; } }
-.brenson-quoter__row { display: grid; grid-template-columns: 96px 1fr auto; gap: var(--brenson-space-4); align-items: center; }
-.brenson-quoter__row img { width: 96px; aspect-ratio: 1; object-fit: cover; border-radius: var(--brenson-radius); background: var(--brenson-gris-claro); }
+.brenson-quoter { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--brenson-space-4); }
+@media (min-width: 990px) { .brenson-quoter { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: start; } .brenson-quoter__summary { position: sticky; top: 8.4rem; } }
+
+.brenson-quoter__head { display: grid; gap: var(--brenson-space-2); margin-bottom: var(--brenson-space-5); }
+.brenson-quoter__title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--brenson-space-3); }
+.brenson-quoter__title h1 { margin: 0; font-size: clamp(2.4rem, 3vw, 3.6rem); }
+.brenson-quoter__head p { margin: 0; max-width: 72ch; color: rgba(255,255,255,.7); font-size: var(--brenson-text-sm); }
+
+/* Buscador a lo ancho y categorías deslizables en una sola fila en móvil. */
+.brenson-quoter__filters { gap: var(--brenson-space-3); padding: var(--brenson-space-4); }
+.brenson-quoter__filters input[type='search'] { width: 100%; min-height: 4.8rem; padding: 0 1.6rem; border: 1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-pill); font-family: inherit; font-size: var(--brenson-text-md); }
+.brenson-quoter__chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--brenson-space-4)); padding-inline: var(--brenson-space-4); scroll-padding-inline: var(--brenson-space-4); }
+.brenson-quoter__chips::-webkit-scrollbar { display: none; }
+.brenson-quoter__chips .brenson-chip { flex: none; }
+@media (min-width: 750px) { .brenson-quoter__filters { padding: var(--brenson-space-6); } .brenson-quoter__chips { flex-wrap: wrap; overflow-x: visible; margin-inline: 0; padding-inline: 0; } }
+
+/* Tarjeta de vehículo. Móvil: miniatura + datos arriba; precio y cantidad en una fila debajo.
+   Tablet+: tres columnas con precio y cantidad alineados a la derecha. */
+.brenson-quoter__row { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: var(--brenson-space-3) var(--brenson-space-4); align-items: start; padding: var(--brenson-space-4); }
+.brenson-quoter__row img, .brenson-quoter__img-ph { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--brenson-radius); background: var(--brenson-gris-claro); }
+.brenson-quoter__info { min-width: 0; display: grid; gap: 0.6rem; }
+.brenson-quoter__name { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.8rem; }
+.brenson-quoter__name h2 { margin: 0; font-size: var(--brenson-text-md); line-height: 1.25; }
+.brenson-quoter__specs { margin: 0; font-size: var(--brenson-text-xs); }
+.brenson-quoter__variant { display: grid; gap: 0.4rem; font-size: var(--brenson-text-xs); color: var(--brenson-gris); }
+.brenson-quoter__variant select { width: 100%; max-width: 32rem; min-height: 4.4rem; padding: 0 0.8rem; border: 1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius); background: #fff; font-family: inherit; font-size: var(--brenson-text-sm); color: var(--brenson-carbon); }
+.brenson-quoter__buy { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); padding-top: var(--brenson-space-3); border-top: 1px solid var(--brenson-gris-claro); }
+.brenson-quoter__prices { display: grid; gap: 0.2rem; }
+.brenson-quoter__qty-wrap { display: grid; gap: 0.4rem; justify-items: end; text-align: right; }
+.brenson-quoter__pct { font-size: var(--brenson-text-xs); color: var(--brenson-certificado); font-weight: 700; }
+.brenson-quoter__subtotal { font-size: var(--brenson-text-xs); color: var(--brenson-gris); }
 .brenson-quoter__price-public { text-decoration: line-through; color: var(--brenson-gris); font-size: var(--brenson-text-sm); }
 .brenson-quoter__price-b2b { font-size: var(--brenson-text-xl); font-weight: 800; }
+@media (min-width: 750px) {
+  .brenson-quoter__row { grid-template-columns: 96px minmax(0, 1fr) auto; align-items: center; padding: var(--brenson-space-6); }
+  .brenson-quoter__name h2 { font-size: var(--brenson-text-lg); }
+  .brenson-quoter__specs { font-size: var(--brenson-text-sm); }
+  .brenson-quoter__buy { grid-column: auto; display: grid; justify-items: end; text-align: right; padding-top: 0; border-top: 0; }
+  .brenson-quoter__prices { justify-items: end; }
+}
+
+/* Barra fija con unidades y total (solo < 990px). */
+.brenson-quoter__bar { position: fixed; inset-inline: 0; bottom: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; gap: var(--brenson-space-3); padding: var(--brenson-space-3) var(--brenson-gutter) calc(var(--brenson-space-3) + env(safe-area-inset-bottom, 0px)); background: rgba(13,17,23,.97); border-top: 1px solid rgba(255,255,255,.1); box-shadow: 0 -8px 24px rgba(0,0,0,.35); backdrop-filter: blur(12px); }
+.brenson-quoter__bar-info { display: grid; min-width: 0; }
+.brenson-quoter__bar-info span { font-size: var(--brenson-text-xs); color: rgba(255,255,255,.65); }
+.brenson-quoter__bar-info strong { font-size: var(--brenson-text-lg); color: #fff; line-height: 1.2; }
+.brenson-quoter__bar .brenson-btn { flex: none; }
+.brenson-quoter__bar .brenson-btn.is-disabled { opacity: .45; pointer-events: none; }
+body:has(.brenson-quoter__bar) { padding-bottom: calc(7.2rem + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 990px) {
+  .brenson-quoter__bar { display: none; }
+  body:has(.brenson-quoter__bar) { padding-bottom: 0; }
+}
+.brenson-quoter__history { margin-top: var(--brenson-space-6); }
 .brenson-qty { display: inline-flex; align-items: center; border: 1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius); overflow: hidden; }
-.brenson-qty button { width: 4rem; height: 4rem; border: 0; background: #fff; font-size: 1.76rem; cursor: pointer; }
-.brenson-qty input { width: 5.2rem; height: 4rem; border: 0; text-align: center; font-weight: 700; font-family: inherit; }
+.brenson-qty button { width: 4.4rem; height: 4.4rem; border: 0; background: #fff; font-size: 1.76rem; cursor: pointer; }
+.brenson-qty input { width: 5.2rem; height: 4.4rem; border: 0; text-align: center; font-weight: 700; font-family: inherit; }
 .brenson-quoter__lines { display: grid; gap: 0.8rem; font-size: var(--brenson-text-sm); }
 .brenson-quoter__lines div { display: flex; justify-content: space-between; gap: 1.6rem; }
 .brenson-quoter__total { font-size: var(--brenson-text-3xl); font-weight: 800; line-height: 1; }
 .brenson-progress { height: 0.8rem; border-radius: 999px; background: rgba(255,255,255,.15); overflow: hidden; }
 .brenson-progress > span { display: block; height: 100%; background: var(--brenson-rojo); border-radius: 999px; transition: width 300ms var(--brenson-ease); }
-@media (max-width: 749px) { .brenson-quoter__row { grid-template-columns: 72px 1fr; } .brenson-quoter__row > :last-child { grid-column: 1 / -1; } }
 
 /* ── Superficie oscura de tarjeta (pantallas Stitch 15-17) ───────────────────
    El design system de Stitch define surface-dark-card #0F1318 para las landings
@@ -293,8 +500,8 @@ body.brenson-empresas .brenson-b2b-contacto .brenson-b2b-card .brenson-subheadin
 
 /* ── Empresas · Flotas y catálogo industrial (pantalla 17) ───────────────── */
 .brenson-b2b-flotas__hero { text-align: center; max-width: 880px; margin: 0 auto; padding-block: var(--brenson-space-12) var(--brenson-space-6); display: grid; gap: var(--brenson-space-4); justify-items: center; }
-.brenson-b2b-flotas__filtros { justify-content: center; flex-wrap: wrap; margin-bottom: var(--brenson-space-12); }
-@media (max-width: 749px) { .brenson-b2b-flotas__filtros { margin-bottom: var(--brenson-space-8); } }
+.brenson-b2b-flotas__filtros { justify-content: center; flex-wrap: wrap; margin-bottom: var(--brenson-space-8); }
+@media (min-width: 750px) { .brenson-b2b-flotas__filtros { margin-bottom: var(--brenson-space-12); } }
 .brenson-b2b-flotas__card { padding: 0; overflow: hidden; }
 .brenson-b2b-flotas__card[hidden] { display: none; }
 .brenson-b2b-flotas__specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--brenson-space-2); margin: 0; }
@@ -319,11 +526,15 @@ body.brenson-empresas .brenson-b2b-contacto .brenson-b2b-card .brenson-subheadin
 
 /* Barra fija de borrador de cotización */
 .brenson-b2b-flotas__barra[hidden] { display: none; }
-.brenson-b2b-flotas__barra { position: sticky; bottom: 0; z-index: 40; margin-top: var(--brenson-space-8); display: flex; flex-wrap: wrap; align-items: center; gap: var(--brenson-space-4); padding: var(--brenson-space-4) var(--brenson-space-6); border-radius: var(--brenson-radius-xl) var(--brenson-radius-xl) 0 0; background: rgba(15,19,24,.96); backdrop-filter: blur(12px); box-shadow: 0 -8px 32px rgba(0,0,0,.5); }
-.brenson-b2b-flotas__barra-resumen { display: grid; gap: 0.16rem; margin-right: auto; }
+/* Móvil: resumen arriba y botones apilados a lo ancho. Tablet+: todo en una fila. */
+.brenson-b2b-flotas__barra { position: sticky; bottom: 0; z-index: 40; margin-top: var(--brenson-space-8); display: flex; flex-direction: column; align-items: stretch; gap: var(--brenson-space-4); padding: var(--brenson-space-4); padding-bottom: calc(var(--brenson-space-4) + env(safe-area-inset-bottom, 0px)); border-radius: var(--brenson-radius-xl) var(--brenson-radius-xl) 0 0; background: rgba(15,19,24,.96); backdrop-filter: blur(12px); box-shadow: 0 -8px 32px rgba(0,0,0,.5); }
+.brenson-b2b-flotas__barra-resumen { display: grid; gap: 0.16rem; }
+@media (min-width: 750px) {
+  .brenson-b2b-flotas__barra { flex-direction: row; flex-wrap: wrap; align-items: center; padding: var(--brenson-space-4) var(--brenson-space-6); }
+  .brenson-b2b-flotas__barra-resumen { margin-right: auto; }
+}
 .brenson-b2b-flotas__barra-resumen span { font-size: var(--brenson-text-xs); color: var(--brenson-sobre-superficie); text-transform: uppercase; letter-spacing: .04em; }
 .brenson-b2b-flotas__barra-resumen strong { font-size: var(--brenson-text-xl); font-weight: 800; color: #fff; }
-@media (max-width: 749px) { .brenson-b2b-flotas__barra { flex-direction: column; align-items: stretch; } .brenson-b2b-flotas__barra-resumen { margin-right: 0; } }
 
 /* ── Bandas de fondo alternas ────────────────────────────────────────────────
    Stitch alterna la superficie base #050709 con bandas #0A0D12. La banda se
@@ -380,7 +591,8 @@ body.brenson-empresas .brenson-b2b-banda--clara .brenson-subheading { color: var
 .brenson-b2b-contacto .brenson-doc-list a:hover { background: rgba(255,255,255,.06); }
 
 /* Equipamiento de fábrica sobre banda clara (pantalla 17) */
-.brenson-b2b-flotas__equipo { gap: var(--brenson-space-4); padding: var(--brenson-space-8); }
+.brenson-b2b-flotas__equipo { gap: var(--brenson-space-4); padding: var(--brenson-space-5); }
+@media (min-width: 750px) { .brenson-b2b-flotas__equipo { padding: var(--brenson-space-8); } }
 .brenson-b2b-flotas__icono { width: 4.8rem; height: 4.8rem; border-radius: var(--brenson-radius-lg); display: grid; place-items: center; background: rgba(238,0,0,.1); color: var(--brenson-rojo); }
 .brenson-b2b-flotas__equipo-nota { display: flex; align-items: center; gap: 0.56rem; margin: auto 0 0; padding-top: var(--brenson-space-4); border-top: 1px solid var(--brenson-gris-borde); font-size: var(--brenson-text-xs); font-weight: 600; color: var(--brenson-certificado); }
 .brenson-b2b-flotas__equipo-nota svg { flex-shrink: 0; }
@@ -398,8 +610,8 @@ body.brenson-empresas .brenson-b2b-banda--clara .brenson-subheading { color: var
 
 /* ── Empresas · Contacto y asesoría (cierre de pantallas 15 y 16) ────────── */
 /* Variante «asesor» (pantalla 16): panel único, retrato centrado + llamada */
-.brenson-b2b-contacto__panel { max-width: 1040px; margin-inline: auto; display: grid; gap: var(--brenson-space-8); align-items: center; padding: var(--brenson-space-10); border-radius: var(--brenson-radius-xl); }
-@media (min-width: 750px) { .brenson-b2b-contacto__panel { grid-template-columns: 5fr 7fr; gap: var(--brenson-space-12); } }
+.brenson-b2b-contacto__panel { max-width: 1040px; margin-inline: auto; display: grid; gap: var(--brenson-space-8); align-items: center; padding: var(--brenson-space-6) var(--brenson-space-5); border-radius: var(--brenson-radius-xl); }
+@media (min-width: 750px) { .brenson-b2b-contacto__panel { grid-template-columns: 5fr 7fr; gap: var(--brenson-space-12); padding: var(--brenson-space-10); } }
 .brenson-b2b-contacto__retrato { display: grid; justify-items: center; text-align: center; gap: 0.32rem; }
 .brenson-b2b-contacto__foto--grande { width: 19.2rem; height: 19.2rem; border-radius: var(--brenson-radius-xl); margin-bottom: var(--brenson-space-4); }
 .brenson-b2b-contacto__retrato .brenson-b2b-contacto__nombre { margin: 0; }
@@ -415,9 +627,10 @@ body.brenson-empresas .brenson-b2b-banda--clara .brenson-subheading { color: var
 .brenson-b2b-contacto__datos a:hover { color: #fff; }
 .brenson-b2b-contacto__datos svg { color: var(--brenson-sobre-superficie); flex-shrink: 0; }
 
-.brenson-b2b-contacto { padding-block: var(--brenson-space-16); }
-.brenson-b2b-contacto__grid { display: grid; gap: var(--brenson-space-12); align-items: center; }
-@media (min-width: 990px) { .brenson-b2b-contacto__grid { grid-template-columns: 5fr 7fr; } }
+.brenson-b2b-contacto { padding-block: var(--brenson-space-12); }
+@media (min-width: 990px) { .brenson-b2b-contacto { padding-block: var(--brenson-space-16); } }
+.brenson-b2b-contacto__grid { display: grid; gap: var(--brenson-space-8); align-items: center; }
+@media (min-width: 990px) { .brenson-b2b-contacto__grid { grid-template-columns: 5fr 7fr; gap: var(--brenson-space-12); } }
 .brenson-b2b-contacto__col { display: grid; gap: var(--brenson-space-6); align-content: start; }
 
 .brenson-b2b-contacto__asesor { flex-direction: row; align-items: center; gap: var(--brenson-space-4); border-radius: var(--brenson-radius-xl); }
@@ -432,7 +645,8 @@ body.brenson-empresas .brenson-b2b-banda--clara .brenson-subheading { color: var
 .brenson-b2b-contacto__pitch .brenson-heading { margin: 0; }
 .brenson-b2b-contacto__pitch .brenson-subheading { margin: 0; }
 
-.brenson-b2b-contacto__formulario { padding: var(--brenson-space-8); gap: var(--brenson-space-5); }
+.brenson-b2b-contacto__formulario { padding: var(--brenson-space-5); gap: var(--brenson-space-5); }
+@media (min-width: 750px) { .brenson-b2b-contacto__formulario { padding: var(--brenson-space-8); } }
 .brenson-b2b-contacto__form-head { display: grid; gap: 0.32rem; padding-bottom: var(--brenson-space-5); border-bottom: 1px solid rgba(255,255,255,.08); }
 .brenson-b2b-contacto__fila { display: grid; gap: var(--brenson-space-4); }
 @media (min-width: 750px) { .brenson-b2b-contacto__fila { grid-template-columns: 1fr 1fr; } }

@@ -7,7 +7,7 @@
 
 .brenson-hero {
   position: relative;
-  min-height: var(--hero-min-height, 85vh);
+  min-height: min(var(--hero-min-height, 85vh), 140svh);
   display: flex;
   align-items: center;
   color: #fff;
@@ -16,7 +16,10 @@
     linear-gradient(160deg, #101210 0%, var(--brenson-carbon) 55%, #050605 100%);
   overflow: hidden;
   isolation: isolate;
-  padding-block: var(--brenson-space-16);
+  padding-block: var(--brenson-space-12);
+}
+@media (min-width: 990px) {
+  .brenson-hero { min-height: var(--hero-min-height, 85vh); padding-block: var(--brenson-space-16); }
 }
 
 /* ---------- Fondo ambiente opcional (foto ya cargada por el merchant) ---------- */
@@ -30,9 +33,9 @@
 .brenson-hero__route path.brenson-hero__route-thin { stroke: rgba(255, 255, 255, 0.06); stroke-width: 1.5; stroke-dasharray: 1 10; }
 .brenson-hero__glow {
   position: absolute;
-  right: 6%;
-  top: 8%;
-  width: 44%;
+  right: -10%;
+  top: -4%;
+  width: 70%;
   aspect-ratio: 1 / 1;
   max-width: 640px;
   border-radius: 50%;
@@ -41,13 +44,16 @@
   pointer-events: none;
   animation: brenson-hero-breathe 6s ease-in-out infinite;
 }
+@media (min-width: 990px) { .brenson-hero__glow { right: 6%; top: 8%; width: 44%; } }
 @keyframes brenson-hero-breathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.85; } }
 
 /* ---------- Grid principal ---------- */
+/* minmax(0, 1fr) y no 1fr: con 1fr la columna no baja de su contenido mínimo, y la pista del
+   ticker (width: max-content) la estiraba a ~1300px en móvil, cortando título, textos y botones. */
 .brenson-hero__grid {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--brenson-space-12);
   align-items: center;
 }
@@ -56,7 +62,7 @@
 }
 
 /* ---------- Columna de texto ---------- */
-.brenson-hero__content { display: flex; flex-direction: column; align-items: flex-start; gap: var(--brenson-space-5); }
+.brenson-hero__content { display: flex; flex-direction: column; align-items: flex-start; gap: var(--brenson-space-5); width: 100%; min-width: 0; text-align: left; }
 
 .brenson-hero .brenson-hero__badge {
   align-self: flex-start;
@@ -89,7 +95,13 @@
 
 .brenson-hero__subtitle { font-size: var(--brenson-text-lg); line-height: var(--brenson-leading-normal); color: rgba(255,255,255,0.7); max-width: 52ch; margin: 0; }
 
-.brenson-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--brenson-space-4); margin-top: var(--brenson-space-2); }
+/* Móvil: los CTA se reparten el ancho completo. Desktop: tamaño natural. */
+.brenson-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--brenson-space-4); margin-top: var(--brenson-space-2); width: 100%; }
+.brenson-hero__actions .brenson-btn { flex: 1 1 auto; justify-content: center; }
+@media (min-width: 990px) {
+  .brenson-hero__actions { width: auto; }
+  .brenson-hero__actions .brenson-btn { flex: 0 1 auto; }
+}
 .brenson-hero .brenson-hero__cta:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -8px rgba(41, 168, 0, 0.6); }
 .brenson-hero .brenson-btn--outline-white {
   background: rgba(255,255,255,0.04);
@@ -125,8 +137,8 @@
 .brenson-hero__streaks span:nth-child(3) { top: 66px; width: 28%; animation-delay: .8s; }
 @keyframes brenson-hero-streak { 0%, 100% { transform: translateX(0); opacity: .35; } 50% { transform: translateX(-14px); opacity: .75; } }
 
-.brenson-hero__vehicle-wrap { position: relative; width: 100%; max-width: 640px; margin-inline: auto; }
-@media (min-width: 990px) { .brenson-hero__vehicle-wrap { margin-inline: 0; } }
+.brenson-hero__vehicle-wrap { position: relative; width: 100%; max-width: 420px; margin-inline: auto; }
+@media (min-width: 990px) { .brenson-hero__vehicle-wrap { max-width: 640px; margin-inline: 0; } }
 .brenson-hero__vehicle {
   display: block;
   width: 100%;
@@ -226,15 +238,6 @@
 .brenson-hero__chip-cat--all:hover { gap: var(--brenson-space-4); }
 .brenson-hero__chip-cat--all svg { width: 1.2rem; height: 1rem; color: var(--brenson-verde-lima); }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 989px) {
-  .brenson-hero { min-height: min(var(--hero-min-height, 85vh), 140svh); padding-block: var(--brenson-space-12); }
-  .brenson-hero__content { align-items: flex-start; text-align: left; width: 100%; }
-  .brenson-hero__actions { width: 100%; }
-  .brenson-hero__actions .brenson-btn { flex: 1 1 auto; justify-content: center; }
-  .brenson-hero__vehicle-wrap { max-width: 420px; }
-  .brenson-hero__glow { right: -10%; top: -4%; width: 70%; }
-}
 @media (prefers-reduced-motion: reduce) {
   .brenson-hero__badge-dot,
   .brenson-hero__glow,

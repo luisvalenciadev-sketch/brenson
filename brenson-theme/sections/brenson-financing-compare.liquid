@@ -122,7 +122,9 @@
   .brenson-financing-compare__row--featured { background: var(--brenson-rojo-suave); }
   .brenson-financing-compare .brenson-table th { padding: var(--brenson-space-4) var(--brenson-space-5); font-size: var(--brenson-text-xs); }
   .brenson-financing-compare .brenson-table td { padding: var(--brenson-space-5); }
-  .brenson-financing-compare .brenson-table-wrap { border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); overflow: hidden; }
+  /* overflow-x:auto (no hidden): en móvil la tabla de 5 columnas se recortaba sin poder desplazarse. */
+  .brenson-financing-compare .brenson-table-wrap { border: 1px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-lg); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .brenson-financing-compare .brenson-table { min-width: 64rem; }
   .brenson-financing-compare .brenson-table thead { background: var(--brenson-gris-claro); }
   .brenson-financing-compare .brenson-table tbody tr:hover { background: var(--brenson-gris-claro); }
   .brenson-financing-compare .brenson-table tbody tr.brenson-financing-compare__row--featured:hover { background: var(--brenson-rojo-suave); }

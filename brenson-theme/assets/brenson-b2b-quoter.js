@@ -136,6 +136,11 @@
       this.querySelector('[data-q-discount]').textContent = r.lines.length ? '− ' + fmt.format(r.discount) : '—';
       this.querySelector('[data-q-units]').textContent = r.units;
       this.querySelector('[data-q-total]').textContent = r.lines.length ? fmt.format(r.total) : '—';
+      // Barra fija móvil: unidades y total siempre visibles mientras se recorre la lista.
+      var barUnits = this.querySelector('[data-q-bar-units]'), barTotal = this.querySelector('[data-q-bar-total]'), barCta = this.querySelector('[data-q-bar-cta]');
+      if (barUnits) barUnits.textContent = r.units + (r.units === 1 ? ' unidad' : ' unidades');
+      if (barTotal) barTotal.textContent = r.lines.length ? fmt.format(r.total) : 'Agregue vehículos';
+      if (barCta) { barCta.classList.toggle('is-disabled', !r.lines.length); barCta.setAttribute('aria-disabled', String(!r.lines.length)); }
       var pdf = this.querySelector('[data-q-pdf]'), draft = this.querySelector('[data-q-draft]'), addi = this.querySelector('[data-q-addi]');
       if (pdf) pdf.disabled = !r.lines.length; if (draft) draft.disabled = !r.lines.length; if (addi) addi.disabled = !r.lines.length;
       var prog = this.querySelector('[data-q-progress]'), progText = this.querySelector('[data-q-progress-text]');

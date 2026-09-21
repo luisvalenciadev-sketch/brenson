@@ -144,29 +144,41 @@
 </dialog>
 
 <style>
-  .brenson-addi { border: 0; border-radius: var(--brenson-radius-xl); padding: 0; max-width: 60rem; width: calc(100% - 3.2rem); max-height: calc(100dvh - 3.2rem); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; background: #fff; color: var(--brenson-carbon); box-shadow: var(--brenson-shadow-lg); }
+  /* Mobile-first: hoja inferior a todo el ancho; desde 750px, modal centrado. */
+  .brenson-addi { border: 0; border-radius: var(--brenson-radius-xl) var(--brenson-radius-xl) 0 0; padding: 0; width: 100%; max-width: none; margin: auto 0 0; max-height: 92dvh; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; background: #fff; color: var(--brenson-carbon); box-shadow: var(--brenson-shadow-lg); }
   .brenson-addi *, .brenson-addi *::before, .brenson-addi *::after { box-sizing: border-box; }
   .brenson-addi [hidden] { display: none !important; }
   .brenson-addi::backdrop { background: rgba(5,7,9,.6); backdrop-filter: blur(2px); }
-  .brenson-addi[open] { animation: brenson-addi-in .22s ease-out; }
+  .brenson-addi[open] { animation: brenson-addi-sheet .22s ease-out; }
+  @keyframes brenson-addi-sheet { from { transform: translateY(100%); } to { transform: none; } }
   @keyframes brenson-addi-in { from { opacity: 0; transform: translateY(1.2rem); } to { opacity: 1; transform: none; } }
+  @media (min-width: 750px) {
+    .brenson-addi { border-radius: var(--brenson-radius-xl); max-width: 60rem; width: calc(100% - 3.2rem); margin: auto; max-height: calc(100dvh - 3.2rem); }
+    .brenson-addi[open] { animation-name: brenson-addi-in; }
+  }
 
-  .brenson-addi__head { display: flex; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); padding: var(--brenson-space-5) var(--brenson-space-6) 0; }
+  .brenson-addi__head { display: flex; justify-content: space-between; align-items: center; gap: var(--brenson-space-3); padding: var(--brenson-space-5) var(--brenson-space-4) 0; }
   .brenson-addi__brand { display: flex; align-items: center; gap: var(--brenson-space-3); }
   .brenson-addi__badge { width: 4.4rem; height: 4.4rem; flex: none; border-radius: 1.2rem; background: var(--brenson-addi); display: flex; align-items: center; justify-content: center; }
   .brenson-addi__badge-icon { width: 3.2rem; height: 3.2rem; color: #fff; }
   .brenson-addi__eyebrow { display: block; font-size: var(--brenson-text-xs); color: var(--brenson-addi); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
   .brenson-addi__title { margin: 0; font-size: var(--brenson-text-lg); line-height: 1.2; }
   .brenson-addi__close { margin: 0; }
-  .brenson-addi__close button { width: 3.6rem; height: 3.6rem; border: 0; border-radius: 50%; background: var(--brenson-gris-claro); font-size: 2rem; line-height: 1; cursor: pointer; }
+  .brenson-addi__close button { width: 4.4rem; height: 4.4rem; border: 0; border-radius: 50%; background: var(--brenson-gris-claro); font-size: 2rem; line-height: 1; cursor: pointer; }
 
-  .brenson-addi__stepper { display: flex; gap: var(--brenson-space-2); list-style: none; margin: var(--brenson-space-4) var(--brenson-space-6) 0; padding: 0; }
-  .brenson-addi__stepper li { flex: 1; display: flex; align-items: center; gap: .6rem; font-size: var(--brenson-text-xs); color: var(--brenson-gris); padding-top: .8rem; border-top: 3px solid var(--brenson-gris-borde); transition: border-color .2s, color .2s; }
+  .brenson-addi__stepper { display: flex; gap: var(--brenson-space-2); list-style: none; margin: var(--brenson-space-4) var(--brenson-space-4) 0; padding: 0; }
+  .brenson-addi__stepper li { flex: 1; display: flex; align-items: center; gap: .6rem; font-size: 1.1rem; color: var(--brenson-gris); padding-top: .8rem; border-top: 3px solid var(--brenson-gris-borde); transition: border-color .2s, color .2s; }
   .brenson-addi__stepper li span { width: 2rem; height: 2rem; flex: none; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--brenson-gris-claro); font-weight: 700; font-size: 1.1rem; }
   .brenson-addi__stepper li.is-active, .brenson-addi__stepper li.is-done { border-color: var(--brenson-addi); color: var(--brenson-carbon); }
   .brenson-addi__stepper li.is-active span, .brenson-addi__stepper li.is-done span { background: var(--brenson-addi); color: #fff; }
 
-  .brenson-addi__body { padding: var(--brenson-space-5) var(--brenson-space-6) var(--brenson-space-6); }
+  .brenson-addi__body { padding: var(--brenson-space-5) var(--brenson-space-4) calc(var(--brenson-space-6) + env(safe-area-inset-bottom, 0px)); }
+  @media (min-width: 750px) {
+    .brenson-addi__head { padding-inline: var(--brenson-space-6); }
+    .brenson-addi__stepper { margin-inline: var(--brenson-space-6); }
+    .brenson-addi__stepper li { font-size: var(--brenson-text-xs); }
+    .brenson-addi__body { padding: var(--brenson-space-5) var(--brenson-space-6) var(--brenson-space-6); }
+  }
   .brenson-addi__step { display: grid; gap: var(--brenson-space-3); }
   .brenson-addi__step[hidden] { display: none; }
   .brenson-addi__step.is-entering { animation: brenson-addi-step .2s ease-out; }
@@ -185,7 +197,8 @@
   .brenson-addi__benefits svg { width: 2rem; height: 2rem; flex: none; color: var(--brenson-addi); }
 
   .brenson-addi__field { display: grid; gap: .4rem; }
-  .brenson-addi__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--brenson-space-3); }
+  .brenson-addi__row { display: grid; grid-template-columns: 1fr; gap: var(--brenson-space-3); }
+  @media (min-width: 750px) { .brenson-addi__row { grid-template-columns: 1fr 1fr; } }
   .brenson-addi__label { font-size: var(--brenson-text-sm); font-weight: 600; }
   .brenson-addi__body input[type="text"], .brenson-addi__body input[type="tel"], .brenson-addi__body input[type="email"] { width: 100%; min-height: 4.8rem; padding: 0 1.4rem; border: 1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius); font: inherit; font-size: 1.6rem; background: #fff; }
   .brenson-addi__body input:focus { outline: none; border-color: var(--brenson-addi); box-shadow: 0 0 0 3px var(--brenson-addi-suave); }
@@ -197,7 +210,7 @@
   .brenson-addi__err.is-visible { display: block; }
 
   .brenson-addi__segmented { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; padding: .4rem; border-radius: var(--brenson-radius); background: var(--brenson-gris-claro); }
-  .brenson-addi__segmented button { min-height: 4rem; border: 0; border-radius: calc(var(--brenson-radius) - .2rem); background: transparent; font: inherit; font-size: var(--brenson-text-sm); cursor: pointer; }
+  .brenson-addi__segmented button { min-height: 4.4rem; border: 0; border-radius: calc(var(--brenson-radius) - .2rem); background: transparent; font: inherit; font-size: var(--brenson-text-sm); cursor: pointer; }
   .brenson-addi__segmented button[aria-checked="true"] { background: #fff; color: var(--brenson-addi); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 
   .brenson-addi__consent { display: flex; gap: .8rem; font-size: var(--brenson-text-xs); align-items: flex-start; }
@@ -229,15 +242,6 @@
   .brenson-addi__bar span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--brenson-addi); transition: width .8s ease-out; }
   .brenson-addi__actions { width: 100%; display: grid; gap: var(--brenson-space-2); margin-top: var(--brenson-space-2); }
 
-  @media (max-width: 640px) {
-    .brenson-addi { width: 100%; max-width: none; margin: auto 0 0; max-height: 92dvh; border-radius: var(--brenson-radius-xl) var(--brenson-radius-xl) 0 0; }
-    .brenson-addi[open] { animation-name: brenson-addi-sheet; }
-    @keyframes brenson-addi-sheet { from { transform: translateY(100%); } to { transform: none; } }
-    .brenson-addi__head, .brenson-addi__body { padding-inline: var(--brenson-space-4); }
-    .brenson-addi__stepper { margin-inline: var(--brenson-space-4); }
-    .brenson-addi__row { grid-template-columns: 1fr; }
-    .brenson-addi__stepper li { font-size: 1.1rem; }
-  }
   @media (prefers-reduced-motion: reduce) {
     .brenson-addi[open], .brenson-addi__step.is-entering, .brenson-addi__result-icon.is-ok { animation: none; }
     .brenson-addi__bar span { transition: none; }

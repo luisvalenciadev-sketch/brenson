@@ -34,11 +34,12 @@
 -%}
 <section class="brenson-section brenson-b2b-quoter-section">
   <div class="brenson-container">
-    <header style="display:flex; flex-wrap:wrap; align-items:center; gap: var(--brenson-space-3); margin-bottom: var(--brenson-space-6)">
-      <h1 style="margin:0; font-size: clamp(2.56rem, 3vw, 3.6rem)">Nueva cotización de flota</h1>
-      {%- if b2b_tier -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Tier {{ b2b_tier.nombre.value }} · {{ b2b_descuento | round }} %</span>{%- endif -%}
-      <span class="brenson-status brenson-status--ok" style="margin-left:auto">Descuento activo en todas las unidades · Facturación directa con exención IVA Ley 1715</span>
-      <p style="width:100%; margin:0; color: rgba(255,255,255,.7); font-size: var(--brenson-text-sm)">Seleccione los vehículos y cantidades. El descuento de su tier se aplica automáticamente. Los valores son con IVA incluido.</p>
+    <header class="brenson-quoter__head">
+      <div class="brenson-quoter__title">
+        <h1>Nueva cotización de flota</h1>
+        {%- if b2b_tier -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Tier {{ b2b_tier.nombre.value }} · {{ b2b_descuento | round }} %</span>{%- endif -%}
+      </div>
+      <p>Elija vehículos y cantidades: el descuento de su tier se aplica solo. Valores con IVA incluido; facturación directa con exención de IVA Ley 1715.</p>
     </header>
 
     {%- comment -%} Historial del cliente para "duplicar" (?duplicar=COT-…) sin backend: JSON con los ítems de sus cotizaciones {%- endcomment -%}
@@ -54,9 +55,9 @@
     ]</script>
     <brenson-quoter class="brenson-quoter" data-discount="{{ b2b_descuento }}" data-tier="{{ b2b_tier.nombre.value }}" data-next-min="{{ next_tier.minimo_unidades.value | default: 0 }}" data-next-pct="{{ next_tier.descuento_pct.value | default: 0 }}" data-endpoint="{{ settings.brenson_services_url }}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" data-empresa="{{ b2b_empresa | escape }}" data-validez="{{ validez }}">
       <div class="brenson-b2b-stack">
-        <div class="brenson-b2b-card" style="flex-direction:row; flex-wrap:wrap; gap:0.8rem; align-items:center">
-          <input type="search" placeholder="Buscar por modelo…" data-q-search style="flex:1; min-width: 19.2rem; min-height:4.4rem; padding:0 1.6rem; border:1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius-pill); font-family:inherit">
-          <div class="brenson-chips" data-q-filters>
+        <div class="brenson-b2b-card brenson-quoter__filters">
+          <input type="search" placeholder="Buscar por modelo…" aria-label="Buscar por modelo" data-q-search>
+          <div class="brenson-chips brenson-quoter__chips" data-q-filters>
             <button type="button" class="brenson-chip is-active" data-q-cat="">Todos</button>
             <button type="button" class="brenson-chip" data-q-cat="ciclomotor">Ciclomotores</button>
             <button type="button" class="brenson-chip" data-q-cat="bicicleta">Bicicletas</button>
@@ -73,31 +74,34 @@
             {%- assign row_disc = b2b_descuento -%}
             {%- if pm.b2b_precio_tier.value and b2b_tier and pm.b2b_precio_tier.value[b2b_tier.codigo.value] -%}{%- assign row_disc = pm.b2b_precio_tier.value[b2b_tier.codigo.value] -%}{%- endif -%}
             <article class="brenson-b2b-card brenson-quoter__row" data-q-item data-handle="{{ p.handle }}" data-title="{{ p.title | escape }}" data-cat="{{ pm.categoria.value }}" data-min="{{ minq }}" data-discount="{{ row_disc }}">
-              {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 192 | image_tag: loading: 'lazy', alt: p.title }}{%- else -%}<div style="width:96px; aspect-ratio:1; background: var(--brenson-gris-claro); border-radius: var(--brenson-radius)"></div>{%- endif -%}
-              <div>
-                <div style="display:flex; gap:0.8rem; align-items:center; flex-wrap:wrap">
-                  <h2 style="margin:0; font-size: var(--brenson-text-lg)">{{ p.title }}</h2>
+              {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 192 | image_tag: loading: 'lazy', alt: p.title }}{%- else -%}<div class="brenson-quoter__img-ph"></div>{%- endif -%}
+              <div class="brenson-quoter__info">
+                <div class="brenson-quoter__name">
+                  <h2>{{ p.title }}</h2>
                   {%- if pm.exclusivo_flota.value -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Exclusivo flota</span>{%- endif -%}
                   {%- render 'brenson-badge', product: p, type: 'certificado', size: 'sm' -%}
                 </div>
-                <p class="brenson-muted" style="margin:0.4rem 0; font-size: var(--brenson-text-sm)">{{ pm.autonomia_km.value }} km · {{ pm.velocidad_max_kmh.value }} km/h · {{ pm.capacidad_carga_kg.value }} kg</p>
-                <label style="font-size: var(--brenson-text-xs); color: var(--brenson-gris)">Configuración
-                  <select data-q-variant style="margin-left:0.56rem; min-height:3.6rem; padding:0 0.8rem; border:1.5px solid var(--brenson-gris-borde); border-radius: var(--brenson-radius); font-family:inherit; font-size: var(--brenson-text-sm)">
+                <p class="brenson-quoter__specs brenson-muted">{{ pm.autonomia_km.value }} km · {{ pm.velocidad_max_kmh.value }} km/h · {{ pm.capacidad_carga_kg.value }} kg · Mín. {{ minq }} unidades</p>
+                <label class="brenson-quoter__variant">Configuración
+                  <select data-q-variant>
                     {%- for v in p.variants -%}<option value="{{ v.id }}" data-price="{{ v.price }}" data-sku="{{ v.sku }}">{{ v.title | replace: 'Default Title', 'Estándar' }} · {{ v.price | money_without_trailing_zeros }}</option>{%- endfor -%}
                   </select>
                 </label>
-                <p style="margin:0.56rem 0 0; font-size: var(--brenson-text-xs); color: var(--brenson-gris)">Mín. {{ minq }} unidades</p>
               </div>
-              <div style="text-align:right; display:grid; gap:0.56rem; justify-items:end">
-                <span class="brenson-quoter__price-public brenson-num" data-q-public></span>
-                <span class="brenson-quoter__price-b2b brenson-num" data-q-b2b></span>
-                <span style="font-size: var(--brenson-text-xs); color: var(--brenson-certificado); font-weight:700">{{ row_disc | round }} % aplicado</span>
-                <div class="brenson-qty">
-                  <button type="button" data-q-dec aria-label="Quitar">−</button>
-                  <input type="number" min="0" step="1" value="0" data-q-qty inputmode="numeric" aria-label="Cantidad de {{ p.title | escape }}">
-                  <button type="button" data-q-inc aria-label="Agregar">+</button>
+              <div class="brenson-quoter__buy">
+                <div class="brenson-quoter__prices">
+                  <span class="brenson-quoter__price-public brenson-num" data-q-public></span>
+                  <span class="brenson-quoter__price-b2b brenson-num" data-q-b2b></span>
+                  <span class="brenson-quoter__pct">{{ row_disc | round }} % aplicado</span>
                 </div>
-                <span style="font-size: var(--brenson-text-xs); color: var(--brenson-gris)" data-q-subtotal>No agregado</span>
+                <div class="brenson-quoter__qty-wrap">
+                  <div class="brenson-qty">
+                    <button type="button" data-q-dec aria-label="Quitar">−</button>
+                    <input type="number" min="0" step="1" value="0" data-q-qty inputmode="numeric" aria-label="Cantidad de {{ p.title | escape }}">
+                    <button type="button" data-q-inc aria-label="Agregar">+</button>
+                  </div>
+                  <span class="brenson-quoter__subtotal" data-q-subtotal>No agregado</span>
+                </div>
               </div>
             </article>
           {%- endfor -%}
@@ -120,7 +124,7 @@
         </div>
       </div>
 
-      <aside class="brenson-b2b-card brenson-quoter__summary" aria-live="polite">
+      <aside class="brenson-b2b-card brenson-quoter__summary" id="q-summary" aria-live="polite">
         <div style="display:flex; justify-content:space-between; align-items:center"><h2 style="margin:0; font-size: var(--brenson-text-lg)">Resumen de cotización</h2><span class="brenson-status brenson-status--pending" data-q-status>Borrador</span></div>
         <div class="brenson-quoter__lines" data-q-lines><p class="brenson-muted">Agregue vehículos para ver el resumen.</p></div>
         <div class="brenson-quoter__lines" style="border-top:1px solid var(--brenson-gris-borde); padding-top:1.2rem">
@@ -148,6 +152,18 @@
         <p class="brenson-form__success" data-q-success hidden role="status">Cotización generada. Revise su correo.</p>
         <p class="brenson-form__error" data-q-error hidden role="alert">No pudimos generar la cotización. Intente de nuevo o contacte a su asesor.</p>
       </aside>
+
+      {%- comment -%}
+        Barra fija inferior (solo < 990px): en móvil el resumen queda al final de una lista larga,
+        así que las unidades y el total se muestran siempre a la vista con acceso directo al resumen.
+      {%- endcomment -%}
+      <div class="brenson-quoter__bar" data-q-bar>
+        <div class="brenson-quoter__bar-info">
+          <span data-q-bar-units>0 unidades</span>
+          <strong class="brenson-num" data-q-bar-total>Agregue vehículos</strong>
+        </div>
+        <a class="brenson-btn brenson-btn--primary is-disabled" href="#q-summary" data-q-bar-cta>Revisar cotización</a>
+      </div>
     </brenson-quoter>
 
     {%- comment -%} Historial de cotizaciones del cliente (misma fuente que el dashboard) {%- endcomment -%}
@@ -157,34 +173,15 @@
       {%- if qcid2 == cid -%}{%- assign has_quotes = true -%}{%- break -%}{%- endif -%}
     {%- endfor -%}
     {%- if has_quotes -%}
-      <div class="brenson-b2b-card" style="margin-top: var(--brenson-space-6)">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:1.6rem; flex-wrap:wrap">
+      <div class="brenson-b2b-card brenson-quoter__history">
+        <div class="brenson-b2b-card__head">
           <div>
-            <h2 style="margin:0; font-size: var(--brenson-text-xl)">Historial de cotizaciones recientes de {{ b2b_empresa }}</h2>
-            <p class="brenson-muted" style="margin:0.32rem 0 0; font-size: var(--brenson-text-sm)">Consulte o descargue las versiones emitidas en las últimas jornadas comerciales.</p>
+            <h2>Historial de cotizaciones</h2>
+            <p class="brenson-muted">Consulte, descargue o duplique las versiones emitidas para {{ b2b_empresa }}.</p>
           </div>
-          <a class="link" href="/pages/empresas#cotizaciones">Ver todas las cotizaciones →</a>
+          <a class="link" href="/pages/empresas#cotizaciones">Ver todas →</a>
         </div>
-        <div class="brenson-table-wrap">
-          <table class="brenson-table">
-            <thead><tr><th>Código / Lote</th><th>Fecha de emisión</th><th>Volumen</th><th>Monto total</th><th>Estado</th><th></th></tr></thead>
-            <tbody>
-              {%- for q in shop.metaobjects.brenson_cotizacion_b2b.values -%}
-                {%- assign qcid3 = q.cliente_id.value | default: q.cliente.value.id | append: '' -%}
-                {%- if qcid3 != cid -%}{%- continue -%}{%- endif -%}
-                {%- assign units2 = 0 -%}{%- for it in q.items.value -%}{%- assign units2 = units2 | plus: it.cantidad -%}{%- endfor -%}
-                <tr>
-                  <td><code>{{ q.numero.value }}</code></td>
-                  <td>{{ q.creada_en.value | date: '%d %b %Y' }}</td>
-                  <td>{{ units2 }} unidades</td>
-                  <td class="brenson-num"><strong>{% render 'brenson-money-metafield', texto: q.total_formateado.value, valor: q.total.value %}</strong></td>
-                  <td>{%- case q.estado.value -%}{%- when 'enviada' -%}<span class="brenson-status brenson-status--ok">Enviada y vigente</span>{%- when 'aceptada' -%}<span class="brenson-status brenson-status--ok">Aceptada</span>{%- when 'borrador' -%}<span class="brenson-status brenson-status--pending">Borrador</span>{%- else -%}<span class="brenson-status brenson-status--muted">{{ q.estado.value | capitalize }}</span>{%- endcase -%}</td>
-                  <td style="text-align:right; white-space:nowrap">{%- if q.pdf_url.value -%}<a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{{ q.pdf_url.value }}" target="_blank" rel="noopener">Descargar PDF</a>{%- endif -%} <a class="brenson-btn brenson-btn--sm" href="/pages/cotizador?duplicar={{ q.numero.value }}">Duplicar</a></td>
-                </tr>
-              {%- endfor -%}
-            </tbody>
-          </table>
-        </div>
+        {%- render 'brenson-b2b-quote-list', cid: cid, show_accept: false -%}
       </div>
     {%- endif -%}
   </div>

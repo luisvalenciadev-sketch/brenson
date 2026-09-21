@@ -63,7 +63,9 @@
   .brenson-announce__icon svg { width: 1.2rem; height: 1.2rem; }
   .brenson-announce__text strong,
   .brenson-announce__text b { font-weight: var(--brenson-font-weight-bold); color: #fff; }
+  /* En móvil el mensaje secundario sobra: dejaría la barra en tres renglones. */
   .brenson-announce__aside {
+    display: none;
     padding-left: 1.2rem;
     margin-left: 0.4rem;
     border-left: 1px solid rgba(255, 255, 255, 0.24);
@@ -71,9 +73,8 @@
     font-weight: var(--brenson-font-weight-regular);
     color: rgba(255, 255, 255, 0.62);
   }
-  /* En móvil el mensaje secundario sobra: dejaría la barra en tres renglones. */
-  @media (max-width: 989px) {
-    .brenson-announce__aside { display: none; }
+  @media (min-width: 990px) {
+    .brenson-announce__aside { display: inline; }
   }
 </style>
 

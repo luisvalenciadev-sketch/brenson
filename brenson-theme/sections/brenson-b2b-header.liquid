@@ -1,8 +1,41 @@
 {%- comment -%}
   brenson-b2b-header — Header del portal Empresas (layout theme.empresas.liquid). Tono formal.
   Navegación visible solo con acceso aprobado. Sin sesión: enlaces públicos + login/solicitar.
+  Mobile-first: por debajo de 990px la navegación y las acciones secundarias viven en un
+  menú <details> (sin JS). Los enlaces se capturan una sola vez para que ambas vistas no
+  se desincronicen.
 {%- endcomment -%}
 {%- include 'brenson-b2b-guard' -%}
+{%- if b2b_state == 'aprobado' -%}
+  {%- capture b2b_nav_links -%}
+    <a href="/pages/empresas" {% if template.suffix == 'empresas' %}aria-current="page"{% endif %}>Inicio</a>
+    {%- if settings.brenson_b2b_collection != blank -%}<a href="{{ settings.brenson_b2b_collection.url }}" {% if request.page_type == 'collection' %}aria-current="page"{% endif %}>Catálogo corporativo</a>{%- endif -%}
+    <a href="/pages/cotizador" {% if template.suffix == 'cotizador' %}aria-current="page"{% endif %}>Cotizador</a>
+    <a href="/pages/empresas#cotizaciones">Mis cotizaciones</a>
+    <a href="/pages/empresas#unidades">Mis unidades</a>
+    <a href="{{ routes.account_url }}">Pedidos</a>
+  {%- endcapture -%}
+{%- else -%}
+  {%- capture b2b_nav_links -%}
+    <a href="/pages/empresas-beneficios" {% if page.handle == 'empresas-beneficios' %}aria-current="page"{% endif %}>Beneficios</a>
+    <a href="/pages/empresas-flotas" {% if page.handle == 'empresas-flotas' %}aria-current="page"{% endif %}>Flotas</a>
+    <a href="/pages/empresas-proceso" {% if page.handle == 'empresas-proceso' %}aria-current="page"{% endif %}>Cómo funciona</a>
+    <a href="{{ routes.root_url }}">Sitio principal</a>
+  {%- endcapture -%}
+  {%- comment -%}
+    El ancla #b2b-login solo existe en /pages/empresas sin sesión; desde el resto de páginas
+    de Empresas el botón no hacía nada. Se enlaza la pantalla alojada de Shopify con retorno
+    al portal, que es adonde la persona quiere llegar.
+  {%- endcomment -%}
+  {%- if customer -%}
+    {%- assign b2b_account_url = routes.account_url -%}
+    {%- assign b2b_account_label = 'Mi cuenta' -%}
+  {%- else -%}
+    {%- capture b2b_account_url -%}/customer_authentication/login?return_to={{ '/pages/empresas' | url_encode }}{%- endcapture -%}
+    {%- assign b2b_account_label = 'Iniciar sesión' -%}
+  {%- endif -%}
+{%- endif -%}
+
 <header class="brenson-b2b-header">
   <div class="brenson-container brenson-b2b-header__inner">
     <a class="brenson-b2b-header__logo" href="/pages/empresas">
@@ -15,51 +48,84 @@
       <span class="brenson-badge brenson-badge--sm">Empresas</span>
     </a>
 
-    {%- if b2b_state == 'aprobado' -%}
-      <nav class="brenson-b2b-nav" aria-label="Portal Empresas">
-        <a href="/pages/empresas" {% if template.suffix == 'empresas' %}aria-current="page"{% endif %}>Inicio</a>
-        {%- if settings.brenson_b2b_collection != blank -%}<a href="{{ settings.brenson_b2b_collection.url }}" {% if request.page_type == 'collection' %}aria-current="page"{% endif %}>Catálogo corporativo</a>{%- endif -%}
-        <a href="/pages/cotizador" {% if template.suffix == 'cotizador' %}aria-current="page"{% endif %}>Cotizador</a>
-        <a href="/pages/empresas#cotizaciones">Mis cotizaciones</a>
-        <a href="/pages/empresas#unidades">Mis unidades</a>
-        <a href="{{ routes.account_url }}">Pedidos</a>
-      </nav>
-      <div class="brenson-b2b-header__user">
+    <nav class="brenson-b2b-nav" aria-label="{% if b2b_state == 'aprobado' %}Portal Empresas{% else %}Brenson Empresas{% endif %}">
+      {{ b2b_nav_links }}
+    </nav>
+
+    <div class="brenson-b2b-header__user">
+      {%- if b2b_state == 'aprobado' -%}
         <button type="button" class="brenson-b2b-header__bell" aria-label="Notificaciones">
           <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 4 1.5 5.5 1.5 5.5H4.5S6 13 6 9Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           <span class="brenson-b2b-header__bell-dot" aria-hidden="true"></span>
         </button>
         <span class="brenson-b2b-header__avatar" aria-hidden="true">{{ b2b_empresa | slice: 0 }}</span>
-        <div>
+        <div class="brenson-b2b-header__desktop brenson-b2b-header__company">
           <span class="brenson-b2b-header__eyebrow">Empresa autorizada</span>
           <strong>{{ b2b_empresa | truncate: 28 }}</strong>
           {%- if customer.metafields.brenson_b2b.nit.value -%}NIT {{ customer.metafields.brenson_b2b.nit.value }}{%- endif -%}
         </div>
-        <a class="brenson-btn brenson-btn--sm" style="color: rgba(255,255,255,.8)" href="{{ routes.account_logout_url }}">Cerrar sesión</a>
-      </div>
-    {%- else -%}
-      <nav class="brenson-b2b-nav" aria-label="Brenson Empresas">
-        <a href="/pages/empresas-beneficios" {% if page.handle == 'empresas-beneficios' %}aria-current="page"{% endif %}>Beneficios</a>
-        <a href="/pages/empresas-flotas" {% if page.handle == 'empresas-flotas' %}aria-current="page"{% endif %}>Flotas</a>
-        <a href="/pages/empresas-proceso" {% if page.handle == 'empresas-proceso' %}aria-current="page"{% endif %}>Cómo funciona</a>
-        <a href="{{ routes.root_url }}">Sitio principal</a>
-      </nav>
-      <div class="brenson-b2b-header__user">
-        {%- if customer -%}
-          <a class="brenson-btn brenson-btn--sm" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{{ routes.account_url }}">Mi cuenta</a>
-        {%- else -%}
-          {%- comment -%}
-            El ancla #b2b-login solo existe en /pages/empresas sin sesión; desde el resto de páginas
-            de Empresas el botón no hacía nada. Se enlaza la pantalla alojada de Shopify con retorno
-            al portal, que es adonde la persona quiere llegar.
-          {%- endcomment -%}
-          <a class="brenson-btn brenson-btn--outline brenson-btn--sm" style="color:#fff; border-color: rgba(255,255,255,.4)" href="/customer_authentication/login?return_to={{ '/pages/empresas' | url_encode }}">Iniciar sesión</a>
+        <a class="brenson-btn brenson-btn--sm brenson-b2b-header__desktop" style="color: rgba(255,255,255,.8)" href="{{ routes.account_logout_url }}">Cerrar sesión</a>
+      {%- else -%}
+        <a class="brenson-btn brenson-btn--outline brenson-btn--sm brenson-b2b-header__desktop" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{{ b2b_account_url }}">{{ b2b_account_label }}</a>
+        <a class="brenson-btn brenson-btn--primary brenson-btn--sm brenson-b2b-header__cta" href="/pages/empresas-acceso">Solicitar acceso</a>
+      {%- endif -%}
+    </div>
+
+    <details class="brenson-b2b-menu">
+      <summary class="brenson-b2b-menu__toggle" aria-label="Abrir menú">
+        <svg class="brenson-b2b-menu__open" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="brenson-b2b-menu__close" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="brenson-b2b-menu__panel">
+        {%- if b2b_state == 'aprobado' -%}
+          <p class="brenson-b2b-menu__who"><span class="brenson-b2b-header__eyebrow">Empresa autorizada</span><strong>{{ b2b_empresa | truncate: 28 }}</strong>{%- if customer.metafields.brenson_b2b.nit.value -%}NIT {{ customer.metafields.brenson_b2b.nit.value }}{%- endif -%}</p>
         {%- endif -%}
-        <a class="brenson-btn brenson-btn--primary brenson-btn--sm" href="/pages/empresas-acceso">Solicitar acceso</a>
+        <nav class="brenson-b2b-menu__links" aria-label="Menú Empresas">
+          {{ b2b_nav_links }}
+        </nav>
+        <div class="brenson-b2b-menu__actions">
+          {%- if b2b_state == 'aprobado' -%}
+            <a class="brenson-btn brenson-btn--outline brenson-btn--block" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{{ routes.account_logout_url }}">Cerrar sesión</a>
+          {%- else -%}
+            <a class="brenson-btn brenson-btn--primary brenson-btn--block brenson-b2b-menu__cta" href="/pages/empresas-acceso">Solicitar acceso</a>
+            <a class="brenson-btn brenson-btn--outline brenson-btn--block" style="color:#fff; border-color: rgba(255,255,255,.4)" href="{{ b2b_account_url }}">{{ b2b_account_label }}</a>
+          {%- endif -%}
+        </div>
       </div>
-    {%- endif -%}
+    </details>
   </div>
 </header>
+
+{%- comment -%}
+  Barra de pestañas inferior (solo < 990px y con acceso aprobado): las tareas frecuentes del portal
+  quedan al alcance del pulgar. En el cotizador no se muestra: ahí la barra fija es la del total.
+{%- endcomment -%}
+{%- if b2b_state == 'aprobado' and template.suffix != 'cotizador' -%}
+  <nav class="brenson-b2b-tabbar" aria-label="Accesos rápidos del portal">
+    <a href="/pages/empresas" {% if template.suffix == 'empresas' %}aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-8Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      <span>Inicio</span>
+    </a>
+    {%- if settings.brenson_b2b_collection != blank -%}
+      <a href="{{ settings.brenson_b2b_collection.url }}" {% if request.page_type == 'collection' %}aria-current="page"{% endif %}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="13" y="4" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="4" y="13" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="13" y="13" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+        <span>Catálogo</span>
+      </a>
+    {%- endif -%}
+    <a class="brenson-b2b-tabbar__main" href="/pages/cotizador">
+      <span class="brenson-b2b-tabbar__plus"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+      <span>Cotizar</span>
+    </a>
+    <a href="/pages/empresas#cotizaciones">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span>Cotizaciones</span>
+    </a>
+    <a href="/pages/empresas#unidades">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="7" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+      <span>Unidades</span>
+    </a>
+  </nav>
+{%- endif -%}
 
 {% schema %}
 { "name": "Empresas · Header", "tag": "div", "settings": [ { "type": "paragraph", "content": "Header del portal corporativo. Se usa en el layout theme.empresas." } ] }

@@ -12,14 +12,19 @@
         <h2 class="brenson-heading" style="margin-bottom:0">{{ section.settings.title }}</h2>
         {%- if section.settings.subtitle != blank -%}<p class="brenson-subheading" style="margin-top:0.4rem">{{ section.settings.subtitle }}</p>{%- endif -%}
       </div>
-      <div class="brenson-tabs" role="tablist" data-bestsellers-tabs style="width: 28.8rem; flex-shrink:0;">
+      <div class="brenson-tabs" role="tablist" data-bestsellers-tabs style="flex-shrink:0;">
         <button type="button" role="tab" class="brenson-tab" aria-selected="true" data-uso-filter="">Todos</button>
         <button type="button" role="tab" class="brenson-tab" aria-selected="false" data-uso-filter="trabajo">Trabajo</button>
         <button type="button" role="tab" class="brenson-tab" aria-selected="false" data-uso-filter="personal">Personal</button>
       </div>
     </header>
 
-    <ul class="grid product-grid contains-card contains-card--product grid--4-col-desktop grid--2-col-tablet-down" role="list" data-bestsellers-list>
+    {%- comment -%}
+      Mobile-first: carrusel deslizable en móvil (igual que "Elige tu vehículo"), 2 columnas en
+      tablet y 4 en desktop. Usa el grid Brenson y no el de Dawn: el de Dawn forzaba 2 cards por
+      fila en móvil, demasiado angostas, y desbordaban la pantalla.
+    {%- endcomment -%}
+    <ul class="brenson-grid brenson-grid--4 brenson-carousel-mobile brenson-bestsellers__list contains-card contains-card--product" role="list" data-bestsellers-list>
       {%- if section.settings.collection != blank -%}
         {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
           {%- liquid
@@ -33,7 +38,7 @@
               assign is_personal = true
             endif
           -%}
-          <li class="grid__item" data-bestseller-item data-uso-trabajo="{{ is_trabajo }}" data-uso-personal="{{ is_personal }}">
+          <li class="brenson-bestsellers__item" data-bestseller-item data-uso-trabajo="{{ is_trabajo }}" data-uso-personal="{{ is_personal }}">
             {% render 'card-product', card_product: product, media_aspect_ratio: section.settings.image_ratio, lazy_load: false, show_vendor: false, show_rating: false, section_id: section.id, quick_add: 'none', product_view_context: 'collection' %}
           </li>
         {%- endfor -%}
@@ -48,6 +53,14 @@
     {%- endif -%}
   </div>
 </section>
+<style>
+  .brenson-bestsellers__list { list-style: none; margin-top: 0; margin-bottom: 0; }
+  .brenson-bestsellers__item { min-width: 0; }
+  .brenson-bestsellers__item[hidden] { display: none; }
+  /* Las pestañas ocupan todo el ancho en móvil en vez de un ancho fijo de 288px. */
+  .brenson-bestsellers [data-bestsellers-tabs] { width: 100%; }
+  @media (min-width: 750px) { .brenson-bestsellers [data-bestsellers-tabs] { width: 28.8rem; } }
+</style>
 <script>
   (function(){
     var root = document.getElementById('brenson-bestsellers-{{ section.id }}');
