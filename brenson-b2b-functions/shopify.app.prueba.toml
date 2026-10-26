@@ -1,0 +1,19 @@
+# Configuración de la app para la tienda de prueba entorno-de-prueba-brenson.myshopify.com
+# (org ED Enlaces Digitales). La de brenson-0 sigue en shopify.app.toml.
+# Uso: shopify app deploy --config prueba
+
+client_id = "25b53d46325abe2f32f2db91fcdc7e4b"
+name = "Brenson Prueba Scripts"
+application_url = "https://example.com"
+embedded = true
+
+[access_scopes]
+scopes = "read_products,write_products,read_customers,write_customers,read_content,write_content,read_online_store_pages,write_online_store_pages,read_online_store_navigation,write_online_store_navigation,read_files,write_files,read_metaobjects,write_metaobjects,read_metaobject_definitions,write_metaobject_definitions,read_orders,write_orders,read_draft_orders,write_draft_orders,read_publications,write_publications,read_themes,write_themes,read_discounts,write_discounts,read_inventory,write_inventory,read_locations,read_legal_policies,write_legal_policies"
+optional_scopes = [ ]
+use_legacy_install_flow = true
+
+[webhooks]
+api_version = "2026-07"
+
+[auth]
+redirect_urls = [ "http://localhost:8787/callback" ]

@@ -41,6 +41,9 @@ const SCOPES = [
   'read_publications', 'write_publications',
   'read_themes', 'write_themes',
   'read_discounts', 'write_discounts',
+  'read_inventory', 'write_inventory',
+  'read_locations',
+  'read_legal_policies', 'write_legal_policies',
 ].join(',');
 
 const state = crypto.randomBytes(16).toString('hex');

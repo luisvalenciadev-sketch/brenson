@@ -64,3 +64,38 @@ binding = "BROWSER"
 
 [observability]
 enabled = true
+
+# ---------------------------------------------------------------------------------------------
+# Entorno de prueba: Worker aparte (brenson-services-prueba) para la tienda
+# entorno-de-prueba-brenson.myshopify.com, con su propio KV (consecutivos y caché separados).
+# Deploy: npx wrangler deploy --env prueba · secretos: npx wrangler secret put <NAME> --env prueba
+# En wrangler, vars y bindings NO se heredan entre entornos: van todos repetidos aquí.
+# ---------------------------------------------------------------------------------------------
+[env.prueba]
+name = "brenson-services-prueba"
+
+[env.prueba.vars]
+ENVIRONMENT = "staging"
+ALLOWED_ORIGINS = "https://entorno-de-prueba-brenson.myshopify.com,http://127.0.0.1:9292"
+SHOPIFY_SHOP = "entorno-de-prueba-brenson.myshopify.com"
+SHOPIFY_API_VERSION = "2025-07"
+CRM_PROVIDER = "mock"
+MAIL_PROVIDER = "console"
+PDF_PROVIDER = "browser"
+STORAGE_PROVIDER = "local"
+FINANCING_PROVIDER = "mock"
+ADVISOR_EMAIL = "empresas@brenson.co"
+MAIL_FROM = "Brenson <cotizaciones@brenson.co>"
+QUOTE_VALIDITY_DAYS = "15"
+CERTIFICACION_ACTIVA = "false"
+UPLOAD_MAX_BYTES = "5242880"
+
+[[env.prueba.kv_namespaces]]
+binding = "KV"
+id = "c1c29389c79c46abb51c7a99e8867149"
+
+[env.prueba.browser]
+binding = "BROWSER"
+
+[env.prueba.observability]
+enabled = true
