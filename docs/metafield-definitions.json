@@ -30,6 +30,7 @@
       { "key": "video_url", "name": "Video (YouTube/Vimeo)", "type": "url" },
       { "key": "ficha_tecnica_pdf", "name": "Ficha técnica PDF", "type": "file_reference" },
       { "key": "faq", "name": "Preguntas frecuentes", "type": "list.metaobject_reference", "metaobject": "brenson_faq" },
+      { "key": "resenas", "name": "Reseñas", "type": "list.metaobject_reference", "metaobject": "brenson_resena" },
       { "key": "financiable", "name": "Financiable", "type": "boolean", "filterable": true },
       { "key": "cuota_desde_override", "name": "Cuota desde (manual)", "type": "money" },
       { "key": "b2b_disponible", "name": "Disponible para empresas", "type": "boolean" },
@@ -197,6 +198,16 @@
       { "key": "accept_token", "name": "Token de aceptación", "type": "single_line_text_field" },
       { "key": "pedido_borrador_id", "name": "Draft order", "type": "single_line_text_field" },
       { "key": "pedido_borrador_url", "name": "URL pedido borrador", "type": "url" }
+    ]},
+    { "type": "brenson_resena", "name": "Reseña de producto", "storefront": true, "publishable": true, "fields": [
+      { "key": "producto", "name": "Producto", "type": "product_reference", "required": true },
+      { "key": "nombre", "name": "Nombre", "type": "single_line_text_field", "required": true },
+      { "key": "ciudad", "name": "Ciudad", "type": "single_line_text_field" },
+      { "key": "calificacion", "name": "Calificación (1-5)", "type": "number_integer", "required": true, "validations": [{ "name": "min", "value": "1" }, { "name": "max", "value": "5" }] },
+      { "key": "titulo", "name": "Título", "type": "single_line_text_field" },
+      { "key": "texto", "name": "Opinión", "type": "multi_line_text_field", "required": true },
+      { "key": "fecha", "name": "Fecha", "type": "date", "required": true },
+      { "key": "compra_verificada", "name": "Compra verificada (solo Brenson, tras cruzar con un pedido)", "type": "boolean" }
     ]}
   ],
   "facetas_search_discovery": [

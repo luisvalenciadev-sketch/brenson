@@ -21,6 +21,11 @@
     assign title = title | append: ' sobre ' | append: collection.title | downcase
   endif
 -%}
+{%- if request.page_type == 'product' and curated == false -%}
+  {%- comment -%} Las FAQ generales hablan de licencia, SOAT y matrícula: en repuestos solo se muestran las propias del producto. {%- endcomment -%}
+  {%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}{%- assign kind = kind | strip -%}
+  {%- if kind != 'vehiculo' -%}{%- assign faqs = nil -%}{%- endif -%}
+{%- endif -%}
 {%- if faqs and faqs.size > 0 -%}
 <section class="brenson-section brenson-faq">
   <div class="brenson-container" style="max-width: 900px">

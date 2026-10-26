@@ -2,6 +2,7 @@
  * brenson-services — Cloudflare Worker (Hono)
  * Endpoints:
  *   POST /lead              lead B2C (cotización, financiamiento, contacto, prueba de manejo) → CRM
+ *   POST /review            reseña de producto → metaobject brenson_resena en borrador (moderación en admin) → aviso al asesor
  *   POST /b2b/request       alta corporativa: crea o convierte el cliente (Admin API) → metafields + tag pendiente + CRM (+40)
  *   POST /upload            documento B2B (multipart) → storage → metafield documento_url
  *   POST /quote             cotización de flota → recalcula con Admin API → PDF → metaobject → email (+50)
@@ -49,6 +50,8 @@ app.post('/lead', async (c) => {
   const body = await c.req.json().catch(() => null);
   if (!body || body.honeypot) return jsonError(c, 400, 'Solicitud inválida');
   if (!body.nombre || !body.whatsapp) return jsonError(c, 422, 'Nombre y WhatsApp son obligatorios');
+  const invalido = validateLeadFields(body);
+  if (invalido) return jsonError(c, 422, invalido);
   if (c.env.TURNSTILE_SECRET && !(await verifyTurnstile(c.env, body.turnstile, ip))) return jsonError(c, 403, 'Verificación anti-spam fallida');
 
   const { crm, mail } = getProviders(c.env);
@@ -74,6 +77,76 @@ app.post('/lead', async (c) => {
   const crmRes = await crm.upsertLead(lead);
   await mail.send({ to: c.env.ADVISOR_EMAIL, subject: `Nuevo lead ${lead.tipo}: ${lead.nombre} · ${lead.vehiculo || 'sin vehículo'}`, html: leadEmailHtml(lead) });
   return c.json({ ok: true, id: crmRes.id, score: lead.score });
+});
+
+/* ---------------- Reseñas de producto ----------------
+ * Cada reseña se crea como metaobject brenson_resena en BORRADOR y se agrega a la lista
+ * product.metafields.brenson.resenas. El storefront solo muestra entradas activas, así que la
+ * moderación es publicarla (o eliminarla) en Admin → Contenido → Metaobjects. La "compra verificada"
+ * nunca la marca el formulario: solo Brenson desde el admin, tras cruzarla con un pedido.
+ * El correo del autor no se guarda en el metaobject (sería legible en el storefront): va solo al aviso de moderación.
+ */
+app.post('/review', async (c) => {
+  const ip = c.req.header('cf-connecting-ip') || 'unknown';
+  if (!(await rateLimit(c.env, `review:${ip}`, 5, 3600))) return jsonError(c, 429, 'Demasiadas opiniones desde esta conexión. Intenta más tarde.');
+  const body = await c.req.json().catch(() => null);
+  if (!body || body.honeypot) return jsonError(c, 400, 'Solicitud inválida');
+  const productId = String(body.product_id || '').replace(/\D/g, '');
+  const nombre = String(body.nombre || '').trim().slice(0, 80);
+  const ciudad = String(body.ciudad || '').trim().slice(0, 80);
+  const texto = String(body.texto || '').trim().slice(0, 1500);
+  const titulo = String(body.titulo || '').trim().slice(0, 120);
+  const calificacion = Number(body.calificacion);
+  const email = String(body.email || '').trim().slice(0, 160);
+  if (!productId) return jsonError(c, 422, 'Producto no identificado');
+  if (!Number.isInteger(calificacion) || calificacion < 1 || calificacion > 5) return jsonError(c, 422, 'Elige una calificación de 1 a 5 estrellas');
+  if (nombre.length < 2) return jsonError(c, 422, 'Escribe tu nombre');
+  if (texto.length < 10) return jsonError(c, 422, 'Cuéntanos un poco más (mínimo 10 caracteres)');
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return jsonError(c, 422, 'El correo no es válido');
+  if (!body.acepta) return jsonError(c, 422, 'Debes autorizar el tratamiento de datos');
+  if (c.env.TURNSTILE_SECRET && !(await verifyTurnstile(c.env, body.turnstile, ip))) return jsonError(c, 403, 'Verificación anti-spam fallida');
+  if (!c.env.SHOPIFY_ADMIN_TOKEN) return jsonError(c, 503, 'Las opiniones no están disponibles en este momento');
+
+  const productGid = `gid://shopify/Product/${productId}`;
+  const prod = await shopifyAdmin<{ product: { title: string; metafield: { value: string } | null } | null }>(c.env,
+    `query($id: ID!) { product(id: $id) { title metafield(namespace: "brenson", key: "resenas") { value } } }`, { id: productGid });
+  if (!prod.product) return jsonError(c, 422, 'Producto no encontrado');
+
+  const created = await shopifyAdmin<{ metaobjectCreate: { metaobject: { id: string } | null; userErrors: { message: string }[] } }>(c.env,
+    `mutation($m: MetaobjectCreateInput!) { metaobjectCreate(metaobject: $m) { metaobject { id } userErrors { message } } }`, {
+      m: {
+        type: 'brenson_resena',
+        capabilities: { publishable: { status: 'DRAFT' } },
+        fields: [
+          { key: 'producto', value: productGid },
+          { key: 'nombre', value: nombre },
+          { key: 'ciudad', value: ciudad },
+          { key: 'calificacion', value: String(calificacion) },
+          { key: 'titulo', value: titulo },
+          { key: 'texto', value: texto },
+          { key: 'fecha', value: todayCO() },
+          { key: 'compra_verificada', value: 'false' }
+        ].filter((f) => f.value !== '')
+      }
+    });
+  const resena = created.metaobjectCreate.metaobject;
+  if (!resena) { console.error('[review] metaobjectCreate', JSON.stringify(created.metaobjectCreate.userErrors)); return jsonError(c, 500, 'No pudimos guardar tu opinión. Intenta de nuevo.'); }
+
+  const actuales: string[] = prod.product.metafield ? safeJson(prod.product.metafield.value) || [] : [];
+  const set = await shopifyAdmin<{ metafieldsSet: { userErrors: { message: string }[] } }>(c.env,
+    `mutation($m: [MetafieldsSetInput!]!) { metafieldsSet(metafields: $m) { userErrors { message } } }`, {
+      m: [{ ownerId: productGid, namespace: 'brenson', key: 'resenas', type: 'list.metaobject_reference', value: JSON.stringify([...actuales, resena.id]) }]
+    });
+  if (set.metafieldsSet.userErrors.length) console.error('[review] metafieldsSet', JSON.stringify(set.metafieldsSet.userErrors));
+
+  const { mail } = getProviders(c.env);
+  const adminUrl = `https://admin.shopify.com/store/${c.env.SHOPIFY_SHOP.replace('.myshopify.com', '')}/content/metaobjects/entries/brenson_resena/${resena.id.split('/').pop()}`;
+  await mail.send({
+    to: c.env.ADVISOR_EMAIL,
+    subject: `Nueva opinión por moderar: ${prod.product.title} · ${calificacion}★`,
+    html: `<p><strong>${escapeHtml(nombre)}</strong>${ciudad ? ` (${escapeHtml(ciudad)})` : ''}${email ? ` · ${escapeHtml(email)}` : ''}</p><p>${'★'.repeat(calificacion)}${'☆'.repeat(5 - calificacion)} ${escapeHtml(titulo)}</p><p>${escapeHtml(texto)}</p><p>Queda en borrador hasta que la publiques: <a href="${adminUrl}">revisar en el admin</a>.</p>`
+  });
+  return c.json({ ok: true, id: resena.id.split('/').pop(), estado: 'pendiente_moderacion' });
 });
 
 /* ---------------- Solicitud de acceso B2B ----------------
@@ -445,6 +518,25 @@ async function verifySameSecret(a: string, b: string) {
   let r = 0; for (let i = 0; i < u.length; i++) r |= u[i] ^ v[i];
   return r === 0 && a.length > 0;
 }
+/** Fecha de hoy en Colombia (UTC−5, sin horario de verano) como YYYY-MM-DD. */
+function todayCO() { return new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10); }
+
+/** Reglas del formulario repetidas en servidor: el navegador puede saltárselas. Devuelve el mensaje o null. */
+function validateLeadFields(body: Record<string, unknown>): string | null {
+  const modalidad = String(body.prueba_modalidad || 'no');
+  if (!['no', 'sede', 'domicilio'].includes(modalidad)) return 'Modalidad de prueba de manejo inválida';
+  const fecha = String(body.prueba_fecha || '');
+  if (fecha) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha) || Number.isNaN(Date.parse(fecha))) return 'La fecha preferida no es válida';
+    if (fecha < todayCO()) return 'La fecha preferida debe ser hoy o posterior';
+  }
+  if (body.cantidad !== undefined && body.cantidad !== '') {
+    const n = Number(body.cantidad);
+    if (!Number.isInteger(n) || n < 1 || n > 1000) return 'La cantidad debe ser un número entero entre 1 y 1000';
+  }
+  return null;
+}
+
 function safeJson(v: unknown) { try { return typeof v === 'string' ? JSON.parse(v) : v; } catch { return null; } }
 function escapeHtml(s: string) { return s.replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch] as string)); }
 function leadEmailHtml(l: Record<string, unknown>) {

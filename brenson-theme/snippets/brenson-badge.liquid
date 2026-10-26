@@ -13,7 +13,8 @@
   assign badge_size = size | default: 'md'
 -%}
 {%- if badge_type == 'certificado' -%}
-  {%- if settings.brenson_show_certificado and product.metafields.brenson.certificado.value != false -%}
+  {%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}{%- assign kind = kind | strip -%}
+  {%- if kind == 'vehiculo' and settings.brenson_show_certificado and product.metafields.brenson.certificado.value != false -%}
     {%- assign puntos = settings.brenson_certificado_puntos | default: 12 -%}
     {%- if expandable -%}
       <button type="button" class="brenson-badge brenson-badge--certificado brenson-badge--{{ badge_size }}" data-brenson-open-certificacion aria-expanded="false" aria-controls="brenson-certificacion">

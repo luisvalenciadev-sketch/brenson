@@ -44,7 +44,20 @@
               </div>
               <div class="brenson-card__body">
                 <h2 class="brenson-card__title"><a href="{{ p.url }}">{{ p.title }}</a></h2>
-                <p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ pm.autonomia_km.value }} km · {{ pm.velocidad_max_kmh.value }} km/h · {{ pm.capacidad_carga_kg.value }} kg</p>
+                {%- liquid
+                  assign specs = ''
+                  if pm.autonomia_km.value != blank
+                    assign specs = specs | append: pm.autonomia_km.value | append: ' km|'
+                  endif
+                  if pm.velocidad_max_kmh.value != blank
+                    assign specs = specs | append: pm.velocidad_max_kmh.value | append: ' km/h|'
+                  endif
+                  if pm.capacidad_carga_kg.value != blank
+                    assign specs = specs | append: pm.capacidad_carga_kg.value | append: ' kg|'
+                  endif
+                  assign specs = specs | split: '|'
+                -%}
+                {%- if specs.size > 0 -%}<p class="brenson-muted" style="font-size: var(--brenson-text-sm); margin:0">{{ specs | join: ' · ' }}</p>{%- endif -%}
                 <div class="brenson-card__footer">
                   <div>
                     <span class="brenson-quoter__price-public brenson-num">{{ p.price_min | money_without_trailing_zeros }}</span><br>

@@ -127,8 +127,8 @@
             <div class="brenson-b2b-notice" data-b2b-success hidden role="status" style="margin:0">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <div>
-                <p style="font-weight:700; margin:0 0 0.4rem">Solicitud recibida</p>
-                <p style="margin:0">Validamos el NIT y el documento en 24 horas hábiles y le escribimos al correo registrado. Cuando su empresa quede habilitada podrá <a class="link" data-b2b-login-link href="#">ingresar al portal con un código enviado a ese correo</a>.</p>
+                <p style="font-weight:700; margin:0 0 0.4rem">Solicitud recibida · radicado <span data-b2b-request-id></span></p>
+                <p style="margin:0">Validamos el NIT y el documento en 24 horas hábiles y le escribimos al correo registrado. Cuando su empresa quede habilitada podrá <a class="link" data-b2b-login-link href="/customer_authentication/login?return_to={{ '/pages/empresas' | url_encode }}">ingresar al portal con un código enviado a ese correo</a>. Mientras la validación esté en curso, al ingresar verá el estado de su solicitud.</p>
               </div>
             </div>
             <p class="brenson-form__error" data-b2b-error hidden role="alert">No pudimos enviar la solicitud. Escríbanos por WhatsApp o intente de nuevo.</p>

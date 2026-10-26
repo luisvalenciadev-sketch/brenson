@@ -484,11 +484,15 @@ label.brenson-chip {
 }
 
 .brenson-field__hint { font-size: var(--brenson-text-xs); color: var(--brenson-on-surface-muted); margin-top: 0.4rem; }
+.brenson-field__error { font-size: var(--brenson-text-xs); color: var(--brenson-error); margin: 0.4rem 0 0; font-weight: 600; }
+.brenson-field input[aria-invalid="true"], .brenson-field select[aria-invalid="true"] { border-color: var(--brenson-error); }
 .brenson-form__success { padding: var(--brenson-space-4); border-radius: var(--brenson-radius); background: var(--brenson-certificado-suave); color: var(--brenson-certificado); font-weight: var(--brenson-font-weight-semibold); }
 .brenson-form__error { padding: var(--brenson-space-4); border-radius: var(--brenson-radius); background: var(--brenson-error-suave); color: var(--brenson-error); }
 
 /* ---------- Utilidades ---------- */
 .brenson-muted { color: var(--brenson-on-surface-muted); }
 .brenson-visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* El atributo hidden debe ganarle a cualquier display de componente (avisos, errores, pasos de formulario). */
+[class*="brenson"][hidden], [data-b2b-success][hidden], [data-b2b-error][hidden] { display: none !important; }
 .brenson-empresas { background: var(--brenson-carbon); color: #fff; }
 .brenson-empresas .brenson-card, .brenson-empresas .brenson-simulator__result { color: var(--brenson-carbon); }

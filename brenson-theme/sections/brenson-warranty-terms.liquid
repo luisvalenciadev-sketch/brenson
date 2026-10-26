@@ -74,12 +74,49 @@
               </div>
               <div class="brenson-field">
                 <label for="soporte-modelo">Modelo de vehículo *</label>
-                <select id="soporte-modelo" name="contact[vehiculo]" data-name="vehiculo" required>
+                {%- comment -%}
+                  Todos los vehículos publicados (no solo los destacados) + "Otro" con referencia libre, para que
+                  nadie tenga que elegir un modelo distinto al suyo. La colección del setting solo restringe si se elige.
+                {%- endcomment -%}
+                {%- liquid
+                  assign fuente = collections.all.products
+                  if section.settings.collection != blank
+                    assign fuente = section.settings.collection.products
+                  endif
+                -%}
+                <select id="soporte-modelo" name="contact[vehiculo_lista]" required data-soporte-modelo>
                   <option value="" disabled selected>Selecciona tu modelo</option>
-                  {%- for p in section.settings.collection.products limit: 12 -%}<option>{{ p.title }}</option>{%- endfor -%}
+                  {%- for p in fuente -%}
+                    {%- capture kind -%}{% render 'brenson-product-kind', product: p %}{%- endcapture -%}{%- assign kind = kind | strip -%}
+                    {%- if kind == 'vehiculo' -%}<option>{{ p.title }}</option>{%- endif -%}
+                  {%- endfor -%}
+                  <option value="__otro__">Otro modelo o no lo sé</option>
                 </select>
+                <input type="hidden" name="contact[vehiculo]" data-name="vehiculo" data-soporte-vehiculo>
               </div>
             </div>
+            <div class="brenson-field" data-soporte-otro hidden>
+              <label for="soporte-modelo-otro">¿Cuál es tu vehículo? *</label>
+              <input id="soporte-modelo-otro" type="text" maxlength="120" placeholder="Ej. modelo, color o número de serie" data-soporte-otro-input>
+            </div>
+            <script>
+              (function () {
+                var form = document.getElementById('BrensonSoporteForm');
+                if (!form) return;
+                var select = form.querySelector('[data-soporte-modelo]');
+                var hidden = form.querySelector('[data-soporte-vehiculo]');
+                var otro = form.querySelector('[data-soporte-otro]');
+                var otroInput = form.querySelector('[data-soporte-otro-input]');
+                function sync() {
+                  var esOtro = select.value === '__otro__';
+                  otro.hidden = !esOtro;
+                  otroInput.required = esOtro;
+                  hidden.value = esOtro ? 'Otro: ' + otroInput.value.trim() : select.value;
+                }
+                select.addEventListener('change', sync);
+                otroInput.addEventListener('input', sync);
+              })();
+            </script>
             <div class="brenson-field">
               <label for="soporte-mensaje">Mensaje o requerimiento *</label>
               <textarea id="soporte-mensaje" name="contact[body]" data-name="mensaje" required rows="2" placeholder="Cuéntanos si requieres repuesto, mantenimiento preventivo o revisión por garantía..."></textarea>
@@ -149,7 +186,7 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Claridad total" },
     { "type": "text", "id": "title", "label": "Título", "default": "Términos de garantía Brenson" },
-    { "type": "collection", "id": "collection", "label": "Colección para el select \"Modelo de vehículo\"" }
+    { "type": "collection", "id": "collection", "label": "Restringir \"Modelo de vehículo\" a una colección", "info": "Vacío = todos los vehículos publicados. Siempre se ofrece \"Otro modelo\"." }
   ],
   "blocks": [
     {

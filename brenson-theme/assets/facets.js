@@ -338,6 +338,8 @@ class FacetFiltersForm extends HTMLElement {
 
   onSubmitHandler(event) {
     event.preventDefault();
+    // Un rango con mínimo mayor que el máximo no se aplica: se avisa y se conservan los resultados actuales.
+    if (!PriceRange.validateIn(event.target.closest('form'))) return;
     const sortFilterForms = document.querySelectorAll('facet-filters-form form');
     if (event.srcElement.className == 'mobile-facets__checkbox') {
       const searchParams = this.createSearchParams(event.target.closest('form'));
@@ -389,6 +391,57 @@ class PriceRange extends HTMLElement {
   onRangeChange(event) {
     this.adjustToValidValues(event.currentTarget);
     this.setMinAndMaxValues();
+    this.validate();
+  }
+
+  // "1.000.000", "1,000,000.50" o "1000000" → número. Vacío → null. Un solo separador seguido de
+  // exactamente tres dígitos se toma como separador de miles (formato COP).
+  static parse(raw) {
+    const s = String(raw || '').replace(/[s']/g, '');
+    if (s === '') return null;
+    const lastSep = Math.max(s.lastIndexOf('.'), s.lastIndexOf(','));
+    if (lastSep === -1) return Number(s);
+    const decimals = s.slice(lastSep + 1);
+    const isThousands = (s.match(/[.,]/g).length > 1 && !(s.includes('.') && s.includes(','))) || decimals.length === 3;
+    if (isThousands) return Number(s.replace(/[.,]/g, ''));
+    return Number(s.slice(0, lastSep).replace(/[.,]/g, '') + '.' + decimals);
+  }
+
+  static validateIn(form) {
+    if (!form) return true;
+    let ok = true;
+    form.querySelectorAll('price-range').forEach((range) => {
+      if (!range.validate()) ok = false;
+    });
+    return ok;
+  }
+
+  validate() {
+    const [minInput, maxInput] = this.querySelectorAll('input');
+    const min = PriceRange.parse(minInput.value);
+    const max = PriceRange.parse(maxInput.value);
+    let message = '';
+    if ((min !== null && Number.isNaN(min)) || (max !== null && Number.isNaN(max))) message = 'Escribe solo números en el rango de precio.';
+    else if (min !== null && max !== null && min > max) message = 'El precio mínimo no puede ser mayor que el máximo.';
+
+    let note = this.nextElementSibling && this.nextElementSibling.matches('[data-price-error]') ? this.nextElementSibling : null;
+    if (!note) {
+      note = document.createElement('p');
+      note.className = 'brenson-field__error';
+      note.setAttribute('data-price-error', '');
+      note.setAttribute('role', 'alert');
+      note.id = (minInput.id || 'price') + '-error';
+      note.hidden = true;
+      this.insertAdjacentElement('afterend', note);
+    }
+    note.textContent = message;
+    note.hidden = !message;
+    [minInput, maxInput].forEach((input) => {
+      input.setAttribute('aria-invalid', String(!!message));
+      if (message) input.setAttribute('aria-describedby', note.id);
+      else input.removeAttribute('aria-describedby');
+    });
+    return !message;
   }
 
   onKeyDown(event) {

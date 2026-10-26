@@ -1,0 +1,12 @@
+{%- comment -%}
+  brenson-stars — Estrellas de calificación (redondeo al entero más cercano).
+  Parámetros: value (número 0–5), size: 'sm' | 'md' (default 'md').
+{%- endcomment -%}
+{%- liquid
+  assign llenas = value | round
+  assign vacias = 5 | minus: llenas
+-%}
+<span class="brenson-reviews__stars{% if size == 'sm' %} brenson-reviews__stars--sm{% endif %}" role="img" aria-label="{{ value }} de 5 estrellas">
+  {%- for i in (1..llenas) -%}★{%- endfor -%}
+  <span class="brenson-reviews__stars-off">{%- for i in (1..vacias) -%}★{%- endfor -%}</span>
+</span>

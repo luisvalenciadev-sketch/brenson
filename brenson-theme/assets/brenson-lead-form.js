@@ -27,6 +27,29 @@
     document.dispatchEvent(new CustomEvent('brenson:track', { detail: p }));
   }
 
+  // Fecha de hoy en Colombia (UTC−5, sin horario de verano), en el formato del input date.
+  function todayCO() {
+    return new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
+  }
+
+  // Una cita no puede quedar antes de hoy: min en el control + mensaje visible al salir del campo.
+  function setupDate(input) {
+    if (!input) return;
+    var msg = input.parentNode.querySelector('[data-date-error]');
+    input.min = todayCO();
+    var check = function () {
+      var bad = input.value && input.value < input.min;
+      input.setCustomValidity(bad ? 'Elige una fecha a partir de hoy.' : '');
+      input.setAttribute('aria-invalid', String(!!bad));
+      if (msg) msg.hidden = !bad;
+      return !bad;
+    };
+    input.addEventListener('change', check);
+    input.addEventListener('blur', check);
+    input.addEventListener('focus', function () { input.min = todayCO(); });
+    input.brensonCheck = check;
+  }
+
   function setupTestDrive(form) {
     var wrap = form.querySelector('[data-lead-testdrive]');
     if (!wrap) return;
@@ -34,6 +57,8 @@
     var fields = wrap.querySelector('[data-testdrive-fields]');
     var city = wrap.querySelector('[data-testdrive-city]');
     var sedeHint = wrap.querySelector('[data-testdrive-sede-hint]');
+    var date = wrap.querySelector('input[type="date"]');
+    setupDate(date);
     wrap.addEventListener('click', function (e) {
       var b = e.target.closest('[data-testdrive]');
       if (!b) return;
@@ -43,6 +68,8 @@
       fields.hidden = mode === 'no';
       city.hidden = mode !== 'domicilio';
       sedeHint.hidden = mode !== 'sede';
+      // Sin prueba de manejo no se envía fecha (y un valor oculto inválido bloquearía el envío).
+      if (mode === 'no' && date) { date.value = ''; date.brensonCheck(); }
     });
   }
 
@@ -63,6 +90,8 @@
     });
 
     form.addEventListener('submit', async function onSubmit(e) {
+      var fecha = form.querySelector('input[type="date"]');
+      if (fecha && fecha.brensonCheck && !fecha.brensonCheck()) { e.preventDefault(); fecha.reportValidity(); return; }
       var payload = collect(form);
       if (payload.honeypot) { e.preventDefault(); return; }
 
@@ -82,6 +111,14 @@
       try {
         if (window.brensonTurnstileToken) payload.turnstile = await window.brensonTurnstileToken(form);
         var res = await fetch(endpoint + '/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        // Un 4xx es un dato rechazado por la validación del servidor: se muestra y no se reenvía por el
+        // formulario nativo, que se saltaría esa validación. El respaldo nativo queda para red y 5xx.
+        if (res.status >= 400 && res.status < 500 && res.status !== 429) {
+          var body = await res.json().catch(function () { return null; });
+          err.textContent = (body && body.error) || 'Revisa los datos del formulario e intenta de nuevo.';
+          err.hidden = false; ok.hidden = true;
+          return;
+        }
         if (!res.ok) throw new Error('HTTP ' + res.status);
         track(payload);
         ok.hidden = false; err.hidden = true;

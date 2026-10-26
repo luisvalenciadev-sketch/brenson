@@ -37,6 +37,13 @@
   if product.metafields.brenson.financiable.value == false
     assign financiable = false
   endif
+-%}
+{%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}{%- assign kind = kind | strip -%}
+{%- liquid
+  # Una cuota a 36 meses no tiene sentido para un cargador o una batería: se muestra precio de contado.
+  if kind != 'vehiculo'
+    assign financiable = false
+  endif
 
   assign price_cents = v.price | default: product.price
   assign price = price_cents | divided_by: 100.0

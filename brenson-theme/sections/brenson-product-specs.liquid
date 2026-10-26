@@ -63,7 +63,9 @@
         </dl>
       </div>
 
-      {%- comment -%} Normativa {%- endcomment -%}
+      {%- comment -%} Normativa: licencia, SOAT y pico y placa solo aplican a vehículos. {%- endcomment -%}
+      {%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}{%- assign kind = kind | strip -%}
+      {%- if kind == 'vehiculo' -%}
       <div class="brenson-spec-group">
         <div class="brenson-spec-group__head"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Normativa en Colombia</div>
         <dl>
@@ -73,6 +75,7 @@
           {%- if mf.garantia_meses.value -%}<div class="brenson-spec-row"><dt>Garantía del vehículo</dt><dd>{{ mf.garantia_meses.value }} meses</dd></div>{%- endif -%}
         </dl>
       </div>
+      {%- endif -%}
     </div>
   </div>
 </section>

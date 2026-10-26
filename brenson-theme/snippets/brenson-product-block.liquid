@@ -4,12 +4,16 @@
   Tipos: brenson_certificado · brenson_specs_clave · brenson_precio · brenson_cta_whatsapp · brenson_cta_cotizar · brenson_micro_garantias
 {%- endcomment -%}
 {%- assign mf = product.metafields.brenson -%}
+{%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}{%- assign kind = kind | strip -%}
 {%- case block.type -%}
 
   {%- when 'brenson_certificado' -%}
+    {%- comment -%} El sello de 12 puntos es una inspección de vehículo (frenos, suspensión, ruta): no aplica a repuestos. {%- endcomment -%}
+    {%- if kind == 'vehiculo' -%}
     <div class="brenson-pb brenson-pb--certificado" {{ block.shopify_attributes }}>
       {%- render 'brenson-badge', product: product, type: 'certificado', size: 'md', expandable: true -%}
     </div>
+    {%- endif -%}
 
   {%- when 'brenson_specs_clave' -%}
     {%- if mf.autonomia_km.value or mf.velocidad_max_kmh.value or mf.capacidad_carga_kg.value -%}
@@ -50,12 +54,21 @@
   {%- when 'brenson_micro_garantias' -%}
     <ul class="brenson-pb brenson-pb__micro" role="list" {{ block.shopify_attributes }}>
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Garantía <strong>{{ mf.garantia_meses.value | default: 12 }} meses</strong> vehículo · <strong>{{ mf.garantia_bateria_meses.value | default: 12 }} meses</strong> batería</span></li>
+      {%- if kind == 'vehiculo' -%}
+        <span>Garantía <strong>{{ mf.garantia_meses.value | default: 12 }} meses</strong> vehículo · <strong>{{ mf.garantia_bateria_meses.value | default: 12 }} meses</strong> batería</span>
+      {%- elsif mf.garantia_meses.value -%}
+        <span>Garantía de fábrica <strong>{{ mf.garantia_meses.value }} meses</strong> por defectos de fabricación</span>
+      {%- else -%}
+        <span>Garantía de fábrica por defectos de fabricación · <a class="link" href="#garantia">condiciones</a></span>
+      {%- endif -%}
+      </li>
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
         <span>Envíos a toda Colombia · <a class="link" href="#garantia">ver tiempos por región</a></span></li>
+      {%- if kind == 'vehiculo' -%}
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         <span>Prueba de manejo en sede o a domicilio · <a class="link" href="#brenson-lead-form">agendar</a></span></li>
-      {%- if mf.requiere_licencia.value -%}
+      {%- endif -%}
+      {%- if kind == 'vehiculo' and mf.requiere_licencia.value -%}
         <li class="brenson-muted"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 10h4M14 14h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Requiere licencia{% if mf.requiere_soat.value %} y SOAT{% endif %}</span></li>
       {%- endif -%}
     </ul>

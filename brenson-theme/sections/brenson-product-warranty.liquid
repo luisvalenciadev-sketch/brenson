@@ -8,6 +8,7 @@
   assign g_veh = mf.garantia_meses.value | default: 12
   assign g_bat = mf.garantia_bateria_meses.value | default: g_veh
 -%}
+{%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}{%- assign kind = kind | strip -%}
 <section id="garantia" class="brenson-section brenson-warranty">
   <div class="brenson-container">
     <div class="brenson-warranty__grid">
@@ -15,8 +16,14 @@
         <span class="brenson-eyebrow" style="color: var(--brenson-certificado)">{{ section.settings.eyebrow }}</span>
         <h2 class="brenson-heading">{{ section.settings.title }}</h2>
         <div class="brenson-warranty__badges">
-          <div class="brenson-warranty__badge"><strong>{{ g_veh }} meses</strong><span>Vehículo</span></div>
-          <div class="brenson-warranty__badge"><strong>{{ g_bat }} meses</strong><span>Batería</span></div>
+          {%- if kind == 'vehiculo' -%}
+            <div class="brenson-warranty__badge"><strong>{{ g_veh }} meses</strong><span>Vehículo</span></div>
+            <div class="brenson-warranty__badge"><strong>{{ g_bat }} meses</strong><span>Batería</span></div>
+          {%- elsif mf.garantia_meses.value -%}
+            <div class="brenson-warranty__badge"><strong>{{ mf.garantia_meses.value }} meses</strong><span>Garantía de fábrica</span></div>
+          {%- else -%}
+            <div class="brenson-warranty__badge"><strong>Garantía de fábrica</strong><span>Plazo según ficha del fabricante</span></div>
+          {%- endif -%}
         </div>
         <div class="brenson-accordion">
           <details>
@@ -25,17 +32,21 @@
               {%- if mf.garantia_terminos.value != blank -%}
                 {{ mf.garantia_terminos.value | metafield_tag }}
               {%- else -%}
-                <p>Defectos de fabricación en motor, controlador, batería, cargador y estructura durante el periodo indicado, con uso normal y mantenimiento según el manual. <span class="brenson-muted">[BORRADOR: términos legales pendientes de aprobación]</span></p>
+                {%- if kind == 'vehiculo' -%}
+                  <p>Defectos de fabricación en motor, controlador, batería, cargador y estructura durante el periodo indicado, con uso normal y mantenimiento según el manual. <span class="brenson-muted">[BORRADOR: términos legales pendientes de aprobación]</span></p>
+                {%- else -%}
+                  <p>Defectos de fabricación del producto durante el periodo indicado, con uso normal y en un vehículo compatible según la ficha técnica. <span class="brenson-muted">[BORRADOR: términos legales pendientes de aprobación]</span></p>
+                {%- endif -%}
               {%- endif -%}
             </div>
           </details>
           <details>
             <summary>Qué no cubre</summary>
-            <div class="brenson-accordion__body"><p>Desgaste normal de llantas, frenos y luces; daños por golpes, humedad extrema, sobrecarga, modificaciones o cargadores no originales. <span class="brenson-muted">[BORRADOR]</span></p></div>
+            <div class="brenson-accordion__body">{%- if kind == 'vehiculo' -%}<p>Desgaste normal de llantas, frenos y luces; daños por golpes, humedad extrema, sobrecarga, modificaciones o cargadores no originales. <span class="brenson-muted">[BORRADOR]</span></p>{%- else -%}<p>Daños por golpes, humedad extrema, sobrecarga, conexión a equipos no compatibles, manipulación o apertura del producto. <span class="brenson-muted">[BORRADOR]</span></p>{%- endif -%}</div>
           </details>
           <details>
             <summary>Cómo hacer válida la garantía</summary>
-            <div class="brenson-accordion__body"><p>Escríbenos por WhatsApp con el número de serie de tu vehículo o ingresa a tu cuenta para ver el estado de garantía de cada unidad. Coordinamos revisión en sede o con un taller aliado.</p>
+            <div class="brenson-accordion__body">{%- if kind == 'vehiculo' -%}<p>Escríbenos por WhatsApp con el número de serie de tu vehículo o ingresa a tu cuenta para ver el estado de garantía de cada unidad. Coordinamos revisión en sede o con un taller aliado.</p>{%- else -%}<p>Escríbenos por WhatsApp con tu factura de compra y una foto del producto. Te indicamos cómo hacer la revisión o el cambio.</p>{%- endif -%}
               <a class="brenson-btn brenson-btn--outline brenson-btn--sm" href="{% render 'brenson-whatsapp-link', context: 'garantias' %}" target="_blank" rel="noopener" data-brenson-track="whatsapp_click" data-brenson-source="garantia">Consultar mi garantía</a>
             </div>
           </details>

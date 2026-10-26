@@ -1,0 +1,28 @@
+{%- comment -%}
+  brenson-product-kind — Clasifica el producto para decidir qué módulos de la ficha aplican.
+  Imprime: vehiculo | bateria | cargador | repuesto. Uso:
+    {%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}
+  Fuentes por prioridad: categoría de vehículo en brenson.categoria → categoría/tipo/etiquetas/plantilla de
+  repuesto → primer segmento del handle. El handle completo no sirve: hay vehículos con "bateria-48v" en él.
+  Prueba de manejo, inspección de 12 puntos, simulador de cuota, matrícula/SOAT y garantía de vehículo
+  solo aplican a 'vehiculo'.
+{%- endcomment -%}
+{%- liquid
+  assign kind = 'vehiculo'
+  assign vehiculos = 'bicicleta,ciclomotor,motocarro,cuadriciclo,patineta,moto,furgon'
+  assign cat = product.metafields.brenson.categoria.value | downcase | strip
+  assign etiquetas = product.tags | join: ' '
+  assign senal = cat | append: ' ' | append: product.type | append: ' ' | append: etiquetas | downcase
+  assign prefijo = product.handle | split: '-' | first
+
+  if cat != blank and vehiculos contains cat
+    assign kind = 'vehiculo'
+  elsif senal contains 'cargador' or prefijo == 'cargador'
+    assign kind = 'cargador'
+  elsif senal contains 'bater' or prefijo == 'bateria'
+    assign kind = 'bateria'
+  elsif product.template_suffix == 'repuesto' or senal contains 'repuesto' or senal contains 'accesorio'
+    assign kind = 'repuesto'
+  endif
+  echo kind
+-%}

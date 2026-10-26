@@ -12,9 +12,17 @@
 {%- liquid
   assign tipo_default = section.settings.tipo
   assign vehiculo_default = ''
+  assign show_test_drive = section.settings.show_test_drive
   if request.page_type == 'product' and product
     assign vehiculo_default = product.title
   endif
+-%}
+{%- if request.page_type == 'product' and product -%}
+  {%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}{%- assign kind = kind | strip -%}
+  {%- comment -%} La prueba de manejo solo aplica a vehículos, no a baterías ni cargadores. {%- endcomment -%}
+  {%- if kind != 'vehiculo' -%}{%- assign show_test_drive = false -%}{%- endif -%}
+{%- endif -%}
+{%- liquid
   assign ciudades = settings.brenson_prueba_ciudades | split: ','
 -%}
 <section id="brenson-lead-form" class="brenson-section brenson-lead-form-section {% if section.settings.alt %}brenson-section--alt{% endif %}">
@@ -82,7 +90,7 @@
           </div>
         </div>
 
-        {%- if section.settings.show_test_drive -%}
+        {%- if show_test_drive -%}
           <fieldset class="brenson-field brenson-fieldset" data-lead-testdrive>
             <legend class="brenson-fieldset__legend">¿Quieres una prueba de manejo?</legend>
             <div class="brenson-chips" role="group">
@@ -94,7 +102,8 @@
             <div class="brenson-form__row brenson-form__row--2" data-testdrive-fields hidden style="margin-top: var(--brenson-space-3)">
               <div class="brenson-field">
                 <label for="lead-fecha">Fecha preferida</label>
-                <input id="lead-fecha" type="date" name="contact[prueba_fecha]" data-name="prueba_fecha">
+                <input id="lead-fecha" type="date" name="contact[prueba_fecha]" data-name="prueba_fecha" aria-describedby="lead-fecha-error">
+                <p class="brenson-field__error" id="lead-fecha-error" data-date-error hidden role="alert">Elige una fecha a partir de hoy.</p>
               </div>
               <div class="brenson-field" data-testdrive-city hidden>
                 <label for="lead-ciudad-prueba">Ciudad de la prueba</label>

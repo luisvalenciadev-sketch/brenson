@@ -81,7 +81,20 @@
                   {%- if pm.exclusivo_flota.value -%}<span class="brenson-badge brenson-badge--rojo brenson-badge--sm">Exclusivo flota</span>{%- endif -%}
                   {%- render 'brenson-badge', product: p, type: 'certificado', size: 'sm' -%}
                 </div>
-                <p class="brenson-quoter__specs brenson-muted">{{ pm.autonomia_km.value }} km · {{ pm.velocidad_max_kmh.value }} km/h · {{ pm.capacidad_carga_kg.value }} kg · Mín. {{ minq }} unidades</p>
+                {%- liquid
+                  assign specs = ''
+                  if pm.autonomia_km.value != blank
+                    assign specs = specs | append: pm.autonomia_km.value | append: ' km|'
+                  endif
+                  if pm.velocidad_max_kmh.value != blank
+                    assign specs = specs | append: pm.velocidad_max_kmh.value | append: ' km/h|'
+                  endif
+                  if pm.capacidad_carga_kg.value != blank
+                    assign specs = specs | append: pm.capacidad_carga_kg.value | append: ' kg|'
+                  endif
+                  assign specs = specs | split: '|'
+                -%}
+                <p class="brenson-quoter__specs brenson-muted">{% if specs.size > 0 %}{{ specs | join: ' · ' }} · {% endif %}Mín. {{ minq }} unidades</p>
                 <label class="brenson-quoter__variant">Configuración
                   <select data-q-variant>
                     {%- for v in p.variants -%}<option value="{{ v.id }}" data-price="{{ v.price }}" data-sku="{{ v.sku }}">{{ v.title | replace: 'Default Title', 'Estándar' }} · {{ v.price | money_without_trailing_zeros }}</option>{%- endfor -%}

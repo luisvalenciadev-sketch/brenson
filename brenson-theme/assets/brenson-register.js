@@ -86,11 +86,15 @@
             // El worker manda un mensaje en español listo para mostrar (cupo excedido, correo inválido…).
             if (!res.ok) throw new Error((body && body.error) || '');
           } finally { clearTimeout(reloj); }
-        } else {
-          // Modo simulación (sin URL de servicio configurada): no hay cuenta real que crear.
+        } else if (window.Shopify && window.Shopify.designMode) {
+          // Modo simulación solo dentro del editor de temas: no hay cuenta real que crear.
           console.info('[brenson] solicitud B2B (simulación):', data);
           body = { customer_id: form.dataset.customerId || 'simulado' };
+        } else {
+          throw new Error('El servicio de registro no está disponible en este momento. Escríbanos por WhatsApp.');
         }
+        // Sin identificador del cliente creado no hay solicitud radicada: no se anuncia éxito.
+        if (!body || !body.customer_id) throw new Error('');
         enviado = true;
         track('b2b_request', { sector: data.sector, flota: data.flota_estimada, via: mode });
 
@@ -103,6 +107,8 @@
         if (mode === 'convert') { window.location.reload(); return; }
 
         revealStepTwo(form, body);
+        var radicado = form.querySelector('[data-b2b-request-id]');
+        if (radicado) radicado.textContent = 'B2B-' + body.customer_id;
         if (ok) { ok.hidden = false; ok.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
         if (legal) legal.hidden = true;
       } catch (ex) {

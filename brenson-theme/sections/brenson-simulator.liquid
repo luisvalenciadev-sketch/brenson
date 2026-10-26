@@ -52,6 +52,13 @@
       assign financiable = false
     endif
   endif
+-%}
+{%- if is_product -%}{%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}{%- assign kind = kind | strip -%}{%- endif -%}
+{%- liquid
+  # El simulador incluye matrícula y SOAT entre los costos excluidos: solo aplica a vehículos.
+  if is_product and kind != 'vehiculo'
+    assign financiable = false
+  endif
 
   assign default_vehicle = section.settings.default_product
   if default_vehicle == blank and section.settings.collection != blank

@@ -13,6 +13,13 @@
   if product.metafields.brenson.certificado.value == false
     assign show = false
   endif
+-%}
+{%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}{%- assign kind = kind | strip -%}
+{%- liquid
+  # Protocolo de inspección de vehículo (frenos, suspensión, prueba de ruta): no aplica a repuestos.
+  if kind != 'vehiculo'
+    assign show = false
+  endif
   assign checklist = nil
   assign puntos = settings.brenson_certificado_puntos
   assign descripcion = section.settings.text

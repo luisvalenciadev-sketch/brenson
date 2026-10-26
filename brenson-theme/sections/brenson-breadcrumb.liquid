@@ -11,8 +11,13 @@
       <li aria-hidden="true">/</li>
       <li aria-current="page">{{ collection.title }}</li>
     {%- elsif product -%}
+      {%- capture kind -%}{% render 'brenson-product-kind', product: product %}{%- endcapture -%}{%- assign kind = kind | strip -%}
       <li aria-hidden="true">/</li>
-      <li><a href="{{ routes.all_products_collection_url }}">Vehículos</a></li>
+      {%- if kind == 'vehiculo' -%}
+        <li><a href="{{ routes.all_products_collection_url }}">Vehículos</a></li>
+      {%- else -%}
+        <li><a href="{{ collections['repuestos'].url | default: routes.all_products_collection_url }}">Repuestos</a></li>
+      {%- endif -%}
       {%- if collection.title -%}
         <li aria-hidden="true">/</li>
         <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
