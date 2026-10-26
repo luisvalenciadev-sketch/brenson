@@ -1,0 +1,1445 @@
+[
+  {
+    "id": "gid://shopify/Product/7395042918475",
+    "handle": "bicicleta-electrica-brenson-dallas-motor-48v-350w-bateria-48v-12ah-hasta-60-km-de-autonomia",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41574279512139",
+          "title": "Negro",
+          "inventoryPolicy": "CONTINUE",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43665045028939",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/41574279577675",
+          "title": "Rojo",
+          "inventoryPolicy": "CONTINUE",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43665045094475",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/41632872726603",
+          "title": "Azul",
+          "inventoryPolicy": "CONTINUE",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43723940921419",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/41632872759371",
+          "title": "Rosa",
+          "inventoryPolicy": "CONTINUE",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43723940954187",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400026669131",
+    "handle": "bicicleta-electrica-venom",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41632895631435",
+          "title": "Gris plata",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43723963826251",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/41632895664203",
+          "title": "Blanco",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43723963859019",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/41632895696971",
+          "title": "Rojo",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43723963891787",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400517926987",
+    "handle": "bateria-de-12v-12-18ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596054536267",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": -4,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43686869499979",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": -4
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400542044235",
+    "handle": "bateria-12v-58ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596106113099",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43686921535563",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400546566219",
+    "handle": "bateria-12v-20-30ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596112207947",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43686927663179",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400566685771",
+    "handle": "moto-carro-electrico-carry-platon",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596153462859",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43686968918091",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400617279563",
+    "handle": "bicicleta-electrica-dakota-pro",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41656577163339",
+          "title": "Blanco",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 3,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43747765059659",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 3
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 3
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/41656577196107",
+          "title": "Gris plata",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 3,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43747765092427",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 3
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 3
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/41656577228875",
+          "title": "Rojo",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 3,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43747765125195",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 3
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 3
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400626159691",
+    "handle": "furgon-electrico-carry-furgon",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596311797835",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43687126597707",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400626618443",
+    "handle": "motocarro-electrico-maxi",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596312289355",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43687127121995",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400627273803",
+    "handle": "ciclomotor-electrica-mobility",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41637355782219",
+          "title": "Rojo / Pago total",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43728451502155",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/41632893894731",
+          "title": "Rojo / Separación",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43723962089547",
+            "tracked": false,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/41637355814987",
+          "title": "Gris plata / Pago total",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43728451534923",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/41632893927499",
+          "title": "Gris plata / Separación",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43723962122315",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400650145867",
+    "handle": "cargador-60v-52-58ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596405612619",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43687217496139",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400652013643",
+    "handle": "cargador-36v-12-18ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596444409931",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43687258193995",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400652210251",
+    "handle": "cargador-60v-20-30ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596447522891",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43687261306955",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400653717579",
+    "handle": "cargador-60v-32-45ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596455551051",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43687269367883",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400658042955",
+    "handle": "cargador-48v-12-18ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596489564235",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43687303381067",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400658894923",
+    "handle": "cargador-60v-80-100ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596498772043",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43687312588875",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400659091531",
+    "handle": "cargador-72v-20-30ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596499001419",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43687312818251",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7400659583051",
+    "handle": "cargador-72v-32-38ah",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41596504014923",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43687317831755",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7431770112075",
+    "handle": "cuadriciclo-electrico-monaco",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41735043088459",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43823873228875",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7431772307531",
+    "handle": "cuadricilo-electrico-corato",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41735045480523",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43823875620939",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7468152455243",
+    "handle": "cuadriciclo-zero",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/41855047106635",
+          "title": "Blanco",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/43944580251723",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7549564420171",
+    "handle": "ciclomotor-electrico-vera-2026",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/42067283607627",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/44204461752395",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/7613873258571",
+    "handle": "milan-500watts-2026",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/42196796014667",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 9,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/44399482667083",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 9
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 9
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/8035001368651",
+    "handle": "modena-2026",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/42986127360075",
+          "title": "Gris",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 15,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/45243182481483",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 15
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 15
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/43184276930635",
+          "title": "Gris plata",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/45456428433483",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/8035004186699",
+    "handle": "faenza",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/42986132242507",
+          "title": "Blanco",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/45243187396683",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/42986132275275",
+          "title": "Gris",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/45243187429451",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gid://shopify/ProductVariant/42986132308043",
+          "title": "Gris plata",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 10,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/45243187462219",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 10
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/8035005431883",
+    "handle": "patineta-potenza",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/42986135355467",
+          "title": "Default Title",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/45243190509643",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/8035012182091",
+    "handle": "patineta-praga",
+    "status": "ACTIVE",
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/42986179362891",
+          "title": "Negro",
+          "inventoryPolicy": "DENY",
+          "inventoryQuantity": 0,
+          "inventoryItem": {
+            "id": "gid://shopify/InventoryItem/45243234517067",
+            "tracked": true,
+            "inventoryLevels": {
+              "nodes": [
+                {
+                  "location": {
+                    "id": "gid://shopify/Location/70150586443",
+                    "name": "Calle 29#4b-28"
+                  },
+                  "quantities": [
+                    {
+                      "name": "available",
+                      "quantity": 0
+                    },
+                    {
+                      "name": "on_hand",
+                      "quantity": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+]
